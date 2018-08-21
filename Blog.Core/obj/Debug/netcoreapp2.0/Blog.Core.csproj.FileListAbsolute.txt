@@ -9,3 +9,8 @@ E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.0\Blog.Core.Assemb
 E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.0\Blog.Core.AssemblyInfo.cs
 E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.0\Blog.Core.dll
 E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.0\Blog.Core.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.0\Blog.Core.xml
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.0\Blog.Core.Model.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.0\Blog.Core.Model.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.0\Blog.Core.Model.xml
+E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.0\Blog.Core.csproj.CopyComplete

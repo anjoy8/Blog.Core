@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Blog.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Blog.Core.Controllers.ValuesController">
+            <summary>
+            这是控制器的文字说明
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Get(Blog.Core.Model.Love)">
+            <summary>
+            获取到一个数据列表
+            </summary>
+            <param name="love"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Get(System.Int32)">
+            <summary>
+            根据id获取详情
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Post(System.String)">
+            <summary>
+            向服务器Post数据
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Put(System.Int32,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Delete(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="T:Blog.Core.Program">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Program.Main(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Blog.Core.Program.BuildWebHost(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Startup">
+            <summary>
+            启动文件
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:Blog.Core.Startup.Configuration">
+            <summary>
+            Configuration 属性
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            ConfigureServices 方法
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Blog.Core.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            方法
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>
