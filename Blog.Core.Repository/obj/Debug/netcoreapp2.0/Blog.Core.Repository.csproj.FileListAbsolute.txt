@@ -1,0 +1,12 @@
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\bin\Debug\netcoreapp2.0\Blog.Core.Repository.deps.json
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\bin\Debug\netcoreapp2.0\Blog.Core.Repository.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\bin\Debug\netcoreapp2.0\Blog.Core.Repository.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\obj\Debug\netcoreapp2.0\Blog.Core.Repository.csprojResolveAssemblyReference.cache
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\obj\Debug\netcoreapp2.0\Blog.Core.Repository.csproj.CoreCompileInputs.cache
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\obj\Debug\netcoreapp2.0\Blog.Core.Repository.AssemblyInfoInputs.cache
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\obj\Debug\netcoreapp2.0\Blog.Core.Repository.AssemblyInfo.cs
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\obj\Debug\netcoreapp2.0\Blog.Core.Repository.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\obj\Debug\netcoreapp2.0\Blog.Core.Repository.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\bin\Debug\netcoreapp2.0\Blog.Core.IRepository.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\bin\Debug\netcoreapp2.0\Blog.Core.IRepository.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\obj\Debug\netcoreapp2.0\Blog.Core.Repository.csproj.CopyComplete

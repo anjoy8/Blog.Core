@@ -43,7 +43,7 @@ namespace Blog.Core.AuthHelper
             {
                 string jwtStr = tokenStr.ToString().Trim();
 
-                //验证缓存中是否存在该jwt字符串
+                //如何存在Authorization，但是和缓存的不一样，那就是被篡改了
                 if (!RayPIMemoryCache.Exists(jwtStr))
                 {
                     return httpContext.Response.WriteAsync("非法请求");

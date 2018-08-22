@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.0",
+    "signature": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.0": {
+      "Blog.Core.Repository/1.0.0": {
+        "dependencies": {
+          "Blog.Core.IRepository": "1.0.0"
+        },
+        "runtime": {
+          "Blog.Core.Repository.dll": {}
+        }
+      },
+      "Blog.Core.IRepository/1.0.0": {
+        "runtime": {
+          "Blog.Core.IRepository.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Blog.Core.Repository/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Blog.Core.IRepository/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

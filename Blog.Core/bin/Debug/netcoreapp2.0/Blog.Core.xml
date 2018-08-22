@@ -95,6 +95,19 @@
             签名
             </summary>
         </member>
+        <member name="T:Blog.Core.Controllers.BlogController">
+            <summary>
+            Blog控制器所有接口
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32)">
+            <summary>
+            Sum接口
+            </summary>
+            <param name="i">参数i</param>
+            <param name="j">参数j</param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.LoginController">
             <summary>
             
@@ -109,44 +122,6 @@
             <param name="expiresSliding">相对过期时间，单位为分</param>
             <param name="expiresAbsoulute">绝对过期时间，单位为天</param>
             <returns></returns>
-        </member>
-        <member name="T:Blog.Core.Controllers.ValuesController">
-            <summary>
-            这是控制器的文字说明
-            </summary>
-        </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.Get(Blog.Core.Model.Love)">
-            <summary>
-            获取到一个数据列表
-            </summary>
-            <param name="love"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.Get(System.Int32)">
-            <summary>
-            根据id获取详情
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.Post(System.String)">
-            <summary>
-            向服务器Post数据
-            </summary>
-            <param name="value"></param>
-        </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.Put(System.Int32,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="id"></param>
-            <param name="value"></param>
-        </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.Delete(System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="id"></param>
         </member>
         <member name="T:Blog.Core.Program">
             <summary>
