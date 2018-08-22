@@ -1,0 +1,61 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.0",
+    "signature": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.0": {
+      "Blog.Core.Services/1.0.0": {
+        "dependencies": {
+          "Blog.Core.IRepository": "1.0.0",
+          "Blog.Core.IServices": "1.0.0",
+          "Blog.Core.Repository": "1.0.0"
+        },
+        "runtime": {
+          "Blog.Core.Services.dll": {}
+        }
+      },
+      "Blog.Core.IRepository/1.0.0": {
+        "runtime": {
+          "Blog.Core.IRepository.dll": {}
+        }
+      },
+      "Blog.Core.IServices/1.0.0": {
+        "runtime": {
+          "Blog.Core.IServices.dll": {}
+        }
+      },
+      "Blog.Core.Repository/1.0.0": {
+        "dependencies": {
+          "Blog.Core.IRepository": "1.0.0"
+        },
+        "runtime": {
+          "Blog.Core.Repository.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Blog.Core.Services/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Blog.Core.IRepository/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Blog.Core.IServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Blog.Core.Repository/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
