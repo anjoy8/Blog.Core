@@ -19,12 +19,12 @@
     后端技术：
 
       * .Net Core 2.0 API（因为想单纯搭建前后端分离，因此就选用的API，如果想了解.Net Core MVC，也可以交流）
-
-      * Async和Await 异步编程
+      
+      * Swagger 前后端文档说明，基于RESTful风格编写接口
 
       * Repository + Service 仓储模式编程
 
-      * Swagger 前后端文档说明，基于RESTful风格编写接口
+      * Async和Await 异步编程
 
       * Cors 简单的跨域解决方案
 
