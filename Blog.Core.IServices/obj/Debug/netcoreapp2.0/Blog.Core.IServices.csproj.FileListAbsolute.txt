@@ -6,3 +6,8 @@ E:\my-study\NetCore\Blog.Core\Blog.Core.IServices\bin\Debug\netcoreapp2.0\Blog.C
 E:\my-study\NetCore\Blog.Core\Blog.Core.IServices\bin\Debug\netcoreapp2.0\Blog.Core.IServices.pdb
 E:\my-study\NetCore\Blog.Core\Blog.Core.IServices\obj\Debug\netcoreapp2.0\Blog.Core.IServices.dll
 E:\my-study\NetCore\Blog.Core\Blog.Core.IServices\obj\Debug\netcoreapp2.0\Blog.Core.IServices.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core.IServices\bin\Debug\netcoreapp2.0\Blog.Core.Model.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core.IServices\bin\Debug\netcoreapp2.0\Blog.Core.Model.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core.IServices\bin\Debug\netcoreapp2.0\Blog.Core.Model.xml
+E:\my-study\NetCore\Blog.Core\Blog.Core.IServices\obj\Debug\netcoreapp2.0\Blog.Core.IServices.csprojResolveAssemblyReference.cache
+E:\my-study\NetCore\Blog.Core\Blog.Core.IServices\obj\Debug\netcoreapp2.0\Blog.Core.IServices.csproj.CopyComplete

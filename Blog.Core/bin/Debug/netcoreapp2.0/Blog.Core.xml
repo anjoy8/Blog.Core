@@ -108,6 +108,13 @@
             <param name="j">参数j</param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32)">
+            <summary>
+            根据id获取数据
+            </summary>
+            <param name="id">参数id</param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.LoginController">
             <summary>
             

@@ -196,6 +196,16 @@
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
+      },
+      "Blog.Core.Model/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Blog.Core.Model.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Blog.Core.Model.dll": {}
+        }
       }
     }
   },
@@ -656,10 +666,16 @@
         "netstandard.library.2.0.0.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
+    },
+    "Blog.Core.Model/1.0.0": {
+      "type": "project",
+      "path": "../Blog.Core.Model/Blog.Core.Model.csproj",
+      "msbuildProject": "../Blog.Core.Model/Blog.Core.Model.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "Blog.Core.Model >= 1.0.0",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
   },
@@ -697,7 +713,11 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "E:\\my-study\\NetCore\\Blog.Core\\Blog.Core.Model\\Blog.Core.Model.csproj": {
+              "projectPath": "E:\\my-study\\NetCore\\Blog.Core\\Blog.Core.Model\\Blog.Core.Model.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

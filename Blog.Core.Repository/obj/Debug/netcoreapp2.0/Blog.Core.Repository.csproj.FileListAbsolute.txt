@@ -10,3 +10,6 @@ E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\obj\Debug\netcoreapp2.0\Blog.
 E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\bin\Debug\netcoreapp2.0\Blog.Core.IRepository.dll
 E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\bin\Debug\netcoreapp2.0\Blog.Core.IRepository.pdb
 E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\obj\Debug\netcoreapp2.0\Blog.Core.Repository.csproj.CopyComplete
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\bin\Debug\netcoreapp2.0\Blog.Core.Model.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\bin\Debug\netcoreapp2.0\Blog.Core.Model.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core.Repository\bin\Debug\netcoreapp2.0\Blog.Core.Model.xml

@@ -7,14 +7,27 @@
   "targets": {
     ".NETCoreApp,Version=v2.0": {
       "Blog.Core.IServices/1.0.0": {
+        "dependencies": {
+          "Blog.Core.Model": "1.0.0"
+        },
         "runtime": {
           "Blog.Core.IServices.dll": {}
+        }
+      },
+      "Blog.Core.Model/1.0.0": {
+        "runtime": {
+          "Blog.Core.Model.dll": {}
         }
       }
     }
   },
   "libraries": {
     "Blog.Core.IServices/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Blog.Core.Model/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

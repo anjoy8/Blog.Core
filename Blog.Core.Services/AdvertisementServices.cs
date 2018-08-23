@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Blog.Core.IRepository;
 using Blog.Core.IServices;
+using Blog.Core.Model.Models;
 using Blog.Core.Repository;
 
 namespace Blog.Core.Services
@@ -17,5 +19,28 @@ namespace Blog.Core.Services
             return dal.Sum(i, j);
 
         }
+
+
+        public int Add(Advertisement model)
+        {
+            return dal.Add(model);
+        }
+
+        public bool Delete(Advertisement model)
+        {
+            return dal.Delete(model);
+        }
+
+        public List<Advertisement> Query(Expression<Func<Advertisement, bool>> whereExpression)
+        {
+            return dal.Query(whereExpression);
+
+        }
+
+        public bool Update(Advertisement model)
+        {
+            return dal.Update(model);
+        }
+
     }
 }
