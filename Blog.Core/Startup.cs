@@ -43,6 +43,9 @@ namespace Blog.Core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            #region 配置信息
+            //Blog.Core.Repository.BaseDBConfig.ConnectionString = Configuration.GetSection("AppSettings:SqlServerConnection").Value;
+            #endregion
 
             #region Swagger
             services.AddSwaggerGen(c =>

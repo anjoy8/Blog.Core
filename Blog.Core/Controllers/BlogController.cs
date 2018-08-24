@@ -28,11 +28,10 @@ namespace Blog.Core.Controllers
         /// <param name="j">参数j</param>
         /// <returns></returns>
         [HttpGet]
-        public int Get(int i,int j)
+        public int Get(int i, int j)
         {
-            IAdvertisementServices advertisementServices = new AdvertisementServices();
 
-            return advertisementServices.Sum(i,j);
+            return i + j;
         }
 
         // GET: api/Blog/5
@@ -42,29 +41,13 @@ namespace Blog.Core.Controllers
         /// <param name="id">参数id</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "Get")]
-        public List<Advertisement> Get(int id)
+        public async Task<List<Advertisement>> Get(int id)
         {
             IAdvertisementServices advertisementServices = new AdvertisementServices();
 
-            return advertisementServices.Query(d => d.Id == id);
+            return await advertisementServices.Query(d => d.Id == id);
         }
-        
-        // POST: api/Blog
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-        
-        // PUT: api/Blog/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+
+
     }
 }
