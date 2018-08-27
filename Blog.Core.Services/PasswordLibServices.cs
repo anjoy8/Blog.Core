@@ -12,7 +12,12 @@ namespace Blog.Core.Services
 {
     public partial class PasswordLibServices : BaseServices<PasswordLib>, IPasswordLibServices
     {
-
+        IPasswordLibRepository dal;
+        public PasswordLibServices(IPasswordLibRepository dal)
+        {
+            this.dal = dal;
+            base.baseDal = dal;
+        }
 
     }
 }

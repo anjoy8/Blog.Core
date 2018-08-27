@@ -7,4 +7,3 @@ E:\my-study\NetCore\Blog.Core\Blog.Core.Model\obj\Debug\netcoreapp2.0\Blog.Core.
 E:\my-study\NetCore\Blog.Core\Blog.Core.Model\obj\Debug\netcoreapp2.0\Blog.Core.Model.AssemblyInfo.cs
 E:\my-study\NetCore\Blog.Core\Blog.Core.Model\obj\Debug\netcoreapp2.0\Blog.Core.Model.dll
 E:\my-study\NetCore\Blog.Core\Blog.Core.Model\obj\Debug\netcoreapp2.0\Blog.Core.Model.pdb
-E:\my-study\NetCore\Blog.Core\Blog.Core.Model\obj\Debug\netcoreapp2.0\Blog.Core.Model.csprojResolveAssemblyReference.cache

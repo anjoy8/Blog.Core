@@ -12,7 +12,12 @@ namespace Blog.Core.Services
 {
      public partial class sysUserInfoServices: BaseServices<sysUserInfo>, IsysUserInfoServices
     {
-       
+        IsysUserInfoRepository dal;
+        public sysUserInfoServices(IsysUserInfoRepository dal)
+        {
+            this.dal = dal;
+            base.baseDal = dal;
+        }
 
     }
 }

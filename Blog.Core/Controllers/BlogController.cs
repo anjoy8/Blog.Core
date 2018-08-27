@@ -20,20 +20,17 @@ namespace Blog.Core.Controllers
     //[Authorize(Policy ="Admin")]
     public class BlogController : Controller
     {
-        // GET: api/Blog
+        IAdvertisementServices advertisementServices;
+        IBlogArticleServices blogArticleServices;
         /// <summary>
-        /// Sum接口
+        /// 构造函数
         /// </summary>
-        /// <param name="i">参数i</param>
-        /// <param name="j">参数j</param>
-        /// <returns></returns>
-        [HttpGet]
-        public int Get(int i, int j)
+        /// <param name="advertisementServices"></param>
+        public BlogController(IAdvertisementServices advertisementServices, IBlogArticleServices blogArticleServices)
         {
-
-            return i + j;
+            this.advertisementServices = advertisementServices;
+            this.blogArticleServices = blogArticleServices;
         }
-
         // GET: api/Blog/5
         /// <summary>
         /// 根据id获取数据
@@ -43,7 +40,8 @@ namespace Blog.Core.Controllers
         [HttpGet("{id}", Name = "Get")]
         public async Task<List<Advertisement>> Get(int id)
         {
-            IAdvertisementServices advertisementServices = new AdvertisementServices();
+            //IAdvertisementServices advertisementServices = new AdvertisementServices();//需要引用两个命名空间Blog.Core.IServices;Blog.Core.Services;
+            var testBlogDI =await blogArticleServices.Query(d => d.bID == id);
 
             return await advertisementServices.Query(d => d.Id == id);
         }

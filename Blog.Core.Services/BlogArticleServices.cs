@@ -12,7 +12,12 @@ namespace Blog.Core.Services
 {
     public class BlogArticleServices : BaseServices<BlogArticle>,IBlogArticleServices
     {
-       
+        IBlogArticleRepository dal;
+        public BlogArticleServices(IBlogArticleRepository dal)
+        {
+            this.dal = dal;
+            base.baseDal = dal;
+        }
 
     }
 }

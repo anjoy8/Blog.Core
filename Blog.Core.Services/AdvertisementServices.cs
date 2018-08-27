@@ -14,6 +14,13 @@ namespace Blog.Core.Services
 {
     public class AdvertisementServices : BaseServices<Advertisement>, IAdvertisementServices
     {
+        IAdvertisementRepository dal;
+        public AdvertisementServices(IAdvertisementRepository dal)
+        {
+            this.dal = dal;
+            base.baseDal = dal;
+        }
+
         //public IAdvertisementRepository dal = new AdvertisementRepository();
         //public int Sum(int i, int j)
         //{

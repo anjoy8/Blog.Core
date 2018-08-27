@@ -12,7 +12,12 @@ namespace Blog.Core.Services
 {
     public class TopicDetailServices: BaseServices<TopicDetail>, ITopicDetailServices
     {
-    
-        
+        ITopicDetailRepository dal;
+        public TopicDetailServices(ITopicDetailRepository dal)
+        {
+            this.dal = dal;
+            base.baseDal = dal;
+        }
+
     }
 }

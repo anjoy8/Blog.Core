@@ -100,13 +100,11 @@
             Blog控制器所有接口
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32)">
+        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IAdvertisementServices,Blog.Core.IServices.IBlogArticleServices)">
             <summary>
-            Sum接口
+            构造函数
             </summary>
-            <param name="i">参数i</param>
-            <param name="j">参数j</param>
-            <returns></returns>
+            <param name="advertisementServices"></param>
         </member>
         <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32)">
             <summary>
