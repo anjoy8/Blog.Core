@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Autofac.Extras.DynamicProxy;
+using Blog.Core.AOP;
 using Blog.Core.AuthHelper;
 using Blog.Core.IServices;
 using Blog.Core.Services;
@@ -48,6 +50,9 @@ namespace Blog.Core
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            //将 TService 中指定的类型的范围服务添加到实现
+            services.AddScoped<ICaching, MemoryCaching>();//记得把缓存注入！！！
+
             #region 配置信息
             //Blog.Core.Repository.BaseDBConfig.ConnectionString = Configuration.GetSection("AppSettings:SqlServerConnection").Value;
             #endregion
@@ -106,15 +111,20 @@ namespace Blog.Core
             #endregion
 
             #region AutoFac
-
             //实例化 AutoFac  容器   
             var builder = new ContainerBuilder();
-
             //注册要通过反射创建的组件
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
-
+            builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
             var assemblysServices = Assembly.Load("Blog.Core.Services");
-            builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
+            //builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
+
+            builder.RegisterAssemblyTypes(assemblysServices)
+                      .AsImplementedInterfaces()
+                      .InstancePerLifetimeScope()
+                      .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
+                      .InterceptedBy(typeof(BlogCacheAOP));//允许将拦截器服务的列表分配给注册。可以直接替换其他拦截器
+
             var assemblysRepository = Assembly.Load("Blog.Core.Repository");
             builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
 

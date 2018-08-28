@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Blog.Core.Services\Blog.Core.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Log\" />
+  </ItemGroup>
+
 </Project>

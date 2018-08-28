@@ -41,11 +41,22 @@ namespace Blog.Core.Controllers
         public async Task<List<Advertisement>> Get(int id)
         {
             //IAdvertisementServices advertisementServices = new AdvertisementServices();//需要引用两个命名空间Blog.Core.IServices;Blog.Core.Services;
-            var testBlogDI =await blogArticleServices.Query(d => d.bID == id);
+            var testBlogDI = await blogArticleServices.Query(d => d.bID == id);
 
             return await advertisementServices.Query(d => d.Id == id);
         }
 
+        /// <summary>
+        /// 获取博客列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetBlogs")]
+        public async Task<List<BlogArticle>> GetBlogs()
+        {
+
+            return await blogArticleServices.getBlogs();
+        }
 
     }
 }
