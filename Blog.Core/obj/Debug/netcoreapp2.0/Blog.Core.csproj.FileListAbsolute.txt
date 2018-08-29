@@ -22,3 +22,6 @@ E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.0\Blog.Core.Servic
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.0\Blog.Core.IRepository.pdb
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.0\Blog.Core.Repository.dll
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.0\Blog.Core.Repository.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.0\Blog.Core.Common.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.0\Blog.Core.Common.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.0\appsettings.json

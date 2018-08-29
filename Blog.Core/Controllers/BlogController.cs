@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Core.Common;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Model.VeiwModels;
@@ -22,15 +23,44 @@ namespace Blog.Core.Controllers
     {
         IAdvertisementServices advertisementServices;
         IBlogArticleServices blogArticleServices;
+        IRedisCacheManager redisCacheManager;
+
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="advertisementServices"></param>
-        public BlogController(IAdvertisementServices advertisementServices, IBlogArticleServices blogArticleServices)
+        /// <param name="blogArticleServices"></param>
+        /// <param name="redisCacheManager"></param>
+        public BlogController(IAdvertisementServices advertisementServices, IBlogArticleServices blogArticleServices, IRedisCacheManager redisCacheManager)
         {
             this.advertisementServices = advertisementServices;
             this.blogArticleServices = blogArticleServices;
+            this.redisCacheManager = redisCacheManager;
         }
+        /// <summary>
+        /// 获取博客列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetBlogs")]
+        public async Task<List<BlogArticle>> GetBlogs()
+        {
+            //var connect=Appsettings.app(new string[] { "AppSettings", "RedisCaching" , "ConnectionString" });//按照层级的顺序，依次写出来
+            List<BlogArticle> blogArticleList = new List<BlogArticle>();
+
+            if (redisCacheManager.Get<object>("Redis.Blog") != null)
+            {
+                blogArticleList = redisCacheManager.Get<List<BlogArticle>>("Redis.Blog");
+            }
+            else
+            {
+                blogArticleList = await blogArticleServices.Query(d => d.bID > 5);
+                redisCacheManager.Set("Redis.Blog", blogArticleList, TimeSpan.FromHours(2));
+            }
+
+            return blogArticleList;
+        }
+
         // GET: api/Blog/5
         /// <summary>
         /// 根据id获取数据
@@ -46,17 +76,6 @@ namespace Blog.Core.Controllers
             return await advertisementServices.Query(d => d.Id == id);
         }
 
-        /// <summary>
-        /// 获取博客列表
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("GetBlogs")]
-        public async Task<List<BlogArticle>> GetBlogs()
-        {
-
-            return await blogArticleServices.getBlogs();
-        }
 
     }
 }

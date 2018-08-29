@@ -126,23 +126,25 @@
             Blog控制器所有接口
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IAdvertisementServices,Blog.Core.IServices.IBlogArticleServices)">
+        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IAdvertisementServices,Blog.Core.IServices.IBlogArticleServices,Blog.Core.Common.IRedisCacheManager)">
             <summary>
             构造函数
             </summary>
             <param name="advertisementServices"></param>
+            <param name="blogArticleServices"></param>
+            <param name="redisCacheManager"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.GetBlogs">
+            <summary>
+            获取博客列表
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32)">
             <summary>
             根据id获取数据
             </summary>
             <param name="id">参数id</param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.BlogController.GetBlogs">
-            <summary>
-            获取博客列表
-            </summary>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.LoginController">

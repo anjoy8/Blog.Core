@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Blog.Core.Common;
 using Blog.Core.IRepository;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
@@ -23,6 +24,7 @@ namespace Blog.Core.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Caching(AbsoluteExpiration = 10)]
         public async Task<List<BlogArticle>> getBlogs()
         {
             var bloglist = await dal.Query(a => a.bID > 0, a => a.bID);
