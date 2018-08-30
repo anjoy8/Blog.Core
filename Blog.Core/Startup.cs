@@ -59,6 +59,33 @@ namespace Blog.Core
             //Blog.Core.Repository.BaseDBConfig.ConnectionString = Configuration.GetSection("AppSettings:SqlServerConnection").Value;
             #endregion
 
+            #region CORS
+            services.AddCors(c =>
+            {
+                //↓↓↓↓↓↓↓注意正式环境不要使用这种全开放的处理↓↓↓↓↓↓↓↓↓↓
+                c.AddPolicy("AllRequests", policy =>
+                {
+                    policy
+                    .AllowAnyOrigin()//允许任何源
+                    .AllowAnyMethod()//允许任何方式
+                    .AllowAnyHeader()//允许任何头
+                    .AllowCredentials();//允许cookie
+                });
+                //↑↑↑↑↑↑↑注意正式环境不要使用这种全开放的处理↑↑↑↑↑↑↑↑↑↑
+
+
+                //一般采用这种方法
+                c.AddPolicy("LimitRequests", policy =>
+                {
+                    policy
+                    .WithOrigins("http://localhost:8020", "http://blog.core.xxx.com", "")//支持多个域名端口
+                    .WithMethods("GET", "POST", "PUT", "DELETE")//请求方法添加到策略
+                    .WithHeaders("authorization");//标头添加到策略
+                });
+
+            });
+            #endregion
+
             #region Swagger
             services.AddSwaggerGen(c =>
             {
