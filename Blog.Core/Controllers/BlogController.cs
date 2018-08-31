@@ -63,18 +63,18 @@ namespace Blog.Core.Controllers
 
         // GET: api/Blog/5
         /// <summary>
-        /// 根据id获取数据
+        /// 获取详情
         /// </summary>
-        /// <param name="id">参数id</param>
+        /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "Get")]
-        public async Task<List<Advertisement>> Get(int id)
+        public async Task<object> Get(int id)
         {
-            //IAdvertisementServices advertisementServices = new AdvertisementServices();//需要引用两个命名空间Blog.Core.IServices;Blog.Core.Services;
-            var testBlogDI = await blogArticleServices.Query(d => d.bID == id);
-
-            return await advertisementServices.Query(d => d.Id == id);
+            var model = await blogArticleServices.getBlogDetails(id);
+            var data = new { success = true, data = model };
+            return data;
         }
+
 
 
     }

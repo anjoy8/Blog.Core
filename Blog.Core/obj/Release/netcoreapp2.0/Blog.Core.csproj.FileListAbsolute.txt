@@ -23,3 +23,6 @@ E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Release\netcoreapp2.0\Blog.Core.pdb
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Release\netcoreapp2.0\Blog.Core.xml
 E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Release\netcoreapp2.0\Blog.Core.xml
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Release\netcoreapp2.0\Blog.Core.Model.xml
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Release\netcoreapp2.0\appsettings.json
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Release\netcoreapp2.0\Blog.Core.Common.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Release\netcoreapp2.0\Blog.Core.Common.pdb

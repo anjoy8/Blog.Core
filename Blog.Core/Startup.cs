@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
+using AutoMapper;
 using Blog.Core.AOP;
 using Blog.Core.AuthHelper;
 using Blog.Core.Common;
@@ -54,6 +55,10 @@ namespace Blog.Core
             //将 TService 中指定的类型的范围服务添加到实现
             services.AddScoped<ICaching, MemoryCaching>();//记得把缓存注入！！！
             services.AddScoped<IRedisCacheManager, RedisCacheManager>();
+
+            #region Automapper
+            services.AddAutoMapper(typeof(Startup));
+            #endregion
 
             #region 配置信息
             //Blog.Core.Repository.BaseDBConfig.ConnectionString = Configuration.GetSection("AppSettings:SqlServerConnection").Value;

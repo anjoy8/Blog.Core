@@ -4,6 +4,32 @@
         <name>Blog.Core</name>
     </assembly>
     <members>
+        <member name="T:Blog.Core.AOP.BlogCacheAOP">
+            <summary>
+            面向切面的缓存使用
+            </summary>
+        </member>
+        <member name="T:Blog.Core.AOP.BlogLogAOP">
+            <summary>
+            拦截器BlogLogAOP 继承IInterceptor接口
+            </summary>
+        </member>
+        <member name="M:Blog.Core.AOP.BlogLogAOP.Intercept(Castle.DynamicProxy.IInvocation)">
+            <summary>
+            实例化IInterceptor唯一方法 
+            </summary>
+            <param name="invocation">包含被拦截方法的信息</param>
+        </member>
+        <member name="T:Blog.Core.AOP.ICaching">
+            <summary>
+            简单的缓存接口，只有查询和添加，以后会进行扩展
+            </summary>
+        </member>
+        <member name="T:Blog.Core.AOP.MemoryCaching">
+            <summary>
+            实例化缓存接口ICaching
+            </summary>
+        </member>
         <member name="M:Blog.Core.AuthHelper.RayPIMemoryCache.Exists(System.String)">
             <summary>
             验证缓存项是否存在
@@ -95,17 +121,35 @@
             签名
             </summary>
         </member>
+        <member name="M:Blog.Core.AutoMapper.CustomProfile.#ctor">
+            <summary>
+            配置构造函数，用来创建关系映射
+            </summary>
+        </member>
         <member name="T:Blog.Core.Controllers.BlogController">
             <summary>
             Blog控制器所有接口
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32)">
+        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IAdvertisementServices,Blog.Core.IServices.IBlogArticleServices,Blog.Core.Common.IRedisCacheManager)">
             <summary>
-            Sum接口
+            构造函数
             </summary>
-            <param name="i">参数i</param>
-            <param name="j">参数j</param>
+            <param name="advertisementServices"></param>
+            <param name="blogArticleServices"></param>
+            <param name="redisCacheManager"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.GetBlogs">
+            <summary>
+            获取博客列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32)">
+            <summary>
+            获取详情
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.LoginController">
@@ -121,6 +165,16 @@
             <param name="sub">身份</param>
             <param name="expiresSliding">相对过期时间，单位为分</param>
             <param name="expiresAbsoulute">绝对过期时间，单位为天</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.LoginController.Getjsonp(System.String,System.Int64,System.String,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="sub"></param>
+            <param name="expiresSliding"></param>
+            <param name="expiresAbsoulute"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Program">

@@ -14,3 +14,8 @@ E:\my-study\NetCore\Blog.Core\Blog.Core.Services\obj\Release\netcoreapp2.0\Blog.
 E:\my-study\NetCore\Blog.Core\Blog.Core.Services\obj\Release\netcoreapp2.0\Blog.Core.Services.csproj.CopyComplete
 E:\my-study\NetCore\Blog.Core\Blog.Core.Services\obj\Release\netcoreapp2.0\Blog.Core.Services.dll
 E:\my-study\NetCore\Blog.Core\Blog.Core.Services\obj\Release\netcoreapp2.0\Blog.Core.Services.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core.Services\bin\Release\netcoreapp2.0\Blog.Core.Common.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core.Services\bin\Release\netcoreapp2.0\Blog.Core.Model.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core.Services\bin\Release\netcoreapp2.0\Blog.Core.Common.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core.Services\bin\Release\netcoreapp2.0\Blog.Core.Model.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core.Services\bin\Release\netcoreapp2.0\Blog.Core.Model.xml
