@@ -6,7 +6,6 @@ using Blog.Core.Common;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Model.VeiwModels;
-using Blog.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

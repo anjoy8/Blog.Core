@@ -24,14 +24,17 @@
     ".NETCoreApp,Version=v2.1": {
       "Blog.Core/1.0.0": {
         "dependencies": {
+          "AutoMapper": "7.0.1",
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "5.0.1",
           "Autofac.Extensions.DependencyInjection": "4.3.0",
           "Autofac.Extras.DynamicProxy": "4.5.0",
+          "Blog.Core.Common": "1.0.0",
+          "Blog.Core.IRepository": "1.0.0",
           "Blog.Core.IServices": "1.0.0",
-          "Blog.Core.Model": "1.0.0",
-          "Blog.Core.Services": "1.0.0",
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.NETCore.App": "2.1.0",
-          "Swashbuckle.AspNetCore": "3.0.0"
+          "Swashbuckle.AspNetCore": "3.0.0",
+          "sqlSugarCore": "4.6.4.9"
         },
         "runtime": {
           "Blog.Core.dll": {}
@@ -947,36 +950,6 @@
         },
         "compile": {
           "Blog.Core.Model.dll": {}
-        }
-      },
-      "Blog.Core.Repository/1.0.0": {
-        "dependencies": {
-          "Blog.Core.IRepository": "1.0.0",
-          "Blog.Core.Model": "1.0.0",
-          "sqlSugarCore": "4.6.4.9"
-        },
-        "runtime": {
-          "Blog.Core.Repository.dll": {}
-        },
-        "compile": {
-          "Blog.Core.Repository.dll": {}
-        }
-      },
-      "Blog.Core.Services/1.0.0": {
-        "dependencies": {
-          "AutoMapper": "7.0.1",
-          "AutoMapper.Extensions.Microsoft.DependencyInjection": "5.0.1",
-          "Blog.Core.Common": "1.0.0",
-          "Blog.Core.IRepository": "1.0.0",
-          "Blog.Core.IServices": "1.0.0",
-          "Blog.Core.Model": "1.0.0",
-          "Blog.Core.Repository": "1.0.0"
-        },
-        "runtime": {
-          "Blog.Core.Services.dll": {}
-        },
-        "compile": {
-          "Blog.Core.Services.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -4277,16 +4250,6 @@
       "sha512": ""
     },
     "Blog.Core.Model/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Blog.Core.Repository/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Blog.Core.Services/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

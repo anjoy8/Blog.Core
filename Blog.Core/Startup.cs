@@ -74,6 +74,7 @@ namespace Blog.Core
             #endregion
 
             #region Swagger
+            var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
@@ -86,7 +87,7 @@ namespace Blog.Core
                 });
                 //就是这里
 
-                var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
+               
                 var xmlPath = Path.Combine(basePath, "Blog.Core.xml");//这个就是刚刚配置的xml文件名
                 c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
 
@@ -158,7 +159,12 @@ namespace Blog.Core
             //注册要通过反射创建的组件
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
             builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
-            var assemblysServices = Assembly.Load("Blog.Core.Services");
+
+            //var assemblysServices1 = Assembly.Load("Blog.Core.Services");
+
+            var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");//获取项目绝对路径
+            var assemblysServices = Assembly.LoadFile(servicesDllFile);//直接采用加载文件的方法
+
             //builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
 
             builder.RegisterAssemblyTypes(assemblysServices)
@@ -167,7 +173,8 @@ namespace Blog.Core
                       .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
                       .InterceptedBy(typeof(BlogCacheAOP));//允许将拦截器服务的列表分配给注册。可以直接替换其他拦截器
 
-            var assemblysRepository = Assembly.Load("Blog.Core.Repository");
+            var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
+            var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
             builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
 
             //将services填充到Autofac容器生成器中
