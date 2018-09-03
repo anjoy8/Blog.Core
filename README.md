@@ -1,7 +1,9 @@
 # Blog.Core
 
-从零开始搭建自己的前后端分离【 .NET Core2.0 Api + Vue 2.0 】框架，
-
+从零开始搭建自己的前后端分离【 .NET Core2.1 Api + Vue 2.0 】框架，
+目前是2.1版本，2.0的是这里
+Blog.Core2.0
+https://github.com/anjoy8/Blog.Core2.0
 
 三大平台同步直播
 
