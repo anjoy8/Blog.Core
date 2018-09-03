@@ -18,7 +18,7 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/Blog")]
-    //[Authorize(Policy ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class BlogController : Controller
     {
         IAdvertisementServices advertisementServices;

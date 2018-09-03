@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.0\Blog.Core.Model.xml</DocumentationFile>
+    <DocumentationFile>D:\my-blog-write-test\core2.1\Blog.Core\Blog.Core.Model\Blog.Core.Model.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

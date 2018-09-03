@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -11,57 +12,38 @@ using AutoMapper;
 using Blog.Core.AOP;
 using Blog.Core.AuthHelper;
 using Blog.Core.Common;
-using Blog.Core.IServices;
-using Blog.Core.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Blog.Core
 {
-    /// <summary>
-    /// 启动文件
-    /// </summary>
     public class Startup
     {
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        /// <summary>
-        /// Configuration 属性
-        /// </summary>
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        /// <summary>
-        /// ConfigureServices 方法
-        /// </summary>
-        /// <param name="services"></param>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            //将 TService 中指定的类型的范围服务添加到实现
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped<ICaching, MemoryCaching>();//记得把缓存注入！！！
             services.AddScoped<IRedisCacheManager, RedisCacheManager>();
 
             #region Automapper
             services.AddAutoMapper(typeof(Startup));
-            #endregion
-
-            #region 配置信息
-            //Blog.Core.Repository.BaseDBConfig.ConnectionString = Configuration.GetSection("AppSettings:SqlServerConnection").Value;
             #endregion
 
             #region CORS
@@ -102,16 +84,15 @@ namespace Blog.Core
                     TermsOfService = "None",
                     Contact = new Swashbuckle.AspNetCore.Swagger.Contact { Name = "Blog.Core", Email = "Blog.Core@xxx.com", Url = "https://www.jianshu.com/u/94102b59cc2a" }
                 });
-
                 //就是这里
 
-                #region 读取xml信息
-                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
                 var xmlPath = Path.Combine(basePath, "Blog.Core.xml");//这个就是刚刚配置的xml文件名
+                c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
+
                 var xmlModelPath = Path.Combine(basePath, "Blog.Core.Model.xml");//这个就是Model层的xml文件名
                 c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
                 c.IncludeXmlComments(xmlModelPath);
-                #endregion
 
                 #region Token绑定到ConfigureServices
                 //添加header验证信息
@@ -127,20 +108,47 @@ namespace Blog.Core
                     Type = "apiKey"
                 });
                 #endregion
-
-
             });
+
+            #endregion
+
+            #region 认证，第二种验证方法
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = "Blog.Core",
+                        ValidAudience = "wr",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtHelper.secretKey)),
+                        RequireSignedTokens = true,
+                        // 将下面两个参数设置为false，可以不验证Issuer和Audience，但是不建议这样做。
+                        ValidateAudience = false,
+                        ValidateIssuer = true,
+                        ValidateIssuerSigningKey = true,
+                        // 是否要求Token的Claims中必须包含 Expires
+                        RequireExpirationTime = true,
+                        // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
+                        ValidateLifetime = true
+                    };
+                });
             #endregion
 
             #region Token服务注册
             services.AddSingleton<IMemoryCache>(factory =>
-             {
-                 var cache = new MemoryCache(new MemoryCacheOptions());
-                 return cache;
-             });
+            {
+                var cache = new MemoryCache(new MemoryCacheOptions());
+                return cache;
+            });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Admin", policy => policy.RequireClaim("AdminType").Build());//注册权限管理，可以自定义多个
+                options.AddPolicy("Client", policy => policy.RequireRole("Client").Build());
+                options.AddPolicy("Admin", policy => policy.RequireRole("Admin").Build());
+                options.AddPolicy("AdminOrClient", policy => policy.RequireRole("Admin,Client").Build());
             });
             #endregion
 
@@ -171,34 +179,29 @@ namespace Blog.Core
             #endregion
 
             return new AutofacServiceProvider(ApplicationContainer);//第三方IOC接管 core内置DI容器
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        /// <summary>
-        /// 方法
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                #region Swagger
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
+                });
+                #endregion
             }
 
 
-            #region Swagger
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
-            });
-            #endregion
-
-            app.UseMiddleware<TokenAuth>();
+            app.UseMiddleware<JwtTokenAuth>();
 
             app.UseMvc();
-
         }
+
     }
 }
