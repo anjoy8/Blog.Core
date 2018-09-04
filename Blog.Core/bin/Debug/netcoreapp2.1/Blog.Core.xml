@@ -30,39 +30,6 @@
             实例化缓存接口ICaching
             </summary>
         </member>
-        <member name="M:Blog.Core.AuthHelper.RayPIMemoryCache.Exists(System.String)">
-            <summary>
-            验证缓存项是否存在
-            </summary>
-            <param name="key">缓存Key</param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.AuthHelper.RayPIMemoryCache.Get(System.String)">
-            <summary>
-            获取缓存
-            </summary>
-            <param name="key">缓存Key</param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.AuthHelper.RayPIMemoryCache.AddMemoryCache(System.String,System.Object,System.TimeSpan,System.TimeSpan)">
-            <summary>
-            添加缓存
-            </summary>
-            <param name="key">缓存Key</param>
-            <param name="value">缓存Value</param>
-            <param name="expiresSliding">滑动过期时长（如果在过期时间内有操作，则以当前时间点延长过期时间）</param>
-            <param name="expiressAbsoulte">绝对过期时长</param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.AuthHelper.BlogCoreToken.IssueJWT(Blog.Core.AuthHelper.TokenModel,System.TimeSpan,System.TimeSpan)">
-            <summary>
-            获取JWT字符串并存入缓存
-            </summary>
-            <param name="tm"></param>
-            <param name="expireSliding"></param>
-            <param name="expireAbsoulte"></param>
-            <returns></returns>
-        </member>
         <member name="M:Blog.Core.AuthHelper.JwtHelper.IssueJWT(Blog.Core.AuthHelper.TokenModelJWT)">
             <summary>
             颁发JWT字符串
@@ -115,64 +82,6 @@
             <param name="httpContext"></param>
             <returns></returns>
         </member>
-        <member name="T:Blog.Core.AuthHelper.TokenAuth">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Blog.Core.AuthHelper.TokenAuth._next">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Blog.Core.AuthHelper.TokenAuth.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
-            <summary>
-            
-            </summary>
-            <param name="next"></param>
-        </member>
-        <member name="M:Blog.Core.AuthHelper.TokenAuth.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
-            <summary>
-            
-            </summary>
-            <param name="httpContext"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Blog.Core.AuthHelper.TokenModel">
-            <summary>
-            令牌类
-            </summary>
-        </member>
-        <member name="P:Blog.Core.AuthHelper.TokenModel.Uid">
-            <summary>
-            用户Id
-            </summary>
-        </member>
-        <member name="P:Blog.Core.AuthHelper.TokenModel.Uname">
-            <summary>
-            用户名
-            </summary>
-        </member>
-        <member name="P:Blog.Core.AuthHelper.TokenModel.Phone">
-            <summary>
-            手机
-            </summary>
-        </member>
-        <member name="P:Blog.Core.AuthHelper.TokenModel.Icon">
-            <summary>
-            头像
-            </summary>
-        </member>
-        <member name="P:Blog.Core.AuthHelper.TokenModel.UNickname">
-            <summary>
-            昵称
-            </summary>
-        </member>
-        <member name="P:Blog.Core.AuthHelper.TokenModel.Sub">
-            <summary>
-            签名
-            </summary>
-        </member>
         <member name="M:Blog.Core.AutoMapper.CustomProfile.#ctor">
             <summary>
             配置构造函数，用来创建关系映射
@@ -204,20 +113,17 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.BlogController.GetBlogsCache">
+            <summary>
+            获取详情
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.LoginController">
             <summary>
             
             </summary>
-        </member>
-        <member name="M:Blog.Core.Controllers.LoginController.GetJWTStr(System.Int64,System.String,System.Int32,System.Int32)">
-            <summary>
-            获取JWT，并存入缓存
-            </summary>
-            <param name="id">用户Id</param>
-            <param name="sub">身份</param>
-            <param name="expiresSliding">相对过期时间，单位为分</param>
-            <param name="expiresAbsoulute">绝对过期时间，单位为天</param>
-            <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.LoginController.GetJWTStr(System.Int64,System.String)">
             <summary>

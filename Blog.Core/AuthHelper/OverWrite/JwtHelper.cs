@@ -29,7 +29,7 @@ namespace Blog.Core.AuthHelper
             //秘钥
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtHelper.secretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-          
+
             var jwt = new JwtSecurityToken(
                 issuer: "Blog.Core",
                 claims: claims, //声明集合
@@ -63,8 +63,8 @@ namespace Blog.Core.AuthHelper
             }
             var tm = new TokenModelJWT
             {
-                Uid = long.Parse(jwtToken.Id),
-                Role = role.ToString(),
+                Uid = (jwtToken.Id).ObjToInt(),
+                Role = role != null ? role.ObjToString() : "",
             };
             return tm;
         }
@@ -83,6 +83,6 @@ namespace Blog.Core.AuthHelper
         /// 角色
         /// </summary>
         public string Role { get; set; }
-     
+
     }
 }

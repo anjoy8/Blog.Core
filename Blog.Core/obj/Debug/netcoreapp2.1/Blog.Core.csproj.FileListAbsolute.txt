@@ -42,7 +42,6 @@ E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.IServi
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Model.pdb
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Model.xml
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Common.pdb
-E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.csprojResolveAssemblyReference.cache
 E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.csproj.CoreCompileInputs.cache
 E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.RazorAssemblyInfo.cache
 E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.RazorAssemblyInfo.cs
@@ -54,3 +53,4 @@ E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.dll
 E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.pdb
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.IRepository.dll
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.IRepository.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.csprojAssemblyReference.cache

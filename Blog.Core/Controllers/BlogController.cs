@@ -17,7 +17,8 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/Blog")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Policy = "Admin")]
     public class BlogController : Controller
     {
         IAdvertisementServices advertisementServices;
@@ -70,6 +71,19 @@ namespace Blog.Core.Controllers
         public async Task<object> Get(int id)
         {
             var model = await blogArticleServices.getBlogDetails(id);
+            var data = new { success = true, data = model };
+            return data;
+        }
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetBlogsCache")]
+        public async Task<object> GetBlogsCache()
+        {
+            var model = await blogArticleServices.getBlogs();
             var data = new { success = true, data = model };
             return data;
         }
