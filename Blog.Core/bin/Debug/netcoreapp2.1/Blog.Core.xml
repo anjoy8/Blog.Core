@@ -59,6 +59,11 @@
             角色
             </summary>
         </member>
+        <member name="P:Blog.Core.AuthHelper.TokenModelJWT.Work">
+            <summary>
+            职能
+            </summary>
+        </member>
         <member name="T:Blog.Core.AuthHelper.JwtTokenAuth">
             <summary>
             
@@ -131,6 +136,16 @@
             </summary>
             <param name="id">id</param>
             <param name="sub">角色</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.LoginController.Getjsonp(System.String,System.Int64,System.String,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="sub"></param>
+            <param name="expiresSliding"></param>
+            <param name="expiresAbsoulute"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.ValuesController">
