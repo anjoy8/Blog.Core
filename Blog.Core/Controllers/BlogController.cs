@@ -17,8 +17,7 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/Blog")]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Policy = "Admin")]
+    [Authorize(Policy = "Admin")]
     public class BlogController : Controller
     {
         IAdvertisementServices advertisementServices;
@@ -37,15 +36,20 @@ namespace Blog.Core.Controllers
             this.blogArticleServices = blogArticleServices;
             this.redisCacheManager = redisCacheManager;
         }
+
+
         /// <summary>
         /// 获取博客列表
         /// </summary>
+        /// <param name="id"></param>
+        /// <param name="page"></param>
+        /// <param name="bcategory"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("GetBlogs")]
-        public async Task<List<BlogArticle>> GetBlogs()
+        public async Task<object> Get(int id, int page = 1, string bcategory = "技术博文")
         {
-            //var connect=Appsettings.app(new string[] { "AppSettings", "RedisCaching" , "ConnectionString" });//按照层级的顺序，依次写出来
+            int intTotalCount = 6;
+            int TotalCount = 1;
             List<BlogArticle> blogArticleList = new List<BlogArticle>();
 
             if (redisCacheManager.Get<object>("Redis.Blog") != null)
@@ -54,12 +58,34 @@ namespace Blog.Core.Controllers
             }
             else
             {
-                blogArticleList = await blogArticleServices.Query(d => d.bID > 5);
+                blogArticleList = await blogArticleServices.Query(a => a.bcategory == bcategory);
                 redisCacheManager.Set("Redis.Blog", blogArticleList, TimeSpan.FromHours(2));
             }
 
-            return blogArticleList;
+
+            TotalCount = blogArticleList.Count() / intTotalCount;
+
+            blogArticleList = blogArticleList.OrderByDescending(d => d.bID).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
+
+            foreach (var item in blogArticleList)
+            {
+                if (!string.IsNullOrEmpty(item.bcontent))
+                {
+                    //item.bcontent = Tools.ReplaceHtmlTag(item.bcontent);
+                    int totalLength = 500;
+                    if (item.bcontent.Length > totalLength)
+                    {
+                        item.bcontent = item.bcontent.Substring(0, totalLength);
+                    }
+                }
+            }
+
+            var data = new { success = true, page = page, pageCount = TotalCount, data = blogArticleList };
+
+
+            return data;
         }
+
 
         // GET: api/Blog/5
         /// <summary>
@@ -74,20 +100,6 @@ namespace Blog.Core.Controllers
             var data = new { success = true, data = model };
             return data;
         }
-        /// <summary>
-        /// 获取详情
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("GetBlogsCache")]
-        public async Task<object> GetBlogsCache()
-        {
-            var model = await blogArticleServices.getBlogs();
-            var data = new { success = true, data = model };
-            return data;
-        }
-
 
 
     }

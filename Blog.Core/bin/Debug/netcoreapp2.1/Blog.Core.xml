@@ -105,20 +105,16 @@
             <param name="blogArticleServices"></param>
             <param name="redisCacheManager"></param>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.GetBlogs">
+        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32,System.String)">
             <summary>
             获取博客列表
             </summary>
+            <param name="id"></param>
+            <param name="page"></param>
+            <param name="bcategory"></param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32)">
-            <summary>
-            获取详情
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.BlogController.GetBlogsCache">
             <summary>
             获取详情
             </summary>
@@ -130,9 +126,9 @@
             
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.LoginController.GetJWTStr(System.Int64,System.String)">
+        <member name="M:Blog.Core.Controllers.LoginController.GetJWTStr(System.String,System.String)">
             <summary>
-            获取JWT的重写方法，推荐这种，注意在文件夹OverWrite下
+            获取JWT的方法
             </summary>
             <param name="id">id</param>
             <param name="sub">角色</param>

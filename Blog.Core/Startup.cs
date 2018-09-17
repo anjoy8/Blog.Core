@@ -65,7 +65,7 @@ namespace Blog.Core
                 c.AddPolicy("LimitRequests", policy =>
                 {
                     policy
-                    .WithOrigins("http://localhost:8020", "http://blog.core.xxx.com", "")//支持多个域名端口
+                    .WithOrigins("http://localhost:8020", "http://localhost:8080", "http://localhost:8081", "http://blog.core.xxx.com", "")//支持多个域名端口
                     .WithMethods("GET", "POST", "PUT", "DELETE")//请求方法添加到策略
                     .WithHeaders("authorization");//标头添加到策略
                 });
@@ -114,29 +114,29 @@ namespace Blog.Core
             #endregion
 
             #region 认证，第二种验证方法
-            //services.AddAuthentication(x =>
-            //{
-            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //    .AddJwtBearer(o =>
-            //    {
-            //        o.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidIssuer = "Blog.Core",
-            //            ValidAudience = "wr",
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtHelper.secretKey)),
-            //            RequireSignedTokens = true,
-            //            // 将下面两个参数设置为false，可以不验证Issuer和Audience，但是不建议这样做。
-            //            ValidateAudience = false,
-            //            ValidateIssuer = true,
-            //            ValidateIssuerSigningKey = true,
-            //            // 是否要求Token的Claims中必须包含 Expires
-            //            RequireExpirationTime = true,
-            //            // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
-            //            ValidateLifetime = true
-            //        };
-            //    });
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = "Blog.Core",
+                        ValidAudience = "wr",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtHelper.secretKey)),
+                        RequireSignedTokens = true,
+                        // 将下面两个参数设置为false，可以不验证Issuer和Audience，但是不建议这样做。
+                        ValidateAudience = false,
+                        ValidateIssuer = true,
+                        ValidateIssuerSigningKey = true,
+                        // 是否要求Token的Claims中必须包含 Expires
+                        RequireExpirationTime = true,
+                        // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
+                        ValidateLifetime = true
+                    };
+                });
             #endregion
 
             #region Token服务注册

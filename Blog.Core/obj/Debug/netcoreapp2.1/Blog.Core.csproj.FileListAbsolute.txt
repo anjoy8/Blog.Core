@@ -51,6 +51,6 @@ E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.RazorT
 E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.csproj.CopyComplete
 E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.dll
 E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.csprojAssemblyReference.cache
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.IRepository.dll
 E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.IRepository.pdb
-E:\my-study\NetCore\Blog.Core\Blog.Core\obj\Debug\netcoreapp2.1\Blog.Core.csprojAssemblyReference.cache
