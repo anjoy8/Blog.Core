@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Common;
+using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Model.VeiwModels;
@@ -17,7 +18,6 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/Blog")]
-    [Authorize(Policy = "Admin")]
     public class BlogController : Controller
     {
         IAdvertisementServices advertisementServices;
@@ -71,7 +71,7 @@ namespace Blog.Core.Controllers
             {
                 if (!string.IsNullOrEmpty(item.bcontent))
                 {
-                    //item.bcontent = Tools.ReplaceHtmlTag(item.bcontent);
+                    item.bRemark = (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Substring(0, 200);
                     int totalLength = 500;
                     if (item.bcontent.Length > totalLength)
                     {
@@ -94,6 +94,7 @@ namespace Blog.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "Get")]
+        [Authorize(Policy = "Admin")]
         public async Task<object> Get(int id)
         {
             var model = await blogArticleServices.getBlogDetails(id);

@@ -1,0 +1,9 @@
+E:\my-study\NetCore\Blog.Core\Blog.Core.Model\bin\Release\netcoreapp2.1\Blog.Core.Model.deps.json
+E:\my-study\NetCore\Blog.Core\Blog.Core.Model\bin\Release\netcoreapp2.1\Blog.Core.Model.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core.Model\bin\Release\netcoreapp2.1\Blog.Core.Model.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core.Model\obj\Release\netcoreapp2.1\Blog.Core.Model.csprojAssemblyReference.cache
+E:\my-study\NetCore\Blog.Core\Blog.Core.Model\obj\Release\netcoreapp2.1\Blog.Core.Model.csproj.CoreCompileInputs.cache
+E:\my-study\NetCore\Blog.Core\Blog.Core.Model\obj\Release\netcoreapp2.1\Blog.Core.Model.AssemblyInfoInputs.cache
+E:\my-study\NetCore\Blog.Core\Blog.Core.Model\obj\Release\netcoreapp2.1\Blog.Core.Model.AssemblyInfo.cs
+E:\my-study\NetCore\Blog.Core\Blog.Core.Model\obj\Release\netcoreapp2.1\Blog.Core.Model.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core.Model\obj\Release\netcoreapp2.1\Blog.Core.Model.pdb

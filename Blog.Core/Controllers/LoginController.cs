@@ -14,7 +14,6 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/Login")]
-    [EnableCors("LimitRequests")]
     public class LoginController : Controller
     {
 
@@ -56,6 +55,38 @@ namespace Blog.Core.Controllers
 
 
             return Json(result);
+        }
+
+
+
+        [HttpGet]
+        [Route("GetTokenNuxt")]
+        public async Task<object> GetJWTStrForNuxt(string name, string pass)
+        {
+            string jwtStr = string.Empty;
+            bool suc = false;
+            //这里就是用户登陆以后，通过数据库去调取数据，分配权限的操作
+            //这里直接写死了
+            if (name == "admins" && pass == "admins")
+            {
+                TokenModelJWT tokenModel = new TokenModelJWT();
+                tokenModel.Uid = 1;
+                tokenModel.Role = "Admin";
+
+                jwtStr = JwtHelper.IssueJWT(tokenModel);
+                suc = true;
+            }
+            else
+            {
+                jwtStr = "login fail!!!";
+            }
+            var result = new
+            {
+                data = new { success = suc, token = jwtStr }
+            };
+            var data = new { success = suc, data = new { success = suc, token = jwtStr } };
+
+            return data;
         }
         #endregion
 

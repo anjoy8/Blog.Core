@@ -65,7 +65,7 @@ namespace Blog.Core
                 c.AddPolicy("LimitRequests", policy =>
                 {
                     policy
-                    .WithOrigins("http://localhost:8020", "http://localhost:8080", "http://localhost:8081", "http://blog.core.xxx.com", "")//支持多个域名端口
+                    .WithOrigins("http://127.0.0.1:1818", "http://localhost:8080", "http://localhost:8021", "http://localhost:8081", "http://localhost:1818", "http://blog.core.xxx.com", "")//支持多个域名端口
                     .WithMethods("GET", "POST", "PUT", "DELETE")//请求方法添加到策略
                     .WithHeaders("authorization");//标头添加到策略
                 });
@@ -195,16 +195,16 @@ namespace Blog.Core
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                #region Swagger
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
-                });
-                #endregion
+                
             }
 
-
+            #region Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
+            });
+            #endregion
             app.UseMiddleware<JwtTokenAuth>();
 
             app.UseCors("LimitRequests");//将 CORS 中间件添加到 web 应用程序管线中, 以允许跨域请求。有的不加也是可以的，最好是加上吧
