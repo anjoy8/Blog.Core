@@ -1,0 +1,129 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core.dll" #>
+<#@ assembly name="System.Data.dll" #>
+<#@ assembly name="System.Data.DataSetExtensions.dll" #>
+<#@ assembly name="System.Xml.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ include file="$(ProjectDir)DbHelper.ttinclude"  #>
+
+<#@ include file="$(ProjectDir)ModelAuto.ttinclude"	#>
+
+
+<# 
+    var OutputPath1 = Path.GetDirectoryName(Host.TemplateFile)+"\\work";
+	if (!Directory.Exists(OutputPath1))
+	{
+	    Directory.CreateDirectory(OutputPath1);
+	}
+	#> 
+<# var manager = new Manager(Host, GenerationEnvironment, true) { OutputPath = OutputPath1 }; #>
+
+
+
+
+//--------------------------------------------------------------------
+//     此代码由T4模板自动生成
+//	   生成时间 <#=DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")#> 
+//     对此文件的更改可能会导致不正确的行为，并且如果重新生成代码，这些更改将会丢失。
+//--------------------------------------------------------------------
+<# 
+	var tableName=config.TableName;
+ #>
+<# 
+if(tableName!=""){
+    #>  
+
+
+using System;
+using Blog.Core.FrameWork.IRepository;
+using Blog.Core.FrameWork.Entity;
+namespace Blog.Core.FrameWork.Repository
+{	
+	/// <summary>
+	/// <#=tableName#>Repository
+	/// </summary>	
+	public class <#=tableName#>Repository : BaseRepository<<#=tableName#>>, I<#=tableName#>Repository
+    {
+
+       
+    }
+}
+
+<# 
+    } else{ 
+
+	#>
+
+<# 
+    SqlConnection conn = new SqlConnection(config.ConnectionString); 
+    conn.Open(); 
+    System.Data.DataTable schema = conn.GetSchema("TABLES"); 
+ #>
+
+<# 
+    foreach(System.Data.DataRow row in schema.Rows) 
+    {  
+		manager.StartBlock(row["TABLE_NAME"].ToString()+"Repository"+".cs");
+	 #>
+	//----------<#=row["TABLE_NAME"].ToString()#>开始----------
+    
+
+using System;
+using Blog.Core.FrameWork.IRepository;
+using Blog.Core.FrameWork.Entity;
+
+namespace Blog.Core.FrameWork.Repository
+{	
+	/// <summary>
+	/// <#=row["TABLE_NAME"].ToString()#>Repository
+	/// </summary>	
+	public class <#=row["TABLE_NAME"].ToString()#>Repository : BaseRepository<<#=row["TABLE_NAME"].ToString()#>>, I<#=row["TABLE_NAME"].ToString() #>Repository
+    {
+
+       
+    }
+}
+
+	//----------<#=row["TABLE_NAME"].ToString()#>结束----------
+	<# 
+		manager.EndBlock(); 
+		} 
+
+		{  
+		manager.StartBlock("BaseRepository.cs");//文件名
+	 #>
+    
+	//----------开始----------
+	
+using System;
+using Blog.Core.FrameWork.Entity;
+using Blog.Core.FrameWork.IRepository;
+namespace Blog.Core.FrameWork.Repository
+{	
+	/// <summary>
+	/// IBaseRepository
+	/// </summary>	
+	 public  class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
+    {
+
+       
+    }
+}
+
+	//----------结束----------
+	<# 
+		manager.EndBlock(); 
+		} 
+
+
+		manager.Process(true);
+	}
+	#> 
+

@@ -1,0 +1,106 @@
+﻿//如果要获取主机信息，记得把 hostspecific 设置成true
+<#@ template debug="false" hostspecific="True" language="C#" #>
+<#@ output extension=".cs" #>
+
+//导入命名空间组件
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Data" #>
+<#@ assembly name="System.Core.dll" #>
+<#@ assembly name="System.Data.DataSetExtensions.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+
+//引入我们的公共模板文件
+<#@ include file="$(ProjectDir)DbHelper.ttinclude"  #>
+<#@ include file="$(ProjectDir)ModelAuto.ttinclude"	#>
+
+//定义我们的输出文件夹
+<# 
+    var OutputPath1 = Path.GetDirectoryName(Host.TemplateFile)+"\\work";
+	if (!Directory.Exists(OutputPath1))
+	{
+	    Directory.CreateDirectory(OutputPath1);
+	}
+	 var manager = new Manager(Host, GenerationEnvironment, true) { OutputPath = OutputPath1 }; 
+#>
+
+
+
+//--------------------------------------------------------------------
+//     此代码由T4模板自动生成
+//	   生成时间 <#=DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")#> 
+//     对此文件的更改可能会导致不正确的行为，并且如果重新生成代码，这些更改将会丢失。
+//--------------------------------------------------------------------
+<# 
+	var tableName=config.TableName;//获取config配置中的表名，为单一生产使用
+ #>
+<# 
+if(tableName!=""){//如果表名有值，表示是生成单一文件
+    #>  
+using System;
+namespace Blog.Core.FrameWork.Entity
+{	
+	/// <summary>
+	/// <#=tableName#>
+	/// </summary>	
+	public class <#=tableName#>//可以在这里加上基类等
+	{
+	//将全部字段遍历出来
+<# foreach(DbColumn column in DbHelper.GetDbColumns(config.ConnectionString, config.DbDatabase, config.TableName)){#>
+	  public <#= column.CSharpType#><# if(column.CommonType.IsValueType && column.IsNullable){#>?<#}#> <#=column.ColumnName#> { get; set; }
+<#}#> 
+    }
+}
+//如果为空，表示要将整个数据库都生成出来
+<# 
+    } else{ 
+
+	#>
+	//连接数据库，打开 connect 连接
+<# 
+    SqlConnection conn = new SqlConnection(config.ConnectionString); 
+    conn.Open(); 
+    System.Data.DataTable schema = conn.GetSchema("TABLES"); 
+ #>
+ //遍历全部数据库表
+<# 
+    foreach(System.Data.DataRow row in schema.Rows) 
+    {  #>   
+
+	//开始启动block块，参数是实体类文件名
+    <# 
+		manager.StartBlock(row["TABLE_NAME"]+".cs");
+	 #>
+	//----------<#=row["TABLE_NAME"].ToString()#>开始----------
+    
+using System;
+namespace Blog.Core.FrameWork.Entity
+{	
+	/// <summary>
+	/// <#=row["TABLE_NAME"].ToString()#>
+	/// </summary>	
+	public class <#=row["TABLE_NAME"].ToString()#>//可以在这里加上基类等
+	{
+	//将该表下的字段都遍历出来，可以自定义获取数据描述等信息
+<# foreach(DbColumn column in DbHelper.GetDbColumns(config.ConnectionString, config.DbDatabase, row["TABLE_NAME"].ToString() )){ #>
+
+	  public <#= column.CSharpType#> <# if(column.CommonType.IsValueType && column.IsNullable){#> ?<#}#> <#=column.ColumnName #> { get; set; }
+<#}#> 
+
+    }
+}
+
+	//----------<#=row["TABLE_NAME"].ToString()#>结束----------
+	<# 
+		manager.EndBlock(); 
+		} 
+		manager.Process(true);
+	}
+	#> 
+
