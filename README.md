@@ -5,6 +5,12 @@
 Blog.Core2.0
 https://github.com/anjoy8/Blog.Core2.0
 
+老张：这只是 .netCore 后端部分，前端部分，请看我的另一个工程
+https://github.com/anjoy8/Blog.Vue
+
+*********************************************************
+
+
 三大平台同步直播
 
 简  书：https://www.jianshu.com/notebooks/28621653
@@ -15,6 +21,9 @@ https://github.com/anjoy8/Blog.Core2.0
  
  码云：https://gitee.com/laozhangIsPhi/Blog.Core
 
+
+
+**************************************************************
 
  系统环境
 
