@@ -203,6 +203,7 @@ namespace Blog.Core
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
+                //c.RoutePrefix = "";//路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件
             });
             #endregion
             app.UseMiddleware<JwtTokenAuth>();
