@@ -4,4 +4,67 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="Blog.Core.FrameWork.Entity\Blog.Core.FrameWork.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Blog.Core.FrameWork.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Blog.Core.FrameWork.Entity\Blog.Core.FrameWork.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Blog.Core.FrameWork.cs</LastGenOutput>
+    </None>
+    <None Update="Blog.Core.FrameWork.IRepository\Blog.Core.FrameWork.IRepository.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Blog.Core.FrameWork.IRepository.cs</LastGenOutput>
+    </None>
+    <None Update="Blog.Core.FrameWork.IServices\Blog.Core.FrameWork.IServices.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Blog.Core.FrameWork.IServices.cs</LastGenOutput>
+    </None>
+    <None Update="Blog.Core.FrameWork.Repository\Blog.Core.FrameWork.Repository.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Blog.Core.FrameWork.Repository.cs</LastGenOutput>
+    </None>
+    <None Update="Blog.Core.FrameWork.Services\Blog.Core.FrameWork.Services.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Blog.Core.FrameWork.Services.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Blog.Core.FrameWork.Entity\Blog.Core.FrameWork.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Blog.Core.FrameWork.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Blog.Core.FrameWork.IRepository\Blog.Core.FrameWork.IRepository.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Blog.Core.FrameWork.IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Blog.Core.FrameWork.IServices\Blog.Core.FrameWork.IServices.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Blog.Core.FrameWork.IServices.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Blog.Core.FrameWork.Repository\Blog.Core.FrameWork.Repository.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Blog.Core.FrameWork.Repository.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Blog.Core.FrameWork.Services\Blog.Core.FrameWork.Services.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Blog.Core.FrameWork.Services.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

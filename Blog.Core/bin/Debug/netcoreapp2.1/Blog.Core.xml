@@ -121,6 +121,12 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.BlogController.V2_Blogtest">
+            <summary>
+            获取博客测试信息 v2版本
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.LoginController">
             <summary>
             
@@ -180,6 +186,49 @@
             Delete方法
             </summary>
             <param name="id"></param>
+        </member>
+        <member name="T:Blog.Core.SwaggerHelper.CustomApiVersion">
+            <summary>
+            自定义版本
+            </summary>
+        </member>
+        <member name="T:Blog.Core.SwaggerHelper.CustomApiVersion.ApiVersions">
+            <summary>
+            Api接口版本 自定义
+            </summary>
+        </member>
+        <member name="F:Blog.Core.SwaggerHelper.CustomApiVersion.ApiVersions.v1">
+            <summary>
+            v1 版本
+            </summary>
+        </member>
+        <member name="F:Blog.Core.SwaggerHelper.CustomApiVersion.ApiVersions.v2">
+            <summary>
+            v2 版本
+            </summary>
+        </member>
+        <member name="T:Blog.Core.SwaggerHelper.CustomRouteAttribute">
+            <summary>
+            自定义路由 /api/{version}/[controler]/[action]
+            </summary>
+        </member>
+        <member name="P:Blog.Core.SwaggerHelper.CustomRouteAttribute.GroupName">
+            <summary>
+            分组名称,是来实现接口 IApiDescriptionGroupNameProvider
+            </summary>
+        </member>
+        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(System.String)">
+            <summary>
+            自定义路由构造函数，继承基类路由
+            </summary>
+            <param name="actionName"></param>
+        </member>
+        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(Blog.Core.SwaggerHelper.CustomApiVersion.ApiVersions,System.String)">
+            <summary>
+            自定义版本+路由构造函数，继承基类路由
+            </summary>
+            <param name="actionName"></param>
+            <param name="version"></param>
         </member>
     </members>
 </doc>

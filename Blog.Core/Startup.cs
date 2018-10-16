@@ -23,6 +23,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
+using static Blog.Core.SwaggerHelper.CustomApiVersion;
 
 namespace Blog.Core
 {
@@ -34,6 +35,7 @@ namespace Blog.Core
         }
 
         public IConfiguration Configuration { get; }
+        private const string ApiName = "Blog.Core";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -77,17 +79,33 @@ namespace Blog.Core
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info
+                //c.SwaggerDoc("v1", new Info
+                //{
+                //    Version = "v0.1.0",
+                //    Title = "Blog.Core API",
+                //    Description = "框架说明文档",
+                //    TermsOfService = "None",
+                //    Contact = new Swashbuckle.AspNetCore.Swagger.Contact { Name = "Blog.Core", Email = "Blog.Core@xxx.com", Url = "https://www.jianshu.com/u/94102b59cc2a" }
+                //});
+
+                //遍历出全部的版本，做文档信息展示
+                typeof(ApiVersions).GetEnumNames().ToList().ForEach(version =>
                 {
-                    Version = "v0.1.0",
-                    Title = "Blog.Core API",
-                    Description = "框架说明文档",
-                    TermsOfService = "None",
-                    Contact = new Swashbuckle.AspNetCore.Swagger.Contact { Name = "Blog.Core", Email = "Blog.Core@xxx.com", Url = "https://www.jianshu.com/u/94102b59cc2a" }
+                    c.SwaggerDoc(version, new Info
+                    {
+                        // {ApiName} 定义成全局变量，方便修改
+                        Version = version,
+                        Title = $"{ApiName} 接口文档",
+                        Description = $"{ApiName} HTTP API " + version,
+                        TermsOfService = "None",
+                        Contact = new Contact { Name = "Blog.Core", Email = "Blog.Core@xxx.com", Url = "https://www.jianshu.com/u/94102b59cc2a" }
+                    });
                 });
+
+
                 //就是这里
 
-               
+
                 var xmlPath = Path.Combine(basePath, "Blog.Core.xml");//这个就是刚刚配置的xml文件名
                 c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
 
@@ -202,8 +220,15 @@ namespace Blog.Core
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
+                //之前是写死的
+                //c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
                 //c.RoutePrefix = "";//路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件
+
+                //根据版本名称倒序 遍历展示
+                typeof(ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(version =>
+                {
+                    c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{ApiName} {version}");
+                });
             });
             #endregion
             app.UseMiddleware<JwtTokenAuth>();
