@@ -110,7 +110,6 @@ namespace Blog.Core
                 c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
 
                 var xmlModelPath = Path.Combine(basePath, "Blog.Core.Model.xml");//这个就是Model层的xml文件名
-                c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
                 c.IncludeXmlComments(xmlModelPath);
 
                 #region Token绑定到ConfigureServices
