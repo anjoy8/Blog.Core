@@ -1,2 +1,0 @@
-20180902 00:24:43 当前执行方法：getBlogDetails 参数是： 1 
-方法执行完毕，返回结果：System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1+AsyncStateMachineBox`1[Blog.Core.Model.VeiwModels.BlogViewModels,Blog.Core.Services.BlogArticleServices+<getBlogDetails>d__3]
