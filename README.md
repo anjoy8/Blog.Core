@@ -47,6 +47,8 @@ https://github.com/anjoy8/Blog.Vue
 <li><a id="post_title_link_9560949" href="https://www.cnblogs.com/laozhang-is-phi/p/9560949.html">三种跨域方式比较，DTOs(数据传输对象)初探</a></li>
 <li><a id="post_title_link_9565227" href="https://www.cnblogs.com/laozhang-is-phi/p/9565227.html">DTOs 对象映射使用，项目部署Windows+Linux完整版</a></li>
 <li><a id="post_title_link_9757999" href="https://www.cnblogs.com/laozhang-is-phi/p/9757999.html">三十二║ 四种方法快速实现项目的半自动化搭建</a></li>
+ <li><a id="post_title_link_9767400" href="https://www.cnblogs.com/laozhang-is-phi/p/9767400.html">三十三║ ⅖ 种方法实现完美跨域</a></li>
+ <li><a id="post_title_link_9795689" href="https://www.cnblogs.com/laozhang-is-phi/p/9795689.html">三十四║ Swagger 处理多版本控制，所带来的思考</a></li>
 <li><a id="post_title_link_9855836" href="https://www.cnblogs.com/laozhang-is-phi/p/9855836.html">三十五║ 完美实现全局异常日志记录</a></li>
 
 </ul>
