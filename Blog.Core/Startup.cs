@@ -255,7 +255,7 @@ namespace Blog.Core
                 });
             });
             #endregion
-            app.UseMiddleware<JwtTokenAuth>();
+            app.UseMiddleware<JwtTokenAuth>();//注册中间件，必须在 app.UseMvc() 之前
 
             app.UseCors("LimitRequests");//将 CORS 中间件添加到 web 应用程序管线中, 以允许跨域请求。有的不加也是可以的，最好是加上吧
 
