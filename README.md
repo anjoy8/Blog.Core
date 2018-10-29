@@ -8,6 +8,10 @@ https://github.com/anjoy8/Blog.Core2.0
 老张：这只是 .netCore 后端部分，前端部分，请看我的另一个工程
 https://github.com/anjoy8/Blog.Vue
 
+
+# 给个星星! ⭐️
+如果你喜欢这个项目或者它帮助你, 请给 Star~
+
 *********************************************************
 
 
