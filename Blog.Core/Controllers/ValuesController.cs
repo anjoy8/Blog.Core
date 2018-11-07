@@ -13,7 +13,9 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
+    [Authorize(Roles = "Admin,Client")]
+    [Authorize(Policy = "SystemOrAdmin")]
     public class ValuesController : ControllerBase
     {
         /// <summary>
@@ -33,14 +35,15 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET api/values/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public ActionResult<string> Get(int id)
         {
             return "value";
         }
-       /// <summary>
-       /// post
-       /// </summary>
-       /// <param name="love">model实体类参数</param>
+        /// <summary>
+        /// post
+        /// </summary>
+        /// <param name="love">model实体类参数</param>
         [HttpPost]
         public void Post(Love love)
         {

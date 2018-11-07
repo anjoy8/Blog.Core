@@ -13,8 +13,16 @@ namespace Blog.Core.Model.Models
     {
         public Role()
         {
-            this.UserRole = new List<UserRole>();
-            this.RoleModulePermission = new List<RoleModulePermission>();
+        }
+        public Role(string name)
+        {
+            Name = name;
+            Description = "";
+            OrderSort = 1;
+            Enabled = true;
+            CreateTime = DateTime.Now;
+            ModifyTime = DateTime.Now;
+
         }
         public int Id { get; set; }
 
@@ -63,7 +71,6 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public DateTime? ModifyTime { get; set; }
 
-        public virtual ICollection<UserRole> UserRole { get; set; }
-        public virtual ICollection<RoleModulePermission> RoleModulePermission { get; set; }
+      
     }
 }

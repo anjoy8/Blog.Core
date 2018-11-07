@@ -73,7 +73,7 @@ namespace Blog.Core.Controllers
             {
                 if (!string.IsNullOrEmpty(item.bcontent))
                 {
-                    item.bRemark = (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Length>=200? (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Substring(0, 200) : (HtmlHelper.ReplaceHtmlTag(item.bcontent));
+                    item.bRemark = (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Length >= 200 ? (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Substring(0, 200) : (HtmlHelper.ReplaceHtmlTag(item.bcontent));
                     int totalLength = 500;
                     if (item.bcontent.Length > totalLength)
                     {
@@ -82,10 +82,13 @@ namespace Blog.Core.Controllers
                 }
             }
 
-            var data = new { success = true, page = page, pageCount = TotalCount, data = blogArticleList };
-
-
-            return data;
+            return Ok(new
+            {
+                success = true,
+                page = page,
+                pageCount = TotalCount,
+                data = blogArticleList
+            });
         }
 
 
@@ -96,12 +99,15 @@ namespace Blog.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "Get")]
-        [Authorize(Policy = "Admin")]
+        //[Authorize(Policy = "Admin")]
         public async Task<object> Get(int id)
         {
             var model = await blogArticleServices.getBlogDetails(id);
-            var data = new { success = true, data = model };
-            return data;
+            return Ok(new
+            {
+                success = true,
+                data = model
+            });
         }
 
 
@@ -120,7 +126,6 @@ namespace Blog.Core.Controllers
         public async Task<object> V2_Blogtest()
         {
             return Ok(new { status = 220, data = "我是第二版的博客信息" });
-
         }
 
 

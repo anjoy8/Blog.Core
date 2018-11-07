@@ -11,6 +11,15 @@ namespace Blog.Core.Model.Models
     /// </summary>
     public class UserRole
     {
+        public UserRole() { }
+
+        public UserRole(int uid, int rid) {
+            UserId = uid;
+            RoleId = rid;
+            CreateTime = DateTime.Now;
+        }
+
+
         public int Id { get; set; }
 
         /// <summary>
@@ -50,7 +59,5 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public DateTime? ModifyTime { get; set; }
 
-        public virtual sysUserInfo User { get; set; }
-        public virtual Role Role { get; set; }
     }
 }

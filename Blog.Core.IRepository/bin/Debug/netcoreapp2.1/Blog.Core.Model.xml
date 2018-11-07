@@ -560,6 +560,11 @@
             修改时间
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Models.sysUserInfo">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.sysUserInfo.uID">
             <summary>
             用户ID

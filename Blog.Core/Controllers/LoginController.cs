@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.AuthHelper;
+using Blog.Core.IServices;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,21 @@ namespace Blog.Core.Controllers
     public class LoginController : Controller
     {
 
-
+        IsysUserInfoServices sysUserInfoServices;
+        IUserRoleServices userRoleServices;
+        IRoleServices roleServices;
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="sysUserInfoServices"></param>
+        /// <param name="userRoleServices"></param>
+        /// <param name="roleServices"></param>
+        public LoginController(IsysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices)
+        {
+            this.sysUserInfoServices = sysUserInfoServices;
+            this.userRoleServices = userRoleServices;
+            this.roleServices = roleServices;
+        }
 
 
         #region 获取token的第二种方法
@@ -29,17 +44,20 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Token")]
-        public JsonResult GetJWTStr(string name, string pass)
+        public async Task<object> GetJWTStr(string name, string pass)
         {
             string jwtStr = string.Empty;
             bool suc = false;
             //这里就是用户登陆以后，通过数据库去调取数据，分配权限的操作
             //这里直接写死了
-            if (name == "admins" && pass == "admins")
+
+            var user = await sysUserInfoServices.GetUserRoleNameStr(name, pass);
+            if (user != null)
             {
+
                 TokenModelJWT tokenModel = new TokenModelJWT();
                 tokenModel.Uid = 1;
-                tokenModel.Role = "Admin";
+                tokenModel.Role = user;
 
                 jwtStr = JwtHelper.IssueJWT(tokenModel);
                 suc = true;
@@ -48,13 +66,12 @@ namespace Blog.Core.Controllers
             {
                 jwtStr = "login fail!!!";
             }
-            var result = new
+
+            return Ok(new
             {
-                data = new { success = suc, token = jwtStr }
-            };
-
-
-            return Json(result);
+                success = suc,
+                token = jwtStr
+            });
         }
 
 
@@ -84,9 +101,12 @@ namespace Blog.Core.Controllers
             {
                 data = new { success = suc, token = jwtStr }
             };
-            var data = new { success = suc, data = new { success = suc, token = jwtStr } };
 
-            return data;
+            return Ok(new
+            {
+                success = suc,
+                data = new { success = suc, token = jwtStr }
+            });
         }
         #endregion
 

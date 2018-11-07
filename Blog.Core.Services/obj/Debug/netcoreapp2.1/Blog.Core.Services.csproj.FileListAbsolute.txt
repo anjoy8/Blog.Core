@@ -40,3 +40,12 @@ E:\my-study\NetCore\Blog.Core\Blog.Core.Services\obj\Debug\netcoreapp2.1\Blog.Co
 E:\my-study\NetCore\Blog.Core\Blog.Core.Services\obj\Debug\netcoreapp2.1\Blog.Core.Services.dll
 E:\my-study\NetCore\Blog.Core\Blog.Core.Services\obj\Debug\netcoreapp2.1\Blog.Core.Services.pdb
 E:\my-study\NetCore\Blog.Core\Blog.Core.Services\obj\Debug\netcoreapp2.1\Blog.Core.Services.csprojAssemblyReference.cache
+E:\my-study\NetCore\Blog.Core\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Services.deps.json
+E:\my-study\NetCore\Blog.Core\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Services.dll
+E:\my-study\NetCore\Blog.Core\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Services.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Services.deps.json
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Services.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Services.pdb
+E:\my-study\NetCore\Blog.Core\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Services.deps.json
+E:\my-study\NetCore\Blog.Core\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Services.dll
+E:\my-study\NetCore\Blog.Core\Blog.Core\Blog.Core\bin\Debug\netcoreapp2.1\Blog.Core.Services.pdb

@@ -132,6 +132,14 @@
             
             </summary>
         </member>
+        <member name="M:Blog.Core.Controllers.LoginController.#ctor(Blog.Core.IServices.IsysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sysUserInfoServices"></param>
+            <param name="userRoleServices"></param>
+            <param name="roleServices"></param>
+        </member>
         <member name="M:Blog.Core.Controllers.LoginController.GetJWTStr(System.String,System.String)">
             <summary>
             获取JWT的方法
@@ -148,6 +156,42 @@
             <param name="sub"></param>
             <param name="expiresSliding"></param>
             <param name="expiresAbsoulute"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.UserRoleController">
+            <summary>
+            Blog控制器所有接口
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserRoleController.#ctor(Blog.Core.IServices.IsysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sysUserInfoServices"></param>
+            <param name="userRoleServices"></param>
+            <param name="roleServices"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserRoleController.AddUser(System.String,System.String)">
+            <summary>
+            新建用户
+            </summary>
+            <param name="loginName"></param>
+            <param name="loginPWD"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserRoleController.AddRole(System.String)">
+            <summary>
+            新建Role
+            </summary>
+            <param name="roleName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserRoleController.AddUserRole(System.Int32,System.Int32)">
+            <summary>
+            新建用户角色关系
+            </summary>
+            <param name="uid"></param>
+            <param name="rid"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.ValuesController">

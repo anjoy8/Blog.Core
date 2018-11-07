@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Blog.Core.Model.Models
 {
     /// <summary>
-    /// 用户跟角色关联表
+    /// 密码库表
     /// </summary>
     public class PasswordLib
     {

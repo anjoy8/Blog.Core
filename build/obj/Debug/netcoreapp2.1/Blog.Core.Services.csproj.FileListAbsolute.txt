@@ -1,0 +1,3 @@
+E:\my-study\NetCore\Blog.Core\Build\obj\Debug\netcoreapp2.1\Blog.Core.Services.csproj.CoreCompileInputs.cache
+E:\my-study\NetCore\Blog.Core\Build\obj\Debug\netcoreapp2.1\Blog.Core.Services.AssemblyInfoInputs.cache
+E:\my-study\NetCore\Blog.Core\Build\obj\Debug\netcoreapp2.1\Blog.Core.Services.AssemblyInfo.cs

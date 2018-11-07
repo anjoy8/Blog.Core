@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Blog.Core.Model.Models
 {
     /// <summary>
-    /// 菜单类
+    /// 菜单表
     /// </summary>
     public class Module
     {

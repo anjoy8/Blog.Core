@@ -145,7 +145,7 @@ namespace Blog.Core
                 //方案名称“Blog.Core”可自定义，上下一致即可
                 c.AddSecurityDefinition("Blog.Core", new ApiKeyScheme
                 {
-                    Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入{token}\"",
+                    Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
                     Name = "Authorization",//jwt默认的参数名称
                     In = "header",//jwt默认存放Authorization信息的位置(请求头中)
                     Type = "apiKey"
@@ -155,31 +155,31 @@ namespace Blog.Core
 
             #endregion
 
-            #region 认证，第二种验证方法
+            //认证
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(o =>
-                {
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidIssuer = "Blog.Core",
-                        ValidAudience = "wr",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtHelper.secretKey)),
-                        RequireSignedTokens = true,
-                        // 将下面两个参数设置为false，可以不验证Issuer和Audience，但是不建议这样做。
-                        ValidateAudience = false,
-                        ValidateIssuer = true,
-                        ValidateIssuerSigningKey = true,
-                        // 是否要求Token的Claims中必须包含 Expires
-                        RequireExpirationTime = true,
-                        // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
-                        ValidateLifetime = true
-                    };
-                });
-            #endregion
+          .AddJwtBearer(o =>
+          {
+              o.TokenValidationParameters = new TokenValidationParameters
+              {
+                  ValidateIssuer = true,//是否验证Issuer
+                  ValidateAudience = true,//是否验证Audience 
+                  ValidateIssuerSigningKey = true,//是否验证IssuerSigningKey 
+                  ValidIssuer = "Blog.Core",
+                  ValidAudience = "wr",
+                  ValidateLifetime = true,//是否验证超时  当设置exp和nbf时有效 同时启用ClockSkew 
+                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtHelper.secretKey)),
+                  //注意这是缓冲过期时间，总的有效时间等于这个时间加上jwt的过期时间
+                  ClockSkew = TimeSpan.FromSeconds(30)
+
+              };
+          });
+
+
+
 
             #region Token服务注册
             services.AddSingleton<IMemoryCache>(factory =>
@@ -191,7 +191,11 @@ namespace Blog.Core
             {
                 options.AddPolicy("Client", policy => policy.RequireRole("Client").Build());
                 options.AddPolicy("Admin", policy => policy.RequireRole("Admin").Build());
-                options.AddPolicy("AdminOrClient", policy => policy.RequireRole("Admin,Client").Build());
+                //这个写法是错误的，这个是并列的关系，不是或的关系
+                //options.AddPolicy("AdminOrClient", policy => policy.RequireRole("Admin,Client").Build());
+                
+                //这个才是或的关系
+                options.AddPolicy("SystemOrAdmin", policy => policy.RequireRole("Admin", "System"));
             });
             #endregion
 
@@ -237,7 +241,7 @@ namespace Blog.Core
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                
+
             }
 
             #region Swagger
@@ -255,7 +259,9 @@ namespace Blog.Core
                 });
             });
             #endregion
-            app.UseMiddleware<JwtTokenAuth>();
+
+            //app.UseMiddleware<JwtTokenAuth>();//注意此方法已经放弃，请使用下边的官方验证方法。
+            app.UseAuthentication();
 
             app.UseCors("LimitRequests");//将 CORS 中间件添加到 web 应用程序管线中, 以允许跨域请求。有的不加也是可以的，最好是加上吧
 

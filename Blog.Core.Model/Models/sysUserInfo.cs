@@ -6,12 +6,24 @@ using System.Threading.Tasks;
 
 namespace Blog.Core.Model.Models
 {
-     public class sysUserInfo
+    /// <summary>
+    /// 用户信息表
+    /// </summary>
+    public class sysUserInfo
     {
-        public sysUserInfo()
+        public sysUserInfo() { }
+
+        public sysUserInfo(string loginName, string loginPWD)
         {
-            this.UserRole = new List<UserRole>();
-            this.OperateLog = new List<OperateLog>();
+            uLoginName = loginName;
+            uLoginPWD = loginPWD;
+            uRealName = uLoginName;
+            uStatus = 0;
+            uCreateTime = DateTime.Now;
+            uUpdateTime = DateTime.Now;
+            uLastErrTime = DateTime.Now;
+            uErrorCount = 0;
+
         }
         /// <summary>
         /// 用户ID
@@ -56,7 +68,5 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public int uErrorCount { get; set; }
 
-        public virtual ICollection<UserRole> UserRole { get; set; }
-        public virtual ICollection<OperateLog> OperateLog { get; set; }
     }
 }

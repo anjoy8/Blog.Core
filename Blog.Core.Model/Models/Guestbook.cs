@@ -5,8 +5,8 @@ namespace Blog.Core.Model.Models
     public class Guestbook
     {
  
-        /// <summary>留言表
-        /// 
+        /// <summary>
+        /// 留言表
         /// </summary>
         public int id { get; set; }
 
