@@ -250,7 +250,7 @@ namespace Blog.Core
             {
                 //之前是写死的
                 //c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
-                //c.RoutePrefix = "";//路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件
+                //c.RoutePrefix = "";//路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件,注意localhost:8001/swagger是访问不到的，去launchSettings.json把launchUrl去掉
 
                 //根据版本名称倒序 遍历展示
                 typeof(ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(version =>
@@ -259,7 +259,7 @@ namespace Blog.Core
                 });
             });
             #endregion
-
+            
             //app.UseMiddleware<JwtTokenAuth>();//注意此方法已经放弃，请使用下边的官方验证方法。
             app.UseAuthentication();
 
