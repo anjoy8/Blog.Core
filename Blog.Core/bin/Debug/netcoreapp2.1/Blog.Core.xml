@@ -212,11 +212,11 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.Post(Blog.Core.Model.Love)">
+        <member name="M:Blog.Core.Controllers.ValuesController.Post(Blog.Core.Model.Models.BlogArticle)">
             <summary>
             post
             </summary>
-            <param name="love">model实体类参数</param>
+            <param name="blogArticle">model实体类参数</param>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Put(System.Int32,System.String)">
             <summary>

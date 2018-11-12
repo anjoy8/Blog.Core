@@ -3,16 +3,25 @@
 <head>
     <meta charset="utf-8" />
     <title>默认首页</title>
-    <script src="http://o.eueueu.com/Scripts/jquery-1.8.3.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script>
-        var reqdatajson = {
-            name:"dd",
-        }
+        let postdata = {
+            "bID": 10,
+            "bsubmitter": "222",
+            "btitle": "33333",
+            "bcategory": "4444",
+            "bcontent": "5555",
+            "btraffic": 0,
+            "bcommentNum": 0,
+            "bUpdateTime": "2018-11-08T02:36:26.557Z",
+            "bCreateTime": "2018-11-08T02:36:26.557Z",
+            "bRemark": "string"
+        };
         $.ajax({
-            url: "http://localhost:58428/api/Values",
+            url: "http://localhost:58427/api/Values",
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            data: '{ "UserID": 1, "name": "test" }',
+            data: JSON.stringify(postdata),
             dataType: 'json',
             success: function (data) {
                 alert(JSON.stringify(data));
@@ -25,7 +34,7 @@
 <body>
     <button id="btn">点击我请求数据</button>
     <div id="requestMsg"></div>
-    <form id="sub1" method="post" action="http://localhost:58428/api/Values">
+    <form id="sub1" method="post" action="http://localhost:58427/api/Values">
         <input name="name" type="text" />
         <input type="submit" value="提交吧" />
     </form>

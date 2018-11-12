@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Model;
+using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
@@ -13,8 +15,8 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    [Authorize(Roles = "Admin,Client")]
+    //[Authorize]
+    //[Authorize(Roles = "Admin,Client")]
     [Authorize(Policy = "SystemOrAdmin")]
     public class ValuesController : ControllerBase
     {
@@ -43,10 +45,12 @@ namespace Blog.Core.Controllers
         /// <summary>
         /// post
         /// </summary>
-        /// <param name="love">model实体类参数</param>
+        /// <param name="blogArticle">model实体类参数</param>
         [HttpPost]
-        public void Post(Love love)
+        [AllowAnonymous]
+        public object Post([FromBody]  BlogArticle blogArticle)
         {
+            return Ok(new { success = true, data = blogArticle });
         }
         /// <summary>
         /// Put方法

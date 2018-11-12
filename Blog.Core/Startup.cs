@@ -74,6 +74,7 @@ namespace Blog.Core
             #endregion
 
             #region CORS
+            //跨域第二种方法，声明策略，记得下边app中配置
             services.AddCors(c =>
             {
                 //↓↓↓↓↓↓↓注意正式环境不要使用这种全开放的处理↓↓↓↓↓↓↓↓↓↓
@@ -92,12 +93,14 @@ namespace Blog.Core
                 c.AddPolicy("LimitRequests", policy =>
                 {
                     policy
-                    .WithOrigins("http://127.0.0.1:1818", "http://localhost:8080", "http://localhost:8021", "http://localhost:8081", "http://localhost:1818", "http://blog.core.xxx.com", "")//支持多个域名端口
-                    .WithMethods("GET", "POST", "PUT", "DELETE")//请求方法添加到策略
-                    .WithHeaders("authorization");//标头添加到策略
+                    .WithOrigins("http://127.0.0.1:1818", "http://localhost:8080", "http://localhost:8021", "http://localhost:8081", "http://localhost:1818")//支持多个域名端口
+                    .AllowAnyHeader()//Ensures that the policy allows any header.
+                    .AllowAnyMethod();
                 });
-
             });
+
+            //跨域第一种办法，注意下边 Configure 中进行配置
+            //services.AddCors();
             #endregion
 
             #region Swagger
@@ -193,7 +196,7 @@ namespace Blog.Core
                 options.AddPolicy("Admin", policy => policy.RequireRole("Admin").Build());
                 //这个写法是错误的，这个是并列的关系，不是或的关系
                 //options.AddPolicy("AdminOrClient", policy => policy.RequireRole("Admin,Client").Build());
-                
+
                 //这个才是或的关系
                 options.AddPolicy("SystemOrAdmin", policy => policy.RequireRole("Admin", "System"));
             });
@@ -259,11 +262,17 @@ namespace Blog.Core
                 });
             });
             #endregion
-            
-            //app.UseMiddleware<JwtTokenAuth>();//注意此方法已经放弃，请使用下边的官方验证方法。
+
+            //app.UseMiddleware<JwtTokenAuth>();//注意此授权方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件
             app.UseAuthentication();
 
-            app.UseCors("LimitRequests");//将 CORS 中间件添加到 web 应用程序管线中, 以允许跨域请求。有的不加也是可以的，最好是加上吧
+            //跨域第二种方法，之间使用策略
+            app.UseCors("LimitRequests");//将 CORS 中间件添加到 web 应用程序管线中, 以允许跨域请求。
+
+
+            //跨域第一种版本，请要 services.AddCors();
+            //    app.UseCors(options => options.WithOrigins("http://localhost:8021").AllowAnyHeader()
+            //.AllowAnyMethod());
 
             app.UseMvc();
         }

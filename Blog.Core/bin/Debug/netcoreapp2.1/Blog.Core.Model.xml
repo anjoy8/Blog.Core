@@ -126,8 +126,8 @@
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.Guestbook.id">
-            <summary>留言表
-            
+            <summary>
+            留言表
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.Guestbook.blogId">
@@ -167,7 +167,7 @@
         </member>
         <member name="T:Blog.Core.Model.Models.Module">
             <summary>
-            菜单类
+            菜单表
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.Module.IsDeleted">
@@ -367,7 +367,7 @@
         </member>
         <member name="T:Blog.Core.Model.Models.PasswordLib">
             <summary>
-            用户跟角色关联表
+            密码库表
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.PasswordLib.IsDeleted">
@@ -562,7 +562,7 @@
         </member>
         <member name="T:Blog.Core.Model.Models.sysUserInfo">
             <summary>
-            
+            用户信息表
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.sysUserInfo.uID">
