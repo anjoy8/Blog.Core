@@ -15,12 +15,12 @@ https://github.com/anjoy8/Blog.Vue
 
 *********************************************************
 
-提醒：
-Blog.Core.FrameWork 项目是用T4模板生成文件的简单实现，如果你的系统是中文的，有可能会出现错误，
+# Tips：
+1、Blog.Core.FrameWork 项目是用T4模板生成文件的简单实现，如果你的系统是中文的，有可能会出现错误，
 你下载后，可以先卸载该项目，然后再整体调通后，再看这一部分。
+使用说明文章：https://www.cnblogs.com/laozhang-is-phi/p/9757999.html#autoid-4-2-0
 
-使用说明文章：
-https://www.cnblogs.com/laozhang-is-phi/p/9757999.html#autoid-4-2-0
+2、数据库Sql文件，在Blog.Core 项目下的 wwwroot 文件夹中。
 
 *********************************************************
 三大平台同步直播
