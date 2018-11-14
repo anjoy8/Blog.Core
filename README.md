@@ -1,4 +1,5 @@
-# Blog.Core
+![Logo](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/logo.png.png)
+
 
 从零开始搭建自己的前后端分离【 .NET Core2.1 Api + Vue 2.0 】框架，
 目前是2.1版本，2.0的是这里
