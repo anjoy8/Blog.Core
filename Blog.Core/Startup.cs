@@ -266,13 +266,15 @@ namespace Blog.Core
             //app.UseMiddleware<JwtTokenAuth>();//注意此授权方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件
             app.UseAuthentication();
 
-            //跨域第二种方法，之间使用策略
+            //跨域第二种方法，使用策略，详细策略信息在ConfigureService中
             app.UseCors("LimitRequests");//将 CORS 中间件添加到 web 应用程序管线中, 以允许跨域请求。
 
 
-            //跨域第一种版本，请要 services.AddCors();
+            //跨域第一种版本，请要ConfigureService中配置服务 services.AddCors();
             //    app.UseCors(options => options.WithOrigins("http://localhost:8021").AllowAnyHeader()
             //.AllowAnyMethod());
+
+            app.UseStatusCodePages();//把错误码返回前台，比如是404
 
             app.UseMvc();
         }
