@@ -18,9 +18,10 @@ https://github.com/anjoy8/Blog.Vue
 
 # Tips：
 1【重要】、Blog.Core.FrameWork 项目是用T4模板生成文件的简单实现。
-## 如果你下载的时候出现错误，是DbHelper.ttinclude 在 Github 中转格式了，你可以把这个地址代码，拷贝到DbHelper.ttinclude中，
+##### 如果你下载的时候出现错误，是DbHelper.ttinclude 在 Github 中转格式了，你可以把这个地址代码，拷贝到DbHelper.ttinclude中，
 地址：
 https://raw.githubusercontent.com/anjoy8/Blog.Core/master/Blog.Core.FrameWork/DbHelper.ttinclude
+
 
 2、数据库Sql文件，在Blog.Core 项目下的 wwwroot 文件夹中。
 
