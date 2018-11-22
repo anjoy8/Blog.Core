@@ -1,4 +1,4 @@
-﻿
+
 <#+ 
 //定义数据库帮助类
     public class DbHelper
