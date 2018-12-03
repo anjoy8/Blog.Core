@@ -1,4 +1,4 @@
-![Logo](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/logo.png.png)
+![Logo](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/logocore.png)
 
 
 从零开始搭建自己的前后端分离【 .NET Core2.1 Api + Vue 2.0 】框架，
