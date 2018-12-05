@@ -22,6 +22,8 @@ https://github.com/anjoy8/Blog.Vue
 地址：
 https://raw.githubusercontent.com/anjoy8/Blog.Core/master/Blog.Core.FrameWork/DbHelper.ttinclude
 
+如果还是不行，应该是文件格式有问题，你可以先把项目卸载，不影响整体运行。
+
 
 2、数据库Sql文件，在Blog.Core 项目下的 wwwroot 文件夹中。
 
