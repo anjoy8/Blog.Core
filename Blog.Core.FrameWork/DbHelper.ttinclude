@@ -1,7 +1,5 @@
-
-<#+ 
-//定义数据库帮助类
-    public class DbHelper
+<#+
+class DbHelper
     {
         #region 获取数据库表结构
 
@@ -141,11 +139,7 @@
         #endregion
     }
 
-    #region DbTable
-    /// <summary>
-    /// 表结构
-    /// </summary>
-    public sealed class DbTable
+class DbTable
     {
         /// <summary>
         /// 表名称
@@ -165,13 +159,8 @@
         /// </summary>
         public bool HasPrimaryKey { get; set; }
     }
-    #endregion
 
-    #region DbColumn
-    /// <summary>
-    /// 表字段结构
-    /// </summary>
-    public sealed class DbColumn
+class DbColumn
     {
         /// <summary>
         /// 字段ID
@@ -245,11 +234,8 @@
         /// </summary>
         public string Remark { get; set; }
     }
-    #endregion
 
-    #region 数据库和c#的数据类型map
-
-    public class SqlServerDbTypeMap
+class SqlServerDbTypeMap
     {
         public static string MapCsharpType(string dbtype)
         {
@@ -337,18 +323,11 @@
             return commonType;
         }
     }
-    #endregion
- #>
-
-<#+
-	//定义配置类，可以批量生产，默认空，则全部生产
-	//也可以单一生产，只需要在 TableName 写上指定的表名即可只生成一个
-	public class config
+class config
 	{
 		
         //public static readonly string ConnectionString = "Data Source=.;Initial Catalog=WMBlogDB;User ID=sa;Password=666;";
         public static readonly string ConnectionString = File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim();
         public static readonly string DbDatabase = "";
         public static readonly string TableName = "";
-	}
-#>
+	}#>
