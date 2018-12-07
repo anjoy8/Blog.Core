@@ -28,7 +28,8 @@ namespace Blog.Core.AuthHelper
             //};
 
 
-            var claims = new Claim[]
+            //var claims = new Claim[] //old
+            var claims = new List<Claim>
                 {
                     //下边为Claim的默认配置
                 new Claim(JwtRegisteredClaimNames.Jti, tokenModel.Uid.ToString()),
@@ -39,8 +40,13 @@ namespace Blog.Core.AuthHelper
                 new Claim(JwtRegisteredClaimNames.Iss,"Blog.Core"),
                 new Claim(JwtRegisteredClaimNames.Aud,"wr"),
                 //这个Role是官方UseAuthentication要要验证的Role，我们就不用手动设置Role这个属性了
-                new Claim(ClaimTypes.Role,tokenModel.Role),
+                //new Claim(ClaimTypes.Role,tokenModel.Role),//为了解决一个用户多个角色(比如：Admin,System)，用下边的方法
                };
+
+            // 可以将一个用户的多个角色全部赋予；
+            // 作者：DX 提供技术支持；
+            claims.AddRange(tokenModel.Role.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));
+
 
 
             //秘钥
