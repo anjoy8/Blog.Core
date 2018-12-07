@@ -8,7 +8,7 @@ namespace Blog.Core.Repository
 {
     public class BaseDBConfig
     {
-        public static string ConnectionString = File.ReadAllText(@"D:\my-file\dbCountPsw1.txt").Trim();
+        public static string ConnectionString = File.Exists(@"D:\my-file\dbCountPsw1.txt") ? File.ReadAllText(@"D:\my-file\dbCountPsw1.txt").Trim() : "server=.;uid=sa;pwd=sa;database=BlogDB";
 
         //正常格式是
 

@@ -327,7 +327,7 @@ class config
 	{
 		
         //public static readonly string ConnectionString = "Data Source=.;Initial Catalog=WMBlogDB;User ID=sa;Password=666;";
-        public static readonly string ConnectionString = File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim();
+        public static readonly string ConnectionString = File.Exists(@"D:\my-file\dbCountPsw2.txt") ? File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim(): "server=.;uid=sa;pwd=sa;database=BlogDB";
         public static readonly string DbDatabase = "";
         public static readonly string TableName = "";
 	}#>
