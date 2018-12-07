@@ -1,16 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="Blog.Core.FrameWork.Entity\Blog.Core.FrameWork.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Blog.Core.FrameWork.tt</DependentUpon>
-    </None>
-  </ItemGroup>
 
   <ItemGroup>
     <None Update="Blog.Core.FrameWork.Entity\Blog.Core.FrameWork.tt">
