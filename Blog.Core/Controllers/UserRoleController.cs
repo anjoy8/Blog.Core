@@ -1,12 +1,14 @@
 ﻿using System.Threading.Tasks;
 using Blog.Core.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
     /// <summary>
-    /// Blog控制器所有接口
+    /// 用户权限控制器所有接口
     /// </summary>
+    [Authorize("Permission")]
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]

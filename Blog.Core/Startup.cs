@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
@@ -18,6 +19,7 @@ using log4net;
 using log4net.Config;
 using log4net.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -60,10 +62,15 @@ namespace Blog.Core
             services.AddMvc(o =>
             {
                 o.Filters.Add(typeof(GlobalExceptionsFilter));
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //缓存注入
-            services.AddScoped<ICaching, MemoryCaching>();//记得把缓存注入！！！
+            services.AddScoped<ICaching, MemoryCaching>();
+            services.AddSingleton<IMemoryCache>(factory =>
+            {
+                var cache = new MemoryCache(new MemoryCacheOptions());
+                return cache;
+            });
             //Redis注入
             services.AddScoped<IRedisCacheManager, RedisCacheManager>();
             //log日志注入
@@ -158,38 +165,46 @@ namespace Blog.Core
 
             #endregion
 
-            //认证
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-          .AddJwtBearer(o =>
-          {
-              o.TokenValidationParameters = new TokenValidationParameters
-              {
-                  ValidateIssuer = true,//是否验证Issuer
-                  ValidateAudience = true,//是否验证Audience 
-                  ValidateIssuerSigningKey = true,//是否验证IssuerSigningKey 
-                  ValidIssuer = "Blog.Core",
-                  ValidAudience = "wr",
-                  ValidateLifetime = true,//是否验证超时  当设置exp和nbf时有效 同时启用ClockSkew 
-                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtHelper.secretKey)),
-                  //注意这是缓冲过期时间，总的有效时间等于这个时间加上jwt的过期时间
-                  ClockSkew = TimeSpan.FromSeconds(30)
-
-              };
-          });
-
-
-
 
             #region Token服务注册
-            services.AddSingleton<IMemoryCache>(factory =>
+            //读取配置文件
+            var audienceConfig = Configuration.GetSection("Audience");
+            var symmetricKeyAsBase64 = audienceConfig["Secret"];
+            var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
+            var signingKey = new SymmetricSecurityKey(keyByteArray);
+            var tokenValidationParameters = new TokenValidationParameters
             {
-                var cache = new MemoryCache(new MemoryCacheOptions());
-                return cache;
-            });
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+                ValidateIssuer = true,
+                ValidIssuer = audienceConfig["Issuer"],//发行人
+                ValidateAudience = true,
+                ValidAudience = audienceConfig["Audience"],//订阅人
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                RequireExpirationTime = true,
+
+            };
+            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+
+            //这个集合模拟用户权限表,可从数据库中查询出来，我还没想到怎么在这里加载数据库信息
+            var permission = new List<Permission> {
+                              new Permission {  Url="/api/values", Role="Admin"},
+                              new Permission {  Url="/api/values", Role="System"},
+                              new Permission {  Url="/api/claims", Role="Admin"},
+                          };
+
+
+            var permissionRequirement = new PermissionRequirement(
+                "/api/denied", permission,
+                ClaimTypes.Role,
+                audienceConfig["Issuer"],
+                audienceConfig["Audience"],
+                signingCredentials,
+                expiration: TimeSpan.FromSeconds(200)
+                );
+
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Client", policy => policy.RequireRole("Client").Build());
@@ -199,7 +214,41 @@ namespace Blog.Core
 
                 //这个才是或的关系
                 options.AddPolicy("SystemOrAdmin", policy => policy.RequireRole("Admin", "System"));
+
+
+                options.AddPolicy("Permission",
+                         policy => policy.Requirements.Add(permissionRequirement));
+            })
+
+            .AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+
+            .AddJwtBearer(o =>
+            {
+                o.TokenValidationParameters = tokenValidationParameters;
+                //o.TokenValidationParameters = new TokenValidationParameters
+                //{
+                //    ValidateIssuer = true,//是否验证Issuer
+                //    ValidateAudience = true,//是否验证Audience 
+                //    ValidateIssuerSigningKey = true,//是否验证IssuerSigningKey 
+                //    ValidIssuer = "Blog.Core",
+                //    ValidAudience = "wr",
+                //    ValidateLifetime = true,//是否验证超时  当设置exp和nbf时有效 同时启用ClockSkew 
+                //    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtHelper.secretKey)),
+                //    //注意这是缓冲过期时间，总的有效时间等于这个时间加上jwt的过期时间
+                //    ClockSkew = TimeSpan.FromSeconds(30)
+
+                //};
             });
+
+
+
+            services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+            services.AddSingleton(permissionRequirement);
+
             #endregion
 
             #region AutoFac
@@ -210,6 +259,12 @@ namespace Blog.Core
             builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
 
             //var assemblysServices1 = Assembly.Load("Blog.Core.Services");
+
+
+            // ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
+            // ※※★※※ 因为解耦，bin文件夹没有以下两个dll文件，会报错，所以先编译生成这两个dll ※※★※※
+
+
 
             var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");//获取项目绝对路径
             var assemblysServices = Assembly.LoadFile(servicesDllFile);//直接采用加载文件的方法
