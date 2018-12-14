@@ -122,8 +122,8 @@ namespace Blog.Core.Controllers
         /// <summary>
         /// 获取JWT的方法 3.0
         /// </summary>
-        /// <param name="id">id</param>
-        /// <param name="sub">角色</param>
+        /// <param name="name"></param>
+        /// <param name="pass"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("JWTToken3.0")]
