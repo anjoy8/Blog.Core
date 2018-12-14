@@ -110,7 +110,7 @@ namespace Blog.Core
             //services.AddCors();
             #endregion
 
-            #region Swagger
+            #region Swagger UI Service
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
             services.AddSwaggerGen(c =>
             {
@@ -148,12 +148,17 @@ namespace Blog.Core
                 c.IncludeXmlComments(xmlModelPath);
 
                 #region Token绑定到ConfigureServices
+
                 //添加header验证信息
                 //c.OperationFilter<SwaggerHeader>();
-                var security = new Dictionary<string, IEnumerable<string>> { { "Blog.Core", new string[] { } }, };
+
+                // 发行人
+                var IssuerName = (Configuration.GetSection("Audience"))["Issuer"];
+                var security = new Dictionary<string, IEnumerable<string>> { { IssuerName, new string[] { } }, };
                 c.AddSecurityRequirement(security);
+
                 //方案名称“Blog.Core”可自定义，上下一致即可
-                c.AddSecurityDefinition("Blog.Core", new ApiKeyScheme
+                c.AddSecurityDefinition(IssuerName, new ApiKeyScheme
                 {
                     Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
                     Name = "Authorization",//jwt默认的参数名称
@@ -166,7 +171,7 @@ namespace Blog.Core
             #endregion
 
 
-            #region Token服务注册
+            #region JWT Token Service
             //读取配置文件
             var audienceConfig = Configuration.GetSection("Audience");
             var symmetricKeyAsBase64 = audienceConfig["Secret"];
@@ -187,7 +192,8 @@ namespace Blog.Core
             };
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
-            //这个集合模拟用户权限表,可从数据库中查询出来，我还没想到怎么在这里加载数据库信息
+            // 这个集合模拟用户权限表,可从数据库中查询出来，我还没想到怎么在这里加载数据库信息，有新想法会补充，
+            // 注意使用RESTful风格的接口会更好，因为只需要写一个Url即可，比如：/api/values 代表了Get Post Put Delete等多个。
             var permission = new List<Permission> {
                               new Permission {  Url="/api/values", Role="Admin"},
                               new Permission {  Url="/api/values", Role="System"},

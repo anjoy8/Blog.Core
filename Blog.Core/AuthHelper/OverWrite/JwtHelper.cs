@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Blog.Core.Common;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,7 +12,7 @@ namespace Blog.Core.AuthHelper
 {
     public class JwtHelper
     {
-        public static string secretKey { get; set; } = "sdfsdfsrty45634kkhllghtdgdfss345t678fs";
+       
         /// <summary>
         /// 颁发JWT字符串
         /// </summary>
@@ -20,13 +21,10 @@ namespace Blog.Core.AuthHelper
         public static string IssueJWT(TokenModelJWT tokenModel)
         {
             var dateTime = DateTime.UtcNow;
-            //var claims = new Claim[]
-            //{
-            //    new Claim(JwtRegisteredClaimNames.Jti,tokenModel.Uid.ToString()),//Id
-            //    new Claim("Role", tokenModel.Role),//角色
-            //    new Claim(JwtRegisteredClaimNames.Iat,$"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}"),  new Claim (JwtRegisteredClaimNames.Exp,$"{new DateTimeOffset(DateTime.Now.AddSeconds(10)).ToUnixTimeSeconds()}")
-            //};
 
+            string iss = Appsettings.app(new string[] { "Audience", "Issuer" });
+            string aud = Appsettings.app(new string[] { "Audience", "Audience" });
+            string secret = Appsettings.app(new string[] { "Audience", "Secret" });
 
             //var claims = new Claim[] //old
             var claims = new List<Claim>
@@ -37,9 +35,9 @@ namespace Blog.Core.AuthHelper
                 new Claim(JwtRegisteredClaimNames.Nbf,$"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}") ,
                 //这个就是过期时间，目前是过期100秒，可自定义，注意JWT有自己的缓冲过期时间
                 new Claim (JwtRegisteredClaimNames.Exp,$"{new DateTimeOffset(DateTime.Now.AddSeconds(100)).ToUnixTimeSeconds()}"),
-                new Claim(JwtRegisteredClaimNames.Iss,"Blog.Core"),
-                new Claim(JwtRegisteredClaimNames.Aud,"wr"),
-                //这个Role是官方UseAuthentication要要验证的Role，我们就不用手动设置Role这个属性了
+                new Claim(JwtRegisteredClaimNames.Iss,iss),
+                new Claim(JwtRegisteredClaimNames.Aud,aud),
+                
                 //new Claim(ClaimTypes.Role,tokenModel.Role),//为了解决一个用户多个角色(比如：Admin,System)，用下边的方法
                };
 
@@ -50,11 +48,11 @@ namespace Blog.Core.AuthHelper
 
 
             //秘钥
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtHelper.secretKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var jwt = new JwtSecurityToken(
-                issuer: "Blog.Core",
+                issuer: iss,
                 claims: claims,
                 signingCredentials: creds);
 
