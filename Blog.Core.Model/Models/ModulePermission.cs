@@ -50,7 +50,7 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public DateTime? ModifyTime { get; set; }
 
-        public virtual Module Module { get; set; }
-        public virtual Permission Permission { get; set; }
+        //public virtual Module Module { get; set; }
+        //public virtual Permission Permission { get; set; }
     }
 }

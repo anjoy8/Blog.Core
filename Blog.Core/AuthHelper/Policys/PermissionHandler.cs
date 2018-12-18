@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Blog.Core.IServices;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 namespace Blog.Core.AuthHelper
 {
     /// <summary>
-    /// 权限授权Handler
+    /// 权限授权处理器
     /// </summary>
     public class PermissionHandler : AuthorizationHandler<PermissionRequirement>
     {
@@ -20,17 +22,38 @@ namespace Blog.Core.AuthHelper
         public IAuthenticationSchemeProvider Schemes { get; set; }
 
         /// <summary>
-        /// 构造
+        /// services 层注入
+        /// </summary>
+        public IRoleModulePermissionServices _roleModulePermissionServices { get; set; }
+
+        /// <summary>
+        /// 构造函数注入
         /// </summary>
         /// <param name="schemes"></param>
-        public PermissionHandler(IAuthenticationSchemeProvider schemes)
+        /// <param name="roleModulePermissionServices"></param>
+        public PermissionHandler(IAuthenticationSchemeProvider schemes, IRoleModulePermissionServices roleModulePermissionServices)
         {
             Schemes = schemes;
+            _roleModulePermissionServices = roleModulePermissionServices;
         }
 
+        // 重载异步处理程序
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
-          
+            // 将最新的角色和接口列表更新
+            var data = await _roleModulePermissionServices.GeRoleModule();
+            var list = (from item in data
+                        where item.IsDeleted == false
+                        orderby item.Id
+                        select new Permission
+                        {
+                            Url = item.Module?.LinkUrl,
+                            Role = item.Role?.Name,
+                        }).ToList();
+
+            requirement.Permissions = list;
+
+
             //从AuthorizationHandlerContext转成HttpContext，以便取出表求信息
             var httpContext = (context.Resource as Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext).HttpContext;
             //请求Url
@@ -54,19 +77,24 @@ namespace Blog.Core.AuthHelper
                 //result?.Principal不为空即登录成功
                 if (result?.Principal != null)
                 {
-                
+
                     httpContext.User = result.Principal;
                     //权限中是否存在请求的url
-                    if (requirement.Permissions.GroupBy(g => g.Url).Where(w => w.Key.ToLower() == questUrl).Count() > 0)
+                    if (requirement.Permissions.GroupBy(g => g.Url).Where(w => w.Key?.ToLower() == questUrl).Count() > 0)
                     {
-                        var role = httpContext.User.Claims.SingleOrDefault(s => s.Type == requirement.ClaimType)?.Value;
+                        // 获取当前用户的角色信息
+                        var currentUserRoles = (from item in httpContext.User.Claims
+                                                where item.Type == requirement.ClaimType
+                                                select item.Value).ToList();
+
+
                         //验证权限
-                        if (string.IsNullOrEmpty(role)||requirement.Permissions.Where(w => w.Role == role && w.Url.ToLower() == questUrl).Count() <= 0)
+                        if (currentUserRoles.Count <= 0 || requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role) && w.Url.ToLower() == questUrl).Count() <= 0)
                         {
 
                             context.Fail();
                             return;
-                            //无权限跳转到拒绝页面
+                            // 可以在这里设置跳转页面，不过还是会访问当前接口地址的
                             httpContext.Response.Redirect(requirement.DeniedAction);
                         }
                     }
@@ -77,13 +105,14 @@ namespace Blog.Core.AuthHelper
 
                     }
                     //判断过期时间
-                    if ((httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value)!=null&&DateTime.Parse(httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value) >= DateTime.Now)
+                    if ((httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value) != null && DateTime.Parse(httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value) >= DateTime.Now)
                     {
                         context.Succeed(requirement);
                     }
                     else
                     {
                         context.Fail();
+                        return;
                     }
                     return;
                 }

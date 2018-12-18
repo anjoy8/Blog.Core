@@ -6,14 +6,16 @@ using System.Collections.Generic;
 namespace Blog.Core.AuthHelper
 {
     /// <summary>
-    /// 必要参数类
+    /// 必要参数类，
+    /// 继承 IAuthorizationRequirement，用于设计自定义权限处理器PermissionHandler
+    /// 因为AuthorizationHandler 中的泛型参数 TRequirement 必须继承 IAuthorizationRequirement
     /// </summary>
     public class PermissionRequirement : IAuthorizationRequirement
     {
         /// <summary>
         /// 用户权限集合
         /// </summary>
-        public List<Permission> Permissions { get; private set; }
+        public List<Permission> Permissions { get; set; }
         /// <summary>
         /// 无权限action
         /// </summary>

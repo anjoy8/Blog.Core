@@ -177,6 +177,8 @@ namespace Blog.Core
             var symmetricKeyAsBase64 = audienceConfig["Secret"];
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
             var signingKey = new SymmetricSecurityKey(keyByteArray);
+
+            // 令牌验证参数
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
@@ -192,36 +194,39 @@ namespace Blog.Core
             };
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
-            // 这个集合模拟用户权限表,可从数据库中查询出来，我还没想到怎么在这里加载数据库信息，有新想法会补充，
             // 注意使用RESTful风格的接口会更好，因为只需要写一个Url即可，比如：/api/values 代表了Get Post Put Delete等多个。
-            var permission = new List<Permission> {
-                              new Permission {  Url="/api/values", Role="Admin"},
-                              new Permission {  Url="/api/values", Role="System"},
-                              new Permission {  Url="/api/claims", Role="Admin"},
-                          };
+            // 如果想写死，可以直接在这里写。
+            //var permission = new List<Permission> {
+            //                  new Permission {  Url="/api/values", Role="Admin"},
+            //                  new Permission {  Url="/api/values", Role="System"},
+            //                  new Permission {  Url="/api/claims", Role="Admin"},
+            //              };
 
+            // 如果要数据库动态绑定，这里先留个空，后边处理器里动态赋值
+            var permission = new List<Permission>();
 
+            // 角色与接口的权限要求参数
             var permissionRequirement = new PermissionRequirement(
-                "/api/denied", permission,
-                ClaimTypes.Role,
-                audienceConfig["Issuer"],
-                audienceConfig["Audience"],
-                signingCredentials,
-                expiration: TimeSpan.FromSeconds(200)
+                "/api/denied",// 拒绝授权的跳转地址（目前无用）
+                permission,
+                ClaimTypes.Role,//基于角色的授权
+                audienceConfig["Issuer"],//发行人
+                audienceConfig["Audience"],//听众
+                signingCredentials,//签名凭据
+                expiration: TimeSpan.FromSeconds(60*2)//接口的过期时间
                 );
 
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Client", policy => policy.RequireRole("Client").Build());
-                options.AddPolicy("Admin", policy => policy.RequireRole("Admin").Build());
-                //这个写法是错误的，这个是并列的关系，不是或的关系
-                //options.AddPolicy("AdminOrClient", policy => policy.RequireRole("Admin,Client").Build());
+                options.AddPolicy("Client", 
+                    policy => policy.RequireRole("Client").Build());
+                options.AddPolicy("Admin", 
+                    policy => policy.RequireRole("Admin").Build());
+                options.AddPolicy("SystemOrAdmin", 
+                    policy => policy.RequireRole("Admin", "System"));
 
-                //这个才是或的关系
-                options.AddPolicy("SystemOrAdmin", policy => policy.RequireRole("Admin", "System"));
-
-
+                // 自定义权限要求
                 options.AddPolicy("Permission",
                          policy => policy.Requirements.Add(permissionRequirement));
             })

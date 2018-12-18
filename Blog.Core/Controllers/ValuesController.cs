@@ -17,7 +17,8 @@ namespace Blog.Core.Controllers
     [ApiController]
     //[Authorize]
     //[Authorize(Roles = "Admin,Client")]
-    [Authorize(Policy = "SystemOrAdmin")]
+    //[Authorize(Policy = "SystemOrAdmin")]
+    [Authorize("Permission")]
     public class ValuesController : ControllerBase
     {
         /// <summary>

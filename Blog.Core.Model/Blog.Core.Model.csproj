@@ -8,4 +8,8 @@
     <DocumentationFile>..\Blog.Core\Blog.Core.Model.xml</DocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="sqlSugarCore" Version="4.9.7" />
+  </ItemGroup>
+
 </Project>

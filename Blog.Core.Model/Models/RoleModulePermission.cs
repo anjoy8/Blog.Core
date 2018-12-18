@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SqlSugar;
+using System;
 
 namespace Blog.Core.Model.Models
 {
@@ -11,6 +8,12 @@ namespace Blog.Core.Model.Models
     /// </summary>
     public class RoleModulePermission
     {
+        public RoleModulePermission() {
+            this.Role = new Role();
+            this.Module = new Module();
+            this.Permission = new Permission();
+
+        }
         public int Id { get; set; }
 
         /// <summary>
@@ -54,8 +57,12 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public DateTime? ModifyTime { get; set; }
 
+        // 下边三个实体参数，只是做传参作用，所以忽略下
+        [SugarColumn(IsIgnore = true)]
         public virtual Role Role { get; set; }
+        [SugarColumn(IsIgnore = true)]
         public virtual Module Module { get; set; }
+        [SugarColumn(IsIgnore = true)]
         public virtual Permission Permission { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace Blog.Core.Controllers
     /// <summary>
     /// Blog控制器所有接口
     /// </summary>
+    [Authorize(Policy = "Admin")]
     [Produces("application/json")]
     [Route("api/Blog")]
     public class BlogController : Controller
@@ -48,6 +49,7 @@ namespace Blog.Core.Controllers
         /// <param name="bcategory"></param>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<object> Get(int id, int page = 1, string bcategory = "技术博文")
         {
             int intTotalCount = 6;
@@ -98,8 +100,7 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}", Name = "Get")]
-        [Authorize(Policy = "Admin")]
+        [HttpGet("{id}")]
         public async Task<object> Get(int id)
         {
             var model = await blogArticleServices.getBlogDetails(id);

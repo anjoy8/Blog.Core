@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.SwaggerHelper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
@@ -11,6 +12,7 @@ namespace Blog.Core.Controllers.v2
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Permission")]
     public class ApbController : ControllerBase
     {
         [HttpGet]

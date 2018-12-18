@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace Blog.Core.Model.Models
 {
     /// <summary>
-    /// 菜单表
+    /// 接口API地址信息表
     /// </summary>
     public class Module
     {
         public Module()
         {
-            this.ChildModule = new List<Module>();
-            this.ModulePermission = new List<ModulePermission>();
-            this.RoleModulePermission = new List<RoleModulePermission>();
+            //this.ChildModule = new List<Module>();
+            //this.ModulePermission = new List<ModulePermission>();
+            //this.RoleModulePermission = new List<RoleModulePermission>();
         }
 
         public int Id { get; set; }
@@ -97,9 +97,9 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public DateTime? ModifyTime { get; set; }
 
-        public virtual Module ParentModule { get; set; }
-        public virtual ICollection<Module> ChildModule { get; set; }
-        public virtual ICollection<ModulePermission> ModulePermission { get; set; }
-        public virtual ICollection<RoleModulePermission> RoleModulePermission { get; set; }
+        //public virtual Module ParentModule { get; set; }
+        //public virtual ICollection<Module> ChildModule { get; set; }
+        //public virtual ICollection<ModulePermission> ModulePermission { get; set; }
+        //public virtual ICollection<RoleModulePermission> RoleModulePermission { get; set; }
     }
 }
