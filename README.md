@@ -23,7 +23,7 @@ https://github.com/anjoy8/Blog.Vue
 如果你不想处理这个错误，你可以先把项目卸载，不影响整体运行。
 
 
-2【重要】、项目下载后执行的时候，可能会报错，因为需要安装Redis客户端，安装和使用说明地址：
+2【重要】、项目下载后执行的时候，可能会报错，因为需要安装Redis服务端，安装和使用说明地址：
 https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 
 
