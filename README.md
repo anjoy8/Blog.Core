@@ -56,7 +56,7 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 <li><a id="post_title_link_9516890" href="https://www.cnblogs.com/laozhang-is-phi/p/9516890.html">API项目整体搭建 6.1 仓储模式</a></li>
 <li><a id="post_title_link_9523148" href="https://www.cnblogs.com/laozhang-is-phi/p/9523148.html">API项目整体搭建 6.2 轻量级ORM</a></li>
 <li><a id="post_title_link_9529480" href="https://www.cnblogs.com/laozhang-is-phi/p/9529480.html">API项目整体搭建 6.3 异步泛型仓储+依赖注入初探</a></li>
-<li><a id="post_title_link_9541414" href="https://www.cnblogs.com/laozhang-is-phi/p/9541414.html">依赖注入IoC学习 + AOP界面编程初探</a></li>
+<li><a id="post_title_link_9541414" href="https://www.cnblogs.com/laozhang-is-phi/p/9541414.html">依赖注入IoC学习 + AOP切面编程初探</a></li>
 <li><a id="post_title_link_9547574" href="https://www.cnblogs.com/laozhang-is-phi/p/9547574.html">AOP面向切面编程浅解析：简单日志记录 + 服务切面缓存</a></li>
 <li><a id="post_title_link_9554210" href="https://www.cnblogs.com/laozhang-is-phi/p/9554210.html">AOP自定义筛选，Redis入门 11.1</a></li>
 <li><a id="post_title_link_9560949" href="https://www.cnblogs.com/laozhang-is-phi/p/9560949.html">三种跨域方式比较，DTOs(数据传输对象)初探</a></li>
