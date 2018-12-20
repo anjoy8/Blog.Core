@@ -167,7 +167,7 @@
         </member>
         <member name="T:Blog.Core.Model.Models.Module">
             <summary>
-            菜单表
+            接口API地址信息表
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.Module.IsDeleted">

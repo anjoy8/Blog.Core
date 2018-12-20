@@ -96,8 +96,8 @@
             <summary>
             获取基于JWT的Token
             </summary>
-            <param name="claims"></param>
-            <param name="permissionRequirement"></param>
+            <param name="claims">需要在登陆的时候配置</param>
+            <param name="permissionRequirement">在startup中定义的参数</param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.AuthHelper.Permission">
@@ -117,7 +117,7 @@
         </member>
         <member name="T:Blog.Core.AuthHelper.PermissionHandler">
             <summary>
-            权限授权Handler
+            权限授权处理器
             </summary>
         </member>
         <member name="P:Blog.Core.AuthHelper.PermissionHandler.Schemes">
@@ -132,14 +132,16 @@
         </member>
         <member name="M:Blog.Core.AuthHelper.PermissionHandler.#ctor(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider,Blog.Core.IServices.IRoleModulePermissionServices)">
             <summary>
-            构造函数
+            构造函数注入
             </summary>
             <param name="schemes"></param>
             <param name="roleModulePermissionServices"></param>
         </member>
         <member name="T:Blog.Core.AuthHelper.PermissionRequirement">
             <summary>
-            必要参数类
+            必要参数类，
+            继承 IAuthorizationRequirement，用于设计自定义权限处理器PermissionHandler
+            因为AuthorizationHandler 中的泛型参数 TRequirement 必须继承 IAuthorizationRequirement
             </summary>
         </member>
         <member name="P:Blog.Core.AuthHelper.PermissionRequirement.Permissions">
