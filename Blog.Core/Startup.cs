@@ -316,7 +316,7 @@ namespace Blog.Core
             {
                 app.UseExceptionHandler("/Error");
                 // 在非开发环境中，使用HTTP严格安全传输(or HSTS) 对于保护web安全是非常重要的。
-                // 强制实施 HTTPS 在 ASP.NET Core
+                // 强制实施 HTTPS 在 ASP.NET Core，配合 app.UseHttpsRedirection
                 //app.UseHsts();
 
             }
