@@ -74,7 +74,7 @@
             备注
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Blog.Core.Model.Models.BlogArticle" -->
+        <!-- 对于成员“T:Blog.Core.Model.Models.BlogArticle”忽略有格式错误的 XML 注释 -->
         <member name="P:Blog.Core.Model.Models.BlogArticle.bID">
             <summary>
             
@@ -167,7 +167,7 @@
         </member>
         <member name="T:Blog.Core.Model.Models.Module">
             <summary>
-            菜单表
+            接口API地址信息表
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.Module.IsDeleted">
@@ -615,8 +615,8 @@
             错误次数 
              </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Blog.Core.Model.Models.Topic" -->
-        <!-- Badly formed XML comment ignored for member "T:Blog.Core.Model.Models.TopicDetail" -->
+        <!-- 对于成员“T:Blog.Core.Model.Models.Topic”忽略有格式错误的 XML 注释 -->
+        <!-- 对于成员“T:Blog.Core.Model.Models.TopicDetail”忽略有格式错误的 XML 注释 -->
         <member name="T:Blog.Core.Model.Models.UserRole">
             <summary>
             用户跟角色关联表

@@ -32,7 +32,7 @@ namespace Blog.Core.SwaggerHelper
         /// </summary>
         /// <param name="actionName"></param>
         /// <param name="version"></param>
-        public CustomRouteAttribute(ApiVersions version, string actionName = "[action]") : base($"/api/{version.ToString()}/[controller]/{actionName}")
+        public CustomRouteAttribute(ApiVersions version, string actionName = "") : base($"/api/{version.ToString()}/[controller]/{actionName}")
         {
             GroupName = version.ToString();
         }
