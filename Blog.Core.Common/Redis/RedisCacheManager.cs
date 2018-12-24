@@ -1,16 +1,11 @@
 ﻿using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Core.Common
 {
     public class RedisCacheManager : IRedisCacheManager
     {
-       
+
         private readonly string redisConnenctionString;
 
         public volatile ConnectionMultiplexer redisConnection;
@@ -49,7 +44,15 @@ namespace Blog.Core.Common
                     //释放redis连接
                     this.redisConnection.Dispose();
                 }
-                this.redisConnection = ConnectionMultiplexer.Connect(redisConnenctionString);
+                try
+                {
+                    this.redisConnection = ConnectionMultiplexer.Connect(redisConnenctionString);
+                }
+                catch (Exception)
+                {
+
+                    throw new Exception("Redis服务未启用，请开启该服务");
+                }
             }
             return this.redisConnection;
         }
@@ -100,12 +103,13 @@ namespace Blog.Core.Common
             {
                 //需要用的反序列化，将Redis存储的Byte[]，进行反序列化
                 return SerializeHelper.Deserialize<TEntity>(value);
-            } else
+            }
+            else
             {
                 return default(TEntity);
             }
         }
-     
+
         /// <summary>
         /// 移除
         /// </summary>
