@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,18 +29,22 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 用户ID
         /// </summary>
+        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
         public int uID { get; set; }
         /// <summary>
         /// 登录账号
         /// </summary>
+        [SugarColumn(Length = 60, IsNullable = true)]
         public string uLoginName { get; set; }
         /// <summary>
         /// 登录密码
         /// </summary>
+        [SugarColumn(Length = 60, IsNullable = true)]
         public string uLoginPWD { get; set; }
         /// <summary>
         /// 真实姓名
         /// </summary>
+        [SugarColumn(Length = 60, IsNullable = true)]
         public string uRealName { get; set; }
         /// <summary>
         /// 状态
@@ -48,6 +53,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 备注
         /// </summary>
+        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
         public string uRemark { get; set; }
         /// <summary>
         /// 创建时间

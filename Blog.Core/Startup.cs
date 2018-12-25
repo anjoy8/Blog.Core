@@ -76,6 +76,13 @@ namespace Blog.Core
             //log日志注入
             services.AddSingleton<ILoggerHelper, LogHelper>();
 
+
+            #region 初始化DB
+            services.AddScoped<Blog.Core.Model.Models.DBSeed>();
+            services.AddScoped<Blog.Core.Model.Models.MyContext>(); 
+            #endregion
+
+
             #region Automapper
             services.AddAutoMapper(typeof(Startup));
             #endregion
