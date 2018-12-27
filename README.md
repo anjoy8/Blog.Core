@@ -36,21 +36,21 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 在Blog.Core 项目下的 wwwroot 文件夹中。
 
 *********************************************************
-#修改数据库连接字符串
+### 修改数据库连接字符串
 
 1、在Blog.Core.Repository层的sugar 文件夹下 的 BaseDBConfig.cs 中，配置自己的字符串
-
+```
 public static string ConnectionString = File.Exists(@"D:\my-file\dbCountPsw1.txt") ? File.ReadAllText(@"D:\my-file\dbCountPsw1.txt").Trim() : "server=.;uid=sa;pwd=sa;database=BlogDB";
-
+```
 
 2、在Blog.Core.FrameWork层的DbHelper.ttinclude 中，配置自己的字符串
-
+```
 public static readonly string ConnectionString = File.Exists(@"D:\my-file\dbCountPsw2.txt") ? File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim(): "server=.;uid=sa;pwd=sa;database=BlogDB";
-
+```
 
 
 *****************************************************
-三大平台同步直播
+### 三大平台同步直播
 
 简  书：https://www.jianshu.com/notebooks/28621653
 
