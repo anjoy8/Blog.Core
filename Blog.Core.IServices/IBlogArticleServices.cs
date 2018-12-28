@@ -1,6 +1,6 @@
 ﻿using Blog.Core.IServices.BASE;
 using Blog.Core.Model.Models;
-using Blog.Core.Model.VeiwModels;
+using Blog.Core.Model.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

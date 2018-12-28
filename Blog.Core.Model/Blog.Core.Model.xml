@@ -687,187 +687,187 @@
             返回数据集
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.VeiwModels.AdvertisementViewModels">
+        <member name="T:Blog.Core.Model.ViewModels.AdvertisementViewModels">
             <summary>
             广告类
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.AdvertisementViewModels.Id">
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.Id">
             <summary>
             分类ID
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.AdvertisementViewModels.Createdate">
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.Createdate">
             <summary>
             创建时间
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.AdvertisementViewModels.ImgUrl">
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.ImgUrl">
             <summary>
             广告图片
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.AdvertisementViewModels.Title">
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.Title">
             <summary>
             广告标题
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.AdvertisementViewModels.Url">
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.Url">
             <summary>
             广告链接
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.AdvertisementViewModels.Remark">
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.Remark">
             <summary>
             备注
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.VeiwModels.BlogViewModels">
+        <member name="T:Blog.Core.Model.ViewModels.BlogViewModels">
             <summary>
             博客信息展示类
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.bID">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bID">
             <summary>
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.bsubmitter">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bsubmitter">
             <summary>创建人
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.btitle">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.btitle">
             <summary>博客标题
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.digest">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.digest">
             <summary>摘要
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.previous">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.previous">
             <summary>
             上一篇
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.previousID">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.previousID">
             <summary>
             上一篇id
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.next">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.next">
             <summary>
             下一篇
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.nextID">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.nextID">
             <summary>
             下一篇id
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.bcategory">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bcategory">
             <summary>类别
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.bcontent">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bcontent">
             <summary>内容
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.btraffic">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.btraffic">
             <summary>
             访问量
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.bcommentNum">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bcommentNum">
             <summary>
             评论数量
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.bUpdateTime">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bUpdateTime">
             <summary> 修改时间
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.bCreateTime">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bCreateTime">
             <summary>
             创建时间
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.BlogViewModels.bRemark">
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bRemark">
             <summary>备注
             
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.VeiwModels.GuestbookViewModels">
+        <member name="T:Blog.Core.Model.ViewModels.GuestbookViewModels">
             <summary>
             留言信息展示类
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.GuestbookViewModels.id">
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.id">
             <summary>留言表
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.GuestbookViewModels.blogId">
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.blogId">
             <summary>博客ID
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.GuestbookViewModels.createdate">
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.createdate">
             <summary>创建时间
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.GuestbookViewModels.phone">
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.phone">
             <summary>手机
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.GuestbookViewModels.QQ">
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.QQ">
             <summary>qq
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.GuestbookViewModels.body">
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.body">
             <summary>留言内容
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.GuestbookViewModels.ip">
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.ip">
             <summary>ip地址
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.GuestbookViewModels.isshow">
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.isshow">
             <summary>是否显示在前台,0否1是
             
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.VeiwModels.SidebarMenuViewModel">
+        <member name="T:Blog.Core.Model.ViewModels.SidebarMenuViewModel">
             <summary>
             菜单展示model
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.VeiwModels.TopgbViewModels">
+        <member name="T:Blog.Core.Model.ViewModels.TopgbViewModels">
             <summary>
             留言排名展示类
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.TopgbViewModels.blogId">
+        <member name="P:Blog.Core.Model.ViewModels.TopgbViewModels.blogId">
             <summary>博客ID
             
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.TopgbViewModels.counts">
+        <member name="P:Blog.Core.Model.ViewModels.TopgbViewModels.counts">
             <summary>
             评论数量
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.VeiwModels.TopgbViewModels.btitle">
+        <member name="P:Blog.Core.Model.ViewModels.TopgbViewModels.btitle">
             <summary>博客标题
             
             </summary>

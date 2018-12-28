@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Model.VeiwModels
+namespace Blog.Core.Model.ViewModels
 {
     /// <summary>
     /// 广告类

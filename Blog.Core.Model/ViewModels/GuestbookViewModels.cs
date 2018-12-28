@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blog.Core.Model.Models;
 
-namespace Blog.Core.Model.VeiwModels
+namespace Blog.Core.Model.ViewModels
 {
     /// <summary>
     /// 留言信息展示类

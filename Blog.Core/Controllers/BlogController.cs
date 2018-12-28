@@ -6,7 +6,7 @@ using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
-using Blog.Core.Model.VeiwModels;
+using Blog.Core.Model.ViewModels;
 using Blog.Core.SwaggerHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
