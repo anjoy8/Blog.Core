@@ -1,14 +1,9 @@
 ![Logo](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/logocore.png)
 
 
-从零开始搭建自己的前后端分离【 .NET Core2.1 Api + Vue 2.0 】框架，
-目前是2.2版本，2.0的是这里
-Blog.Core2.0
-https://github.com/anjoy8/Blog.Core2.0
+从零开始搭建自己的前后端分离【 .NET Core2.1 Api + Vue 2.0 】框架，目前是2.2版本，各个版本见分支。
 
-其他的版本在本项目的其他分支里，请根据需要下载。
-
-老张：这只是 .netCore 后端部分，前端部分，请看我的另一个工程
+这只是 .netCore 后端部分，前端部分，请看我的另一个工程Vue
 https://github.com/anjoy8/Blog.Vue
 
 
