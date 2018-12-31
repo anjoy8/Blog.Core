@@ -216,20 +216,36 @@ public static readonly string ConnectionString = File.Exists(@"D:\my-file\dbCoun
 
       * Cors 简单的跨域解决方案
 
-    数据库技术
-
-      * SqlSugar 轻量级ORM框架
+      * AOP基于切面编程技术
 
       * Autofac 轻量级IoC和DI依赖注入
 
+      * Vue 本地代理跨域方案，Nginx跨域代理
+
+      * JWT权限验证
+
+ 
+
+    数据库技术
+
+      * SqlSugar 轻量级ORM框架，CodeFirst
+
+      * T4 模板生成
+
       * AutoMapper 自动对象映射
+
+ 
 
     分布式缓存技术
 
       * Redis 轻量级分布式缓存
 
+ 
+
     前端技术
 
-      * Vue 2.0 框架全家桶 Vue2 + VueRouter2 + Webpack + Axios
+      * Vue 2.0 框架全家桶 Vue2 + VueRouter2 + Webpack + Axios + vue-cli + vuex
 
       * ElementUI 基于Vue 2.0的组件库
+
+      * Nuxt.js服务端渲染SSR
