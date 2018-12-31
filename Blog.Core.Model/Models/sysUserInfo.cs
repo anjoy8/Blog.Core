@@ -1,5 +1,4 @@
-﻿using SqlSugar;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,44 +6,28 @@ using System.Threading.Tasks;
 
 namespace Blog.Core.Model.Models
 {
-    /// <summary>
-    /// 用户信息表
-    /// </summary>
-    public class sysUserInfo
+     public class sysUserInfo
     {
-        public sysUserInfo() { }
-
-        public sysUserInfo(string loginName, string loginPWD)
+        public sysUserInfo()
         {
-            uLoginName = loginName;
-            uLoginPWD = loginPWD;
-            uRealName = uLoginName;
-            uStatus = 0;
-            uCreateTime = DateTime.Now;
-            uUpdateTime = DateTime.Now;
-            uLastErrTime = DateTime.Now;
-            uErrorCount = 0;
-
+            this.UserRole = new List<UserRole>();
+            this.OperateLog = new List<OperateLog>();
         }
         /// <summary>
         /// 用户ID
         /// </summary>
-        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
         public int uID { get; set; }
         /// <summary>
         /// 登录账号
         /// </summary>
-        [SugarColumn(Length = 60, IsNullable = true)]
         public string uLoginName { get; set; }
         /// <summary>
         /// 登录密码
         /// </summary>
-        [SugarColumn(Length = 60, IsNullable = true)]
         public string uLoginPWD { get; set; }
         /// <summary>
         /// 真实姓名
         /// </summary>
-        [SugarColumn(Length = 60, IsNullable = true)]
         public string uRealName { get; set; }
         /// <summary>
         /// 状态
@@ -53,7 +36,6 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 备注
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
         public string uRemark { get; set; }
         /// <summary>
         /// 创建时间
@@ -74,5 +56,7 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public int uErrorCount { get; set; }
 
+        public virtual ICollection<UserRole> UserRole { get; set; }
+        public virtual ICollection<OperateLog> OperateLog { get; set; }
     }
 }

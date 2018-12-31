@@ -1,41 +1,34 @@
-﻿using SqlSugar;
-using System;
+﻿using System;
 
 namespace Blog.Core.Model.Models
 {
-    /// <summary>
-    /// 博客文章
+    /// <summary>博客文章
+    /// 
     /// </summary
     public class BlogArticle
     {
         /// <summary>
-        /// 主键
+        /// 
         /// </summary>
-        /// 这里之所以没用RootEntity，是想保持和之前的数据库一致，主键是bID，不是Id
-        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
         public int bID { get; set; }
         /// <summary>
         /// 创建人
         /// </summary>
-        [SugarColumn(Length = 60, IsNullable = true)]
         public string bsubmitter { get; set; }
 
         /// <summary>
         /// 博客标题
         /// </summary>
-        [SugarColumn(Length = 256, IsNullable = true)]
         public string btitle { get; set; }
 
         /// <summary>
         /// 类别
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
         public string bcategory { get; set; }
 
         /// <summary>
         /// 内容
         /// </summary>
-        [SugarColumn(IsNullable = true, ColumnDataType = "text")]
         public string bcontent { get; set; }
 
         /// <summary>
@@ -60,7 +53,6 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 备注
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
         public string bRemark { get; set; }
     }
 }

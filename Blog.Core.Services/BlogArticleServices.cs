@@ -31,49 +31,57 @@ namespace Blog.Core.Services
         public async Task<BlogViewModels> getBlogDetails(int id)
         {
             var bloglist = await dal.Query(a => a.bID > 0, a => a.bID);
-            var blogArticle = (await dal.Query(a => a.bID == id)).FirstOrDefault();
+            var idmin = bloglist.FirstOrDefault() != null ? bloglist.FirstOrDefault().bID : 0;
+            var idmax = bloglist.LastOrDefault() != null ? bloglist.LastOrDefault().bID : 1;
+            var idminshow = id;
+            var idmaxshow = id;
 
-            BlogViewModels models = null;
+            BlogArticle blogArticle = new BlogArticle();
 
-            if (blogArticle != null)
+            blogArticle = (await dal.Query(a => a.bID == idminshow)).FirstOrDefault();
+
+            BlogArticle prevblog = new BlogArticle();
+
+
+            while (idminshow > idmin)
             {
-                BlogArticle prevblog;
-                BlogArticle nextblog;
-
-
-                int blogIndex = bloglist.FindIndex(item => item.bID == id);
-                if (blogIndex >= 0)
+                idminshow--;
+                prevblog = (await dal.Query(a => a.bID == idminshow)).FirstOrDefault();
+                if (prevblog != null)
                 {
-                    try
-                    {
-                        prevblog = blogIndex > 0 ? (((BlogArticle)(bloglist[blogIndex - 1]))) : null;
-                        nextblog = (BlogArticle)(bloglist[blogIndex + 1]);
-
-
-                        // 注意就是这里,mapper
-                        models = IMapper.Map<BlogViewModels>(blogArticle);
-
-                        if (nextblog != null)
-                        {
-                            models.next = nextblog.btitle;
-                            models.nextID = nextblog.bID;
-                        }
-
-                        if (prevblog != null)
-                        {
-                            models.previous = prevblog.btitle;
-                            models.previousID = prevblog.bID;
-                        }
-
-                    }
-                    catch (Exception) { }
+                    break;
                 }
-
-
-                blogArticle.btraffic += 1;
-                await dal.Update(blogArticle, new List<string> { "btraffic" });
             }
 
+            BlogArticle nextblog = new BlogArticle();
+            while (idmaxshow < idmax)
+            {
+                idmaxshow++;
+                nextblog = (await dal.Query(a => a.bID == idmaxshow)).FirstOrDefault();
+                if (nextblog != null)
+                {
+                    break;
+                }
+            }
+
+
+            blogArticle.btraffic += 1;
+            await dal.Update(blogArticle, new List<string> { "btraffic" });
+
+            //注意就是这里
+            BlogViewModels models = IMapper.Map<BlogViewModels>(blogArticle);
+
+            if (nextblog != null)
+            {
+                models.next = nextblog.btitle;
+                models.nextID = nextblog.bID;
+            }
+
+            if (prevblog != null)
+            {
+                models.previous = prevblog.btitle;
+                models.previousID = prevblog.bID;
+            }
             return models;
 
         }

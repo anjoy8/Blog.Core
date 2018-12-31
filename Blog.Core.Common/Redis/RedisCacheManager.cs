@@ -1,11 +1,16 @@
 ﻿using StackExchange.Redis;
 using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Common
 {
     public class RedisCacheManager : IRedisCacheManager
     {
-
+       
         private readonly string redisConnenctionString;
 
         public volatile ConnectionMultiplexer redisConnection;
@@ -44,15 +49,7 @@ namespace Blog.Core.Common
                     //释放redis连接
                     this.redisConnection.Dispose();
                 }
-                try
-                {
-                    this.redisConnection = ConnectionMultiplexer.Connect(redisConnenctionString);
-                }
-                catch (Exception)
-                {
-
-                    throw new Exception("Redis服务未启用，请开启该服务");
-                }
+                this.redisConnection = ConnectionMultiplexer.Connect(redisConnenctionString);
             }
             return this.redisConnection;
         }
@@ -79,17 +76,6 @@ namespace Blog.Core.Common
         {
             return redisConnection.GetDatabase().KeyExists(key);
         }
-
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public string GetValue(string key)
-        {
-            return redisConnection.GetDatabase().StringGet(key);
-        }
-
         /// <summary>
         /// 获取
         /// </summary>
@@ -103,13 +89,12 @@ namespace Blog.Core.Common
             {
                 //需要用的反序列化，将Redis存储的Byte[]，进行反序列化
                 return SerializeHelper.Deserialize<TEntity>(value);
-            }
-            else
+            } else
             {
                 return default(TEntity);
             }
         }
-
+     
         /// <summary>
         /// 移除
         /// </summary>
@@ -133,16 +118,7 @@ namespace Blog.Core.Common
             }
         }
 
-        /// <summary>
-        /// 增加/修改
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public bool SetValue(string key, byte[] value)
-        {
-            return redisConnection.GetDatabase().StringSet(key, value, TimeSpan.FromSeconds(120));
-        }
 
+        
     }
 }

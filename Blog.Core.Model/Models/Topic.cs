@@ -1,5 +1,4 @@
-﻿using SqlSugar;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,28 +9,19 @@ namespace Blog.Core.Model.Models
     /// <summary>博客文章
     /// 
     /// </summary
-    public class Topic:RootEntity
+    public class Topic
     {
         public Topic()
         {
             this.TopicDetail = new List<TopicDetail>();
             this.tUpdatetime = DateTime.Now;
         }
-        [SugarColumn(Length = 200, IsNullable = true)]
+        public int Id { get; set; }
         public string tLogo { get; set; }
-
-        [SugarColumn(Length = 200, IsNullable = true)]
         public string tName { get; set; }
-
-        [SugarColumn(Length = 400, IsNullable = true)]
         public string tDetail { get; set; }
-
-        [SugarColumn(Length = 200, IsNullable = true)]
         public string tAuthor { get; set; }
-
-        [SugarColumn(Length = 200, IsNullable = true)]
         public string tSectendDetail { get; set; }
-
         public bool tIsDelete { get; set; }
         public int tRead { get; set; }
         public int tCommend { get; set; }
@@ -39,7 +29,6 @@ namespace Blog.Core.Model.Models
         public DateTime tCreatetime { get; set; }
         public DateTime tUpdatetime { get; set; }
 
-        [SugarColumn(IsIgnore = true)]
         public virtual ICollection<TopicDetail> TopicDetail { get; set; }
     }
 }

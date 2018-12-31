@@ -1,20 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\Blog.Core\bin\Debug\</OutputPath>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="sqlSugarCore" Version="4.9.7" />
+    <PackageReference Include="sqlSugarCore" Version="4.6.4.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Blog.Core.IRepository\Blog.Core.IRepository.csproj" />
-    <ProjectReference Include="..\Blog.Core.Model\Blog.Core.Model.csproj" />
   </ItemGroup>
 
 </Project>

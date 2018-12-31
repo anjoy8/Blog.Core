@@ -22,50 +22,9 @@
 
             $("#cors").click(function () {
                 $.get("http://localhost:58427/api/Login/Token", function (data, status) {
-                    console.log(data);
                     $("#status-cors").html("状态: " + status);
                     $("#data-cors").html("数据: " + data);
                 });
-            });
-
-            $("#cors-post").click(function () {
-                let postdata = {
-                    "bID": 10,
-                    "bsubmitter": "222",
-                    "btitle": "33333",
-                    "bcategory": "4444",
-                    "bcontent": "5555",
-                    "btraffic": 0,
-                    "bcommentNum": 0,
-                    "bUpdateTime": "2018-11-08T02:36:26.557Z",
-                    "bCreateTime": "2018-11-08T02:36:26.557Z",
-                    "bRemark": "string"
-                };
-                $.ajax({
-                    type: 'post',
-                    url: 'http://localhost:58427/api/Values',
-                    contentType: 'application/json',
-                    data: JSON.stringify(postdata),
-                    success: function (data, status) {
-                        console.log(data);
-                        $("#status-cors-post").html("状态: " + status);
-                        $("#data-cors-post").html("数据: " + data);
-                    }
-                });
-
-
-
-                //$.ajax({
-                //    type: "POST",
-                //    url: "http://localhost:58427/api/Values",
-                //    success: function (data, status) {
-                //        console.log(data);
-                //        $("#status-cors-post").html("状态: " + status);
-                //        $("#data-cors-post").html("数据: " + data);
-                //    }
-                //});
-
-
             });
 
         });
@@ -89,11 +48,6 @@
 
     <div id="status-cors"></div>
     <div id="data-cors"></div>
-    <hr />
-    <button id="cors-post">发送一个 POST </button>
-
-    <div id="status-cors-post"></div>
-    <div id="data-cors-post"></div>
     <hr />
 </body>
 </html>

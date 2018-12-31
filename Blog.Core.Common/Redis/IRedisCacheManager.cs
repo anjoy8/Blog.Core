@@ -23,7 +23,5 @@ namespace Blog.Core.Common
         void Remove(string key);
         //清除
         void Clear();
-        string GetValue(string key);
-        bool SetValue(string key, byte[] value);
     }
 }

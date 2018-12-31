@@ -1,23 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\Blog.Core\bin\Debug\</OutputPath>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Blog.Core.Common\Blog.Core.Common.csproj" />
     <ProjectReference Include="..\Blog.Core.IRepository\Blog.Core.IRepository.csproj" />
     <ProjectReference Include="..\Blog.Core.IServices\Blog.Core.IServices.csproj" />
-    <ProjectReference Include="..\Blog.Core.Model\Blog.Core.Model.csproj" />
+    <ProjectReference Include="..\Blog.Core.Repository\Blog.Core.Repository.csproj" />
   </ItemGroup>
 
 </Project>
