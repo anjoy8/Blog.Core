@@ -11,7 +11,7 @@ Https://github.com/anjoy8/Blog.Vue
 
 # Give a star!⭐️
 
-If you like this project or it helps you, please give star~ (hard Star)
+If you like this project or it helps you, please give star~ (hard Star yet)
 
 *********************************************************
 # Tips: 
