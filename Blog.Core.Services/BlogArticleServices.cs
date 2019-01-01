@@ -47,7 +47,7 @@ namespace Blog.Core.Services
                     try
                     {
                         prevblog = blogIndex > 0 ? (((BlogArticle)(bloglist[blogIndex - 1]))) : null;
-                        nextblog = (BlogArticle)(bloglist[blogIndex + 1]);
+                        nextblog = blogIndex + 1 < bloglist.Count() ? (BlogArticle)(bloglist[blogIndex + 1]) : null;
 
 
                         // 注意就是这里,mapper
