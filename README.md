@@ -8,6 +8,11 @@
 这只是 .netCore 后端部分，前端部分，请看我的另一个工程Vue
 https://github.com/anjoy8/Blog.Vue
 
+## Nuget Packages
+
+| Package | NuGet Stable |  Downloads |
+| ------- | -------- | ------- |
+| [Blog.Core.Webapi.Template](https://www.nuget.org/packages/Blog.Core.Webapi.Template/) | [![Blog.Core.Webapi.Template](https://img.shields.io/nuget/v/Blog.Core.Webapi.Template.svg)](https://www.nuget.org/packages/Blog.Core.Webapi.Template/)  | [![Blog.Core.Webapi.Template](https://img.shields.io/nuget/dt/Blog.Core.Webapi.Template.svg)](https://www.nuget.org/packages/Blog.Core.Webapi.Template/) |
 
 
 # 给个星星! ⭐️
