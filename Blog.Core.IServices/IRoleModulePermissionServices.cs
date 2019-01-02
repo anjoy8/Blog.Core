@@ -11,6 +11,6 @@ namespace Blog.Core.IServices
     public interface IRoleModulePermissionServices :IBaseServices<RoleModulePermission>
 	{
 
-        Task<List<RoleModulePermission>> GeRoleModule();
+        Task<List<RoleModulePermission>> GetRoleModule();
     }
 }

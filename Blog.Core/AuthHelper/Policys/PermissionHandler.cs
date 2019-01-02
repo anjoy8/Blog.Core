@@ -41,7 +41,7 @@ namespace Blog.Core.AuthHelper
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
             // 将最新的角色和接口列表更新
-            var data = await _roleModulePermissionServices.GeRoleModule();
+            var data = await _roleModulePermissionServices.GetRoleModule();
             var list = (from item in data
                         where item.IsDeleted == false
                         orderby item.Id

@@ -32,7 +32,7 @@ namespace Blog.Core.Services
         /// </summary>
         /// <returns></returns>
         [Caching(AbsoluteExpiration = 10)]
-        public async Task<List<RoleModulePermission>> GeRoleModule()
+        public async Task<List<RoleModulePermission>> GetRoleModule()
         {
             var roleModulePermissions = await dal.Query(a => a.IsDeleted == false);
             if (roleModulePermissions.Count > 0)
