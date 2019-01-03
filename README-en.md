@@ -83,7 +83,7 @@ Blog Park: https://www.cnblogs.com/laozhang-is-phi/
 <li><a id=""post_title_link_9855836"" href=""https://www.cnblogs.com/laozhang-is-phi/p/9855836.html"">35 ║ Perfect Global exception logging</a></li>
 <li><a id=""post_title_link_10139204"" href=""https://www.cnblogs.com/laozhang-is-phi/p/10139204.html"">37║JWT Perfect implementation of the dynamic allocation of permissions and interfaces</a></li>
  <li><a id=""link_post_title"" class=""link-post-title"" href=""https://www.cnblogs.com/laozhang-is-phi/p/10173536.html"">38║ automatically initializes the database</a></li>
-
+<li><a id=""post_title_link_10205495"" href=""https://www.cnblogs.com/laozhang-is-phi/p/10205495.html"">39 | | Want to create your own dotnet template? Look here</a></li>
 
 </ul></li>
 
