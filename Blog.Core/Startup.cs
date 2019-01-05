@@ -58,12 +58,7 @@ namespace Blog.Core
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            //注入全局异常捕获
-            services.AddMvc(o =>
-            {
-                o.Filters.Add(typeof(GlobalExceptionsFilter));
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
+            #region 部分服务注入-netcore自带方法
             //缓存注入
             services.AddScoped<ICaching, MemoryCaching>();
             services.AddSingleton<IMemoryCache>(factory =>
@@ -75,13 +70,12 @@ namespace Blog.Core
             services.AddScoped<IRedisCacheManager, RedisCacheManager>();
             //log日志注入
             services.AddSingleton<ILoggerHelper, LogHelper>();
-
+            #endregion
 
             #region 初始化DB
             services.AddScoped<Blog.Core.Model.Models.DBSeed>();
-            services.AddScoped<Blog.Core.Model.Models.MyContext>(); 
+            services.AddScoped<Blog.Core.Model.Models.MyContext>();
             #endregion
-
 
             #region Automapper
             services.AddAutoMapper(typeof(Startup));
@@ -117,7 +111,16 @@ namespace Blog.Core
             //services.AddCors();
             #endregion
 
+            #region MiniProfiler
+
+            services.AddMiniProfiler(options =>
+                options.RouteBasePath = "/profiler"
+            );
+
+            #endregion
+
             #region Swagger UI Service
+
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
             services.AddSwaggerGen(c =>
             {
@@ -179,6 +182,15 @@ namespace Blog.Core
 
             #endregion
 
+            #region MVC
+
+            //注入全局异常捕获
+            services.AddMvc(o =>
+            {
+                o.Filters.Add(typeof(GlobalExceptionsFilter));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            #endregion
 
             #region JWT Token Service
             //读取配置文件
@@ -222,17 +234,17 @@ namespace Blog.Core
                 audienceConfig["Issuer"],//发行人
                 audienceConfig["Audience"],//听众
                 signingCredentials,//签名凭据
-                expiration: TimeSpan.FromSeconds(60*2)//接口的过期时间
+                expiration: TimeSpan.FromSeconds(60 * 2)//接口的过期时间
                 );
 
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Client", 
+                options.AddPolicy("Client",
                     policy => policy.RequireRole("Client").Build());
-                options.AddPolicy("Admin", 
+                options.AddPolicy("Admin",
                     policy => policy.RequireRole("Admin").Build());
-                options.AddPolicy("SystemOrAdmin", 
+                options.AddPolicy("SystemOrAdmin",
                     policy => policy.RequireRole("Admin", "System"));
 
                 // 自定义权限要求
@@ -296,7 +308,7 @@ namespace Blog.Core
                       .AsImplementedInterfaces()
                       .InstancePerLifetimeScope()
                       .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
-                      // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
+                                                    // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
                       .InterceptedBy(typeof(BlogCacheAOP));//允许将拦截器服务的列表分配给注册。
 
             var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
@@ -332,6 +344,11 @@ namespace Blog.Core
 
             }
 
+
+            #region MiniProfiler
+            app.UseMiniProfiler();
+            #endregion
+
             #region Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -343,10 +360,13 @@ namespace Blog.Core
                 //根据版本名称倒序 遍历展示
                 typeof(ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(version =>
                 {
+                    c.RoutePrefix = "";
                     c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{ApiName} {version}");
+                    c.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html");
                 });
             });
             #endregion
+
 
             #region Authen
             //app.UseMiddleware<JwtTokenAuth>();//注意此授权方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件

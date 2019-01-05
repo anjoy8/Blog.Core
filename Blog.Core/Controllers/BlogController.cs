@@ -11,6 +11,7 @@ using Blog.Core.SwaggerHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StackExchange.Profiling;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
 
 namespace Blog.Core.Controllers
@@ -56,32 +57,44 @@ namespace Blog.Core.Controllers
             int TotalCount = 1;
             List<BlogArticle> blogArticleList = new List<BlogArticle>();
 
-            if (redisCacheManager.Get<object>("Redis.Blog") != null)
+            using (MiniProfiler.Current.Step("开始加载数据："))
             {
-                blogArticleList = redisCacheManager.Get<List<BlogArticle>>("Redis.Blog");
-            }
-            else
-            {
-                blogArticleList = await blogArticleServices.Query(a => a.bcategory == bcategory);
-                redisCacheManager.Set("Redis.Blog", blogArticleList, TimeSpan.FromHours(2));
-            }
+                if (redisCacheManager.Get<object>("Redis.Blog") != null)
+                {
+                    using (MiniProfiler.Current.Step("从Redis服务器中加载数据："))
+                    {
+                        blogArticleList = redisCacheManager.Get<List<BlogArticle>>("Redis.Blog"); 
+                    }
+                }
+                else
+                {
+                    using (MiniProfiler.Current.Step("从MSSQL服务器中加载数据："))
+                    {
+                        blogArticleList = await blogArticleServices.Query(a => a.bcategory == bcategory); 
+                    }
+                    redisCacheManager.Set("Redis.Blog", blogArticleList, TimeSpan.FromHours(2));
+                }
 
+            }
 
             TotalCount = blogArticleList.Count() / intTotalCount;
 
-            blogArticleList = blogArticleList.OrderByDescending(d => d.bID).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
-
-            foreach (var item in blogArticleList)
+            using (MiniProfiler.Current.Step("获取成功后，开始处理最终数据"))
             {
-                if (!string.IsNullOrEmpty(item.bcontent))
+                blogArticleList = blogArticleList.OrderByDescending(d => d.bID).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
+
+                foreach (var item in blogArticleList)
                 {
-                    item.bRemark = (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Length >= 200 ? (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Substring(0, 200) : (HtmlHelper.ReplaceHtmlTag(item.bcontent));
-                    int totalLength = 500;
-                    if (item.bcontent.Length > totalLength)
+                    if (!string.IsNullOrEmpty(item.bcontent))
                     {
-                        item.bcontent = item.bcontent.Substring(0, totalLength);
+                        item.bRemark = (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Length >= 200 ? (HtmlHelper.ReplaceHtmlTag(item.bcontent)).Substring(0, 200) : (HtmlHelper.ReplaceHtmlTag(item.bcontent));
+                        int totalLength = 500;
+                        if (item.bcontent.Length > totalLength)
+                        {
+                            item.bcontent = item.bcontent.Substring(0, totalLength);
+                        }
                     }
-                }
+                } 
             }
 
             return Ok(new
