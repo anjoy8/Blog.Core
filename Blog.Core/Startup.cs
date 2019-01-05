@@ -360,10 +360,10 @@ namespace Blog.Core
                 //根据版本名称倒序 遍历展示
                 typeof(ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(version =>
                 {
-                    c.RoutePrefix = "";
                     c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{ApiName} {version}");
-                    c.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html");
                 });
+                c.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html");
+                c.RoutePrefix = "";
             });
             #endregion
 
