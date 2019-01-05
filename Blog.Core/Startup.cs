@@ -142,6 +142,8 @@ namespace Blog.Core
                         TermsOfService = "None",
                         Contact = new Contact { Name = "Blog.Core", Email = "Blog.Core@xxx.com", Url = "https://www.jianshu.com/u/94102b59cc2a" }
                     });
+                    // 按相对路径排序，作者：Alby
+                    c.OrderActionsBy(o => o.RelativePath);
                 });
 
 
