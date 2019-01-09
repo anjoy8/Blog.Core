@@ -8,19 +8,26 @@
 这只是 .netCore 后端部分，前端部分，请看我的另一个工程Vue
 https://github.com/anjoy8/Blog.Vue
 
+```
+```
+
 ## Nuget Packages
 
 | Package | NuGet Stable |  Downloads |
 | ------- | -------- | ------- |
 | [Blog.Core.Webapi.Template](https://www.nuget.org/packages/Blog.Core.Webapi.Template/) | [![Blog.Core.Webapi.Template](https://img.shields.io/nuget/v/Blog.Core.Webapi.Template.svg)](https://www.nuget.org/packages/Blog.Core.Webapi.Template/)  | [![Blog.Core.Webapi.Template](https://img.shields.io/nuget/dt/Blog.Core.Webapi.Template.svg)](https://www.nuget.org/packages/Blog.Core.Webapi.Template/) |
 
+```
+```
 
 ## 给个星星! ⭐️
 如果你喜欢这个项目或者它帮助你, 请给 Star~（辛苦星咯）
 
 *********************************************************
 
-# Tips：
+## Tips：
+```
+
 1【重要】、Blog.Core.FrameWork 项目是用T4模板生成文件的简单实现。如果有错误，可以联系我，
 QQ群：867095512
 如果你不想处理这个错误，你可以先把项目卸载，不影响整体运行。
@@ -37,6 +44,7 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 4、如果你不想用CodeFirst 和种子数据，可以用数据库表结构Sql文件在数据库里执行，
 在Blog.Core 项目下的 wwwroot 文件夹中。
 
+```
 *********************************************************
 ### 修改数据库连接字符串
 
@@ -64,10 +72,12 @@ File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim(): "server=.;uid=sa;pwd=sa;
  
  码云：https://gitee.com/laozhangIsPhi/Blog.Core
 
+```
+```
+
 
 <div class="allindex">
-<h1 id="allindex">目录</h1>
-<h2 id="abp框架学习目录如下">老张 .NetCore与Vue 框架学习目录如下</h2>
+<h2 id="abp框架学习目录如下">.NetCore与Vue 框架学习目录如下</h2>
 <ul>
 <li>
 <h3 id="autoid-2-1-0">后端 .net core 概览</h3>
