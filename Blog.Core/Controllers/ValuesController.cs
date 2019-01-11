@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -23,15 +24,18 @@ namespace Blog.Core.Controllers
     public class ValuesController : ControllerBase
     {
         private IMapper _mapper;
+        private IAdvertisementServices _advertisementServices;
 
         /// <summary>
         /// ValuesController
         /// </summary>
         /// <param name="mapper"></param>
-        public ValuesController(IMapper mapper)
+        /// <param name="advertisementServices"></param>
+        public ValuesController(IMapper mapper, IAdvertisementServices advertisementServices)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
+            _advertisementServices = advertisementServices;
         }
         /// <summary>
         /// Get方法
