@@ -317,6 +317,12 @@
             Values控制器
             </summary>
         </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(AutoMapper.IMapper)">
+            <summary>
+            ValuesController
+            </summary>
+            <param name="mapper"></param>
+        </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get">
             <summary>
             Get方法

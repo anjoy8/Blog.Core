@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +22,17 @@ namespace Blog.Core.Controllers
     [Authorize("Permission")]
     public class ValuesController : ControllerBase
     {
+        private IMapper _mapper;
+
+        /// <summary>
+        /// ValuesController
+        /// </summary>
+        /// <param name="mapper"></param>
+        public ValuesController(IMapper mapper)
+        {
+            // 测试 Authorize 和 mapper
+            _mapper = mapper;
+        }
         /// <summary>
         /// Get方法
         /// </summary>
