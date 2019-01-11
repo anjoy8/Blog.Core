@@ -261,19 +261,18 @@ namespace Blog.Core
             .AddJwtBearer(o =>
             {
                 o.TokenValidationParameters = tokenValidationParameters;
-                //o.TokenValidationParameters = new TokenValidationParameters
-                //{
-                //    ValidateIssuer = true,//是否验证Issuer
-                //    ValidateAudience = true,//是否验证Audience 
-                //    ValidateIssuerSigningKey = true,//是否验证IssuerSigningKey 
-                //    ValidIssuer = "Blog.Core",
-                //    ValidAudience = "wr",
-                //    ValidateLifetime = true,//是否验证超时  当设置exp和nbf时有效 同时启用ClockSkew 
-                //    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtHelper.secretKey)),
-                //    //注意这是缓冲过期时间，总的有效时间等于这个时间加上jwt的过期时间
-                //    ClockSkew = TimeSpan.FromSeconds(30)
-
-                //};
+                o.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        // 如果过期，则把<是否过期>添加到，返回头信息中
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
 
