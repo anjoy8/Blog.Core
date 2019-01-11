@@ -27,45 +27,58 @@ namespace Blog.Core.Controllers
             return "value";
         }
 
-      
+
         [HttpPost]
         [Route("Pic")]
-        public async Task<bool> InsertPicture([FromServices]IHostingEnvironment environment)
+        public async Task<PicData> InsertPicture([FromServices]IHostingEnvironment environment)
         {
             var data = new PicData();
             string path = string.Empty;
+            string foldername = "images";
             var files = Request.Form.Files;
-            if (files == null || files.Count() <= 0) { data.Msg = "请选择上传的文件。"; return false; }
+            if (files == null || files.Count() <= 0) { data.Msg = "请选择上传的文件。"; return data; }
             //格式限制
             var allowType = new string[] { "image/jpg", "image/png", "image/jpeg" };
+
+            string folderpath = Path.Combine(environment.WebRootPath, foldername);
+            if (!System.IO.Directory.Exists(folderpath))
+            {
+                System.IO.Directory.CreateDirectory(folderpath);
+            }
+
             if (files.Any(c => allowType.Contains(c.ContentType)))
             {
                 if (files.Sum(c => c.Length) <= 1024 * 1024 * 4)
                 {
-                    foreach (var file in files)
-                    {
-                        string strpath = Path.Combine("Upload", DateTime.Now.ToString("MMddHHmmss") + file.FileName);
-                        path = Path.Combine(environment.WebRootPath, strpath);
+                    //foreach (var file in files)
+                    var file = files.FirstOrDefault();
+                    string strpath = Path.Combine(foldername, DateTime.Now.ToString("MMddHHmmss") + file.FileName);
+                    path = Path.Combine(environment.WebRootPath, strpath);
 
-                        using (var stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
+                    using (var stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                    {
+                        await file.CopyToAsync(stream);
                     }
-                    data.Msg = "上传成功";
-                    return true;
+
+                    data = new PicData()
+                    {
+                        Url = strpath,
+                        Msg = "上传成功",
+                        Suc = true,
+                    };
+                    return data;
                 }
                 else
                 {
                     data.Msg = "图片过大";
-                    return false;
+                    return data;
                 }
             }
             else
 
             {
                 data.Msg = "图片格式错误";
-                return false;
+                return data;
             }
         }
 
@@ -90,6 +103,8 @@ namespace Blog.Core.Controllers
     }
     public class PicData
     {
-        public string Msg { get; set; }
+        public string Url { get; set; } = "";
+        public string Msg { get; set; } = "上传失败";
+        public bool Suc { get; set; } = false;
     }
 }
