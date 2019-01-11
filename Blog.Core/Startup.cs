@@ -265,7 +265,6 @@ namespace Blog.Core
                 {
                     OnAuthenticationFailed = context =>
                     {
-                        // 作者：Alby
                         // 如果过期，则把<是否过期>添加到，返回头信息中
                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                         {
