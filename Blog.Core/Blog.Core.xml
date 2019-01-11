@@ -317,11 +317,12 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(AutoMapper.IMapper)">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices)">
             <summary>
             ValuesController
             </summary>
             <param name="mapper"></param>
+            <param name="advertisementServices"></param>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get">
             <summary>
