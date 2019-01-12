@@ -276,6 +276,14 @@
             <param name="expiresAbsoulute"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.TopicDetailController.Get(System.Int32,System.String)">
+            <summary>
+            获取Bug数据列表（带分页）
+            </summary>
+            <param name="page">页数</param>
+            <param name="tname">专题类型</param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.UserRoleController">
             <summary>
             用户权限控制器所有接口

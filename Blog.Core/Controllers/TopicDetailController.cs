@@ -23,12 +23,19 @@ namespace Blog.Core.Controllers
             _topicDetailServices = topicDetailServices;
         }
 
-        // GET: api/TopicDetail
+        /// <summary>
+        /// 获取Bug数据列表（带分页）
+        /// </summary>
+        /// <param name="page">页数</param>
+        /// <param name="tname">专题类型</param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<object> Get(int page = 1, string tname = "")
+        public async Task<MessageModel<PageModel<TopicDetail>>> Get(int page = 1, string tname = "")
         {
+            var data = new MessageModel<PageModel<TopicDetail>>();
             int intTotalCount = 6;
-            int TotalCount = 1;
+            int TotalCount = 0;
+            int PageCount = 1;
             List<TopicDetail> topicDetails = new List<TopicDetail>();
 
             topicDetails = await _topicDetailServices.Query(a => !a.tdIsDelete && a.tdSectendDetail == "tbug");
@@ -37,16 +44,27 @@ namespace Blog.Core.Controllers
                 var tid = (await _topicServices.Query(ts => ts.tName == tname)).FirstOrDefault()?.Id.ObjToInt();
                 topicDetails = topicDetails.Where(t => t.TopicId == tid).ToList();
             }
+            //数据总数
+            TotalCount = topicDetails.Count;
+
+            //总页数
+            PageCount = (Math.Ceiling(topicDetails.Count.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
 
             topicDetails = topicDetails.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
 
-            return Ok(new
+            return new MessageModel<PageModel<TopicDetail>>()
             {
-                success = true,
-                page = page,
-                pageCount = TotalCount,
-                Article = topicDetails
-            });
+                Msg = "获取成功",
+                Success = topicDetails.Count >= 0,
+                Response = new PageModel<TopicDetail>()
+                {
+                    page = page,
+                    pageCount = PageCount,
+                    dataCount = TotalCount,
+                    data = topicDetails,
+                }
+            };
+
         }
 
         // GET: api/TopicDetail/5
