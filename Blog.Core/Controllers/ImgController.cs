@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Core.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +31,9 @@ namespace Blog.Core.Controllers
 
         [HttpPost]
         [Route("Pic")]
-        public async Task<PicData> InsertPicture([FromServices]IHostingEnvironment environment)
+        public async Task<MessageModel<string>> InsertPicture([FromServices]IHostingEnvironment environment)
         {
-            var data = new PicData();
+            var data = new MessageModel<string>();
             string path = string.Empty;
             string foldername = "images";
             var files = Request.Form.Files;
@@ -60,11 +61,11 @@ namespace Blog.Core.Controllers
                         await file.CopyToAsync(stream);
                     }
 
-                    data = new PicData()
+                    data = new MessageModel<string>()
                     {
-                        Url = strpath,
+                        Response = strpath,
                         Msg = "上传成功",
-                        Suc = true,
+                        Success = true,
                     };
                     return data;
                 }
@@ -101,10 +102,5 @@ namespace Blog.Core.Controllers
         {
         }
     }
-    public class PicData
-    {
-        public string Url { get; set; } = "";
-        public string Msg { get; set; } = "上传失败";
-        public bool Suc { get; set; } = false;
-    }
+  
 }

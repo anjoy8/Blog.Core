@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.IServices;
+using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -50,15 +51,52 @@ namespace Blog.Core.Controllers
 
         // GET: api/TopicDetail/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<MessageModel<TopicDetail>> Get(int id)
         {
-            return "value";
+            var data = new MessageModel<TopicDetail>();
+            data.Response = await _topicDetailServices.QueryByID(id);
+            if (data.Response != null)
+            {
+                data.Success = true;
+                data.Msg = "";
+            }
+
+            return data;
         }
 
         // POST: api/TopicDetail
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<MessageModel<string>> Post([FromBody] TopicDetail topicDetail)
         {
+            var data = new MessageModel<string>();
+
+            if (topicDetail != null && topicDetail.Id > 0)
+            {
+                data.Success = await _topicDetailServices.Update(topicDetail);
+                if (data.Success)
+                {
+                    data.Msg = "更新成功";
+                    data.Response = topicDetail?.Id.ObjToString();
+                }
+            }
+            else
+            {
+                topicDetail.tdCreatetime = DateTime.Now;
+                topicDetail.tdRead = 0;
+                topicDetail.tdCommend = 0;
+                topicDetail.tdGood = 0;
+                topicDetail.tdTop = 0;
+
+                var id = (await _topicDetailServices.Add(topicDetail));
+                data.Success = id > 0;
+                if (data.Success)
+                {
+                    data.Response = id.ObjToString();
+                    data.Msg = "添加成功";
+                }
+            }
+
+            return data;
         }
 
         // PUT: api/TopicDetail/5

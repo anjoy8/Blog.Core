@@ -39,7 +39,7 @@
             返回信息
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.MessageModel`1.Data">
+        <member name="P:Blog.Core.Model.MessageModel`1.Response">
             <summary>
             返回数据集合
             </summary>

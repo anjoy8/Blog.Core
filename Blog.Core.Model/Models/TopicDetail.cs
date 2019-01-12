@@ -20,7 +20,7 @@ namespace Blog.Core.Model.Models
         public int TopicId { get; set; }
 
         [SugarColumn(Length = 200, IsNullable = true)]
-        public string tdLogo { get; set; }
+        public string tdLogo { get; set; } 
 
         [SugarColumn(Length = 200, IsNullable = true)]
         public string tdName { get; set; }
@@ -34,7 +34,7 @@ namespace Blog.Core.Model.Models
         [SugarColumn(Length = 200, IsNullable = true)]
         public string tdSectendDetail { get; set; }
 
-        public bool tdIsDelete { get; set; }
+        public bool tdIsDelete { get; set; } = false;
         public int tdRead { get; set; }
         public int tdCommend { get; set; }
         public int tdGood { get; set; }
