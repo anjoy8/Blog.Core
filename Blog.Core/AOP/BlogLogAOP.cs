@@ -31,6 +31,7 @@ namespace Blog.Core.AOP
             }
             catch (Exception e)
             {
+                //执行的 service 中，出现异常
                 dataIntercept += ($"方法执行中出现异常：{e.Message+e.InnerException}");
             }
 
