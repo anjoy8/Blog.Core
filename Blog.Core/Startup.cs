@@ -308,7 +308,7 @@ namespace Blog.Core
                       .InstancePerLifetimeScope()
                       .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
                                                     // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
-                      .InterceptedBy(typeof(BlogCacheAOP),typeof(BlogLogAOP));//允许将拦截器服务的列表分配给注册。
+                      .InterceptedBy(typeof(BlogCacheAOP));//允许将拦截器服务的列表分配给注册。
 
             var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
             var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
