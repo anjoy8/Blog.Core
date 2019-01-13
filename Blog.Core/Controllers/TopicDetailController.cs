@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ namespace Blog.Core.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Permission")]
     public class TopicDetailController : ControllerBase
     {
         ITopicServices _topicServices;
@@ -30,6 +32,7 @@ namespace Blog.Core.Controllers
         /// <param name="tname">专题类型</param>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<MessageModel<PageModel<TopicDetail>>> Get(int page = 1, string tname = "")
         {
             var data = new MessageModel<PageModel<TopicDetail>>();
@@ -69,6 +72,7 @@ namespace Blog.Core.Controllers
 
         // GET: api/TopicDetail/5
         [HttpGet("{id}")]
+        //[AllowAnonymous]
         public async Task<MessageModel<TopicDetail>> Get(int id)
         {
             var data = new MessageModel<TopicDetail>();
@@ -84,10 +88,34 @@ namespace Blog.Core.Controllers
 
         // POST: api/TopicDetail
         [HttpPost]
+        [AllowAnonymous]
         public async Task<MessageModel<string>> Post([FromBody] TopicDetail topicDetail)
         {
             var data = new MessageModel<string>();
 
+            topicDetail.tdCreatetime = DateTime.Now;
+            topicDetail.tdRead = 0;
+            topicDetail.tdCommend = 0;
+            topicDetail.tdGood = 0;
+            topicDetail.tdTop = 0;
+
+            var id = (await _topicDetailServices.Add(topicDetail));
+            data.Success = id > 0;
+            if (data.Success)
+            {
+                data.Response = id.ObjToString();
+                data.Msg = "添加成功";
+            }
+
+            return data;
+        }
+
+        // PUT: api/TopicDetail/5
+        [HttpPut]
+        [Route("update")]
+        public async Task<MessageModel<string>> Put(int id, [FromBody] TopicDetail topicDetail)
+        {
+            var data = new MessageModel<string>();
             if (topicDetail != null && topicDetail.Id > 0)
             {
                 data.Success = await _topicDetailServices.Update(topicDetail);
@@ -97,30 +125,8 @@ namespace Blog.Core.Controllers
                     data.Response = topicDetail?.Id.ObjToString();
                 }
             }
-            else
-            {
-                topicDetail.tdCreatetime = DateTime.Now;
-                topicDetail.tdRead = 0;
-                topicDetail.tdCommend = 0;
-                topicDetail.tdGood = 0;
-                topicDetail.tdTop = 0;
-
-                var id = (await _topicDetailServices.Add(topicDetail));
-                data.Success = id > 0;
-                if (data.Success)
-                {
-                    data.Response = id.ObjToString();
-                    data.Msg = "添加成功";
-                }
-            }
 
             return data;
-        }
-
-        // PUT: api/TopicDetail/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
         }
 
         // DELETE: api/ApiWithActions/5
