@@ -24,8 +24,15 @@ namespace Blog.Core.AOP
                 $"当前执行方法：{ invocation.Method.Name} " +
                 $"参数是： {string.Join(", ", invocation.Arguments.Select(a => (a ?? "").ToString()).ToArray())} \r\n";
 
-            //在被拦截的方法执行完毕后 继续执行当前方法，注意是被拦截的是异步的
-            invocation.Proceed();
+            try
+            {
+                //在被拦截的方法执行完毕后 继续执行当前方法，注意是被拦截的是异步的
+                invocation.Proceed();
+            }
+            catch (Exception e)
+            {
+                dataIntercept += ($"方法执行中出现异常：{e.Message+e.InnerException}");
+            }
 
             dataIntercept += ($"方法执行完毕，返回结果：{invocation.ReturnValue}");
 
@@ -40,6 +47,7 @@ namespace Blog.Core.AOP
 
             StreamWriter sw = File.AppendText(fileName);
             sw.WriteLine(dataIntercept);
+            sw.WriteLine();
             sw.Close(); 
             #endregion
 

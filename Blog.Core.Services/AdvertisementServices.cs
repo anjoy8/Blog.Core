@@ -20,6 +20,15 @@ namespace Blog.Core.Services
             base.baseDal = dal;
         }
 
+        public void ReturnExp()
+        {
+
+            int a = 1;
+            int b = 0;
+
+            int c = a / b;
+        }
+
         //public IAdvertisementRepository dal = new AdvertisementRepository();
         //public int Sum(int i, int j)
         //{

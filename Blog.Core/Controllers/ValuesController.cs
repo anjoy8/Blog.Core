@@ -45,6 +45,8 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
+            _advertisementServices.ReturnExp();
+
             return new string[] { "value1", "value2" };
         }
         /// <summary>
