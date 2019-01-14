@@ -72,7 +72,7 @@ namespace Blog.Core.Controllers
 
         // GET: api/TopicDetail/5
         [HttpGet("{id}")]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public async Task<MessageModel<TopicDetail>> Get(int id)
         {
             var data = new MessageModel<TopicDetail>();
