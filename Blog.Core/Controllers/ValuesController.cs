@@ -25,17 +25,19 @@ namespace Blog.Core.Controllers
     {
         private IMapper _mapper;
         private IAdvertisementServices _advertisementServices;
+        private Love _love;
 
         /// <summary>
         /// ValuesController
         /// </summary>
         /// <param name="mapper"></param>
         /// <param name="advertisementServices"></param>
-        public ValuesController(IMapper mapper, IAdvertisementServices advertisementServices)
+        public ValuesController(IMapper mapper, IAdvertisementServices advertisementServices, Love love)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
             _advertisementServices = advertisementServices;
+            _love = love;
         }
         /// <summary>
         /// Get方法
@@ -43,11 +45,13 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public async Task<MessageModel<ResponseEnum>> Get()
         {
+            var data = new MessageModel<ResponseEnum>();
+
             _advertisementServices.ReturnExp();
 
-            return new string[] { "value1", "value2" };
+            return data;
         }
         /// <summary>
         /// Get(int id)方法
@@ -59,6 +63,8 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public ActionResult<string> Get(int id)
         {
+            var loveu = _love.SayLoveU();
+
             return "value";
         }
         /// <summary>

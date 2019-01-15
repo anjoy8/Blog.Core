@@ -113,6 +113,7 @@ namespace Blog.Core.Controllers
         // PUT: api/TopicDetail/5
         [HttpPut]
         [Route("update")]
+        [AllowAnonymous]
         public async Task<MessageModel<string>> Put(int id, [FromBody] TopicDetail topicDetail)
         {
             var data = new MessageModel<string>();

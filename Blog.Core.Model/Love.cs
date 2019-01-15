@@ -7,6 +7,10 @@ namespace Blog.Core.Model
     /// </summary>
     public class Love
     {
+        public virtual string SayLoveU()
+        {
+            return "I ♥ U";
+        }
         /// <summary>
         /// id
         /// </summary>

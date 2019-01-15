@@ -325,7 +325,7 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices)">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love)">
             <summary>
             ValuesController
             </summary>

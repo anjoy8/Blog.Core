@@ -15,6 +15,7 @@ using Blog.Core.AuthHelper;
 using Blog.Core.Common;
 using Blog.Core.Filter;
 using Blog.Core.Log;
+using Blog.Core.Model;
 using log4net;
 using log4net.Config;
 using log4net.Repository;
@@ -151,8 +152,6 @@ namespace Blog.Core
 
 
                 //就是这里
-
-
                 var xmlPath = Path.Combine(basePath, "Blog.Core.xml");//这个就是刚刚配置的xml文件名
                 c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
 
@@ -290,13 +289,9 @@ namespace Blog.Core
             builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
             builder.RegisterType<BlogLogAOP>();//这样可以注入第二个
 
-            //var assemblysServices1 = Assembly.Load("Blog.Core.Services");
-
-
             // ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
-            // ※※★※※ 因为解耦，bin文件夹没有以下两个dll文件，会报错，所以先编译生成这两个dll ※※★※※
 
-
+            #region Service.dll 注入，有对应接口
             //获取项目绝对路径，请注意，这个是实现类的dll文件，不是接口 IService.dll ，注入容器当然是Activatore
             var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
             var assemblysServices = Assembly.LoadFile(servicesDllFile);//直接采用加载文件的方法
@@ -308,11 +303,34 @@ namespace Blog.Core
                       .InstancePerLifetimeScope()
                       .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
                                                     // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
-                      .InterceptedBy(typeof(BlogCacheAOP));//允许将拦截器服务的列表分配给注册。
+                      .InterceptedBy(typeof(BlogCacheAOP));//允许将拦截器服务的列表分配给注册。 
+            #endregion
 
+            #region Repository.dll 注入，有对应接口
             var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
             var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
             builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
+            #endregion
+
+            #region 其他注入
+
+            #region 没有接口的 dll 层注入
+
+            ////因为没有接口层，所以不能实现解耦，只能用 Load 方法。
+            ////var assemblysServicesNoInterfaces = Assembly.Load("Blog.Core.Services");
+            ////builder.RegisterAssemblyTypes(assemblysServicesNoInterfaces);
+
+            #endregion
+
+            #region 没有接口的单独类 class 注入
+            ////只能注入该类中的虚方法
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Love)))
+                .EnableClassInterceptors()
+                .InterceptedBy(typeof(BlogLogAOP));
+
+            #endregion
+
+            #endregion
 
             //将services填充到Autofac容器生成器中
             builder.Populate(services);
