@@ -114,7 +114,7 @@ namespace Blog.Core.Controllers
         [HttpPut]
         [Route("update")]
         [AllowAnonymous]
-        public async Task<MessageModel<string>> Put(int id, [FromBody] TopicDetail topicDetail)
+        public async Task<MessageModel<string>> Put([FromBody] TopicDetail topicDetail)
         {
             var data = new MessageModel<string>();
             if (topicDetail != null && topicDetail.Id > 0)
