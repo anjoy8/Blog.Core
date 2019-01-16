@@ -39,15 +39,18 @@ namespace Blog.Core.AuthHelper
             //var tokenHeader = httpContext.Request.Headers["Authorization"].ToString();
             var tokenHeader = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            TokenModelJWT tm = JwtHelper.SerializeJWT(tokenHeader);
+            if (tokenHeader.Length >= 128)
+            {
+                TokenModelJWT tm = JwtHelper.SerializeJWT(tokenHeader);
 
-            //授权
-            var claimList = new List<Claim>();
-            var claim = new Claim(ClaimTypes.Role, tm.Role);
-            claimList.Add(claim);
-            var identity = new ClaimsIdentity(claimList);
-            var principal = new ClaimsPrincipal(identity);
-            httpContext.User = principal;
+                //授权
+                var claimList = new List<Claim>();
+                var claim = new Claim(ClaimTypes.Role, tm.Role);
+                claimList.Add(claim);
+                var identity = new ClaimsIdentity(claimList);
+                var principal = new ClaimsPrincipal(identity);
+                httpContext.User = principal;
+            }
 
             return _next(httpContext);
         }

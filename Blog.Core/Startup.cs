@@ -233,7 +233,7 @@ namespace Blog.Core
                 audienceConfig["Issuer"],//发行人
                 audienceConfig["Audience"],//听众
                 signingCredentials,//签名凭据
-                expiration: TimeSpan.FromSeconds(60 * 2)//接口的过期时间
+                expiration: TimeSpan.FromSeconds(60 * 10)//接口的过期时间
                 );
 
 
@@ -347,6 +347,7 @@ namespace Blog.Core
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            #region Environment
             if (env.IsDevelopment())
             {
                 // 在开发环境中，使用异常页面，这样可以暴露错误堆栈信息，所以不要放在生产环境。
@@ -359,8 +360,8 @@ namespace Blog.Core
                 // 强制实施 HTTPS 在 ASP.NET Core，配合 app.UseHttpsRedirection
                 //app.UseHsts();
 
-            }
-
+            } 
+            #endregion
 
             #region MiniProfiler
             app.UseMiniProfiler();
@@ -384,10 +385,9 @@ namespace Blog.Core
             });
             #endregion
 
-
             #region Authen
 
-            // app.UseMiddleware<JwtTokenAuth>();//此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件
+            //app.UseMiddleware<JwtTokenAuth>();//此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件
 
             // 如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务
             // .AddAuthentication 和 .AddJwtBearer 二者缺一不可

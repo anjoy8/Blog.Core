@@ -127,19 +127,29 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("JWTToken3.0")]
-        public async Task<object> GetJWTToken3(string name, string pass)
+        public async Task<object> GetJWTToken3(string name = "", string pass = "")
         {
             string jwtStr = string.Empty;
             bool suc = false;
 
-            var user = await sysUserInfoServices.GetUserRoleNameStr(name, pass);
-            if (user != null)
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(pass))
             {
+                return new JsonResult(new
+                {
+                    Status = false,
+                    Message = "用户名或密码不能为空"
+                });
+            }
+
+            var user = await sysUserInfoServices.Query(d => d.uLoginName == name && d.uLoginPWD == pass);
+            if (user.Count > 0)
+            {
+                var userRoles = await sysUserInfoServices.GetUserRoleNameStr(name, pass);
                 //如果是基于用户的授权策略，这里要添加用户;如果是基于角色的授权策略，这里要添加角色
                 var claims = new List<Claim> {
                     new Claim(ClaimTypes.Name, name),
                     new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString()) };
-                claims.AddRange(user.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));
+                claims.AddRange(userRoles.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));
 
                 //用户标识
                 var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
@@ -152,7 +162,7 @@ namespace Blog.Core.Controllers
             {
                 return new JsonResult(new
                 {
-                    Status = false,
+                    success = false,
                     Message = "认证失败"
                 });
             }
