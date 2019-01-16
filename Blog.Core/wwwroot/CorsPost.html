@@ -15,16 +15,16 @@
         $(document).ready(function () {
             $("#jsonp").click(function () {
 
-                $.getJSON("http://localhost:58427/api/Login/jsonp?callBack=?", function (data) {
+                $.getJSON("/api/Login/jsonp?callBack=?", function (data) {
                     $("#data-jsonp").html("数据: " + data.value);
                 });
             });
 
             $("#cors").click(function () {
-                $.get("http://localhost:58427/api/Login/Token", function (data, status) {
+                $.get("/api/Login/Token", function (data, status) {
                     console.log(data);
                     $("#status-cors").html("状态: " + status);
-                    $("#data-cors").html("数据: " + data);
+                    $("#data-cors").html("数据: " + data? data.token:"失败");
                 });
             });
 
@@ -43,13 +43,13 @@
                 };
                 $.ajax({
                     type: 'post',
-                    url: 'http://localhost:58427/api/Values',
+                    url: '/api/Values',
                     contentType: 'application/json',
                     data: JSON.stringify(postdata),
                     success: function (data, status) {
                         console.log(data);
                         $("#status-cors-post").html("状态: " + status);
-                        $("#data-cors-post").html("数据: " + data);
+                        $("#data-cors-post").html("数据: " + JSON.stringify(data));
                     }
                 });
 
@@ -57,7 +57,7 @@
 
                 //$.ajax({
                 //    type: "POST",
-                //    url: "http://localhost:58427/api/Values",
+                //    url: "/api/Values",
                 //    success: function (data, status) {
                 //        console.log(data);
                 //        $("#status-cors-post").html("状态: " + status);
@@ -81,6 +81,7 @@
     <hr />
 
     <h3>添加请求头实现跨域</h3>
+    无
     <hr />
 
 
