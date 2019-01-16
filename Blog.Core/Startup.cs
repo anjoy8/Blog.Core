@@ -223,7 +223,7 @@ namespace Blog.Core
             //              };
 
             // 如果要数据库动态绑定，这里先留个空，后边处理器里动态赋值
-            var permission = new List<Permission>();
+            var permission = new List<PermissionItem>();
 
             // 角色与接口的权限要求参数
             var permissionRequirement = new PermissionRequirement(

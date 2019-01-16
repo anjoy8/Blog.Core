@@ -100,21 +100,6 @@
             <param name="permissionRequirement">在startup中定义的参数</param>
             <returns></returns>
         </member>
-        <member name="T:Blog.Core.AuthHelper.Permission">
-            <summary>
-            用户或角色或其他凭据实体
-            </summary>
-        </member>
-        <member name="P:Blog.Core.AuthHelper.Permission.Role">
-            <summary>
-            用户或角色或其他凭据名称
-            </summary>
-        </member>
-        <member name="P:Blog.Core.AuthHelper.Permission.Url">
-            <summary>
-            请求Url
-            </summary>
-        </member>
         <member name="T:Blog.Core.AuthHelper.PermissionHandler">
             <summary>
             权限授权处理器
@@ -137,16 +122,33 @@
             <param name="schemes"></param>
             <param name="roleModulePermissionServices"></param>
         </member>
+        <member name="T:Blog.Core.AuthHelper.PermissionItem">
+            <summary>
+            用户或角色或其他凭据实体,就像是订单详情一样
+            之前的名字是 Permission
+            </summary>
+        </member>
+        <member name="P:Blog.Core.AuthHelper.PermissionItem.Role">
+            <summary>
+            用户或角色或其他凭据名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.AuthHelper.PermissionItem.Url">
+            <summary>
+            请求Url
+            </summary>
+        </member>
         <member name="T:Blog.Core.AuthHelper.PermissionRequirement">
             <summary>
-            必要参数类，
+            必要参数类，类似一个订单信息
             继承 IAuthorizationRequirement，用于设计自定义权限处理器PermissionHandler
             因为AuthorizationHandler 中的泛型参数 TRequirement 必须继承 IAuthorizationRequirement
             </summary>
         </member>
         <member name="P:Blog.Core.AuthHelper.PermissionRequirement.Permissions">
             <summary>
-            用户权限集合
+            用户权限集合，一个订单包含了很多详情，
+            同理，一个网站的认证发行中，也有很多权限详情(这里是Role和URL的关系)
             </summary>
         </member>
         <member name="P:Blog.Core.AuthHelper.PermissionRequirement.DeniedAction">
@@ -184,7 +186,7 @@
             签名验证
             </summary>
         </member>
-        <member name="M:Blog.Core.AuthHelper.PermissionRequirement.#ctor(System.String,System.Collections.Generic.List{Blog.Core.AuthHelper.Permission},System.String,System.String,System.String,Microsoft.IdentityModel.Tokens.SigningCredentials,System.TimeSpan)">
+        <member name="M:Blog.Core.AuthHelper.PermissionRequirement.#ctor(System.String,System.Collections.Generic.List{Blog.Core.AuthHelper.PermissionItem},System.String,System.String,System.String,Microsoft.IdentityModel.Tokens.SigningCredentials,System.TimeSpan)">
             <summary>
             构造
             </summary>

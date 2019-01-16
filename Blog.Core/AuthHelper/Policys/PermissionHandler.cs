@@ -1,10 +1,8 @@
 ﻿using Blog.Core.IServices;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -45,7 +43,7 @@ namespace Blog.Core.AuthHelper
             var list = (from item in data
                         where item.IsDeleted == false
                         orderby item.Id
-                        select new Permission
+                        select new PermissionItem
                         {
                             Url = item.Module?.LinkUrl,
                             Role = item.Role?.Name,
