@@ -30,6 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Profiling.Storage;
 using Swashbuckle.AspNetCore.Swagger;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
 
@@ -115,7 +116,11 @@ namespace Blog.Core
             #region MiniProfiler
 
             services.AddMiniProfiler(options =>
-                options.RouteBasePath = "/profiler"
+                {
+                    options.RouteBasePath = "/profiler";
+                    (options.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromSeconds(60);
+
+                }
             );
 
             #endregion
@@ -303,7 +308,7 @@ namespace Blog.Core
                       .InstancePerLifetimeScope()
                       .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
                                                     // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
-                      .InterceptedBy(typeof(BlogCacheAOP));//允许将拦截器服务的列表分配给注册。 
+                      .InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));//允许将拦截器服务的列表分配给注册。 
             #endregion
 
             #region Repository.dll 注入，有对应接口

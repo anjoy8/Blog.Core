@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,9 @@ namespace Blog.Core.Filter
                 json.DevelopmentMessage = context.Exception.StackTrace;//堆栈信息
             }
             context.Result = new InternalServerErrorObjectResult(json);
+
+            MiniProfiler.Current.Step("错误！！！"+ json.Message);
+
 
             //采用log4net 进行错误日志记录
             _loggerHelper.Error(json.Message, WriteLog(json.Message, context.Exception));
