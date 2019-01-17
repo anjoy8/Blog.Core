@@ -10,6 +10,6 @@ namespace Blog.Core.IServices
 {
     public interface ITopicServices : IBaseServices<Topic>
     {
-       
+        Task<List<Topic>> GetTopics();
     }
 }

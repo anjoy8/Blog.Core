@@ -19,6 +19,11 @@ namespace Blog.Core.Controllers
         ITopicServices _topicServices;
         ITopicDetailServices _topicDetailServices;
 
+        /// <summary>
+        /// TopicDetailController
+        /// </summary>
+        /// <param name="topicServices"></param>
+        /// <param name="topicDetailServices"></param>
         public TopicDetailController(ITopicServices topicServices, ITopicDetailServices topicDetailServices)
         {
             _topicServices = topicServices;
@@ -33,7 +38,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<MessageModel<PageModel<TopicDetail>>> Get(int page = 1, string tname = "")
+        public async Task<MessageModel<PageModel<TopicDetail>>> Get(int page = 1, string tname = "", string key = "")
         {
             var data = new MessageModel<PageModel<TopicDetail>>();
             int intTotalCount = 6;
@@ -41,24 +46,31 @@ namespace Blog.Core.Controllers
             int PageCount = 1;
             List<TopicDetail> topicDetails = new List<TopicDetail>();
 
-            topicDetails = await _topicDetailServices.Query(a => !a.tdIsDelete && a.tdSectendDetail == "tbug");
+            //总数据，使用AOP切面缓存
+            topicDetails = await _topicDetailServices.GetTopicDetails();
+
+            if (!string.IsNullOrEmpty(key))
+            {
+                topicDetails = topicDetails.Where(t => (t.tdName != null && t.tdName.Contains(key)) || (t.tdDetail != null && t.tdDetail.Contains(key))).ToList();
+            }
+
             if (!string.IsNullOrEmpty(tname))
             {
                 var tid = (await _topicServices.Query(ts => ts.tName == tname)).FirstOrDefault()?.Id.ObjToInt();
                 topicDetails = topicDetails.Where(t => t.TopicId == tid).ToList();
             }
-            //数据总数
-            TotalCount = topicDetails.Count;
 
-            //总页数
-            PageCount = (Math.Ceiling(topicDetails.Count.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
+            //筛选后的数据总数
+            TotalCount = topicDetails.Count;
+            //筛选后的总页数
+            PageCount = (Math.Ceiling(TotalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
 
             topicDetails = topicDetails.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
 
             return new MessageModel<PageModel<TopicDetail>>()
             {
                 Msg = "获取成功",
-                Success = topicDetails.Count >= 0,
+                Success = TotalCount >= 0,
                 Response = new PageModel<TopicDetail>()
                 {
                     page = page,

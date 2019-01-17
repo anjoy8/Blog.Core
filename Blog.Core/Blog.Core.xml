@@ -278,7 +278,14 @@
             <param name="expiresAbsoulute"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.TopicDetailController.Get(System.Int32,System.String)">
+        <member name="M:Blog.Core.Controllers.TopicDetailController.#ctor(Blog.Core.IServices.ITopicServices,Blog.Core.IServices.ITopicDetailServices)">
+            <summary>
+            TopicDetailController
+            </summary>
+            <param name="topicServices"></param>
+            <param name="topicDetailServices"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.TopicDetailController.Get(System.Int32,System.String,System.String)">
             <summary>
             获取Bug数据列表（带分页）
             </summary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.IServices;
+using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,22 +23,16 @@ namespace Blog.Core.Controllers
 
         // GET: api/Topic
         [HttpGet]
-        public async Task<object> Get()
+        public async Task<MessageModel<List<Topic>>> Get()
         {
-            List<Topic> topics = new List<Topic>();
-
-            try
+            var data = new MessageModel<List<Topic>>();
+            data.Response = await _topicServices.GetTopics();
+            if (data.Response != null)
             {
-
-                topics = await _topicServices.Query(a => !a.tIsDelete && a.tSectendDetail == "tbug");
+                data.Success = true;
+                data.Msg = "";
             }
-            catch (Exception) { }
-
-            return Ok(new
-            {
-                success = topics.Any(),
-                data = topics
-            });
+            return data;
         }
 
         // GET: api/Topic/5
