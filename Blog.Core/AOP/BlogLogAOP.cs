@@ -27,7 +27,8 @@ namespace Blog.Core.AOP
 
             try
             {
-                MiniProfiler.Current.Step("执行Service方法：" + invocation.Method.Name + " ：");
+                MiniProfiler.Current.Step("执行Service方法：" + invocation.Method.Name + " ：<a>e</a>");
+                MiniProfiler.Current.CustomTiming("SQL", "SELECT * FROM Config");
 
                 //在被拦截的方法执行完毕后 继续执行当前方法，注意是被拦截的是异步的
                 invocation.Proceed();
