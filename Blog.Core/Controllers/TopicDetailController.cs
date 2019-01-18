@@ -47,7 +47,8 @@ namespace Blog.Core.Controllers
             List<TopicDetail> topicDetails = new List<TopicDetail>();
 
             //总数据，使用AOP切面缓存
-            topicDetails = await _topicDetailServices.GetTopicDetails();
+            //topicDetails = await _topicDetailServices.GetTopicDetails();
+            topicDetails = await _topicDetailServices.Query(a => !a.tdIsDelete && a.tdSectendDetail == "tbug");
 
             if (!string.IsNullOrEmpty(key))
             {
