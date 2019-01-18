@@ -35,7 +35,7 @@ namespace Blog.Core.Filter
             }
             context.Result = new InternalServerErrorObjectResult(json);
 
-            MiniProfiler.Current.Step("错误！！！"+ json.Message);
+            MiniProfiler.Current.CustomTiming("Errors：", json.Message);
 
 
             //采用log4net 进行错误日志记录

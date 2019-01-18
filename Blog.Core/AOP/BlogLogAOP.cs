@@ -27,16 +27,15 @@ namespace Blog.Core.AOP
 
             try
             {
-                MiniProfiler.Current.Step("执行Service方法：" + invocation.Method.Name + " ：<a>e</a>");
-                MiniProfiler.Current.CustomTiming("SQL", "SELECT * FROM Config");
-
+                MiniProfiler.Current.Step($"执行Service方法：{invocation.Method.Name}() -> ");
                 //在被拦截的方法执行完毕后 继续执行当前方法，注意是被拦截的是异步的
                 invocation.Proceed();
             }
             catch (Exception e)
             {
-                MiniProfiler.Current.Step("错误！！！" + e.Message);
-                //执行的 service 中，出现异常
+                //执行的 service 中，收录异常
+                MiniProfiler.Current.CustomTiming("Errors：", e.Message);
+                //执行的 service 中，捕获异常
                 dataIntercept += ($"方法执行中出现异常：{e.Message + e.InnerException}");
             }
 

@@ -118,7 +118,7 @@ namespace Blog.Core
             services.AddMiniProfiler(options =>
                 {
                     options.RouteBasePath = "/profiler";
-                    (options.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromSeconds(60);
+                    (options.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromMinutes(10);
 
                 }
             );

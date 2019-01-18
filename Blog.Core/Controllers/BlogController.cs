@@ -61,17 +61,13 @@ namespace Blog.Core.Controllers
             {
                 if (redisCacheManager.Get<object>("Redis.Blog") != null)
                 {
-                    using (MiniProfiler.Current.Step("从Redis服务器中加载数据："))
-                    {
-                        blogArticleList = redisCacheManager.Get<List<BlogArticle>>("Redis.Blog"); 
-                    }
+                    MiniProfiler.Current.Step("从Redis服务器中加载数据：");
+                    blogArticleList = redisCacheManager.Get<List<BlogArticle>>("Redis.Blog");
                 }
                 else
                 {
-                    using (MiniProfiler.Current.Step("从MSSQL服务器中加载数据："))
-                    {
-                        blogArticleList = await blogArticleServices.Query(a => a.bcategory == bcategory); 
-                    }
+                    MiniProfiler.Current.Step("从MSSQL服务器中加载数据：");
+                    blogArticleList = await blogArticleServices.Query(a => a.bcategory == bcategory);
                     redisCacheManager.Set("Redis.Blog", blogArticleList, TimeSpan.FromHours(2));
                 }
 
@@ -94,7 +90,7 @@ namespace Blog.Core.Controllers
                             item.bcontent = item.bcontent.Substring(0, totalLength);
                         }
                     }
-                } 
+                }
             }
 
             return Ok(new

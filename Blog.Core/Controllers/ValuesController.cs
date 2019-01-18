@@ -45,11 +45,15 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET api/values
         [HttpGet]
+        [AllowAnonymous]
         public async Task<MessageModel<ResponseEnum>> Get()
         {
             var data = new MessageModel<ResponseEnum>();
 
             _advertisementServices.ReturnExp();
+
+            Love love = null;
+            love.SayLoveU();
 
             return data;
         }
