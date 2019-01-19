@@ -11,6 +11,8 @@
 |-|-|
 |[https://github.com/anjoy8/Blog.Vue](https://github.com/anjoy8/Blog.Vue)|[https://github.com/anjoy8/Nuxt.tBug](https://github.com/anjoy8/Nuxt.tBug)|
 
+关于如何使用，点击这里：https://www.cnblogs.com/laozhang-is-phi/p/10205495.html
+
 
 ```
 ```
