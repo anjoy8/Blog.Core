@@ -20,6 +20,11 @@
             </summary>
             <param name="invocation">包含被拦截方法的信息</param>
         </member>
+        <member name="T:Blog.Core.AOP.BlogRedisCacheAOP">
+            <summary>
+            面向切面的缓存使用
+            </summary>
+        </member>
         <member name="T:Blog.Core.AOP.ICaching">
             <summary>
             简单的缓存接口，只有查询和添加，以后会进行扩展

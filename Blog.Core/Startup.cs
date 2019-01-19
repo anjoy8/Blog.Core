@@ -292,6 +292,7 @@ namespace Blog.Core
             //注册要通过反射创建的组件
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
             builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
+            builder.RegisterType<BlogRedisCacheAOP>();//可以直接替换其他拦截器
             builder.RegisterType<BlogLogAOP>();//这样可以注入第二个
 
             // ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
@@ -308,7 +309,7 @@ namespace Blog.Core
                       .InstancePerLifetimeScope()
                       .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
                                                     // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
-                      .InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));//允许将拦截器服务的列表分配给注册。 
+                      .InterceptedBy(typeof(BlogRedisCacheAOP), typeof(BlogLogAOP));//允许将拦截器服务的列表分配给注册。 
             #endregion
 
             #region Repository.dll 注入，有对应接口
