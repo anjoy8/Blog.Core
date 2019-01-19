@@ -10,6 +10,7 @@
 |个人博客Vue版本|tBug项目Nuxt版本|
 |-|-|
 |[https://github.com/anjoy8/Blog.Vue](https://github.com/anjoy8/Blog.Vue)|[https://github.com/anjoy8/Nuxt.tBug](https://github.com/anjoy8/Nuxt.tBug)|
+|[http://123.206.33.109:8077](http://123.206.33.109:8077)|[http://123.206.33.109:7090](http://123.206.33.109:7090)|
 
 关于如何使用，点击这里：https://www.cnblogs.com/laozhang-is-phi/p/10205495.html
 
