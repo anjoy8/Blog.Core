@@ -47,5 +47,9 @@ namespace Blog.Core.Services
             return roleModulePermissions;
         }
 
+        public async Task<List<RoleModulePermission>> TestModelWithChildren()
+        {
+            return await dal.WithChildrenModel();
+        }
     }
 }

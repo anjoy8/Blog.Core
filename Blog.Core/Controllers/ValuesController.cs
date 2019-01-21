@@ -26,18 +26,22 @@ namespace Blog.Core.Controllers
         private IMapper _mapper;
         private IAdvertisementServices _advertisementServices;
         private Love _love;
+        IRoleModulePermissionServices _roleModulePermissionServices;
 
         /// <summary>
         /// ValuesController
         /// </summary>
         /// <param name="mapper"></param>
         /// <param name="advertisementServices"></param>
-        public ValuesController(IMapper mapper, IAdvertisementServices advertisementServices, Love love)
+        /// <param name="love"></param>
+        /// <param name="roleModulePermissionServices"></param>
+        public ValuesController(IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
             _advertisementServices = advertisementServices;
             _love = love;
+            _roleModulePermissionServices = roleModulePermissionServices;
         }
         /// <summary>
         /// Get方法
@@ -49,6 +53,9 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<ResponseEnum>> Get()
         {
             var data = new MessageModel<ResponseEnum>();
+
+            var list = await _roleModulePermissionServices.TestModelWithChildren();
+
 
             _advertisementServices.ReturnExp();
 

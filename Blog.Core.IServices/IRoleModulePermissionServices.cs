@@ -12,5 +12,6 @@ namespace Blog.Core.IServices
 	{
 
         Task<List<RoleModulePermission>> GetRoleModule();
+        Task<List<RoleModulePermission>> TestModelWithChildren();
     }
 }
