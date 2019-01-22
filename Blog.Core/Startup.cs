@@ -130,15 +130,6 @@ namespace Blog.Core
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
             services.AddSwaggerGen(c =>
             {
-                //c.SwaggerDoc("v1", new Info
-                //{
-                //    Version = "v0.1.0",
-                //    Title = "Blog.Core API",
-                //    Description = "框架说明文档",
-                //    TermsOfService = "None",
-                //    Contact = new Swashbuckle.AspNetCore.Swagger.Contact { Name = "Blog.Core", Email = "Blog.Core@xxx.com", Url = "https://www.jianshu.com/u/94102b59cc2a" }
-                //});
-
                 //遍历出全部的版本，做文档信息展示
                 typeof(ApiVersions).GetEnumNames().ToList().ForEach(version =>
                 {
@@ -186,7 +177,7 @@ namespace Blog.Core
 
             #endregion
 
-            #region MVC
+            #region MVC + GlobalExceptions
 
             //注入全局异常捕获
             services.AddMvc(o =>
@@ -196,7 +187,33 @@ namespace Blog.Core
 
             #endregion
 
-            #region JWT Token Service
+            #region Authorize权限设置三种情况
+
+            #region 1、基于角色API授权 + 自定义认证中间件
+
+            // 1、这个很简单，其他什么都不用做，
+            // 无需配置服务，只需要在API层的controller上边，增加特性即可，注意，只能是角色的:
+            // [Authorize(Roles = "Admin")]
+            // 2、然后在下边的configure里，配置中间件即可:
+            // app.UseMiddleware<JwtTokenAuth>();
+
+            #endregion
+
+            #region 2、基于角色的策略授权（简单版） + 自定义认证中间件
+
+            // 这个和上边的异曲同工，好处就是不用在controller中，写多个 roles 。
+            // 然后这么写 [Authorize(Policy = "Admin")]
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Client", policy => policy.RequireRole("Client").Build());
+                options.AddPolicy("Admin", policy => policy.RequireRole("Admin").Build());
+                options.AddPolicy("SystemOrAdmin", policy => policy.RequireRole("Admin", "System"));
+            });
+            #endregion
+
+
+            #region 3、复杂策略授权 + 官方JWT认证
+
             //读取配置文件
             var audienceConfig = Configuration.GetSection("Audience");
             var symmetricKeyAsBase64 = audienceConfig["Secret"];
@@ -215,17 +232,8 @@ namespace Blog.Core
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero,
                 RequireExpirationTime = true,
-
             };
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-
-            // 注意使用RESTful风格的接口会更好，因为只需要写一个Url即可，比如：/api/values 代表了Get Post Put Delete等多个。
-            // 如果想写死，可以直接在这里写。
-            //var permission = new List<Permission> {
-            //                  new Permission {  Url="/api/values", Role="Admin"},
-            //                  new Permission {  Url="/api/values", Role="System"},
-            //                  new Permission {  Url="/api/claims", Role="Admin"},
-            //              };
 
             // 如果要数据库动态绑定，这里先留个空，后边处理器里动态赋值
             var permission = new List<PermissionItem>();
@@ -241,27 +249,18 @@ namespace Blog.Core
                 expiration: TimeSpan.FromSeconds(60 * 10)//接口的过期时间
                 );
 
-
+            // 自定义复杂授权的权限要求
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Client",
-                    policy => policy.RequireRole("Client").Build());
-                options.AddPolicy("Admin",
-                    policy => policy.RequireRole("Admin").Build());
-                options.AddPolicy("SystemOrAdmin",
-                    policy => policy.RequireRole("Admin", "System"));
-
-                // 自定义权限要求
                 options.AddPolicy("Permission",
                          policy => policy.Requirements.Add(permissionRequirement));
             })
-
+            // 官方JWT认证
             .AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-
             .AddJwtBearer(o =>
             {
                 o.TokenValidationParameters = tokenValidationParameters;
@@ -279,14 +278,17 @@ namespace Blog.Core
                 };
             });
 
-
-
             services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
             services.AddSingleton(permissionRequirement);
 
             #endregion
 
-            #region AutoFac
+
+
+            #endregion
+
+
+            #region AutoFac DI
             //实例化 AutoFac  容器   
             var builder = new ContainerBuilder();
             //注册要通过反射创建的组件
@@ -296,6 +298,8 @@ namespace Blog.Core
             builder.RegisterType<BlogLogAOP>();//这样可以注入第二个
 
             // ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
+
+            #region 带有接口层的服务注入
 
             #region Service.dll 注入，有对应接口
             //获取项目绝对路径，请注意，这个是实现类的dll文件，不是接口 IService.dll ，注入容器当然是Activatore
@@ -317,10 +321,10 @@ namespace Blog.Core
             var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
             builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
             #endregion
+            #endregion
 
-            #region 其他注入
 
-            #region 没有接口的 dll 层注入
+            #region 没有接口层的服务层注入
 
             ////因为没有接口层，所以不能实现解耦，只能用 Load 方法。
             ////var assemblysServicesNoInterfaces = Assembly.Load("Blog.Core.Services");
@@ -336,7 +340,6 @@ namespace Blog.Core
 
             #endregion
 
-            #endregion
 
             //将services填充到Autofac容器生成器中
             builder.Populate(services);
@@ -366,7 +369,7 @@ namespace Blog.Core
                 // 强制实施 HTTPS 在 ASP.NET Core，配合 app.UseHttpsRedirection
                 //app.UseHsts();
 
-            } 
+            }
             #endregion
 
             #region MiniProfiler
@@ -377,17 +380,13 @@ namespace Blog.Core
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                //之前是写死的
-                //c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1");
-                //c.RoutePrefix = "";//路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件,注意localhost:8001/swagger是访问不到的，去launchSettings.json把launchUrl去掉
-
                 //根据版本名称倒序 遍历展示
                 typeof(ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(version =>
                 {
                     c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{ApiName} {version}");
                 });
                 c.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html");
-                c.RoutePrefix = "";
+                c.RoutePrefix = ""; //路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件,注意localhost:8001/swagger是访问不到的，去launchSettings.json把launchUrl去掉
             });
             #endregion
 
@@ -395,8 +394,7 @@ namespace Blog.Core
 
             //app.UseMiddleware<JwtTokenAuth>();//此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件
 
-            // 如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务
-            // .AddAuthentication 和 .AddJwtBearer 二者缺一不可
+            // 如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务 (.AddAuthentication 和 .AddJwtBearer 二者缺一不可)
             app.UseAuthentication();
             #endregion
 
@@ -405,9 +403,12 @@ namespace Blog.Core
             app.UseCors("LimitRequests");//将 CORS 中间件添加到 web 应用程序管线中, 以允许跨域请求。
 
 
+            #region 跨域第一种版本
             //跨域第一种版本，请要ConfigureService中配置服务 services.AddCors();
             //    app.UseCors(options => options.WithOrigins("http://localhost:8021").AllowAnyHeader()
-            //.AllowAnyMethod()); 
+            //.AllowAnyMethod());  
+            #endregion
+
             #endregion
 
             // 跳转https
