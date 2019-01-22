@@ -191,17 +191,18 @@ namespace Blog.Core
 
             #region 1、基于角色API授权 + 自定义认证中间件
 
-            // 1、这个很简单，其他什么都不用做，
+            // 1【授权】、这个很简单，其他什么都不用做，
             // 无需配置服务，只需要在API层的controller上边，增加特性即可，注意，只能是角色的:
             // [Authorize(Roles = "Admin")]
-            // 2、然后在下边的configure里，配置中间件即可:
+
+            // 2【认证】、然后在下边的configure里，配置中间件即可:
             // app.UseMiddleware<JwtTokenAuth>();
 
             #endregion
 
             #region 2、基于角色的策略授权（简单版） + 自定义认证中间件
 
-            // 这个和上边的异曲同工，好处就是不用在controller中，写多个 roles 。
+            // 1【授权】、这个和上边的异曲同工，好处就是不用在controller中，写多个 roles 。
             // 然后这么写 [Authorize(Policy = "Admin")]
             services.AddAuthorization(options =>
             {
@@ -209,11 +210,16 @@ namespace Blog.Core
                 options.AddPolicy("Admin", policy => policy.RequireRole("Admin").Build());
                 options.AddPolicy("SystemOrAdmin", policy => policy.RequireRole("Admin", "System"));
             });
+
+
+            // 2【认证】、然后在下边的configure里，配置中间件即可:
+            // app.UseMiddleware<JwtTokenAuth>();
             #endregion
 
 
             #region 3、复杂策略授权 + 官方JWT认证
 
+            #region 参数
             //读取配置文件
             var audienceConfig = Configuration.GetSection("Audience");
             var symmetricKeyAsBase64 = audienceConfig["Secret"];
@@ -247,15 +253,16 @@ namespace Blog.Core
                 audienceConfig["Audience"],//听众
                 signingCredentials,//签名凭据
                 expiration: TimeSpan.FromSeconds(60 * 10)//接口的过期时间
-                );
+                ); 
+            #endregion
 
-            // 自定义复杂授权的权限要求
+            //1【授权】、自定义复杂授权的权限要求
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Permission",
                          policy => policy.Requirements.Add(permissionRequirement));
             })
-            // 官方JWT认证
+            //2【认证】、官方JWT认证
             .AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
