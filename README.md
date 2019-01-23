@@ -17,7 +17,6 @@
 |[https://github.com/anjoy8/Blog.Vue](https://github.com/anjoy8/Blog.Vue)|[https://github.com/anjoy8/Nuxt.tBug](https://github.com/anjoy8/Nuxt.tBug)|
 |[http://123.206.33.109:8077](http://123.206.33.109:8077)|[http://123.206.33.109:7090](http://123.206.33.109:7090)|
 
-关于如何使用，点击这里：https://www.cnblogs.com/laozhang-is-phi/p/10205495.html
 
 
 &nbsp;
@@ -28,6 +27,9 @@
 | Package | NuGet Stable |  Downloads |
 | ------- | -------- | ------- |
 | [Blog.Core.Webapi.Template](https://www.nuget.org/packages/Blog.Core.Webapi.Template/) | [![Blog.Core.Webapi.Template](https://img.shields.io/nuget/v/Blog.Core.Webapi.Template.svg)](https://www.nuget.org/packages/Blog.Core.Webapi.Template/)  | [![Blog.Core.Webapi.Template](https://img.shields.io/nuget/dt/Blog.Core.Webapi.Template.svg)](https://www.nuget.org/packages/Blog.Core.Webapi.Template/) |
+
+
+关于如何使用，点击这里：https://www.cnblogs.com/laozhang-is-phi/p/10205495.html
 
 &nbsp;
 &nbsp;
