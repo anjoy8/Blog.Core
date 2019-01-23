@@ -1,11 +1,15 @@
-[ENGLISH](https://github.com/anjoy8/Blog.Core/blob/master/README-en.md) | [中文版](https://github.com/anjoy8/Blog.Core/blob/master/README.md)
+﻿[ENGLISH](https://github.com/anjoy8/Blog.Core/blob/master/README-en.md) | [中文版](https://github.com/anjoy8/Blog.Core/blob/master/README.md)
 
 ![Logo](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/logocore.png)
 
 
 从零开始搭建自己的前后端分离【 .NET Core2.1 Api + Vue 2.0 】框架，目前是2.2版本，各个版本见分支。
 
-这只是 .netCore 后端部分，前端部分请看我的另两个工程
+这只是 .netCore 后端部分，前端部分请看我的另两个工程  
+ 
+ 
+
+
 
 |个人博客Vue版本|tBug项目Nuxt版本|
 |-|-|
