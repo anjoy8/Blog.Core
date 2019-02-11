@@ -69,7 +69,7 @@ namespace Blog.Core
                 return cache;
             });
             //Redis注入
-            services.AddScoped<IRedisCacheManager, RedisCacheManager>();
+            services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
             //log日志注入
             services.AddSingleton<ILoggerHelper, LogHelper>();
             #endregion

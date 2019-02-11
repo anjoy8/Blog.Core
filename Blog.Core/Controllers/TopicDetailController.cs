@@ -143,9 +143,24 @@ namespace Blog.Core.Controllers
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("delete")]
+        public async Task<MessageModel<string>> Delete(int id)
         {
+            var data = new MessageModel<string>();
+            if (id > 0)
+            {
+                var topicDetail = await _topicDetailServices.QueryByID(id);
+                topicDetail.tdIsDelete = true;
+                data.Success = await _topicDetailServices.Update(topicDetail);
+                if (data.Success)
+                {
+                    data.Msg = "删除成功";
+                    data.Response = topicDetail?.Id.ObjToString();
+                }
+            }
+
+            return data;
         }
     }
 }
