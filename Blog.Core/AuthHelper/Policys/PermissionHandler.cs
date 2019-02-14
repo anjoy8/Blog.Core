@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Blog.Core.AuthHelper
@@ -77,17 +78,43 @@ namespace Blog.Core.AuthHelper
                 {
 
                     httpContext.User = result.Principal;
+
+                    var isMatchUrl = false;
+
+                    var permisssionGroup = requirement.Permissions.GroupBy(g => g.Url);
+                    foreach (var item in permisssionGroup)
+                    {
+                        if (Regex.Match(questUrl, item.Key?.ToLower()).Value == questUrl)
+                        {
+                            isMatchUrl = true;
+                            break;
+                        }
+                    }
+
+
                     //权限中是否存在请求的url
-                    if (requirement.Permissions.GroupBy(g => g.Url).Where(w => w.Key?.ToLower() == questUrl).Count() > 0)
+                    //if (requirement.Permissions.GroupBy(g => g.Url).Where(w => w.Key?.ToLower() == questUrl).Count() > 0)
+                    if (isMatchUrl)
                     {
                         // 获取当前用户的角色信息
                         var currentUserRoles = (from item in httpContext.User.Claims
                                                 where item.Type == requirement.ClaimType
                                                 select item.Value).ToList();
 
+                        var isMatchRole = false;
+                        var permisssionRoles = requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role));
+                        foreach (var item in permisssionRoles)
+                        {
+                            if (Regex.Match(questUrl, item.Url?.ToLower()).Value == questUrl)
+                            {
+                                isMatchRole = true;
+                                break;
+                            }
+                        }
 
                         //验证权限
-                        if (currentUserRoles.Count <= 0 || requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role) && w.Url.ToLower() == questUrl).Count() <= 0)
+                        //if (currentUserRoles.Count <= 0 || requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role) && w.Url.ToLower() == questUrl).Count() <= 0)
+                        if (currentUserRoles.Count <= 0 || !isMatchRole)
                         {
 
                             context.Fail();

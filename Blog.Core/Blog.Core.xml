@@ -298,6 +298,12 @@
             <param name="tname">专题类型</param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IServices.IsysUserInfoServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sysUserInfoServices"></param>
+        </member>
         <member name="T:Blog.Core.Controllers.UserRoleController">
             <summary>
             用户权限控制器所有接口

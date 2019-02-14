@@ -611,6 +611,11 @@
             错误次数 
              </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.name">
+            <summary>
+            登录账号
+            </summary>
+        </member>
         <!-- Badly formed XML comment ignored for member "T:Blog.Core.Model.Models.Topic" -->
         <!-- Badly formed XML comment ignored for member "T:Blog.Core.Model.Models.TopicDetail" -->
         <member name="T:Blog.Core.Model.Models.UserRole">

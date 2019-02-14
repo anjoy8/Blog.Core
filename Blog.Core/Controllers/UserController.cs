@@ -24,7 +24,7 @@ namespace Blog.Core.Controllers
         /// <param name="sysUserInfoServices"></param>
         public UserController(IsysUserInfoServices sysUserInfoServices)
         {
-            this._sysUserInfoServices = sysUserInfoServices;
+            _sysUserInfoServices = sysUserInfoServices;
         }
 
         // GET: api/User
@@ -37,7 +37,7 @@ namespace Blog.Core.Controllers
             int PageCount = 1;
             List<sysUserInfo> sysUserInfos = new List<sysUserInfo>();
 
-            sysUserInfos = await _sysUserInfoServices.Query(a => a.uStatus >= 0);
+            sysUserInfos = await _sysUserInfoServices.Query(a => a.tdIsDelete != true && a.uStatus >= 0);
 
             if (!string.IsNullOrEmpty(key))
             {
@@ -69,7 +69,7 @@ namespace Blog.Core.Controllers
 
         // GET: api/User/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string Get(string id)
         {
             return "value";
         }
@@ -81,15 +81,29 @@ namespace Blog.Core.Controllers
         }
 
         // PUT: api/User/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public async Task<MessageModel<string>> Delete(int id)
         {
+            var data = new MessageModel<string>();
+            if (id > 0)
+            {
+                var userDetail = await _sysUserInfoServices.QueryByID(id);
+                userDetail.tdIsDelete = true;
+                data.Success = await _sysUserInfoServices.Update(userDetail);
+                if (data.Success)
+                {
+                    data.Msg = "删除成功";
+                    data.Response = userDetail?.uID.ObjToString();
+                }
+            }
+
+            return data;
         }
     }
 }
