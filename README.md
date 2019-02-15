@@ -12,10 +12,10 @@
 &nbsp;
 &nbsp;
 
-|个人博客Vue版本|tBug项目Nuxt版本|
-|-|-|
-|[https://github.com/anjoy8/Blog.Vue](https://github.com/anjoy8/Blog.Vue)|[https://github.com/anjoy8/Nuxt.tBug](https://github.com/anjoy8/Nuxt.tBug)|
-|[http://123.206.33.109:8077](http://123.206.33.109:8077)|[http://123.206.33.109:7090](http://123.206.33.109:7090)|
+|个人博客Vue版本|tBug项目Nuxt版本|VueAdmin管理后台(更新中)|
+|-|-|-|
+|[https://github.com/anjoy8/Blog.Vue](https://github.com/anjoy8/Blog.Vue)|[https://github.com/anjoy8/Nuxt.tBug](https://github.com/anjoy8/Nuxt.tBug)|[https://github.com/anjoy8/Blog.Admin](https://github.com/anjoy8/Blog.Admin)|
+|[http://123.206.33.109:8077](http://123.206.33.109:8077)|[http://123.206.33.109:7090](http://123.206.33.109:7090)|[http://123.206.33.109:2364](http://123.206.33.109:2364)|
 
 
 
