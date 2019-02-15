@@ -59,16 +59,16 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 创建时间
         /// </summary>
-        public System.DateTime uCreateTime { get; set; }
+        public System.DateTime uCreateTime { get; set; } = DateTime.Now;
         /// <summary>
         /// 更新时间
         /// </summary>
-        public System.DateTime uUpdateTime { get; set; }
+        public System.DateTime uUpdateTime { get; set; } = DateTime.Now;
 
         /// <summary>
         ///最后登录时间 
         /// </summary>
-        public DateTime uLastErrTime { get; set; }
+        public DateTime uLastErrTime { get; set; }= DateTime.Now;
 
         /// <summary>
         ///错误次数 
@@ -91,7 +91,7 @@ namespace Blog.Core.Model.Models
         public int age { get; set; }
         // 生日
         [SugarColumn(IsNullable = true)]
-        public DateTime birth { get; set; }
+        public DateTime birth { get; set; } = DateTime.Now;
         // 地址
         [SugarColumn(Length = 200, IsNullable = true)]
         public string addr { get; set; }

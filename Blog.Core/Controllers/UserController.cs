@@ -76,14 +76,37 @@ namespace Blog.Core.Controllers
 
         // POST: api/User
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<MessageModel<string>> Post([FromBody] sysUserInfo sysUserInfo)
         {
+            var data = new MessageModel<string>();
+
+            var id = (await _sysUserInfoServices.Add(sysUserInfo));
+            data.Success = id > 0;
+            if (data.Success)
+            {
+                data.Response = id.ObjToString();
+                data.Msg = "添加成功";
+            }
+
+            return data;
         }
 
         // PUT: api/User/5
         [HttpPut]
-        public void Put(int id, [FromBody] string value)
+        public async Task<MessageModel<string>> Put([FromBody] sysUserInfo sysUserInfo)
         {
+            var data = new MessageModel<string>();
+            if (sysUserInfo != null && sysUserInfo.uID > 0)
+            {
+                data.Success = await _sysUserInfoServices.Update(sysUserInfo);
+                if (data.Success)
+                {
+                    data.Msg = "更新成功";
+                    data.Response = sysUserInfo?.uID.ObjToString();
+                }
+            }
+
+            return data;
         }
 
         // DELETE: api/ApiWithActions/5
