@@ -37,7 +37,7 @@ namespace Blog.Core.Controllers
             string path = string.Empty;
             string foldername = "images";
             var files = Request.Form.Files;
-            if (files == null || files.Count() <= 0) { data.Msg = "请选择上传的文件。"; return data; }
+            if (files == null || files.Count() <= 0) { data.msg = "请选择上传的文件。"; return data; }
             //格式限制
             var allowType = new string[] { "image/jpg", "image/png", "image/jpeg" };
 
@@ -63,22 +63,22 @@ namespace Blog.Core.Controllers
 
                     data = new MessageModel<string>()
                     {
-                        Response = strpath,
-                        Msg = "上传成功",
-                        Success = true,
+                        response = strpath,
+                        msg = "上传成功",
+                        success = true,
                     };
                     return data;
                 }
                 else
                 {
-                    data.Msg = "图片过大";
+                    data.msg = "图片过大";
                     return data;
                 }
             }
             else
 
             {
-                data.Msg = "图片格式错误";
+                data.msg = "图片格式错误";
                 return data;
             }
         }

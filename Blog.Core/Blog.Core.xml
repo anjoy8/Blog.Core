@@ -283,6 +283,12 @@
             <param name="expiresAbsoulute"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.RoleController.#ctor(Blog.Core.IServices.IRoleServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="roleServices"></param>
+        </member>
         <member name="M:Blog.Core.Controllers.TopicDetailController.#ctor(Blog.Core.IServices.ITopicServices,Blog.Core.IServices.ITopicDetailServices)">
             <summary>
             TopicDetailController
@@ -298,11 +304,19 @@
             <param name="tname">专题类型</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IServices.IsysUserInfoServices)">
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IServices.IsysUserInfoServices,Blog.Core.IServices.IUserRoleServices)">
             <summary>
             构造函数
             </summary>
             <param name="sysUserInfoServices"></param>
+            <param name="userRoleServices"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.GetUserInfoByToken(System.String)">
+            <summary>
+            获取用户详情根据token
+            </summary>
+            <param name="token">令牌</param>
+            <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.UserRoleController">
             <summary>

@@ -99,5 +99,9 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public bool tdIsDelete { get; set; }
 
+
+        [SugarColumn(IsIgnore = true)]
+        public string RID { get; set; }
+
     }
 }

@@ -70,9 +70,9 @@ namespace Blog.Core.Controllers
 
             return new MessageModel<PageModel<TopicDetail>>()
             {
-                Msg = "获取成功",
-                Success = TotalCount >= 0,
-                Response = new PageModel<TopicDetail>()
+                msg = "获取成功",
+                success = TotalCount >= 0,
+                response = new PageModel<TopicDetail>()
                 {
                     page = page,
                     pageCount = PageCount,
@@ -90,11 +90,11 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<TopicDetail>();
             var response = await _topicDetailServices.QueryByID(id);
-            data.Response = response.tdIsDelete ? null : response;
-            if (data.Response != null)
+            data.response = response.tdIsDelete ? null : response;
+            if (data.response != null)
             {
-                data.Success = true;
-                data.Msg = "";
+                data.success = true;
+                data.msg = "";
             }
 
             return data;
@@ -114,11 +114,11 @@ namespace Blog.Core.Controllers
             topicDetail.tdTop = 0;
 
             var id = (await _topicDetailServices.Add(topicDetail));
-            data.Success = id > 0;
-            if (data.Success)
+            data.success = id > 0;
+            if (data.success)
             {
-                data.Response = id.ObjToString();
-                data.Msg = "添加成功";
+                data.response = id.ObjToString();
+                data.msg = "添加成功";
             }
 
             return data;
@@ -132,11 +132,11 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>();
             if (topicDetail != null && topicDetail.Id > 0)
             {
-                data.Success = await _topicDetailServices.Update(topicDetail);
-                if (data.Success)
+                data.success = await _topicDetailServices.Update(topicDetail);
+                if (data.success)
                 {
-                    data.Msg = "更新成功";
-                    data.Response = topicDetail?.Id.ObjToString();
+                    data.msg = "更新成功";
+                    data.response = topicDetail?.Id.ObjToString();
                 }
             }
 
@@ -153,11 +153,11 @@ namespace Blog.Core.Controllers
             {
                 var topicDetail = await _topicDetailServices.QueryByID(id);
                 topicDetail.tdIsDelete = true;
-                data.Success = await _topicDetailServices.Update(topicDetail);
-                if (data.Success)
+                data.success = await _topicDetailServices.Update(topicDetail);
+                if (data.success)
                 {
-                    data.Msg = "删除成功";
-                    data.Response = topicDetail?.Id.ObjToString();
+                    data.msg = "删除成功";
+                    data.response = topicDetail?.Id.ObjToString();
                 }
             }
 

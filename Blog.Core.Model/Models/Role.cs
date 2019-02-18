@@ -14,6 +14,10 @@ namespace Blog.Core.Model.Models
     {
         public Role()
         {
+            OrderSort = 1;
+            CreateTime = DateTime.Now;
+            ModifyTime = DateTime.Now;
+            IsDeleted = false;
         }
         public Role(string name)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Core.AuthHelper;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -17,14 +18,17 @@ namespace Blog.Core.Controllers
     public class UserController : ControllerBase
     {
         IsysUserInfoServices _sysUserInfoServices;
+        IUserRoleServices _userRoleServices;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="sysUserInfoServices"></param>
-        public UserController(IsysUserInfoServices sysUserInfoServices)
+        /// <param name="userRoleServices"></param>
+        public UserController(IsysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices )
         {
             _sysUserInfoServices = sysUserInfoServices;
+            _userRoleServices = userRoleServices;
         }
 
         // GET: api/User
@@ -52,11 +56,19 @@ namespace Blog.Core.Controllers
 
             sysUserInfos = sysUserInfos.OrderByDescending(d => d.uID).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
 
+            foreach (var item in sysUserInfos)
+            {
+                if (item!=null)
+                {
+                    item.RID =(await _userRoleServices.Query(d => d.UserId == item.uID)).FirstOrDefault()?.RoleId.ObjToString();
+                }
+            }
+
             return new MessageModel<PageModel<sysUserInfo>>()
             {
-                Msg = "获取成功",
-                Success = TotalCount >= 0,
-                Response = new PageModel<sysUserInfo>()
+                msg = "获取成功",
+                success = TotalCount >= 0,
+                response = new PageModel<sysUserInfo>()
                 {
                     page = page,
                     pageCount = PageCount,
@@ -74,18 +86,48 @@ namespace Blog.Core.Controllers
             return "value";
         }
 
+        // GET: api/User/5
+        /// <summary>
+        /// 获取用户详情根据token
+        /// </summary>
+        /// <param name="token">令牌</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("getInfoByToken")]
+        [AllowAnonymous]
+        public async Task<MessageModel<sysUserInfo>> GetUserInfoByToken(string token)
+        {
+            var data = new MessageModel<sysUserInfo>();
+            if (!string.IsNullOrEmpty(token))
+            {
+                var tokenModel = JwtHelper.SerializeJWT(token);
+                if (tokenModel != null && tokenModel.Uid > 0)
+                {
+                    var userinfo = await _sysUserInfoServices.QueryByID(tokenModel.Uid);
+                    if (userinfo!=null)
+                    {
+                        data.response = userinfo;
+                        data.success = true;
+                        data.msg = "获取成功"; 
+                    }
+                }
+
+            }
+            return data;
+        }
+
         // POST: api/User
         [HttpPost]
         public async Task<MessageModel<string>> Post([FromBody] sysUserInfo sysUserInfo)
         {
             var data = new MessageModel<string>();
 
-            var id = (await _sysUserInfoServices.Add(sysUserInfo));
-            data.Success = id > 0;
-            if (data.Success)
+            var id = await _sysUserInfoServices.Add(sysUserInfo);
+            data.success = id > 0;
+            if (data.success)
             {
-                data.Response = id.ObjToString();
-                data.Msg = "添加成功";
+                data.response = id.ObjToString();
+                data.msg = "添加成功";
             }
 
             return data;
@@ -98,11 +140,11 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>();
             if (sysUserInfo != null && sysUserInfo.uID > 0)
             {
-                data.Success = await _sysUserInfoServices.Update(sysUserInfo);
-                if (data.Success)
+                data.success = await _sysUserInfoServices.Update(sysUserInfo);
+                if (data.success)
                 {
-                    data.Msg = "更新成功";
-                    data.Response = sysUserInfo?.uID.ObjToString();
+                    data.msg = "更新成功";
+                    data.response = sysUserInfo?.uID.ObjToString();
                 }
             }
 
@@ -118,11 +160,11 @@ namespace Blog.Core.Controllers
             {
                 var userDetail = await _sysUserInfoServices.QueryByID(id);
                 userDetail.tdIsDelete = true;
-                data.Success = await _sysUserInfoServices.Update(userDetail);
-                if (data.Success)
+                data.success = await _sysUserInfoServices.Update(userDetail);
+                if (data.success)
                 {
-                    data.Msg = "删除成功";
-                    data.Response = userDetail?.uID.ObjToString();
+                    data.msg = "删除成功";
+                    data.response = userDetail?.uID.ObjToString();
                 }
             }
 

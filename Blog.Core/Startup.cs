@@ -30,6 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Serialization;
 using StackExchange.Profiling.Storage;
 using Swashbuckle.AspNetCore.Swagger;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
@@ -182,8 +183,12 @@ namespace Blog.Core
             //注入全局异常捕获
             services.AddMvc(o =>
             {
+                // 全局异常过滤
                 o.Filters.Add(typeof(GlobalExceptionsFilter));
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            // 取消默认驼峰
+            .AddJsonOptions(options => { options.SerializerSettings.ContractResolver = new DefaultContractResolver(); });
 
             #endregion
 
@@ -252,7 +257,7 @@ namespace Blog.Core
                 audienceConfig["Issuer"],//发行人
                 audienceConfig["Audience"],//听众
                 signingCredentials,//签名凭据
-                expiration: TimeSpan.FromSeconds(60 * 10)//接口的过期时间
+                expiration: TimeSpan.FromSeconds(60 * 30)//接口的过期时间
                 ); 
             #endregion
 

@@ -29,17 +29,17 @@
             通用返回信息类
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.MessageModel`1.Success">
+        <member name="P:Blog.Core.Model.MessageModel`1.success">
             <summary>
             操作是否成功
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.MessageModel`1.Msg">
+        <member name="P:Blog.Core.Model.MessageModel`1.msg">
             <summary>
             返回信息
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.MessageModel`1.Response">
+        <member name="P:Blog.Core.Model.MessageModel`1.response">
             <summary>
             返回数据集合
             </summary>

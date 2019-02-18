@@ -26,11 +26,11 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<List<Topic>>> Get()
         {
             var data = new MessageModel<List<Topic>>();
-            data.Response = await _topicServices.GetTopics();
-            if (data.Response != null)
+            data.response = await _topicServices.GetTopics();
+            if (data.response != null)
             {
-                data.Success = true;
-                data.Msg = "";
+                data.success = true;
+                data.msg = "";
             }
             return data;
         }
