@@ -19,16 +19,19 @@ namespace Blog.Core.Controllers
     {
         IsysUserInfoServices _sysUserInfoServices;
         IUserRoleServices _userRoleServices;
+        IRoleServices _roleServices;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="sysUserInfoServices"></param>
         /// <param name="userRoleServices"></param>
-        public UserController(IsysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices )
+        /// <param name="roleServices"></param>
+        public UserController(IsysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices)
         {
             _sysUserInfoServices = sysUserInfoServices;
             _userRoleServices = userRoleServices;
+            _roleServices = roleServices;
         }
 
         // GET: api/User
@@ -58,9 +61,11 @@ namespace Blog.Core.Controllers
 
             foreach (var item in sysUserInfos)
             {
-                if (item!=null)
+                if (item != null)
                 {
-                    item.RID =(await _userRoleServices.Query(d => d.UserId == item.uID)).FirstOrDefault()?.RoleId.ObjToString();
+                    var userrole = (await _userRoleServices.Query(d => d.UserId == item.uID)).OrderByDescending(d => d.Id).FirstOrDefault();
+                    item.RID = (userrole?.RoleId).ObjToInt();
+                    item.RoleName = ((await _roleServices.QueryByID(item.RID))?.Name);
                 }
             }
 
@@ -104,11 +109,11 @@ namespace Blog.Core.Controllers
                 if (tokenModel != null && tokenModel.Uid > 0)
                 {
                     var userinfo = await _sysUserInfoServices.QueryByID(tokenModel.Uid);
-                    if (userinfo!=null)
+                    if (userinfo != null)
                     {
                         data.response = userinfo;
                         data.success = true;
-                        data.msg = "获取成功"; 
+                        data.msg = "获取成功";
                     }
                 }
 
@@ -140,6 +145,15 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>();
             if (sysUserInfo != null && sysUserInfo.uID > 0)
             {
+                if (sysUserInfo.RID > 0)
+                {
+                    var usrerole = await _userRoleServices.Query(d => d.UserId == sysUserInfo.uID && d.RoleId == sysUserInfo.RID);
+                    if (usrerole.Count==0)
+                    {
+                        await _userRoleServices.Add(new UserRole(sysUserInfo.uID, sysUserInfo.RID));
+                    }
+                }
+
                 data.success = await _sysUserInfoServices.Update(sysUserInfo);
                 if (data.success)
                 {

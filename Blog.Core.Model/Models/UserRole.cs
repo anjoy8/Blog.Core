@@ -19,6 +19,9 @@ namespace Blog.Core.Model.Models
             UserId = uid;
             RoleId = rid;
             CreateTime = DateTime.Now;
+            IsDeleted = false;
+            CreateId = uid;
+            CreateTime = DateTime.Now;
         }
 
 
