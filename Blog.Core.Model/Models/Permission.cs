@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Blog.Core.Model.Models
 {
     /// <summary>
-    /// 按钮表
+    /// 路由菜单表
     /// </summary>
     public class Permission : RootEntity
     {
@@ -19,20 +19,26 @@ namespace Blog.Core.Model.Models
         }
 
         /// <summary>
-        ///获取或设置是否禁用，逻辑上的删除，非物理删除
-        /// </summary>
-        [SugarColumn(IsNullable = true)]
-        public bool? IsDeleted { get; set; }
-        /// <summary>
         /// 菜单执行Action名
         /// </summary>
         [SugarColumn(Length = 50, IsNullable = true)]
         public string Code { get; set; }
         /// <summary>
-        /// 菜单名
+        /// 菜单显示名（如用户页、编辑(按钮)、删除(按钮)）
         /// </summary>
         [SugarColumn(Length = 50, IsNullable = true)]
         public string Name { get; set; }
+        /// <summary>
+        /// 是否是按钮
+        /// </summary>
+        public bool IsButton { get; set; } = false;
+
+        /// <summary>
+        /// 上一级菜单（0表示上一级无菜单）
+        /// </summary>
+        public int Pid { get; set; }
+
+
         /// <summary>
         /// 排序
         /// </summary>
@@ -81,6 +87,12 @@ namespace Blog.Core.Model.Models
         /// </summary>
         [SugarColumn(IsNullable = true)]
         public DateTime? ModifyTime { get; set; }
+
+        /// <summary>
+        ///获取或设置是否禁用，逻辑上的删除，非物理删除
+        /// </summary>
+        [SugarColumn(IsNullable = true)]
+        public bool? IsDeleted { get; set; }
 
         //public virtual ICollection<ModulePermission> ModulePermission { get; set; }
         //public virtual ICollection<RoleModulePermission> RoleModulePermission { get; set; }
