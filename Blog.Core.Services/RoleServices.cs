@@ -4,6 +4,7 @@ using Blog.Core.Services.BASE;
 using Blog.Core.Model.Models;
 using System.Threading.Tasks;
 using System.Linq;
+using Blog.Core.Common;
 
 namespace Blog.Core.Services
 {	
@@ -41,6 +42,12 @@ namespace Blog.Core.Services
 
             return model;
 
+        }
+
+        [Caching(AbsoluteExpiration = 30)]
+        public async Task<string> GetRoleNameByRid(int rid)
+        {
+            return ((await dal.QueryByID(rid))?.Name);
         }
     }
 }

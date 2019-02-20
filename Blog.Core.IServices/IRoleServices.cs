@@ -10,7 +10,7 @@ namespace Blog.Core.IServices
     public interface IRoleServices :IBaseServices<Role>
 	{
         Task<Role> SaveRole(string roleName);
-
+        Task<string> GetRoleNameByRid(int rid);
 
     }
 }

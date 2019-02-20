@@ -283,6 +283,18 @@
             <param name="expiresAbsoulute"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.ModuleController.#ctor(Blog.Core.IServices.IModuleServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="ModuleServices"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="PermissionServices"></param>
+        </member>
         <member name="M:Blog.Core.Controllers.RoleController.#ctor(Blog.Core.IServices.IRoleServices)">
             <summary>
             构造函数

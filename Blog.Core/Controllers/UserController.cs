@@ -63,9 +63,8 @@ namespace Blog.Core.Controllers
             {
                 if (item != null)
                 {
-                    var userrole = (await _userRoleServices.Query(d => d.UserId == item.uID)).OrderByDescending(d => d.Id).FirstOrDefault();
-                    item.RID = (userrole?.RoleId).ObjToInt();
-                    item.RoleName = ((await _roleServices.QueryByID(item.RID))?.Name);
+                    item.RID = await _userRoleServices.GetRoleIdByUid(item.uID);
+                    item.RoleName = await _roleServices.GetRoleNameByRid(item.RID);
                 }
             }
 

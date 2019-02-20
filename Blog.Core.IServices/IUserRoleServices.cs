@@ -11,6 +11,7 @@ namespace Blog.Core.IServices
 	{
 
         Task<UserRole> SaveUserRole(int uid, int rid);
+        Task<int> GetRoleIdByUid(int uid);
     }
 }
 

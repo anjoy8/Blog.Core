@@ -4,7 +4,7 @@ using Blog.Core.Services.BASE;
 using Blog.Core.Model.Models;
 using System.Threading.Tasks;
 using System.Linq;
-
+using Blog.Core.Common;
 
 namespace Blog.Core.Services
 {	
@@ -44,6 +44,14 @@ namespace Blog.Core.Services
 
             return model;
 
+        }
+
+
+
+        [Caching(AbsoluteExpiration = 30)]
+        public async Task<int> GetRoleIdByUid(int uid)
+        {
+            return ((await dal.Query(d => d.UserId == uid)).OrderByDescending(d => d.Id).FirstOrDefault()?.RoleId).ObjToInt();
         }
     }
 }
