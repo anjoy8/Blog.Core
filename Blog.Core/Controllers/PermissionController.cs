@@ -77,7 +77,7 @@ namespace Blog.Core.Controllers
                     var par = Permissions.Where(d => d.Pid == item.Id ).ToList();
                     item.PnameArr.Add((per != null ? per.Name : "根节点") + "/");
                     item.PCodeArr.Add((per != null ? $"/{per.Code}/{item.Code}" : ""));
-                    if (par.Count == 0 && && item.Pid == 0)
+                    if (par.Count == 0 && item.Pid == 0)
                     {
                         item.PCodeArr.Add($"/{item.Code}");
                     }
