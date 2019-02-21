@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -22,7 +23,7 @@ namespace Blog.Core.Controllers
         /// 构造函数
         /// </summary>
         /// <param name="PermissionServices"></param>
-        public PermissionController(IPermissionServices PermissionServices )
+        public PermissionController(IPermissionServices PermissionServices)
         {
             _PermissionServices = PermissionServices;
         }
@@ -37,7 +38,7 @@ namespace Blog.Core.Controllers
             int PageCount = 1;
             List<Permission> Permissions = new List<Permission>();
 
-            Permissions = await _PermissionServices.Query(a => a.IsDeleted != true );
+            Permissions = await _PermissionServices.Query(a => a.IsDeleted != true);
 
             if (!string.IsNullOrEmpty(key))
             {
@@ -51,6 +52,37 @@ namespace Blog.Core.Controllers
             PageCount = (Math.Ceiling(TotalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
 
             Permissions = Permissions.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
+
+            foreach (var item in Permissions)
+            {
+                List<int> pidarr = new List<int>();
+                pidarr.Add(item.Pid);
+                if (item.Pid > 0)
+                {
+                    pidarr.Add(0);
+                }
+                var parent = Permissions.Where(d => d.Id == item.Pid).FirstOrDefault();
+
+                while (parent != null)
+                {
+                    pidarr.Add(parent.Id);
+                    parent = Permissions.Where(d => d.Id == parent.Pid).FirstOrDefault();
+                }
+
+
+                item.PidArr = pidarr.OrderBy(d => d).Distinct().ToList();
+                foreach (var pid in item.PidArr)
+                {
+                    var per = Permissions.Where(d => d.Id == pid).FirstOrDefault();
+                    var par = Permissions.Where(d => d.Pid == item.Id ).ToList();
+                    item.PnameArr.Add((per != null ? per.Name : "根节点") + "/");
+                    item.PCodeArr.Add((per != null ? $"/{per.Code}/{item.Code}" : ""));
+                    if (par.Count == 0 && && item.Pid == 0)
+                    {
+                        item.PCodeArr.Add($"/{item.Code}");
+                    }
+                }
+            }
 
             return new MessageModel<PageModel<Permission>>()
             {
@@ -91,6 +123,41 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        // POST: api/User
+        [HttpGet]
+        [Route("GetPermissionTree")]
+        public async Task<MessageModel<PermissionTree>> GetPermissionTree(int pid = 0)
+        {
+            var data = new MessageModel<PermissionTree>();
+
+            var permissions = await _PermissionServices.Query(d => d.IsDeleted == false);
+            var permissionTrees = (from child in permissions
+                                   where child.IsDeleted == false
+                                   orderby child.Id
+                                   select new PermissionTree
+                                   {
+                                       value = child.Id,
+                                       label = child.Name,
+                                       Pid = child.Pid,
+                                   }).ToList();
+            PermissionTree rootRoot = new PermissionTree();
+            rootRoot.value = 0;
+            rootRoot.Pid = 0;
+            rootRoot.label = "根节点";
+
+            RecursionHelper.LoopToAppendChildren(permissionTrees, rootRoot, pid);
+
+            data.success = true;
+            if (data.success)
+            {
+                data.response = rootRoot;
+                data.msg = "获取成功";
+            }
+
+            return data;
+        }
+
+
         // PUT: api/User/5
         [HttpPut]
         public async Task<MessageModel<string>> Put([FromBody] Permission Permission)
@@ -129,4 +196,6 @@ namespace Blog.Core.Controllers
             return data;
         }
     }
+
+
 }
