@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize("Permission")]
     public class TopicDetailController : ControllerBase
@@ -126,8 +126,7 @@ namespace Blog.Core.Controllers
 
         // PUT: api/TopicDetail/5
         [HttpPut]
-        [Route("update")]
-        public async Task<MessageModel<string>> Put([FromBody] TopicDetail topicDetail)
+        public async Task<MessageModel<string>> Update([FromBody] TopicDetail topicDetail)
         {
             var data = new MessageModel<string>();
             if (topicDetail != null && topicDetail.Id > 0)
@@ -145,7 +144,6 @@ namespace Blog.Core.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
-        [Route("delete")]
         public async Task<MessageModel<string>> Delete(int id)
         {
             var data = new MessageModel<string>();

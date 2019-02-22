@@ -289,11 +289,12 @@
             </summary>
             <param name="ModuleServices"></param>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices)">
+        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices)">
             <summary>
             构造函数
             </summary>
             <param name="PermissionServices"></param>
+            <param name="ModuleServices"></param>
         </member>
         <member name="M:Blog.Core.Controllers.RoleController.#ctor(Blog.Core.IServices.IRoleServices)">
             <summary>
@@ -324,7 +325,7 @@
             <param name="userRoleServices"></param>
             <param name="roleServices"></param>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.GetUserInfoByToken(System.String)">
+        <member name="M:Blog.Core.Controllers.UserController.GetInfoByToken(System.String)">
             <summary>
             获取用户详情根据token
             </summary>

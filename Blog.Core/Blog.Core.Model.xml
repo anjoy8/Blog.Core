@@ -396,6 +396,11 @@
             上一级菜单（0表示上一级无菜单）
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.Permission.Mid">
+            <summary>
+            接口api
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Permission.OrderSort">
             <summary>
             排序

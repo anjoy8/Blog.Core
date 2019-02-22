@@ -12,20 +12,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     //[Authorize("Permission")]
     public class PermissionController : ControllerBase
     {
         IPermissionServices _PermissionServices;
+        IModuleServices _ModuleServices;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="PermissionServices"></param>
-        public PermissionController(IPermissionServices PermissionServices)
+        /// <param name="ModuleServices"></param>
+        public PermissionController(IPermissionServices PermissionServices, IModuleServices ModuleServices)
         {
             _PermissionServices = PermissionServices;
+            _ModuleServices = ModuleServices;
         }
 
         // GET: api/User
@@ -33,7 +36,7 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<PageModel<Permission>>> Get(int page = 1, string key = "")
         {
             var data = new MessageModel<PageModel<Permission>>();
-            int intTotalCount = 100;
+            int intTotalCount = 50;
             int TotalCount = 0;
             int PageCount = 1;
             List<Permission> Permissions = new List<Permission>();
@@ -52,6 +55,7 @@ namespace Blog.Core.Controllers
             PageCount = (Math.Ceiling(TotalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
 
             Permissions = Permissions.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
+            var apis = await _ModuleServices.Query(d => d.IsDeleted == false);
 
             foreach (var item in Permissions)
             {
@@ -74,14 +78,16 @@ namespace Blog.Core.Controllers
                 foreach (var pid in item.PidArr)
                 {
                     var per = Permissions.Where(d => d.Id == pid).FirstOrDefault();
-                    var par = Permissions.Where(d => d.Pid == item.Id ).ToList();
                     item.PnameArr.Add((per != null ? per.Name : "根节点") + "/");
-                    item.PCodeArr.Add((per != null ? $"/{per.Code}/{item.Code}" : ""));
-                    if (par.Count == 0 && item.Pid == 0)
-                    {
-                        item.PCodeArr.Add($"/{item.Code}");
-                    }
+                    //var par = Permissions.Where(d => d.Pid == item.Id ).ToList();
+                    //item.PCodeArr.Add((per != null ? $"/{per.Code}/{item.Code}" : ""));
+                    //if (par.Count == 0 && item.Pid == 0)
+                    //{
+                    //    item.PCodeArr.Add($"/{item.Code}");
+                    //}
                 }
+
+                item.MName = apis.Where(d => d.Id == item.Mid).FirstOrDefault()?.LinkUrl;
             }
 
             return new MessageModel<PageModel<Permission>>()
@@ -125,8 +131,7 @@ namespace Blog.Core.Controllers
 
         // POST: api/User
         [HttpGet]
-        [Route("GetPermissionTree")]
-        public async Task<MessageModel<PermissionTree>> GetPermissionTree(int pid = 0)
+        public async Task<MessageModel<PermissionTree>> GetPermissionTree(int pid = 0, bool needbtn = false)
         {
             var data = new MessageModel<PermissionTree>();
 
@@ -139,13 +144,14 @@ namespace Blog.Core.Controllers
                                        value = child.Id,
                                        label = child.Name,
                                        Pid = child.Pid,
+                                       isbtn = child.IsButton,
                                    }).ToList();
             PermissionTree rootRoot = new PermissionTree();
             rootRoot.value = 0;
             rootRoot.Pid = 0;
             rootRoot.label = "根节点";
 
-            RecursionHelper.LoopToAppendChildren(permissionTrees, rootRoot, pid);
+            RecursionHelper.LoopToAppendChildren(permissionTrees, rootRoot, pid, needbtn);
 
             data.success = true;
             if (data.success)

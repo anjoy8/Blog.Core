@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     //[Authorize("Permission")]
     public class RoleController : ControllerBase
@@ -32,7 +32,7 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<PageModel<Role>>> Get(int page = 1, string key = "")
         {
             var data = new MessageModel<PageModel<Role>>();
-            int intTotalCount = 100;
+            int intTotalCount = 50;
             int TotalCount = 0;
             int PageCount = 1;
             List<Role> Roles = new List<Role>();

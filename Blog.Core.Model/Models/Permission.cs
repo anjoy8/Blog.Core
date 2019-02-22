@@ -37,6 +37,12 @@ namespace Blog.Core.Model.Models
         /// 上一级菜单（0表示上一级无菜单）
         /// </summary>
         public int Pid { get; set; }
+
+        /// <summary>
+        /// 接口api
+        /// </summary>
+        public int Mid { get; set; }
+
         /// <summary>
         /// 排序
         /// </summary>
@@ -101,6 +107,8 @@ namespace Blog.Core.Model.Models
         public List<string> PnameArr { get; set; } = new List<string>();
         [SugarColumn(IsIgnore = true)]
         public List<string> PCodeArr { get; set; } = new List<string>();
+        [SugarColumn(IsIgnore = true)]
+        public string MName { get; set; }
 
 
 

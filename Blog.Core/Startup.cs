@@ -325,7 +325,7 @@ namespace Blog.Core
                       .InstancePerLifetimeScope()
                       .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
                                                     // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
-                      .InterceptedBy(typeof(BlogRedisCacheAOP), typeof(BlogLogAOP));//允许将拦截器服务的列表分配给注册。 
+                      .InterceptedBy(typeof(BlogRedisCacheAOP));//允许将拦截器服务的列表分配给注册。 
             #endregion
 
             #region Repository.dll 注入，有对应接口

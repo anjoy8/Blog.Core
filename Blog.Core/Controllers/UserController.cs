@@ -12,9 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize("Permission")]
+    //[Authorize("Permission")]
     public class UserController : ControllerBase
     {
         IsysUserInfoServices _sysUserInfoServices;
@@ -39,7 +39,7 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<PageModel<sysUserInfo>>> Get(int page = 1, string key = "")
         {
             var data = new MessageModel<PageModel<sysUserInfo>>();
-            int intTotalCount = 100;
+            int intTotalCount = 50;
             int TotalCount = 0;
             int PageCount = 1;
             List<sysUserInfo> sysUserInfos = new List<sysUserInfo>();
@@ -97,9 +97,8 @@ namespace Blog.Core.Controllers
         /// <param name="token">令牌</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("getInfoByToken")]
         [AllowAnonymous]
-        public async Task<MessageModel<sysUserInfo>> GetUserInfoByToken(string token)
+        public async Task<MessageModel<sysUserInfo>> GetInfoByToken(string token)
         {
             var data = new MessageModel<sysUserInfo>();
             if (!string.IsNullOrEmpty(token))
