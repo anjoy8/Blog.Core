@@ -10,9 +10,9 @@ namespace Blog.Core.Model.Models
     {
         public RoleModulePermission()
         {
-            this.Role = new Role();
-            this.Module = new Module();
-            this.Permission = new Permission();
+            //this.Role = new Role();
+            //this.Module = new Module();
+            //this.Permission = new Permission();
 
         }
 
@@ -48,7 +48,7 @@ namespace Blog.Core.Model.Models
         /// 创建时间
         /// </summary>
         [SugarColumn(IsNullable = true)]
-        public DateTime? CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; } = DateTime.Now;
         /// <summary>
         /// 修改ID
         /// </summary>
@@ -63,14 +63,14 @@ namespace Blog.Core.Model.Models
         /// 修改时间
         /// </summary>
         [SugarColumn(IsNullable = true)]
-        public DateTime? ModifyTime { get; set; }
+        public DateTime? ModifyTime { get; set; } = DateTime.Now;
 
         // 下边三个实体参数，只是做传参作用，所以忽略下
         [SugarColumn(IsIgnore = true)]
-        public virtual Role Role { get; set; }
+        public Role Role { get; set; }
         [SugarColumn(IsIgnore = true)]
-        public virtual Module Module { get; set; }
+        public Module Module { get; set; }
         [SugarColumn(IsIgnore = true)]
-        public virtual Permission Permission { get; set; }
+        public Permission Permission { get; set; }
     }
 }

@@ -289,12 +289,13 @@
             </summary>
             <param name="ModuleServices"></param>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices)">
+        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices)">
             <summary>
             构造函数
             </summary>
             <param name="PermissionServices"></param>
             <param name="ModuleServices"></param>
+            <param name="roleModulePermissionServices"></param>
         </member>
         <member name="M:Blog.Core.Controllers.RoleController.#ctor(Blog.Core.IServices.IRoleServices)">
             <summary>

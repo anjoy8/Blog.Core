@@ -14,7 +14,7 @@ namespace Blog.Core.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    //[Authorize("Permission")]
+    [Authorize("Permission")]
     public class UserController : ControllerBase
     {
         IsysUserInfoServices _sysUserInfoServices;

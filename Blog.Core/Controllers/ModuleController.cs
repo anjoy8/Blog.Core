@@ -13,7 +13,7 @@ namespace Blog.Core.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    //[Authorize("Permission")]
+    [Authorize("Permission")]
     public class ModuleController : ControllerBase
     {
         IModuleServices _ModuleServices;

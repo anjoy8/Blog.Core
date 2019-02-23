@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
-    [Authorize("Permission")]
+    //[Authorize("Permission")]
     [Route("api/Claims")]
     [ApiController]
     public class ClaimsController : Controller

@@ -67,7 +67,7 @@ namespace Blog.Core.Model.Models
         /// 创建时间
         /// </summary>
         [SugarColumn( IsNullable = true)]
-        public DateTime? CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; } = DateTime.Now;
         /// <summary>
         /// 修改ID
         /// </summary>
@@ -82,7 +82,7 @@ namespace Blog.Core.Model.Models
         /// 修改时间
         /// </summary>
         [SugarColumn( IsNullable = true)]
-        public DateTime? ModifyTime { get; set; }
+        public DateTime? ModifyTime { get; set; } = DateTime.Now;
 
 
     }

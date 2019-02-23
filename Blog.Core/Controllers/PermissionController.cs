@@ -14,21 +14,24 @@ namespace Blog.Core.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    //[Authorize("Permission")]
+    [Authorize("Permission")]
     public class PermissionController : ControllerBase
     {
         IPermissionServices _PermissionServices;
         IModuleServices _ModuleServices;
+        IRoleModulePermissionServices _roleModulePermissionServices;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="PermissionServices"></param>
         /// <param name="ModuleServices"></param>
-        public PermissionController(IPermissionServices PermissionServices, IModuleServices ModuleServices)
+        /// <param name="roleModulePermissionServices"></param>
+        public PermissionController(IPermissionServices PermissionServices, IModuleServices ModuleServices, IRoleModulePermissionServices roleModulePermissionServices)
         {
             _PermissionServices = PermissionServices;
             _ModuleServices = ModuleServices;
+            _roleModulePermissionServices = roleModulePermissionServices;
         }
 
         // GET: api/User
@@ -129,7 +132,59 @@ namespace Blog.Core.Controllers
             return data;
         }
 
-        // POST: api/User
+
+        [HttpPost]
+        public async Task<MessageModel<string>> Assign([FromBody] AssignView assignView)
+        {
+            var data = new MessageModel<string>();
+
+            try
+            {
+                if (assignView.rid > 0)
+                {
+
+                    data.success = true;
+
+                    var roleModulePermissions = await _roleModulePermissionServices.Query(d => d.RoleId == assignView.rid);
+
+                    var remove = roleModulePermissions.Where(d => !assignView.pids.Contains(d.PermissionId.ObjToInt())).Select(c => (object)c.Id);
+                    data.success |= await _roleModulePermissionServices.DeleteByIds(remove.ToArray());
+
+                    foreach (var item in assignView.pids)
+                    {
+                        var rmpitem = roleModulePermissions.Where(d => d.PermissionId == item);
+                        if (rmpitem.Count() == 0)
+                        {
+                            var moduleid = (await _PermissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
+                            RoleModulePermission roleModulePermission = new RoleModulePermission()
+                            {
+                                IsDeleted = false,
+                                RoleId = assignView.rid,
+                                ModuleId = moduleid.ObjToInt(),
+                                PermissionId = item,
+                            };
+
+                            data.success |= (await _roleModulePermissionServices.Add(roleModulePermission)) > 0;
+
+                        }
+                    }
+
+                    if (data.success)
+                    {
+                        data.response = "";
+                        data.msg = "保存成功";
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+                data.success = false;
+            }
+
+            return data;
+        }
+
         [HttpGet]
         public async Task<MessageModel<PermissionTree>> GetPermissionTree(int pid = 0, bool needbtn = false)
         {
@@ -157,6 +212,27 @@ namespace Blog.Core.Controllers
             if (data.success)
             {
                 data.response = rootRoot;
+                data.msg = "获取成功";
+            }
+
+            return data;
+        }
+
+
+        [HttpGet]
+        public async Task<MessageModel<List<int>>> GetPermissionIdByRoleId(int rid = 0)
+        {
+            var data = new MessageModel<List<int>>();
+
+            var permissions = await _roleModulePermissionServices.Query(d => d.IsDeleted == false && d.RoleId == rid);
+            var permissionTrees = (from child in permissions
+                                   orderby child.Id
+                                   select child.PermissionId.ObjToInt()).ToList();
+
+            data.success = true;
+            if (data.success)
+            {
+                data.response = permissionTrees.Distinct().ToList();
                 data.msg = "获取成功";
             }
 
@@ -203,5 +279,10 @@ namespace Blog.Core.Controllers
         }
     }
 
+    public class AssignView
+    {
+        public List<int> pids { get; set; }
+        public int rid { get; set; }
+    }
 
 }

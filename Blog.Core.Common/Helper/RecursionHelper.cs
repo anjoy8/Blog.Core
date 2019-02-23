@@ -34,7 +34,7 @@ namespace Blog.Core.Common.Helper
 
             if (curItem.isbtn)
             {
-                curItem.label += "按钮";
+                //curItem.label += "按钮";
             }
 
             foreach (var subItem in subItems)
@@ -49,7 +49,7 @@ namespace Blog.Core.Common.Helper
 
         public static void LoopToAppendChildrenT<T>(List<T> all, T curItem, string parentIdName = "Pid", string idName = "value", string childrenName = "children")
         {
-            var subItems = all.Where(ee => ee.GetType().GetProperty(parentIdName).GetValue(ee, null).ToString() == curItem.GetType().GetProperty(idName).GetValue(curItem, null).ToString()).ToList(); //新闻1
+            var subItems = all.Where(ee => ee.GetType().GetProperty(parentIdName).GetValue(ee, null).ToString() == curItem.GetType().GetProperty(idName).GetValue(curItem, null).ToString()).ToList(); 
 
             if (subItems.Count > 0) curItem.GetType().GetField(childrenName).SetValue(curItem, subItems);
             foreach (var subItem in subItems)

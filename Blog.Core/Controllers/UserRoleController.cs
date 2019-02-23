@@ -8,7 +8,7 @@ namespace Blog.Core.Controllers
     /// <summary>
     /// 用户权限控制器所有接口
     /// </summary>
-    [Authorize("Permission")]
+    //[Authorize("Permission")]
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]

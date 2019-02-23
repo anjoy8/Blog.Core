@@ -20,7 +20,7 @@ namespace Blog.Core.Controllers
     //[Authorize]
     //[Authorize(Roles = "Admin,Client")]
     //[Authorize(Policy = "SystemOrAdmin")]
-    [Authorize("Permission")]
+    //[Authorize("Permission")]
     public class ValuesController : ControllerBase
     {
         private IMapper _mapper;
