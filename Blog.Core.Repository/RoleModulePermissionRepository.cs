@@ -14,9 +14,10 @@ namespace Blog.Core.Repository
 
         public async Task<List<RoleModulePermission>> WithChildrenModel()
         {
-            //var list = await Task.Run(() => Db.Queryable<RoleModulePermission>()
-            //        .Mapper(it => it.Role, it => it.RoleId)
-            //        .Mapper(it => it.Module, it => it.ModuleId).ToList());
+            var list = await Task.Run(() => Db.Queryable<RoleModulePermission>()
+                    .Mapper(it => it.Role, it => it.RoleId)
+                    .Mapper(it => it.Permission, it => it.PermissionId)
+                    .Mapper(it => it.Module, it => it.ModuleId).ToList());
 
             return null;
         }

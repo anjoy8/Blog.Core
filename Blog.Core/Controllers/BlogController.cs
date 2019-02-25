@@ -54,6 +54,7 @@ namespace Blog.Core.Controllers
         public async Task<object> Get(int id, int page = 1, string bcategory = "技术博文")
         {
             int intTotalCount = 6;
+            int Total = 0;
             int TotalCount = 1;
             List<BlogArticle> blogArticleList = new List<BlogArticle>();
 
@@ -73,6 +74,7 @@ namespace Blog.Core.Controllers
 
             }
 
+            Total = blogArticleList.Count();
             TotalCount = blogArticleList.Count() / intTotalCount;
 
             using (MiniProfiler.Current.Step("获取成功后，开始处理最终数据"))
@@ -97,6 +99,7 @@ namespace Blog.Core.Controllers
             {
                 success = true,
                 page = page,
+                total= Total,
                 pageCount = TotalCount,
                 data = blogArticleList
             });

@@ -48,7 +48,7 @@ namespace Blog.Core.Services
 
 
 
-        //[Caching(AbsoluteExpiration = 30)]
+        [Caching(AbsoluteExpiration = 30)]
         public async Task<int> GetRoleIdByUid(int uid)
         {
             return ((await dal.Query(d => d.UserId == uid)).OrderByDescending(d => d.Id).LastOrDefault()?.RoleId).ObjToInt();

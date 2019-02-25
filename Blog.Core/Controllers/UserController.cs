@@ -59,12 +59,15 @@ namespace Blog.Core.Controllers
 
             sysUserInfos = sysUserInfos.OrderByDescending(d => d.uID).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
 
+
+            var allUserRoles = await _userRoleServices.Query(d => d.IsDeleted == false);
+            var allRoles = await _roleServices.Query(d => d.IsDeleted == false);
             foreach (var item in sysUserInfos)
             {
                 if (item != null)
                 {
-                    item.RID = await _userRoleServices.GetRoleIdByUid(item.uID);
-                    item.RoleName = await _roleServices.GetRoleNameByRid(item.RID);
+                    item.RID = (allUserRoles.Where(d => d.UserId == item.uID).FirstOrDefault()?.RoleId).ObjToInt();
+                    item.RoleName = allRoles.Where(d=>d.Id==item.RID).FirstOrDefault()?.Name;
                 }
             }
 
@@ -146,7 +149,7 @@ namespace Blog.Core.Controllers
                 if (sysUserInfo.RID > 0)
                 {
                     var usrerole = await _userRoleServices.Query(d => d.UserId == sysUserInfo.uID && d.RoleId == sysUserInfo.RID);
-                    if (usrerole.Count==0)
+                    if (usrerole.Count == 0)
                     {
                         await _userRoleServices.Add(new UserRole(sysUserInfo.uID, sysUserInfo.RID));
                     }

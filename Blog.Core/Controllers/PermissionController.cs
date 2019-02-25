@@ -20,6 +20,7 @@ namespace Blog.Core.Controllers
         IPermissionServices _PermissionServices;
         IModuleServices _ModuleServices;
         IRoleModulePermissionServices _roleModulePermissionServices;
+        IUserRoleServices _userRoleServices;
 
         /// <summary>
         /// 构造函数
@@ -27,11 +28,14 @@ namespace Blog.Core.Controllers
         /// <param name="PermissionServices"></param>
         /// <param name="ModuleServices"></param>
         /// <param name="roleModulePermissionServices"></param>
-        public PermissionController(IPermissionServices PermissionServices, IModuleServices ModuleServices, IRoleModulePermissionServices roleModulePermissionServices)
+        /// <param name="userRoleServices"></param>
+        public PermissionController(IPermissionServices PermissionServices, IModuleServices ModuleServices, IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices)
         {
             _PermissionServices = PermissionServices;
             _ModuleServices = ModuleServices;
             _roleModulePermissionServices = roleModulePermissionServices;
+            _userRoleServices = userRoleServices;
+
         }
 
         // GET: api/User
@@ -221,6 +225,70 @@ namespace Blog.Core.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public async Task<MessageModel<NavigationBar>> GetNavigationBar(int uid)
+        {
+            var data = new MessageModel<NavigationBar>();
+
+            if (uid > 0)
+            {
+                var roleId = ((await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).FirstOrDefault()?.RoleId).ObjToInt();
+                if (roleId > 0)
+                {
+                    var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && d.RoleId == roleId)).Select(d => d.PermissionId.ObjToInt()).Distinct();
+
+                    if (pids.Count() > 0)
+                    {
+                        var rolePermissionMoudles = (await _PermissionServices.Query(d => pids.Contains(d.Id)&&d.IsButton==false)).OrderBy(c=>c.OrderSort);
+                        var permissionTrees = (from child in rolePermissionMoudles
+                                               where child.IsDeleted == false
+                                               orderby child.Id
+                                               select new NavigationBar
+                                               {
+                                                   id = child.Id,
+                                                   name = child.Name,
+                                                   pid = child.Pid,
+                                                   order=child.OrderSort,
+                                                   path = child.Code,
+                                                   iconCls = child.Icon,
+                                                   meta = new NavigationBarMeta
+                                                   {
+                                                       requireAuth = true,
+                                                       title = child.Name,
+                                                   }
+                                               }).ToList();
+
+
+                        NavigationBar rootRoot = new NavigationBar()
+                        {
+                            id = 0,
+                            pid = 0,
+                            order=0,
+                            name = "根节点",
+                            path = "",
+                            iconCls = "",
+                            meta = new NavigationBarMeta(),
+
+                        };
+
+                        permissionTrees = permissionTrees.OrderBy(d => d.order).ToList();
+
+                        RecursionHelper.LoopNaviBarAppendChildren(permissionTrees, rootRoot);
+
+                        data.success = true;
+                        if (data.success)
+                        {
+                            data.response = rootRoot;
+                            data.msg = "获取成功";
+                        }
+                    }
+                }
+            }
+            return data;
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<MessageModel<AssignShow>> GetPermissionIdByRoleId(int rid = 0)
         {
             var data = new MessageModel<AssignShow>();
@@ -238,7 +306,7 @@ namespace Blog.Core.Controllers
                 var pername = permissions.Where(d => d.IsButton && d.Id == item).FirstOrDefault()?.Name;
                 if (!string.IsNullOrEmpty(pername))
                 {
-                    assignbtns.Add(pername + "_" + item); 
+                    assignbtns.Add(pername + "_" + item);
                 }
             }
 
@@ -248,7 +316,7 @@ namespace Blog.Core.Controllers
                 data.response = new AssignShow()
                 {
                     permissionids = permissionTrees,
-                    assignbtns=assignbtns,
+                    assignbtns = assignbtns,
                 };
                 data.msg = "获取成功";
             }

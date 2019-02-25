@@ -55,6 +55,32 @@ namespace Blog.Core.Common.Helper
             }
         }
 
+
+
+        public static void LoopNaviBarAppendChildren(List<NavigationBar> all, NavigationBar curItem)
+        {
+
+            var subItems = all.Where(ee => ee.pid == curItem.id).ToList();
+
+            if (subItems.Count > 0)
+            {
+                curItem.children = new List<NavigationBar>();
+                curItem.children.AddRange(subItems);
+            }
+            else
+            {
+                curItem.children = null;
+            }
+
+
+            foreach (var subItem in subItems)
+            {
+                LoopNaviBarAppendChildren(all, subItem);
+            }
+        }
+
+
+
         public static void LoopToAppendChildrenT<T>(List<T> all, T curItem, string parentIdName = "Pid", string idName = "value", string childrenName = "children")
         {
             var subItems = all.Where(ee => ee.GetType().GetProperty(parentIdName).GetValue(ee, null).ToString() == curItem.GetType().GetProperty(idName).GetValue(curItem, null).ToString()).ToList(); 
@@ -76,5 +102,23 @@ namespace Blog.Core.Common.Helper
         public bool disabled { get; set; }
         public List<PermissionTree> children { get; set; }
         public List<PermissionTree> btns { get; set; }
+    }
+    public class NavigationBar
+    {
+        public int id { get; set; }
+        public int pid { get; set; }
+        public int order { get; set; }
+        public string name { get; set; }
+        public string path { get; set; }
+        public string iconCls { get; set; }
+        public NavigationBarMeta meta { get; set; }
+        public List<NavigationBar> children { get; set; }
+    }
+
+    public class NavigationBarMeta
+    {
+        public string title { get; set; }
+        public bool requireAuth { get; set; } = true;
+
     }
 }
