@@ -84,10 +84,17 @@ namespace Blog.Core.AuthHelper
                     var permisssionGroup = requirement.Permissions.GroupBy(g => g.Url);
                     foreach (var item in permisssionGroup)
                     {
-                        if (Regex.Match(questUrl, item.Key?.ToLower()).Value == questUrl)
+                        try
                         {
-                            isMatchUrl = true;
-                            break;
+                            if (Regex.Match(questUrl, item.Key?.ObjToString().ToLower())?.Value == questUrl)
+                            {
+                                isMatchUrl = true;
+                                break;
+                            }
+                        }
+                        catch (Exception)
+                        {
+
                         }
                     }
 
@@ -105,10 +112,16 @@ namespace Blog.Core.AuthHelper
                         var permisssionRoles = requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role));
                         foreach (var item in permisssionRoles)
                         {
-                            if (Regex.Match(questUrl, item.Url?.ToLower()).Value == questUrl)
+                            try
                             {
-                                isMatchRole = true;
-                                break;
+                                if (Regex.Match(questUrl, item.Url?.ObjToString().ToLower())?.Value == questUrl)
+                                {
+                                    isMatchRole = true;
+                                    break;
+                                }
+                            }
+                            catch (Exception)
+                            {
                             }
                         }
 

@@ -14,22 +14,30 @@ namespace Blog.Core.Common.Helper
         {
 
             var subItems = all.Where(ee => ee.Pid == curItem.value).ToList();
-            if (!needbtn)
-            {
-                subItems = subItems.Where(ss => ss.isbtn == false).ToList();
-            }
+
             var btnItems = subItems.Where(ss => ss.isbtn == true).ToList();
             if (subItems.Count > 0)
             {
-                curItem.children = new List<PermissionTree>();
-                curItem.children.AddRange(subItems);
                 curItem.btns = new List<PermissionTree>();
                 curItem.btns.AddRange(btnItems);
             }
             else
             {
-                curItem.children = null;
                 curItem.btns = null;
+            }
+
+            if (!needbtn)
+            {
+                subItems = subItems.Where(ss => ss.isbtn == false).ToList();
+            }
+            if (subItems.Count > 0)
+            {
+                curItem.children = new List<PermissionTree>();
+                curItem.children.AddRange(subItems);
+            }
+            else
+            {
+                curItem.children = null;
             }
 
             if (curItem.isbtn)

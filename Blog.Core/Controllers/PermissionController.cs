@@ -220,19 +220,36 @@ namespace Blog.Core.Controllers
 
 
         [HttpGet]
-        public async Task<MessageModel<List<int>>> GetPermissionIdByRoleId(int rid = 0)
+        [AllowAnonymous]
+        public async Task<MessageModel<AssignShow>> GetPermissionIdByRoleId(int rid = 0)
         {
-            var data = new MessageModel<List<int>>();
+            var data = new MessageModel<AssignShow>();
 
-            var permissions = await _roleModulePermissionServices.Query(d => d.IsDeleted == false && d.RoleId == rid);
-            var permissionTrees = (from child in permissions
+            var rmps = await _roleModulePermissionServices.Query(d => d.IsDeleted == false && d.RoleId == rid);
+            var permissionTrees = (from child in rmps
                                    orderby child.Id
                                    select child.PermissionId.ObjToInt()).ToList();
+
+            var permissions = await _PermissionServices.Query(d => d.IsDeleted == false);
+            List<string> assignbtns = new List<string>();
+
+            foreach (var item in permissionTrees)
+            {
+                var pername = permissions.Where(d => d.IsButton && d.Id == item).FirstOrDefault()?.Name;
+                if (!string.IsNullOrEmpty(pername))
+                {
+                    assignbtns.Add(pername + "_" + item); 
+                }
+            }
 
             data.success = true;
             if (data.success)
             {
-                data.response = permissionTrees.Distinct().ToList();
+                data.response = new AssignShow()
+                {
+                    permissionids = permissionTrees,
+                    assignbtns=assignbtns,
+                };
                 data.msg = "获取成功";
             }
 
@@ -283,6 +300,11 @@ namespace Blog.Core.Controllers
     {
         public List<int> pids { get; set; }
         public int rid { get; set; }
+    }
+    public class AssignShow
+    {
+        public List<int> permissionids { get; set; }
+        public List<string> assignbtns { get; set; }
     }
 
 }

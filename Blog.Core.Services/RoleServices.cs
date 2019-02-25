@@ -44,7 +44,7 @@ namespace Blog.Core.Services
 
         }
 
-        [Caching(AbsoluteExpiration = 30)]
+        //[Caching(AbsoluteExpiration = 30)]
         public async Task<string> GetRoleNameByRid(int rid)
         {
             return ((await dal.QueryByID(rid))?.Name);
