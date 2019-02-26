@@ -204,11 +204,15 @@ namespace Blog.Core.Controllers
                                        label = child.Name,
                                        Pid = child.Pid,
                                        isbtn = child.IsButton,
+                                       order = child.OrderSort,
                                    }).ToList();
             PermissionTree rootRoot = new PermissionTree();
             rootRoot.value = 0;
             rootRoot.Pid = 0;
             rootRoot.label = "根节点";
+
+            permissionTrees = permissionTrees.OrderBy(d => d.order).ToList();
+
 
             RecursionHelper.LoopToAppendChildren(permissionTrees, rootRoot, pid, needbtn);
 
@@ -238,7 +242,7 @@ namespace Blog.Core.Controllers
 
                     if (pids.Count() > 0)
                     {
-                        var rolePermissionMoudles = (await _PermissionServices.Query(d => pids.Contains(d.Id)&&d.IsButton==false)).OrderBy(c=>c.OrderSort);
+                        var rolePermissionMoudles = (await _PermissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
                         var permissionTrees = (from child in rolePermissionMoudles
                                                where child.IsDeleted == false
                                                orderby child.Id
@@ -247,7 +251,7 @@ namespace Blog.Core.Controllers
                                                    id = child.Id,
                                                    name = child.Name,
                                                    pid = child.Pid,
-                                                   order=child.OrderSort,
+                                                   order = child.OrderSort,
                                                    path = child.Code,
                                                    iconCls = child.Icon,
                                                    meta = new NavigationBarMeta
@@ -262,7 +266,7 @@ namespace Blog.Core.Controllers
                         {
                             id = 0,
                             pid = 0,
-                            order=0,
+                            order = 0,
                             name = "根节点",
                             path = "",
                             iconCls = "",

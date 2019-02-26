@@ -98,6 +98,7 @@ namespace Blog.Core.Common.Helper
         public int value { get; set; }
         public int Pid { get; set; }
         public string label { get; set; }
+        public int order { get; set; }
         public bool isbtn { get; set; }
         public bool disabled { get; set; }
         public List<PermissionTree> children { get; set; }
