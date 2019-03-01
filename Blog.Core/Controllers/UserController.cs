@@ -64,6 +64,7 @@ namespace Blog.Core.Controllers
             var allRoles = await _roleServices.Query(d => d.IsDeleted == false);
             foreach (var item in sysUserInfos)
             {
+                item.uLoginPWD = "no see me";
                 if (item != null)
                 {
                     item.RID = (allUserRoles.Where(d => d.UserId == item.uID).FirstOrDefault()?.RoleId).ObjToInt();

@@ -174,6 +174,51 @@ namespace Blog.Core.Controllers
         }
 
 
+        [HttpGet]
+        [Route("RefreshToken")]
+        public async Task<object> RefreshToken(string token = "")
+        {
+            string jwtStr = string.Empty;
+            bool suc = false;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return new JsonResult(new
+                {
+                    Status = false,
+                    message = "token无效，请重新登录！"
+                });
+            }
+            var tokenModel = JwtHelper.SerializeJWT(token);
+            if (tokenModel != null && tokenModel.Uid > 0)
+            {
+                var user = await sysUserInfoServices.QueryByID(tokenModel.Uid);
+                if (user != null)
+                {
+                    var userRoles = await sysUserInfoServices.GetUserRoleNameStr(user.uLoginName, user.uLoginPWD);
+                    //如果是基于用户的授权策略，这里要添加用户;如果是基于角色的授权策略，这里要添加角色
+                    var claims = new List<Claim> {
+                    new Claim(ClaimTypes.Name, user.uLoginName),
+                    new Claim(JwtRegisteredClaimNames.Jti, tokenModel.Uid.ObjToString()),
+                    new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString()) };
+                    claims.AddRange(userRoles.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));
+
+                    //用户标识
+                    var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
+                    identity.AddClaims(claims);
+
+                    var refreshToken = JwtToken.BuildJwtToken(claims.ToArray(), _requirement);
+                    return new JsonResult(refreshToken);
+                }
+            }
+
+            return new JsonResult(new
+            {
+                success = false,
+                message = "认证失败"
+            });
+        }
+
         /// <summary>
         /// 
         /// </summary>
