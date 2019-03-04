@@ -7,7 +7,7 @@ namespace Blog.Core.Model.Models
     public class MyContext
     {
 
-        private static string _connectionString = File.Exists(@"D:\my-file\dbCountPsw1_1.txt") ? File.ReadAllText(@"D:\my-file\dbCountPsw1_1.txt").Trim() : "server=.;uid=sa;pwd=sa;database=BlogDB";
+        private static string _connectionString = File.Exists(@"D:\my-file\dbCountPsw1_1.txt") ? File.ReadAllText(@"D:\my-file\dbCountPsw1_1.txt").Trim() : "server=.;uid=sa;pwd=sa;database=WMBlogDB";
         private static DbType _dbType;
         private SqlSugarClient _db;
 
