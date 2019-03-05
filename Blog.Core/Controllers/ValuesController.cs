@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -78,6 +79,21 @@ namespace Blog.Core.Controllers
 
             return "value";
         }
+
+        /// <summary>
+        /// 参数必填项
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("/api/values/RequiredPara")]
+        public string RequiredP([Required]string id)
+        {
+            return id;
+        }
+
+
+
         /// <summary>
         /// post
         /// </summary>
