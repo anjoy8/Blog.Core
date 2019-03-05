@@ -28,6 +28,23 @@ namespace Blog.Core.Controllers
             return "value";
         }
 
+        // GET: api/Download
+        [HttpGet]
+        [Route("down")]
+        public FileStreamResult DownImg()
+        {
+            var addrUrl = Directory.GetCurrentDirectory() + "\\微信截图_20190304212953.png";
+            var stream = System.IO.File.OpenRead(addrUrl);
+            string fileExt = ".jpg";  // 这里可以写一个获取文件扩展名的方法，获取扩展名
+            //获取文件的ContentType
+            var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+            var memi = provider.Mappings[fileExt];
+            var fileName = Path.GetFileName(addrUrl);
+
+
+            return File(stream, memi, fileName);
+        }
+
 
         [HttpPost]
         [Route("Pic")]
@@ -102,5 +119,5 @@ namespace Blog.Core.Controllers
         {
         }
     }
-  
+
 }
