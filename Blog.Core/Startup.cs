@@ -27,8 +27,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using StackExchange.Profiling.Storage;
@@ -258,7 +256,7 @@ namespace Blog.Core
                 audienceConfig["Audience"],//听众
                 signingCredentials,//签名凭据
                 expiration: TimeSpan.FromSeconds(60 * 30)//接口的过期时间
-                ); 
+                );
             #endregion
 
             //1【授权】、自定义复杂授权的权限要求
@@ -266,30 +264,41 @@ namespace Blog.Core
             {
                 options.AddPolicy("Permission",
                          policy => policy.Requirements.Add(permissionRequirement));
-            })
-            //2【认证】、官方JWT认证
-            .AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(o =>
-            {
-                o.TokenValidationParameters = tokenValidationParameters;
-                o.Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = context =>
-                    {
-                        // 如果过期，则把<是否过期>添加到，返回头信息中
-                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                        {
-                            context.Response.Headers.Add("Token-Expired", "true");
-                        }
-                        return Task.CompletedTask;
-                    }
-                };
             });
 
+            //2.1【认证】、官方JWT认证
+            services.AddAuthentication(x =>
+             {
+                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+             })
+             .AddJwtBearer(o =>
+             {
+                 o.TokenValidationParameters = tokenValidationParameters;
+                 o.Events = new JwtBearerEvents
+                 {
+                     OnAuthenticationFailed = context =>
+                     {
+                         // 如果过期，则把<是否过期>添加到，返回头信息中
+                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                         {
+                             context.Response.Headers.Add("Token-Expired", "true");
+                         }
+                         return Task.CompletedTask;
+                     }
+                 };
+             });
+
+            //2.2【认证】、官方 IdentityServer4 认证 (暂时忽略)
+            //services.AddAuthentication("Bearer")
+            //  .AddIdentityServerAuthentication(options =>
+            //  {
+            //      options.Authority = "http://localhost:5002";
+            //      options.RequireHttpsMetadata = false;
+            //      options.ApiName = "blog.core.api";
+            //  });
+
+            // 注入权限处理器
             services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
             services.AddSingleton(permissionRequirement);
 

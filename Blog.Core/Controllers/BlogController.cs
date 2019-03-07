@@ -19,7 +19,6 @@ namespace Blog.Core.Controllers
     /// <summary>
     /// Blog控制器所有接口
     /// </summary>
-    [Authorize(Policy = "Admin")]
     [Produces("application/json")]
     [Route("api/Blog")]
     public class BlogController : Controller
@@ -99,7 +98,7 @@ namespace Blog.Core.Controllers
             {
                 success = true,
                 page = page,
-                total= Total,
+                total = Total,
                 pageCount = TotalCount,
                 data = blogArticleList
             });
@@ -113,6 +112,8 @@ namespace Blog.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
+        //[Authorize("Permission")]
         public async Task<object> Get(int id)
         {
             var model = await blogArticleServices.getBlogDetails(id);

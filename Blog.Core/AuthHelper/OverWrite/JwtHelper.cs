@@ -47,7 +47,7 @@ namespace Blog.Core.AuthHelper
 
 
 
-            //秘钥
+            //秘钥 (SymmetricSecurityKey 对安全性的要求，密钥的长度太短会报出异常)
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

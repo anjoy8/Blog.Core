@@ -397,6 +397,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.RequiredP(System.String)">
+            <summary>
+            参数必填项
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Post(Blog.Core.Model.Models.BlogArticle)">
             <summary>
             post
