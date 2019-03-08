@@ -48,7 +48,7 @@ namespace Blog.Core
             Configuration = configuration;
             //log4net
             repository = LogManager.CreateRepository("Blog.Core");
-            //指定配置文件
+            //指定配置文件，如果这里你遇到问题，应该是使用了InProcess模式，请查看Blog.Core.csproj,并删之
             XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));
 
         }
