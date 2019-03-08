@@ -59,7 +59,7 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 在Blog.Core 项目下的 wwwroot 文件夹中。
 
 
-5、如果想单独查看关于【JWT授权】的相关内容，可以在wwwroot 文件夹中找到，我单拎出来的一个demo。
+5、如果想单独查看关于【JWT授权】的相关内容，可以在wwwroot 文件夹中找到【Autho.jwt.rar】，我单拎出来的一个demo。
 
 ```
 *********************************************************
