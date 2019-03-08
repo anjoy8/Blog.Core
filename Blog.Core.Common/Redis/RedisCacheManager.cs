@@ -51,7 +51,7 @@ namespace Blog.Core.Common
                 catch (Exception)
                 {
 
-                    throw new Exception("Redis服务未启用，请开启该服务");
+                    //throw new Exception("Redis服务未启用，请开启该服务");
                 }
             }
             return this.redisConnection;
