@@ -192,18 +192,23 @@ namespace Blog.Core
 
             #region Authorize权限设置三种情况
 
-            #region 1、基于角色API授权 + 自定义认证中间件
+            //使用说明：
+            //如果你只是简单的基于角色授权的，第一步：【1/2 简单角色授权】，第二步：配置【统一认证】，第三步：开启中间件app.UseMiddleware<JwtTokenAuth>()不能验证过期，或者 app.UseAuthentication();可以验证过期时间
+            //如果你是用的复杂的策略授权，配置权限在数据库，第一步：【3复杂策略授权】，第二步：配置【统一认证】，第三步：开启中间件app.UseAuthentication();
+            //综上所述，设置权限，必须要三步走，涉及授权策略 + 配置认证 + 开启授权中间件，只不过自定义的中间件不能验证过期时间，所以我都是用官方的。
+
+            #region 【1/2、简单角色授权】
+            #region 1、基于角色的API授权 
 
             // 1【授权】、这个很简单，其他什么都不用做，
             // 无需配置服务，只需要在API层的controller上边，增加特性即可，注意，只能是角色的:
             // [Authorize(Roles = "Admin")]
 
-            // 2【认证】、然后在下边的configure里，配置中间件即可:
-            // app.UseMiddleware<JwtTokenAuth>();
+            // 2【认证】、然后在下边的configure里，配置中间件即可:app.UseMiddleware<JwtTokenAuth>();但是这个方法，无法验证过期时间，所以如果需要验证过期时间，还是需要下边的第三种方法，官方认证
 
             #endregion
 
-            #region 2、基于角色的策略授权（简单版） + 自定义认证中间件
+            #region 2、基于策略的授权（简单版）
 
             // 1【授权】、这个和上边的异曲同工，好处就是不用在controller中，写多个 roles 。
             // 然后这么写 [Authorize(Policy = "Admin")]
@@ -215,12 +220,12 @@ namespace Blog.Core
             });
 
 
-            // 2【认证】、然后在下边的configure里，配置中间件即可:
-            // app.UseMiddleware<JwtTokenAuth>();
+            // 2【认证】、然后在下边的configure里，配置中间件即可:app.UseMiddleware<JwtTokenAuth>();但是这个方法，无法验证过期时间，所以如果需要验证过期时间，还是需要下边的第三种方法，官方认证
+            #endregion 
             #endregion
 
 
-            #region 3、复杂策略授权 + 官方JWT认证
+            #region 【3、复杂策略授权】
 
             #region 参数
             //读取配置文件
@@ -229,19 +234,7 @@ namespace Blog.Core
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
             var signingKey = new SymmetricSecurityKey(keyByteArray);
 
-            // 令牌验证参数
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
-                ValidateIssuer = true,
-                ValidIssuer = audienceConfig["Issuer"],//发行人
-                ValidateAudience = true,
-                ValidAudience = audienceConfig["Audience"],//订阅人
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero,
-                RequireExpirationTime = true,
-            };
+           
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
             // 如果要数据库动态绑定，这里先留个空，后边处理器里动态赋值
@@ -255,56 +248,73 @@ namespace Blog.Core
                 audienceConfig["Issuer"],//发行人
                 audienceConfig["Audience"],//听众
                 signingCredentials,//签名凭据
-                expiration: TimeSpan.FromSeconds(60 * 30)//接口的过期时间
+                expiration: TimeSpan.FromSeconds(60 * 2)//接口的过期时间
                 );
             #endregion
 
-            //1【授权】、自定义复杂授权的权限要求
+            //【授权】
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Permission",
                          policy => policy.Requirements.Add(permissionRequirement));
             });
 
-            //2.1【认证】、官方JWT认证
-            services.AddAuthentication(x =>
-             {
-                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-             })
-             .AddJwtBearer(o =>
-             {
-                 o.TokenValidationParameters = tokenValidationParameters;
-                 o.Events = new JwtBearerEvents
-                 {
-                     OnAuthenticationFailed = context =>
-                     {
-                         // 如果过期，则把<是否过期>添加到，返回头信息中
-                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                         {
-                             context.Response.Headers.Add("Token-Expired", "true");
-                         }
-                         return Task.CompletedTask;
-                     }
-                 };
-             });
-
-            //2.2【认证】、官方 IdentityServer4 认证 (暂时忽略)
-            //services.AddAuthentication("Bearer")
-            //  .AddIdentityServerAuthentication(options =>
-            //  {
-            //      options.Authority = "http://localhost:5002";
-            //      options.RequireHttpsMetadata = false;
-            //      options.ApiName = "blog.core.api";
-            //  });
-
-            // 注入权限处理器
-            services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
-            services.AddSingleton(permissionRequirement);
 
             #endregion
 
 
+            #region 【统一认证】
+            // 令牌验证参数
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+                ValidateIssuer = true,
+                ValidIssuer = audienceConfig["Issuer"],//发行人
+                ValidateAudience = true,
+                ValidAudience = audienceConfig["Audience"],//订阅人
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                RequireExpirationTime = true,
+            };
+
+            //2.1【认证】、core自带官方JWT认证
+            //services.AddAuthentication(x =>
+            //{
+            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            // .AddJwtBearer(o =>
+            // {
+            //     o.TokenValidationParameters = tokenValidationParameters;
+            //     o.Events = new JwtBearerEvents
+            //     {
+            //         OnAuthenticationFailed = context =>
+            //         {
+            //             // 如果过期，则把<是否过期>添加到，返回头信息中
+            //             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+            //             {
+            //                 context.Response.Headers.Add("Token-Expired", "true");
+            //             }
+            //             return Task.CompletedTask;
+            //         }
+            //     };
+            // });
+
+
+            //2.2【认证】、IdentityServer4 认证 (暂时忽略)
+            services.AddAuthentication("Bearer")
+              .AddIdentityServerAuthentication(options =>
+              {
+                  options.Authority = "http://localhost:5002";
+                  options.RequireHttpsMetadata = false;
+                  options.ApiName = "blog.core.api";
+              });
+            // 注入权限处理器
+
+            services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+            services.AddSingleton(permissionRequirement);
+            #endregion
 
             #endregion
 
@@ -406,16 +416,17 @@ namespace Blog.Core
                 {
                     c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{ApiName} {version}");
                 });
-                c.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html");
+                c.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html");//这里是配合MiniProfiler进行性能监控的，《文章：完美基于AOP的接口性能分析》，如果你不需要，可以暂时先注释掉，不影响大局。
                 c.RoutePrefix = ""; //路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件,注意localhost:8001/swagger是访问不到的，去launchSettings.json把launchUrl去掉
             });
             #endregion
 
             #region Authen
 
-            //app.UseMiddleware<JwtTokenAuth>();//此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件
+            //此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件
+            //app.UseMiddleware<JwtTokenAuth>();
 
-            // 如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务 (.AddAuthentication 和 .AddJwtBearer 二者缺一不可)
+            //如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务 (.AddAuthentication 和 .AddJwtBearer 二者缺一不可)
             app.UseAuthentication();
             #endregion
 
