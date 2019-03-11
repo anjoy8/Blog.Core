@@ -279,37 +279,37 @@ namespace Blog.Core
             };
 
             //2.1【认证】、core自带官方JWT认证
-            //services.AddAuthentication(x =>
-            //{
-            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            // .AddJwtBearer(o =>
-            // {
-            //     o.TokenValidationParameters = tokenValidationParameters;
-            //     o.Events = new JwtBearerEvents
-            //     {
-            //         OnAuthenticationFailed = context =>
-            //         {
-            //             // 如果过期，则把<是否过期>添加到，返回头信息中
-            //             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-            //             {
-            //                 context.Response.Headers.Add("Token-Expired", "true");
-            //             }
-            //             return Task.CompletedTask;
-            //         }
-            //     };
-            // });
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+             .AddJwtBearer(o =>
+             {
+                 o.TokenValidationParameters = tokenValidationParameters;
+                 o.Events = new JwtBearerEvents
+                 {
+                     OnAuthenticationFailed = context =>
+                     {
+                         // 如果过期，则把<是否过期>添加到，返回头信息中
+                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                         {
+                             context.Response.Headers.Add("Token-Expired", "true");
+                         }
+                         return Task.CompletedTask;
+                     }
+                 };
+             });
 
 
             //2.2【认证】、IdentityServer4 认证 (暂时忽略)
-            services.AddAuthentication("Bearer")
-              .AddIdentityServerAuthentication(options =>
-              {
-                  options.Authority = "http://localhost:5002";
-                  options.RequireHttpsMetadata = false;
-                  options.ApiName = "blog.core.api";
-              });
+            //services.AddAuthentication("Bearer")
+            //  .AddIdentityServerAuthentication(options =>
+            //  {
+            //      options.Authority = "http://localhost:5002";
+            //      options.RequireHttpsMetadata = false;
+            //      options.ApiName = "blog.core.api";
+            //  });
             // 注入权限处理器
 
             services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
