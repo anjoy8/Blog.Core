@@ -56,7 +56,7 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 
 
 4、如果你不想用CodeFirst 和种子数据，可以用数据库表结构Sql文件在数据库里执行，
-在Blog.Core 项目下的 wwwroot 文件夹中。
+在Blog.Core 项目下的 wwwroot 文件夹中 Blog.Core.Table.sql。
 
 
 5、如果想单独查看关于【JWT授权】的相关内容，可以在wwwroot 文件夹中找到【Autho.jwt.rar】，我单拎出来的一个demo。
@@ -65,13 +65,15 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 *********************************************************
 ### 修改数据库连接字符串
 
-1、在Blog.Core.Repository层的sugar 文件夹下 的 BaseDBConfig.cs 中，配置自己的字符串
+1、在Blog.Core层 appsettings.json 中，配置自己的字符串
 ```
-public static string ConnectionString = File.Exists(@"D:\my-file\dbCountPsw1.txt") ? 
-File.ReadAllText(@"D:\my-file\dbCountPsw1.txt").Trim() : "server=.;uid=sa;pwd=sa;database=BlogDB";
+    "SqlServer": {
+      "SqlServerConnection": "Server=.;Database=WMBlogDB;User ID=sa;Password=123;",
+      "ProviderName": "System.Data.SqlClient"
+    },
 ```
 
-2、在Blog.Core.FrameWork层的DbHelper.ttinclude 中，配置自己的字符串
+2、如果想使用T4模板，在Blog.Core.FrameWork层的DbHelper.ttinclude 中，配置自己的字符串
 ```
 public static readonly string ConnectionString = File.Exists(@"D:\my-file\dbCountPsw2.txt") ? 
 File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim(): "server=.;uid=sa;pwd=sa;database=BlogDB";
