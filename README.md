@@ -47,19 +47,34 @@ QQ群：867095512
 如果你不想处理这个错误，你可以先把项目卸载，不影响整体运行。
 
 
-2【重要】、项目下载后执行的时候，需要安装Redis服务端，安装和使用说明地址：
+2【重要】、项目中，有三个AOP的操作类，分别是Redis缓存切面，memory缓存切面、Log日志切面
+你可以在自定义开关，对其进行是否启用，在 appsettings.json 中的：
+
+    "RedisCaching": {
+      "Enabled": false,
+      "ConnectionString": "127.0.0.1:6319"
+    },
+    "MemoryCachingAOP": {
+      "Enabled": true
+    },
+    "LogoAOP": {
+      "Enabled": false
+    },
+
+
+3【重要】、如何你使用Redis，需要安装Redis服务端，安装和使用说明地址：
 https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 
 
-3【重要+】、系统新增自动化生成数据库，和生成种子数据的功能，
+4【重要+】、系统新增自动化生成数据库，和生成种子数据的功能，
 在Blog.Core层中的 Progrm.cs 中，取消对 DBSeed.SeedAsync(myContext).Wait(); 的注释即可。
 
 
-4、如果你不想用CodeFirst 和种子数据，可以用数据库表结构Sql文件在数据库里执行，
+5、如果你不想用CodeFirst 和种子数据，可以用数据库表结构Sql文件在数据库里执行，
 在Blog.Core 项目下的 wwwroot 文件夹中 Blog.Core.Table.sql。
 
 
-5、如果想单独查看关于【JWT授权】的相关内容，可以在wwwroot 文件夹中找到【Autho.jwt.rar】，我单拎出来的一个demo。
+6、如果想单独查看关于【JWT授权】的相关内容，可以在wwwroot 文件夹中找到【Autho.jwt.rar】，我单拎出来的一个demo。
 
 ```
 *********************************************************
