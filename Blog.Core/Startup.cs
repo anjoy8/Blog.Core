@@ -339,14 +339,27 @@ namespace Blog.Core
 
             //builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
 
+            var cacheType =new List<Type>();
+            if (Appsettings.app(new string[] { "AppSettings", "RedisCaching", "Enabled" }).ObjToBool())
+            {
+                cacheType.Add(typeof(BlogRedisCacheAOP));
+            }
+            if (Appsettings.app(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool())
+            {
+                cacheType.Add(typeof(BlogCacheAOP));
+            }
+            if (Appsettings.app(new string[] { "AppSettings", "LogoAOP", "Enabled" }).ObjToBool())
+            {
+                cacheType.Add(typeof(BlogLogAOP));
+            }
+
             builder.RegisterAssemblyTypes(assemblysServices)
                       .AsImplementedInterfaces()
                       .InstancePerLifetimeScope()
                       .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
-
                       // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
                       // 如果想使用Redis缓存，请必须开启 redis 服务，端口号我的是6319，如果不一样还是无效，否则请使用memory缓存 BlogCacheAOP
-                      .InterceptedBy(typeof(BlogRedisCacheAOP));//允许将拦截器服务的列表分配给注册。 
+                      .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。 
             #endregion
 
             #region Repository.dll 注入，有对应接口
