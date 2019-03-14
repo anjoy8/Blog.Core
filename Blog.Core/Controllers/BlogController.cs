@@ -59,18 +59,26 @@ namespace Blog.Core.Controllers
 
             using (MiniProfiler.Current.Step("开始加载数据："))
             {
-                if (redisCacheManager.Get<object>("Redis.Blog") != null)
+                try
                 {
-                    MiniProfiler.Current.Step("从Redis服务器中加载数据：");
-                    blogArticleList = redisCacheManager.Get<List<BlogArticle>>("Redis.Blog");
-                }
-                else
-                {
-                    MiniProfiler.Current.Step("从MSSQL服务器中加载数据：");
-                    blogArticleList = await blogArticleServices.Query(a => a.bcategory == bcategory);
-                    redisCacheManager.Set("Redis.Blog", blogArticleList, TimeSpan.FromHours(2));
-                }
+                    if (redisCacheManager.Get<object>("Redis.Blog") != null)
+                    {
+                        MiniProfiler.Current.Step("从Redis服务器中加载数据：");
+                        blogArticleList = redisCacheManager.Get<List<BlogArticle>>("Redis.Blog");
+                    }
+                    else
+                    {
+                        MiniProfiler.Current.Step("从MSSQL服务器中加载数据：");
+                        blogArticleList = await blogArticleServices.Query(a => a.bcategory == bcategory);
+                        redisCacheManager.Set("Redis.Blog", blogArticleList, TimeSpan.FromHours(2));
+                    }
 
+                }
+                catch (Exception e)
+                {
+                    MiniProfiler.Current.CustomTiming("Errors：", e.Message);
+                    blogArticleList = await blogArticleServices.Query(a => a.bcategory == bcategory);
+                }
             }
 
             Total = blogArticleList.Count();
