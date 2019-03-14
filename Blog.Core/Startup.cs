@@ -234,7 +234,7 @@ namespace Blog.Core
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
             var signingKey = new SymmetricSecurityKey(keyByteArray);
 
-           
+
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
             // 如果要数据库动态绑定，这里先留个空，后边处理器里动态赋值
@@ -248,7 +248,7 @@ namespace Blog.Core
                 audienceConfig["Issuer"],//发行人
                 audienceConfig["Audience"],//听众
                 signingCredentials,//签名凭据
-                expiration: TimeSpan.FromSeconds(60 * 2)//接口的过期时间
+                expiration: TimeSpan.FromSeconds(60*5)//接口的过期时间
                 );
             #endregion
 
@@ -343,7 +343,9 @@ namespace Blog.Core
                       .AsImplementedInterfaces()
                       .InstancePerLifetimeScope()
                       .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
-                                                    // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
+
+                      // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
+                      // 如果想使用Redis缓存，请必须开启 redis 服务，否则请使用memory缓存 BlogCacheAOP
                       .InterceptedBy(typeof(BlogRedisCacheAOP));//允许将拦截器服务的列表分配给注册。 
             #endregion
 
