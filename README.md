@@ -71,7 +71,8 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 
 
 5、如果你不想用CodeFirst 和种子数据，可以用数据库表结构Sql文件在数据库里执行，
-在Blog.Core 项目下的 wwwroot 文件夹中 Blog.Core.Table.sql。
+在Blog.Core 项目下的 wwwroot 文件夹中 Blog.Core.Table.sql（仅仅是表结构）、Blog.Core.Table&Data.sql（结构和数据都有）。
+或者来群里，群文件的是最新的。
 
 
 6、如果想单独查看关于【JWT授权】的相关内容，可以在wwwroot 文件夹中找到【Autho.jwt.rar】，我单拎出来的一个demo。
