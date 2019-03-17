@@ -34,6 +34,12 @@
             margin: 0;
             background: #fafafa;
         }
+        .qqgroup {
+            float: right;
+        }
+        .info {
+            float: left;
+        }
     </style>
     %(HeadContent)
 </head>
@@ -75,6 +81,7 @@
     <script src="./swagger-ui-bundle.js"></script>
     <script src="./swagger-ui-standalone-preset.js"></script>
     <script>
+        var int = null;
         window.onload = function () {
             var configObject = JSON.parse('%(ConfigObject)');
             var oauthConfigObject = JSON.parse('%(OAuthConfigObject)');
@@ -94,8 +101,23 @@
             // Apply OAuth config
             ui.initOAuth(oauthConfigObject);
 
+
+             int =  setInterval(function () {
+                getData();
+            }, 1000);
             $("img").attr("src", "./logo/favicon-32x32.png");
         }
+        function getData() {
+
+            console.log(1);
+            if ($(".qqgroup").length<=0) {
+                $('.info').after("<div class='qqgroup'><img  src='http://123.206.33.109:26898/QQGroup.png' alt='QQ二维码' style='width: 200px;'></div><div style='clear: both;'></div>");
+                console.log(2);
+                clearInterval(int);
+            }
+
+        }
+
     </script>
 </body>
 </html>
