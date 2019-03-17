@@ -133,6 +133,20 @@ namespace Blog.Core.Controllers
         }
 
 
+
+        [HttpGet]
+        [Route("DetailNuxtNoPer")]
+        public async Task<object> DetailNuxtNoPer(int id)
+        {
+            var model = await blogArticleServices.getBlogDetails(id);
+            return Ok(new
+            {
+                success = true,
+                data = model
+            });
+        }
+
+
         /// <summary>
         /// 获取博客测试信息 v2版本
         /// </summary>
