@@ -16,8 +16,17 @@ namespace Blog.Core
     {
         public static void Main(string[] args)
         {
+            IWebHost host;
             // 生成承载 web 应用程序的 Microsoft.AspNetCore.Hosting.IWebHost。Build是WebHostBuilder最终的目的，将返回一个构造的WebHost，最终生成宿主。
-            var host = CreateWebHostBuilder(args).Build();
+            try
+            {
+                host = CreateWebHostBuilder(args).Build();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
             // 创建可用于解析作用域服务的新 Microsoft.Extensions.DependencyInjection.IServiceScope。
             using (var scope = host.Services.CreateScope())

@@ -334,40 +334,47 @@ namespace Blog.Core
 
             #region Service.dll 注入，有对应接口
             //获取项目绝对路径，请注意，这个是实现类的dll文件，不是接口 IService.dll ，注入容器当然是Activatore
-            var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
-            var assemblysServices = Assembly.LoadFile(servicesDllFile);//直接采用加载文件的方法
-
-            //builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
-
-
-            // AOP 开关，如果想要打开指定的功能，只需要在 appsettigns.json 对应对应 true 就行。
-            var cacheType =new List<Type>();
-            if (Appsettings.app(new string[] { "AppSettings", "RedisCaching", "Enabled" }).ObjToBool())
+            try
             {
-                cacheType.Add(typeof(BlogRedisCacheAOP));
-            }
-            if (Appsettings.app(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool())
-            {
-                cacheType.Add(typeof(BlogCacheAOP));
-            }
-            if (Appsettings.app(new string[] { "AppSettings", "LogoAOP", "Enabled" }).ObjToBool())
-            {
-                cacheType.Add(typeof(BlogLogAOP));
-            }
+                var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
+                var assemblysServices = Assembly.LoadFile(servicesDllFile);//直接采用加载文件的方法  ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
 
-            builder.RegisterAssemblyTypes(assemblysServices)
-                      .AsImplementedInterfaces()
-                      .InstancePerLifetimeScope()
-                      .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
-                      // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
-                      // 如果想使用Redis缓存，请必须开启 redis 服务，端口号我的是6319，如果不一样还是无效，否则请使用memory缓存 BlogCacheAOP
-                      .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。 
-            #endregion
+                //builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
 
-            #region Repository.dll 注入，有对应接口
-            var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
-            var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
-            builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
+
+                // AOP 开关，如果想要打开指定的功能，只需要在 appsettigns.json 对应对应 true 就行。
+                var cacheType = new List<Type>();
+                if (Appsettings.app(new string[] { "AppSettings", "RedisCaching", "Enabled" }).ObjToBool())
+                {
+                    cacheType.Add(typeof(BlogRedisCacheAOP));
+                }
+                if (Appsettings.app(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool())
+                {
+                    cacheType.Add(typeof(BlogCacheAOP));
+                }
+                if (Appsettings.app(new string[] { "AppSettings", "LogoAOP", "Enabled" }).ObjToBool())
+                {
+                    cacheType.Add(typeof(BlogLogAOP));
+                }
+
+                builder.RegisterAssemblyTypes(assemblysServices)
+                          .AsImplementedInterfaces()
+                          .InstancePerLifetimeScope()
+                          .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
+                                                        // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
+                                                        // 如果想使用Redis缓存，请必须开启 redis 服务，端口号我的是6319，如果不一样还是无效，否则请使用memory缓存 BlogCacheAOP
+                          .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。 
+                #endregion
+
+                #region Repository.dll 注入，有对应接口
+                var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
+                var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
+                builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
+            }
+            catch (Exception)
+            {
+                throw new Exception("※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，因为解耦了 ※※★※※");
+            }
             #endregion
             #endregion
 
