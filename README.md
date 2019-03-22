@@ -68,11 +68,11 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 
 4【重要+】、系统新增自动化生成数据库，和生成种子数据的功能，
 在Blog.Core层中的 Progrm.cs 中，取消对 DBSeed.SeedAsync(myContext).Wait(); 的注释即可。
-注意不要注释Blog.Core.Model层DBSeed -> SeedAsync -》  myContext.CreateTableByEntity(false, typeof(Advertiseme....）。
+注意不要注释Blog.Core.Model层DBSeed -> SeedAsync -》  myContext.CreateTableByEntity(false, typ）。
 
 
 5、如果你不想用CodeFirst 和种子数据，可以用数据库表结构Sql文件在数据库里执行，
-在Blog.Core 项目下的 wwwroot 文件夹中 Blog.Core.Table.sql（仅仅是表结构）、Blog.Core.Table&Data.sql（结构和数据都有）。
+在Blog.Core 项目下的 wwwroot 文件夹中Blog.Core.Table.sql（表结构）、Blog.Core.Table&Data.sql（结构和数据）。
 或者来群里，群文件的是最新的。
 
 
