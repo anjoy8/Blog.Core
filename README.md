@@ -90,7 +90,17 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
     },
 ```
 
-2、如果想使用T4模板，在Blog.Core.FrameWork层的DbHelper.ttinclude 中，配置自己的字符串
+2、文章中有三个地方用到了数据库连接字符串
+```
+A、系统中使用 Blog.Core.Repository -> BaseDBConfig.cs
+B、Seed数据库 Blog.Core.Model -> MyContext.cs
+C、T4 模板 Blog.Core.FrameWork -> DbHelper.ttinclude
+
+其实针对AB两个情况，只需要配置 appsettings.json 即可
+
+```
+
+3、如果想使用T4模板，在Blog.Core.FrameWork层的DbHelper.ttinclude 中，配置自己的字符串
 ```
 public static readonly string ConnectionString = File.Exists(@"D:\my-file\dbCountPsw2.txt") ? 
 File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim(): "server=.;uid=sa;pwd=sa;database=BlogDB";
