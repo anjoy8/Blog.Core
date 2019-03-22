@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -54,6 +55,8 @@ namespace Blog.Core.Controllers
             {
                 topicDetails = topicDetails.Where(t => (t.tdName != null && t.tdName.Contains(key)) || (t.tdDetail != null && t.tdDetail.Contains(key))).ToList();
             }
+
+            tname = UnicodeHelper.UnicodeToString(tname);
 
             if (!string.IsNullOrEmpty(tname))
             {
