@@ -222,7 +222,7 @@ namespace Blog.Core.Model.Models
             }
             catch (Exception ex)
             {
-
+                throw new Exception("注意要先创建空的数据库");
             }
         }
     }
