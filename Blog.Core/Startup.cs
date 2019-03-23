@@ -373,7 +373,7 @@ namespace Blog.Core
             }
             catch (Exception)
             {
-                throw new Exception("※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，因为解耦了 ※※★※※");
+                throw new Exception("※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，因为解耦了，如果你是发布的模式，请检查bin文件夹是否存在Repository.dll和service.dll ※※★※※");
             }
             #endregion
             #endregion
