@@ -82,6 +82,8 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 *********************************************************
 ### 修改数据库连接字符串
 
+注意：修改完数据库连接字符串以后，一定要F6重新编译项目或者重启项目。
+
 1、在Blog.Core层 appsettings.json 中，配置自己的字符串
 ```
     "SqlServer": {
