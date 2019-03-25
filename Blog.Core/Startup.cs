@@ -274,7 +274,7 @@ namespace Blog.Core
                 ValidateAudience = true,
                 ValidAudience = audienceConfig["Audience"],//订阅人
                 ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero,
+                ClockSkew = TimeSpan.FromSeconds(30),
                 RequireExpirationTime = true,
             };
 

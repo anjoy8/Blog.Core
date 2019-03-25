@@ -115,7 +115,7 @@
             验证方案提供对象
             </summary>
         </member>
-        <member name="P:Blog.Core.AuthHelper.PermissionHandler._roleModulePermissionServices">
+        <member name="P:Blog.Core.AuthHelper.PermissionHandler.roleModulePermissionServices">
             <summary>
             services 层注入
             </summary>
