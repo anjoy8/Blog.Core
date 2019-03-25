@@ -16,7 +16,7 @@ namespace Blog.Core.Common
         {
             //ReloadOnChange = true 当appsettings.json被修改时重新加载
             Configuration = new ConfigurationBuilder()
-            .Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })
+            .Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })//请注意要把当前appsetting.json 文件->右键->属性->复制到输出目录->始终复制
             .Build();
         }
         /// <summary>
