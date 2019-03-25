@@ -793,12 +793,12 @@
             Api接口版本 自定义
             </summary>
         </member>
-        <member name="F:Blog.Core.SwaggerHelper.CustomApiVersion.ApiVersions.v1">
+        <member name="F:Blog.Core.SwaggerHelper.CustomApiVersion.ApiVersions.V1">
             <summary>
             v1 版本
             </summary>
         </member>
-        <member name="F:Blog.Core.SwaggerHelper.CustomApiVersion.ApiVersions.v2">
+        <member name="F:Blog.Core.SwaggerHelper.CustomApiVersion.ApiVersions.V2">
             <summary>
             v2 版本
             </summary>

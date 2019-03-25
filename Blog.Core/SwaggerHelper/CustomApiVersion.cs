@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Blog.Core.SwaggerHelper
+﻿namespace Blog.Core.SwaggerHelper
 {
     /// <summary>
     /// 自定义版本
@@ -16,13 +11,13 @@ namespace Blog.Core.SwaggerHelper
         public enum ApiVersions
         {
             /// <summary>
-            /// v1 版本
+            /// V1 版本
             /// </summary>
-            v1 = 1,
+            V1 = 1,
             /// <summary>
-            /// v2 版本
+            /// V2 版本
             /// </summary>
-            v2 = 2,
+            V2 = 2,
         }
     }
 }

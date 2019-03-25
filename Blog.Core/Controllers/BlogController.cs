@@ -153,7 +153,7 @@ namespace Blog.Core.Controllers
         //[Route("/api/v2/blog/Blogtest")]
 
         //和上边的版本控制以及路由地址都是一样的
-        [CustomRoute(ApiVersions.v2, "Blogtest")]
+        [CustomRoute(ApiVersions.V2, "Blogtest")]
         public async Task<object> V2_Blogtest()
         {
             return Ok(new { status = 220, data = "我是第二版的博客信息" });
