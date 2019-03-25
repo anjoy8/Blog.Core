@@ -13,11 +13,11 @@ namespace Blog.Core.Services
 {
     public class AdvertisementServices : BaseServices<Advertisement>, IAdvertisementServices
     {
-        IAdvertisementRepository dal;
+        IAdvertisementRepository _dal;
         public AdvertisementServices(IAdvertisementRepository dal)
         {
-            this.dal = dal;
-            base.baseDal = dal;
+            this._dal = dal;
+            base.BaseDal = dal;
         }
 
         public void ReturnExp()

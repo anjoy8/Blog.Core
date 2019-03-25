@@ -17,22 +17,22 @@ namespace Blog.Core.Controllers
     [Authorize("Permission")]
     public class PermissionController : ControllerBase
     {
-        IPermissionServices _PermissionServices;
-        IModuleServices _ModuleServices;
-        IRoleModulePermissionServices _roleModulePermissionServices;
-        IUserRoleServices _userRoleServices;
+        readonly IPermissionServices _permissionServices;
+        readonly IModuleServices _moduleServices;
+        readonly IRoleModulePermissionServices _roleModulePermissionServices;
+        readonly IUserRoleServices _userRoleServices;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="PermissionServices"></param>
-        /// <param name="ModuleServices"></param>
+        /// <param name="permissionServices"></param>
+        /// <param name="moduleServices"></param>
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="userRoleServices"></param>
-        public PermissionController(IPermissionServices PermissionServices, IModuleServices ModuleServices, IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices)
+        public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices, IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices)
         {
-            _PermissionServices = PermissionServices;
-            _ModuleServices = ModuleServices;
+            _permissionServices = permissionServices;
+            _moduleServices = moduleServices;
             _roleModulePermissionServices = roleModulePermissionServices;
             _userRoleServices = userRoleServices;
 
@@ -44,27 +44,26 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<PageModel<Permission>>();
             int intTotalCount = 50;
-            int TotalCount = 0;
-            int PageCount = 1;
-            List<Permission> Permissions = new List<Permission>();
+            int totalCount = 0;
+            int pageCount = 1;
 
-            Permissions = await _PermissionServices.Query(a => a.IsDeleted != true);
+            var permissions = await _permissionServices.Query(a => a.IsDeleted != true);
 
             if (!string.IsNullOrEmpty(key))
             {
-                Permissions = Permissions.Where(t => (t.Name != null && t.Name.Contains(key))).ToList();
+                permissions = permissions.Where(t => (t.Name != null && t.Name.Contains(key))).ToList();
             }
 
 
             //筛选后的数据总数
-            TotalCount = Permissions.Count;
+            totalCount = permissions.Count;
             //筛选后的总页数
-            PageCount = (Math.Ceiling(TotalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
+            pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
 
-            Permissions = Permissions.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
-            var apis = await _ModuleServices.Query(d => d.IsDeleted == false);
+            permissions = permissions.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
+            var apis = await _moduleServices.Query(d => d.IsDeleted == false);
 
-            foreach (var item in Permissions)
+            foreach (var item in permissions)
             {
                 List<int> pidarr = new List<int>();
                 pidarr.Add(item.Pid);
@@ -72,19 +71,19 @@ namespace Blog.Core.Controllers
                 {
                     pidarr.Add(0);
                 }
-                var parent = Permissions.Where(d => d.Id == item.Pid).FirstOrDefault();
+                var parent = permissions.FirstOrDefault(d => d.Id == item.Pid);
 
                 while (parent != null)
                 {
                     pidarr.Add(parent.Id);
-                    parent = Permissions.Where(d => d.Id == parent.Pid).FirstOrDefault();
+                    parent = permissions.FirstOrDefault(d => d.Id == parent.Pid);
                 }
 
 
                 item.PidArr = pidarr.OrderBy(d => d).Distinct().ToList();
                 foreach (var pid in item.PidArr)
                 {
-                    var per = Permissions.Where(d => d.Id == pid).FirstOrDefault();
+                    var per = permissions.FirstOrDefault(d => d.Id == pid);
                     item.PnameArr.Add((per != null ? per.Name : "根节点") + "/");
                     //var par = Permissions.Where(d => d.Pid == item.Id ).ToList();
                     //item.PCodeArr.Add((per != null ? $"/{per.Code}/{item.Code}" : ""));
@@ -94,19 +93,19 @@ namespace Blog.Core.Controllers
                     //}
                 }
 
-                item.MName = apis.Where(d => d.Id == item.Mid).FirstOrDefault()?.LinkUrl;
+                item.MName = apis.FirstOrDefault(d => d.Id == item.Mid)?.LinkUrl;
             }
 
             return new MessageModel<PageModel<Permission>>()
             {
                 msg = "获取成功",
-                success = TotalCount >= 0,
+                success = totalCount >= 0,
                 response = new PageModel<Permission>()
                 {
                     page = page,
-                    pageCount = PageCount,
-                    dataCount = TotalCount,
-                    data = Permissions,
+                    pageCount = pageCount,
+                    dataCount = totalCount,
+                    data = permissions,
                 }
             };
 
@@ -121,11 +120,11 @@ namespace Blog.Core.Controllers
 
         // POST: api/User
         [HttpPost]
-        public async Task<MessageModel<string>> Post([FromBody] Permission Permission)
+        public async Task<MessageModel<string>> Post([FromBody] Permission permission)
         {
             var data = new MessageModel<string>();
 
-            var id = (await _PermissionServices.Add(Permission));
+            var id = (await _permissionServices.Add(permission));
             data.success = id > 0;
             if (data.success)
             {
@@ -157,9 +156,9 @@ namespace Blog.Core.Controllers
                     foreach (var item in assignView.pids)
                     {
                         var rmpitem = roleModulePermissions.Where(d => d.PermissionId == item);
-                        if (rmpitem.Count() == 0)
+                        if (!rmpitem.Any())
                         {
-                            var moduleid = (await _PermissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
+                            var moduleid = (await _permissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
                             RoleModulePermission roleModulePermission = new RoleModulePermission()
                             {
                                 IsDeleted = false,
@@ -194,7 +193,7 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<PermissionTree>();
 
-            var permissions = await _PermissionServices.Query(d => d.IsDeleted == false);
+            var permissions = await _permissionServices.Query(d => d.IsDeleted == false);
             var permissionTrees = (from child in permissions
                                    where child.IsDeleted == false
                                    orderby child.Id
@@ -240,9 +239,9 @@ namespace Blog.Core.Controllers
                 {
                     var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && d.RoleId == roleId)).Select(d => d.PermissionId.ObjToInt()).Distinct();
 
-                    if (pids.Count() > 0)
+                    if (pids.Any())
                     {
-                        var rolePermissionMoudles = (await _PermissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
+                        var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
                         var permissionTrees = (from child in rolePermissionMoudles
                                                where child.IsDeleted == false
                                                orderby child.Id
@@ -302,12 +301,12 @@ namespace Blog.Core.Controllers
                                    orderby child.Id
                                    select child.PermissionId.ObjToInt()).ToList();
 
-            var permissions = await _PermissionServices.Query(d => d.IsDeleted == false);
+            var permissions = await _permissionServices.Query(d => d.IsDeleted == false);
             List<string> assignbtns = new List<string>();
 
             foreach (var item in permissionTrees)
             {
-                var pername = permissions.Where(d => d.IsButton && d.Id == item).FirstOrDefault()?.Name;
+                var pername = permissions.FirstOrDefault(d => d.IsButton && d.Id == item)?.Name;
                 if (!string.IsNullOrEmpty(pername))
                 {
                     assignbtns.Add(pername + "_" + item);
@@ -331,16 +330,16 @@ namespace Blog.Core.Controllers
 
         // PUT: api/User/5
         [HttpPut]
-        public async Task<MessageModel<string>> Put([FromBody] Permission Permission)
+        public async Task<MessageModel<string>> Put([FromBody] Permission permission)
         {
             var data = new MessageModel<string>();
-            if (Permission != null && Permission.Id > 0)
+            if (permission != null && permission.Id > 0)
             {
-                data.success = await _PermissionServices.Update(Permission);
+                data.success = await _permissionServices.Update(permission);
                 if (data.success)
                 {
                     data.msg = "更新成功";
-                    data.response = Permission?.Id.ObjToString();
+                    data.response = permission?.Id.ObjToString();
                 }
             }
 
@@ -354,9 +353,9 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>();
             if (id > 0)
             {
-                var userDetail = await _PermissionServices.QueryByID(id);
+                var userDetail = await _permissionServices.QueryById(id);
                 userDetail.IsDeleted = true;
-                data.success = await _PermissionServices.Update(userDetail);
+                data.success = await _permissionServices.Update(userDetail);
                 if (data.success)
                 {
                     data.msg = "删除成功";

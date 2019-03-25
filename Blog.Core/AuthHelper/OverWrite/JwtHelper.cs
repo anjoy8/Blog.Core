@@ -18,7 +18,7 @@ namespace Blog.Core.AuthHelper
         /// </summary>
         /// <param name="tokenModel"></param>
         /// <returns></returns>
-        public static string IssueJWT(TokenModelJWT tokenModel)
+        public static string IssueJwt(TokenModelJwt tokenModel)
         {
             var dateTime = DateTime.UtcNow;
 
@@ -67,7 +67,7 @@ namespace Blog.Core.AuthHelper
         /// </summary>
         /// <param name="jwtStr"></param>
         /// <returns></returns>
-        public static TokenModelJWT SerializeJWT(string jwtStr)
+        public static TokenModelJwt SerializeJwt(string jwtStr)
         {
             var jwtHandler = new JwtSecurityTokenHandler();
             JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(jwtStr);
@@ -81,7 +81,7 @@ namespace Blog.Core.AuthHelper
                 Console.WriteLine(e);
                 throw;
             }
-            var tm = new TokenModelJWT
+            var tm = new TokenModelJwt
             {
                 Uid = (jwtToken.Id).ObjToInt(),
                 Role = role != null ? role.ObjToString() : "",
@@ -93,7 +93,7 @@ namespace Blog.Core.AuthHelper
     /// <summary>
     /// 令牌
     /// </summary>
-    public class TokenModelJWT
+    public class TokenModelJwt
     {
         /// <summary>
         /// Id

@@ -61,7 +61,7 @@ namespace Blog.Core.AuthHelper
             {
                 if (tokenHeader.Length >= 128)
                 {
-                    TokenModelJWT tm = JwtHelper.SerializeJWT(tokenHeader);
+                    TokenModelJwt tm = JwtHelper.SerializeJwt(tokenHeader);
 
                     //授权
                     var claimList = new List<Claim>();

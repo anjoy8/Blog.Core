@@ -14,11 +14,11 @@ namespace Blog.Core.Services
     public class TopicServices: BaseServices<Topic>, ITopicServices
     {
 
-        ITopicRepository dal;
+        ITopicRepository _dal;
         public TopicServices(ITopicRepository dal)
         {
-            this.dal = dal;
-            base.baseDal = dal;
+            this._dal = dal;
+            base.BaseDal = dal;
         }
 
         /// <summary>

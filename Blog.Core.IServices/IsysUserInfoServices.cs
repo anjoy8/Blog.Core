@@ -9,9 +9,9 @@ namespace Blog.Core.IServices
 	/// <summary>
 	/// sysUserInfoServices
 	/// </summary>	
-    public interface IsysUserInfoServices :IBaseServices<sysUserInfo>
+    public interface ISysUserInfoServices :IBaseServices<sysUserInfo>
 	{
-        Task<sysUserInfo> SaveUserInfo(string loginName, string loginPWD);
-        Task<string> GetUserRoleNameStr(string loginName, string loginPWD);
+        Task<sysUserInfo> SaveUserInfo(string loginName, string loginPwd);
+        Task<string> GetUserRoleNameStr(string loginName, string loginPwd);
     }
 }

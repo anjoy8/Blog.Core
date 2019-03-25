@@ -25,9 +25,9 @@ namespace Blog.Core.Controllers
     public class ValuesController : ControllerBase
     {
         private IMapper _mapper;
-        private IAdvertisementServices _advertisementServices;
-        private Love _love;
-        IRoleModulePermissionServices _roleModulePermissionServices;
+        private readonly IAdvertisementServices _advertisementServices;
+        private readonly Love _love;
+        readonly IRoleModulePermissionServices _roleModulePermissionServices;
 
         /// <summary>
         /// ValuesController

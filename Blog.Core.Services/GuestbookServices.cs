@@ -12,11 +12,11 @@ namespace Blog.Core.Services
 {
     public class GuestbookServices : BaseServices<Guestbook>, IGuestbookServices
     {
-        IGuestbookRepository dal;
+        IGuestbookRepository _dal;
         public GuestbookServices(IGuestbookRepository dal)
         {
-            this.dal = dal;
-            base.baseDal = dal;
+            this._dal = dal;
+            base.BaseDal = dal;
         }
     }
 }

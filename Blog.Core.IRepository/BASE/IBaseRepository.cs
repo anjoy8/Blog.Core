@@ -10,8 +10,8 @@ namespace Blog.Core.IRepository.Base
     public interface IBaseRepository<TEntity> where TEntity : class
     {
 
-        Task<TEntity> QueryByID(object objId);
-        Task<TEntity> QueryByID(object objId, bool blnUseCache = false);
+        Task<TEntity> QueryById(object objId);
+        Task<TEntity> QueryById(object objId, bool blnUseCache = false);
         Task<List<TEntity>> QueryByIDs(object[] lstIds);
 
         Task<int> Add(TEntity model);

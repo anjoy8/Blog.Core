@@ -13,18 +13,17 @@ namespace Blog.Core.Services
     /// </summary>	
     public class RoleModulePermissionServices : BaseServices<RoleModulePermission>, IRoleModulePermissionServices
     {
-
-        IRoleModulePermissionRepository dal;
-        IModuleRepository moduleRepository;
-        IRoleRepository roleRepository;
+        readonly IRoleModulePermissionRepository _dal;
+        readonly IModuleRepository _moduleRepository;
+        readonly IRoleRepository _roleRepository;
 
         // 将多个仓储接口注入
         public RoleModulePermissionServices(IRoleModulePermissionRepository dal, IModuleRepository moduleRepository, IRoleRepository roleRepository)
         {
-            this.dal = dal;
-            this.moduleRepository = moduleRepository;
-            this.roleRepository = roleRepository;
-            base.baseDal = dal;
+            this._dal = dal;
+            this._moduleRepository = moduleRepository;
+            this._roleRepository = roleRepository;
+            base.BaseDal = dal;
         }
 
         /// <summary>
@@ -39,8 +38,8 @@ namespace Blog.Core.Services
             {
                 foreach (var item in roleModulePermissions)
                 {
-                    item.Role = await roleRepository.QueryByID(item.RoleId);
-                    item.Module = await moduleRepository.QueryByID(item.ModuleId);
+                    item.Role = await _roleRepository.QueryById(item.RoleId);
+                    item.Module = await _moduleRepository.QueryById(item.ModuleId);
                 }
 
             }
@@ -49,7 +48,7 @@ namespace Blog.Core.Services
 
         public async Task<List<RoleModulePermission>> TestModelWithChildren()
         {
-            return await dal.WithChildrenModel();
+            return await _dal.WithChildrenModel();
         }
     }
 }

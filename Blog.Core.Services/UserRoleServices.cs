@@ -14,11 +14,11 @@ namespace Blog.Core.Services
 	public class UserRoleServices : BaseServices<UserRole>, IUserRoleServices
     {
 	
-        IUserRoleRepository dal;
+        IUserRoleRepository _dal;
         public UserRoleServices(IUserRoleRepository dal)
         {
-            this.dal = dal;
-            base.baseDal = dal;
+            this._dal = dal;
+            base.BaseDal = dal;
         }
         /// <summary>
         /// 
@@ -39,7 +39,7 @@ namespace Blog.Core.Services
             else
             {
                 var id = await base.Add(userRole);
-                model = await base.QueryByID(id);
+                model = await base.QueryById(id);
             }
 
             return model;

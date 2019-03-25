@@ -14,9 +14,9 @@ namespace Blog.Core.Controllers
     [ApiController]
     public class UserRoleController : Controller
     {
-        IsysUserInfoServices sysUserInfoServices;
-        IUserRoleServices userRoleServices;
-        IRoleServices roleServices;
+        readonly ISysUserInfoServices _sysUserInfoServices;
+        readonly IUserRoleServices _userRoleServices;
+        readonly IRoleServices _roleServices;
 
         /// <summary>
         /// 构造函数
@@ -24,11 +24,11 @@ namespace Blog.Core.Controllers
         /// <param name="sysUserInfoServices"></param>
         /// <param name="userRoleServices"></param>
         /// <param name="roleServices"></param>
-        public UserRoleController(IsysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices)
+        public UserRoleController(ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices)
         {
-            this.sysUserInfoServices = sysUserInfoServices;
-            this.userRoleServices = userRoleServices;
-            this.roleServices = roleServices;
+            this._sysUserInfoServices = sysUserInfoServices;
+            this._userRoleServices = userRoleServices;
+            this._roleServices = roleServices;
         }
 
 
@@ -37,12 +37,12 @@ namespace Blog.Core.Controllers
         /// 新建用户
         /// </summary>
         /// <param name="loginName"></param>
-        /// <param name="loginPWD"></param>
+        /// <param name="loginPwd"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<object> AddUser(string loginName, string loginPWD)
+        public async Task<object> AddUser(string loginName, string loginPwd)
         {
-            var model = await sysUserInfoServices.SaveUserInfo(loginName, loginPWD);
+            var model = await _sysUserInfoServices.SaveUserInfo(loginName, loginPwd);
             return Ok(new
             {
                 success = true,
@@ -58,7 +58,7 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public async Task<object> AddRole(string roleName)
         {
-            var model = await roleServices.SaveRole(roleName);
+            var model = await _roleServices.SaveRole(roleName);
             return Ok(new
             {
                 success = true,
@@ -75,7 +75,7 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public async Task<object> AddUserRole(int uid, int rid)
         {
-            var model = await userRoleServices.SaveUserRole(uid, rid);
+            var model = await _userRoleServices.SaveUserRole(uid, rid);
             return Ok(new
             {
                 success = true,

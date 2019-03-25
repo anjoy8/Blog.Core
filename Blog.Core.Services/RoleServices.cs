@@ -14,11 +14,11 @@ namespace Blog.Core.Services
 	public class RoleServices : BaseServices<Role>, IRoleServices
     {
 	
-        IRoleRepository dal;
+        IRoleRepository _dal;
         public RoleServices(IRoleRepository dal)
         {
-            this.dal = dal;
-            base.baseDal = dal;
+            this._dal = dal;
+            base.BaseDal = dal;
         }
        /// <summary>
        /// 
@@ -37,7 +37,7 @@ namespace Blog.Core.Services
             else
             {
                 var id = await base.Add(role);
-                model = await base.QueryByID(id);
+                model = await base.QueryById(id);
             }
 
             return model;
@@ -47,7 +47,7 @@ namespace Blog.Core.Services
         [Caching(AbsoluteExpiration = 30)]
         public async Task<string> GetRoleNameByRid(int rid)
         {
-            return ((await base.QueryByID(rid))?.Name);
+            return ((await base.QueryById(rid))?.Name);
         }
     }
 }

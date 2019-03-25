@@ -16,15 +16,15 @@ namespace Blog.Core.Controllers
     [Authorize("Permission")]
     public class ModuleController : ControllerBase
     {
-        IModuleServices _ModuleServices;
+        readonly IModuleServices _moduleServices;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="ModuleServices"></param>
-        public ModuleController(IModuleServices ModuleServices )
+        /// <param name="moduleServices"></param>
+        public ModuleController(IModuleServices moduleServices )
         {
-            _ModuleServices = ModuleServices;
+            _moduleServices = moduleServices;
         }
 
         // GET: api/User
@@ -33,35 +33,35 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<PageModel<Module>>();
             int intTotalCount = 50;
-            int TotalCount = 0;
-            int PageCount = 1;
-            List<Module> Modules = new List<Module>();
+            int totalCount = 0;
+            int pageCount = 1;
+            List<Module> modules = new List<Module>();
 
-            Modules = await _ModuleServices.Query(a => a.IsDeleted != true );
+            modules = await _moduleServices.Query(a => a.IsDeleted != true );
 
             if (!string.IsNullOrEmpty(key))
             {
-                Modules = Modules.Where(t => (t.Name != null && t.Name.Contains(key))).ToList();
+                modules = modules.Where(t => (t.Name != null && t.Name.Contains(key))).ToList();
             }
 
 
             //筛选后的数据总数
-            TotalCount = Modules.Count;
+            totalCount = modules.Count;
             //筛选后的总页数
-            PageCount = (Math.Ceiling(TotalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
+            pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
 
-            Modules = Modules.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
+            modules = modules.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
 
             return new MessageModel<PageModel<Module>>()
             {
                 msg = "获取成功",
-                success = TotalCount >= 0,
+                success = totalCount >= 0,
                 response = new PageModel<Module>()
                 {
                     page = page,
-                    pageCount = PageCount,
-                    dataCount = TotalCount,
-                    data = Modules,
+                    pageCount = pageCount,
+                    dataCount = totalCount,
+                    data = modules,
                 }
             };
 
@@ -76,11 +76,11 @@ namespace Blog.Core.Controllers
 
         // POST: api/User
         [HttpPost]
-        public async Task<MessageModel<string>> Post([FromBody] Module Module)
+        public async Task<MessageModel<string>> Post([FromBody] Module module)
         {
             var data = new MessageModel<string>();
 
-            var id = (await _ModuleServices.Add(Module));
+            var id = (await _moduleServices.Add(module));
             data.success = id > 0;
             if (data.success)
             {
@@ -93,16 +93,16 @@ namespace Blog.Core.Controllers
 
         // PUT: api/User/5
         [HttpPut]
-        public async Task<MessageModel<string>> Put([FromBody] Module Module)
+        public async Task<MessageModel<string>> Put([FromBody] Module module)
         {
             var data = new MessageModel<string>();
-            if (Module != null && Module.Id > 0)
+            if (module != null && module.Id > 0)
             {
-                data.success = await _ModuleServices.Update(Module);
+                data.success = await _moduleServices.Update(module);
                 if (data.success)
                 {
                     data.msg = "更新成功";
-                    data.response = Module?.Id.ObjToString();
+                    data.response = module?.Id.ObjToString();
                 }
             }
 
@@ -116,9 +116,9 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>();
             if (id > 0)
             {
-                var userDetail = await _ModuleServices.QueryByID(id);
+                var userDetail = await _moduleServices.QueryById(id);
                 userDetail.IsDeleted = true;
-                data.success = await _ModuleServices.Update(userDetail);
+                data.success = await _moduleServices.Update(userDetail);
                 if (data.success)
                 {
                     data.msg = "删除成功";

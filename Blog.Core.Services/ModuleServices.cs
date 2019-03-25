@@ -11,11 +11,11 @@ namespace Blog.Core.Services
 	public class ModuleServices : BaseServices<Module>, IModuleServices
     {
 	
-        IModuleRepository dal;
+        IModuleRepository _dal;
         public ModuleServices(IModuleRepository dal)
         {
-            this.dal = dal;
-            base.baseDal = dal;
+            this._dal = dal;
+            base.BaseDal = dal;
         }
        
     }

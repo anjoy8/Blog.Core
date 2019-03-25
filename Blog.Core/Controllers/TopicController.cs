@@ -14,7 +14,7 @@ namespace Blog.Core.Controllers
     [ApiController]
     public class TopicController : ControllerBase
     {
-        ITopicServices _topicServices;
+        readonly ITopicServices _topicServices;
 
         public TopicController(ITopicServices topicServices)
         {
@@ -25,8 +25,7 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public async Task<MessageModel<List<Topic>>> Get()
         {
-            var data = new MessageModel<List<Topic>>();
-            data.response = await _topicServices.GetTopics();
+            var data = new MessageModel<List<Topic>> {response = await _topicServices.GetTopics()};
             if (data.response != null)
             {
                 data.success = true;

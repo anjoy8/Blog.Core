@@ -11,11 +11,11 @@ namespace Blog.Core.Services
 	public class ModulePermissionServices : BaseServices<ModulePermission>, IModulePermissionServices
     {
 	
-        IModulePermissionRepository dal;
+        IModulePermissionRepository _dal;
         public ModulePermissionServices(IModulePermissionRepository dal)
         {
-            this.dal = dal;
-            base.baseDal = dal;
+            this._dal = dal;
+            base.BaseDal = dal;
         }
        
     }

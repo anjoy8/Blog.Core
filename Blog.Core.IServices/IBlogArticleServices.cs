@@ -11,8 +11,8 @@ namespace Blog.Core.IServices
 {
     public interface IBlogArticleServices :IBaseServices<BlogArticle>
     {
-        Task<List<BlogArticle>> getBlogs();
-        Task<BlogViewModels> getBlogDetails(int id);
+        Task<List<BlogArticle>> GetBlogs();
+        Task<BlogViewModels> GetBlogDetails(int id);
 
     }
 
