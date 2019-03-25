@@ -30,8 +30,8 @@ namespace Blog.Core.Services
         /// <returns></returns>
         public async Task<BlogViewModels> getBlogDetails(int id)
         {
-            var bloglist = await dal.Query(a => a.bID > 0, a => a.bID);
-            var blogArticle = (await dal.Query(a => a.bID == id)).FirstOrDefault();
+            var bloglist = await base.Query(a => a.bID > 0, a => a.bID);
+            var blogArticle = (await base.Query(a => a.bID == id)).FirstOrDefault();
 
             BlogViewModels models = null;
 
@@ -71,7 +71,7 @@ namespace Blog.Core.Services
 
 
                 blogArticle.btraffic += 1;
-                await dal.Update(blogArticle, new List<string> { "btraffic" });
+                await base.Update(blogArticle, new List<string> { "btraffic" });
             }
 
             return models;
@@ -87,7 +87,7 @@ namespace Blog.Core.Services
         [Caching(AbsoluteExpiration = 10)]
         public async Task<List<BlogArticle>> getBlogs()
         {
-            var bloglist = await dal.Query(a => a.bID > 0, a => a.bID);
+            var bloglist = await base.Query(a => a.bID > 0, a => a.bID);
 
             return bloglist;
 

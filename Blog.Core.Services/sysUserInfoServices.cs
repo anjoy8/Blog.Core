@@ -33,15 +33,15 @@ namespace Blog.Core.FrameWork.Services
         {
             sysUserInfo sysUserInfo = new sysUserInfo(loginName, loginPWD);
             sysUserInfo model = new sysUserInfo();
-            var userList = await dal.Query(a => a.uLoginName == sysUserInfo.uLoginName && a.uLoginPWD == sysUserInfo.uLoginPWD);
+            var userList = await base.Query(a => a.uLoginName == sysUserInfo.uLoginName && a.uLoginPWD == sysUserInfo.uLoginPWD);
             if (userList.Count > 0)
             {
                 model = userList.FirstOrDefault();
             }
             else
             {
-                var id = await dal.Add(sysUserInfo);
-                model = await dal.QueryByID(id);
+                var id = await base.Add(sysUserInfo);
+                model = await base.QueryByID(id);
             }
 
             return model;
@@ -57,7 +57,7 @@ namespace Blog.Core.FrameWork.Services
         public async Task<string> GetUserRoleNameStr(string loginName, string loginPWD)
         {
             string roleName = "";
-            var user = (await dal.Query(a => a.uLoginName == loginName && a.uLoginPWD == loginPWD)).FirstOrDefault();
+            var user = (await base.Query(a => a.uLoginName == loginName && a.uLoginPWD == loginPWD)).FirstOrDefault();
             if (user != null)
             {
                 var userRoles = await userRoleServices.Query(ur => ur.UserId == user.uID);

@@ -34,7 +34,7 @@ namespace Blog.Core.Services
         [Caching(AbsoluteExpiration = 10)]
         public async Task<List<RoleModulePermission>> GetRoleModule()
         {
-            var roleModulePermissions = await dal.Query(a => a.IsDeleted == false);
+            var roleModulePermissions = await base.Query(a => a.IsDeleted == false);
             if (roleModulePermissions.Count > 0)
             {
                 foreach (var item in roleModulePermissions)

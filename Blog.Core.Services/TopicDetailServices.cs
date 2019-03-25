@@ -27,7 +27,7 @@ namespace Blog.Core.Services
         [Caching(AbsoluteExpiration = 10)]
         public async Task<List<TopicDetail>> GetTopicDetails()
         {
-            return await dal.Query(a => !a.tdIsDelete && a.tdSectendDetail == "tbug");
+            return await base.Query(a => !a.tdIsDelete && a.tdSectendDetail == "tbug");
         }
     }
 }

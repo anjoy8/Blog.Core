@@ -32,30 +32,30 @@ namespace Blog.Core.Services
         //public IAdvertisementRepository dal = new AdvertisementRepository();
         //public int Sum(int i, int j)
         //{
-        //    return dal.Sum(i, j);
+        //    return base.Sum(i, j);
 
         //}
 
 
         //public int Add(Advertisement model)
         //{
-        //    return dal.Add(model);
+        //    return base.Add(model);
         //}
 
         //public bool Delete(Advertisement model)
         //{
-        //    return dal.Delete(model);
+        //    return base.Delete(model);
         //}
 
         //public List<Advertisement> Query(Expression<Func<Advertisement, bool>> whereExpression)
         //{
-        //    return dal.Query(whereExpression);
+        //    return base.Query(whereExpression);
 
         //}
 
         //public bool Update(Advertisement model)
         //{
-        //    return dal.Update(model);
+        //    return base.Update(model);
         //}
 
     }
