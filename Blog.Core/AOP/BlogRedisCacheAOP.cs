@@ -1,7 +1,6 @@
 ﻿using Blog.Core.Common;
 using Castle.DynamicProxy;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,7 +12,7 @@ namespace Blog.Core.AOP
     public class BlogRedisCacheAOP : IInterceptor
     {
         //通过注入的方式，把缓存操作接口通过构造函数注入
-        private IRedisCacheManager _cache;
+        private readonly IRedisCacheManager _cache;
         public BlogRedisCacheAOP(IRedisCacheManager cache)
         {
             _cache = cache;
@@ -43,10 +42,10 @@ namespace Blog.Core.AOP
                         return;
                     }
                     object response;
-                    if (type != null && typeof(Task).IsAssignableFrom(type))
+                    if (typeof(Task).IsAssignableFrom(type))
                     {
                         //返回Task<T>
-                        if (resultTypes.Count() > 0)
+                        if (resultTypes.Any())
                         {
                             var resultType = resultTypes.FirstOrDefault();
                             // 核心1，直接获取 dynamic 类型
@@ -65,7 +64,7 @@ namespace Blog.Core.AOP
                     else
                     {
                         // 核心2，要进行 ChangeType
-                        response = System.Convert.ChangeType(_cache.Get<object>(cacheKey), type);
+                        response = Convert.ChangeType(_cache.Get<object>(cacheKey), type);
                     }
 
                     invocation.ReturnValue = response;
@@ -81,7 +80,7 @@ namespace Blog.Core.AOP
 
                     //Type type = invocation.ReturnValue?.GetType();
                     var type = invocation.Method.ReturnType;
-                    if (type != null && typeof(Task).IsAssignableFrom(type))
+                    if (typeof(Task).IsAssignableFrom(type))
                     {
                         var resultProperty = type.GetProperty("Result");
                         response = resultProperty.GetValue(invocation.ReturnValue);

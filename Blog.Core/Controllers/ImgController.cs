@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Model;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers

@@ -1,14 +1,13 @@
-﻿using Blog.Core.Common;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using Blog.Core.Common;
+using Microsoft.IdentityModel.Tokens;
 
-namespace Blog.Core.AuthHelper
+namespace Blog.Core.AuthHelper.OverWrite
 {
     public class JwtHelper
     {
@@ -20,8 +19,6 @@ namespace Blog.Core.AuthHelper
         /// <returns></returns>
         public static string IssueJwt(TokenModelJwt tokenModel)
         {
-            var dateTime = DateTime.UtcNow;
-
             string iss = Appsettings.app(new string[] { "Audience", "Issuer" });
             string aud = Appsettings.app(new string[] { "Audience", "Audience" });
             string secret = Appsettings.app(new string[] { "Audience", "Secret" });
@@ -71,7 +68,7 @@ namespace Blog.Core.AuthHelper
         {
             var jwtHandler = new JwtSecurityTokenHandler();
             JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(jwtStr);
-            object role = new object(); ;
+            object role;
             try
             {
                 jwtToken.Payload.TryGetValue(ClaimTypes.Role, out role);

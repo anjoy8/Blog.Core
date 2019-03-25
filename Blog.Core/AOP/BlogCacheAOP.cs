@@ -1,9 +1,7 @@
 ﻿using Blog.Core.Common;
 using Castle.DynamicProxy;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Blog.Core.AOP
 {
@@ -13,7 +11,7 @@ namespace Blog.Core.AOP
     public class BlogCacheAOP : IInterceptor
     {
         //通过注入的方式，把缓存操作接口通过构造函数注入
-        private ICaching _cache;
+        private readonly ICaching _cache;
         public BlogCacheAOP(ICaching cache)
         {
             _cache = cache;
@@ -23,9 +21,8 @@ namespace Blog.Core.AOP
         {
             var method = invocation.MethodInvocationTarget ?? invocation.Method;
             //对当前方法的特性验证
-            var qCachingAttribute = method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingAttribute)) as CachingAttribute;
             //如果需要验证
-            if (qCachingAttribute != null)
+            if (method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingAttribute)) is CachingAttribute qCachingAttribute)
             {
                 //获取自定义缓存键
                 var cacheKey = CustomCacheKey(invocation);

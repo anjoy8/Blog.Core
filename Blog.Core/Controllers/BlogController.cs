@@ -6,10 +6,8 @@ using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
-using Blog.Core.Model.ViewModels;
 using Blog.Core.SwaggerHelper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Profiling;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
@@ -23,21 +21,18 @@ namespace Blog.Core.Controllers
     [Route("api/Blog")]
     public class BlogController : Controller
     {
-        readonly IAdvertisementServices _advertisementServices;
         readonly IBlogArticleServices _blogArticleServices;
         readonly IRedisCacheManager _redisCacheManager;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="advertisementServices"></param>
         /// <param name="blogArticleServices"></param>
         /// <param name="redisCacheManager"></param>
-        public BlogController(IAdvertisementServices advertisementServices, IBlogArticleServices blogArticleServices, IRedisCacheManager redisCacheManager)
+        public BlogController(IBlogArticleServices blogArticleServices, IRedisCacheManager redisCacheManager)
         {
-            this._advertisementServices = advertisementServices;
-            this._blogArticleServices = blogArticleServices;
-            this._redisCacheManager = redisCacheManager;
+            _blogArticleServices = blogArticleServices;
+            _redisCacheManager = redisCacheManager;
         }
 
 
@@ -53,7 +48,7 @@ namespace Blog.Core.Controllers
         public async Task<object> Get(int id, int page = 1, string bcategory = "技术博文")
         {
             int intTotalCount = 6;
-            int total = 0;
+            int total;
             int totalCount = 1;
             List<BlogArticle> blogArticleList = new List<BlogArticle>();
 

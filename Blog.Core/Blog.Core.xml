@@ -35,36 +35,36 @@
             实例化缓存接口ICaching
             </summary>
         </member>
-        <member name="M:Blog.Core.AuthHelper.JwtHelper.IssueJwt(Blog.Core.AuthHelper.TokenModelJwt)">
+        <member name="M:Blog.Core.AuthHelper.OverWrite.JwtHelper.IssueJwt(Blog.Core.AuthHelper.OverWrite.TokenModelJwt)">
             <summary>
             颁发JWT字符串
             </summary>
             <param name="tokenModel"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.AuthHelper.JwtHelper.SerializeJwt(System.String)">
+        <member name="M:Blog.Core.AuthHelper.OverWrite.JwtHelper.SerializeJwt(System.String)">
             <summary>
             解析
             </summary>
             <param name="jwtStr"></param>
             <returns></returns>
         </member>
-        <member name="T:Blog.Core.AuthHelper.TokenModelJwt">
+        <member name="T:Blog.Core.AuthHelper.OverWrite.TokenModelJwt">
             <summary>
             令牌
             </summary>
         </member>
-        <member name="P:Blog.Core.AuthHelper.TokenModelJwt.Uid">
+        <member name="P:Blog.Core.AuthHelper.OverWrite.TokenModelJwt.Uid">
             <summary>
             Id
             </summary>
         </member>
-        <member name="P:Blog.Core.AuthHelper.TokenModelJwt.Role">
+        <member name="P:Blog.Core.AuthHelper.OverWrite.TokenModelJwt.Role">
             <summary>
             角色
             </summary>
         </member>
-        <member name="P:Blog.Core.AuthHelper.TokenModelJwt.Work">
+        <member name="P:Blog.Core.AuthHelper.OverWrite.TokenModelJwt.Work">
             <summary>
             职能
             </summary>
@@ -213,11 +213,10 @@
             Blog控制器所有接口
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IAdvertisementServices,Blog.Core.IServices.IBlogArticleServices,Blog.Core.Common.IRedisCacheManager)">
+        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IBlogArticleServices,Blog.Core.Common.IRedisCacheManager)">
             <summary>
             构造函数
             </summary>
-            <param name="advertisementServices"></param>
             <param name="blogArticleServices"></param>
             <param name="redisCacheManager"></param>
         </member>

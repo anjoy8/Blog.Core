@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Blog.Core.IServices;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers

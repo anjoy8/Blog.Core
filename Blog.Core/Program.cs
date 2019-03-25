@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -16,17 +11,8 @@ namespace Blog.Core
     {
         public static void Main(string[] args)
         {
-            IWebHost host;
             // 生成承载 web 应用程序的 Microsoft.AspNetCore.Hosting.IWebHost。Build是WebHostBuilder最终的目的，将返回一个构造的WebHost，最终生成宿主。
-            try
-            {
-                host = CreateWebHostBuilder(args).Build();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            var host = CreateWebHostBuilder(args).Build();
 
             // 创建可用于解析作用域服务的新 Microsoft.Extensions.DependencyInjection.IServiceScope。
             using (var scope = host.Services.CreateScope())

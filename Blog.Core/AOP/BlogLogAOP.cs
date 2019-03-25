@@ -1,10 +1,8 @@
 ﻿using Castle.DynamicProxy;
 using StackExchange.Profiling;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Blog.Core.AOP
 {
@@ -21,7 +19,7 @@ namespace Blog.Core.AOP
         public void Intercept(IInvocation invocation)
         {
             //记录被拦截方法信息的日志信息
-            var dataIntercept = $"{DateTime.Now.ToString("yyyyMMdd HH:mm:ss")} " +
+            var dataIntercept = $"{DateTime.Now:yyyyMMdd HH:mm:ss} " +
                 $"当前执行方法：{ invocation.Method.Name} " +
                 $"参数是： {string.Join(", ", invocation.Arguments.Select(a => (a ?? "").ToString()).ToArray())} \r\n";
 
