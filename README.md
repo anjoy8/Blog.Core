@@ -5,6 +5,9 @@
 
 从零开始搭建自己的前后端分离【 .NET Core2.1 Api + Vue 2.0 】框架，目前是2.2版本，各个版本见分支。
 
+如果你感觉看着这整个项目比较费劲，我单抽出来了几个子Demo，方便学习，项目地址 ：[https://github.com/anjoy8/BlogArti](https://github.com/anjoy8/BlogArti)
+
+
 这只是 .netCore 后端部分，前端部分请看我的另三个Vue工程项目
  
 &nbsp;
