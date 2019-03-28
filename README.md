@@ -37,6 +37,18 @@
 &nbsp;
 &nbsp;
 
+## 其他后端框架
+目前一共开源四个框架项目，感兴趣的可以看看
+
+|单层项目|简单仓储框架|仓储+服务+接口|DDD框架|
+|-|-|-|-|
+|CURD+Seed|CURD+Seed+DI|CURD+Seed+DI+AOP等|DDD+EFCore+DI+EventBus等|
+|[NetCore-Sugar-Demo](https://github.com/anjoy8/NetCore-Sugar-Demo)|[Blog.SplRepository.Demo](https://github.com/anjoy8/Blog.SplRepository.Demo)|[Blog.Core](https://github.com/anjoy8/Blog.Core)|[ChristDDD](https://github.com/anjoy8/ChristDDD)|
+
+
+&nbsp;
+&nbsp;
+
 ## 给个星星! ⭐️
 如果你喜欢这个项目或者它帮助你, 请给 Star~（辛苦星咯）
 
