@@ -795,12 +795,12 @@
         </member>
         <member name="F:Blog.Core.SwaggerHelper.CustomApiVersion.ApiVersions.V1">
             <summary>
-            v1 版本
+            V1 版本
             </summary>
         </member>
         <member name="F:Blog.Core.SwaggerHelper.CustomApiVersion.ApiVersions.V2">
             <summary>
-            v2 版本
+            V2 版本
             </summary>
         </member>
         <member name="T:Blog.Core.SwaggerHelper.CustomRouteAttribute">

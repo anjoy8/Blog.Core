@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
+using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Blog.Core.SwaggerHelper;
 using Microsoft.AspNetCore.Authorization;
@@ -160,6 +161,25 @@ namespace Blog.Core.Controllers
         }
 
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<MessageModel<string>> Post([FromBody] BlogArticle blogArticle)
+        {
+            var data = new MessageModel<string>();
+
+            blogArticle.bCreateTime = DateTime.Now;
+            blogArticle.bUpdateTime = DateTime.Now;
+
+            var id = (await _blogArticleServices.Add(blogArticle));
+            data.success = id > 0;
+            if (data.success)
+            {
+                data.response = id.ObjToString();
+                data.msg = "添加成功";
+            }
+
+            return data;
+        }
 
     }
 }
