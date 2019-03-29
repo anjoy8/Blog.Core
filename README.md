@@ -93,6 +93,13 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
 
 6、如果想单独查看关于【JWT授权】的相关内容，可以在wwwroot 文件夹中找到【Autho.jwt.rar】，我单拎出来的一个demo。
 
+
+7、项目后期发布的时候可以有两个办法，一种是dotnet的kestrel部署，另一种是 IIS 发布部署，但是在发布的时候，
+因为解耦了，所以会导致无法把 service.dll & repository.dll 拷贝到生成目录下，大家可以采用：
+Blog.Core -> 属性 -> Build Events -> Post-build event command ->>>>
+
+Copy "$(ProjectDir)bin\Debug\netcoreapp2.2\" "$(SolutionDir)Blog.Core\bin\Debug\"
+
 ```
 *********************************************************
 ### 修改数据库连接字符串
