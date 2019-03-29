@@ -43,7 +43,7 @@ namespace Blog.Core.Tests
             //blogController.Post(blogArticle).Wait();
 
             var data = blogController.Get(1);
-            Assert.Null(data);//为空包错了，证明不为空
+            Assert.Null(data);//为空包错了，证明不为空, 你可以这么判断不为空 Assert.NotNull(data);
         }
     }
 }
