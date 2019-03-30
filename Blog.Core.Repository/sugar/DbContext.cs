@@ -1,6 +1,7 @@
 ﻿using SqlSugar;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Blog.Core.Repository
@@ -105,6 +106,17 @@ namespace Blog.Core.Repository
                     IsAutoRemoveDataCache = true
                 }
             });
+
+            //_db.Aop.OnLogExecuted = (sql, pars) => //SQL执行完事件
+            //{
+            //    OutSql2Log(sql, GetParas(pars));
+            //};
+
+            _db.Aop.OnLogExecuting = (sql, pars) => //SQL执行中事件
+            {
+                OutSql2Log(sql, GetParas(pars));
+            };
+
         }
 
         #region 实例方法
@@ -304,6 +316,44 @@ namespace {Namespace}
         #endregion
 
         #endregion
+
+        private string GetParas(SugarParameter[] pars)
+        {
+            string key = "";
+            foreach (var param in pars)
+            {
+                key += $"{param.ParameterName}:{param.Value}\n";
+            }
+
+            return key;
+        }
+
+        #region 输出到当前项目日志
+        private void OutSql2Log(string sql, string pars)
+        {
+
+            var path = Directory.GetCurrentDirectory() + @"\Log";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string fileName = path + $@"\SqlLog.log";
+
+            StreamWriter sw = File.AppendText(fileName);
+            sw.WriteLine("--------------------------------");
+            sw.WriteLine(DateTime.Now);
+            sw.WriteLine(pars);
+            sw.WriteLine(sql);
+            sw.WriteLine("--------------------------------");
+            sw.WriteLine();
+            sw.Close();
+
+        }
+
+        #endregion
+
+
 
         #region 静态方法
 

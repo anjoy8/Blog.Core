@@ -46,7 +46,7 @@ namespace Blog.Core.AOP
                 Directory.CreateDirectory(path);
             }
 
-            string fileName = path + $@"\InterceptLog.log";
+            string fileName = path + $@"\AOPLog.log";
 
             StreamWriter sw = File.AppendText(fileName);
             sw.WriteLine(dataIntercept);
