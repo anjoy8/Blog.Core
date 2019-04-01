@@ -40,8 +40,4 @@
     </Content>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="Copy &quot;$(ProjectDir)bin\Debug\netcoreapp2.2\&quot; &quot;$(SolutionDir)Blog.Core\bin\Debug\&quot;" />
-  </Target>
-
 </Project>
