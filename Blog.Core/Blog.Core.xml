@@ -242,6 +242,27 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.ClaimsController.BatchDelete(System.String[])">
+            <summary>
+            测试批量删除，如果是axios，记得要把数组格式化成 stringQuery
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ImgController.DownImg(Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            下载图片（支持中文字符）
+            </summary>
+            <param name="environment"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ImgController.InsertPicture(Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            上传图片
+            </summary>
+            <param name="environment"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.LoginController">
             <summary>
             

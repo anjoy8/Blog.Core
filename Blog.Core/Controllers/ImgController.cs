@@ -28,23 +28,33 @@ namespace Blog.Core.Controllers
         }
 
         // GET: api/Download
+        /// <summary>
+        /// 下载图片（支持中文字符）
+        /// </summary>
+        /// <param name="environment"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("down")]
-        public FileStreamResult DownImg()
+        public FileStreamResult DownImg([FromServices]IHostingEnvironment environment)
         {
-            var addrUrl = Directory.GetCurrentDirectory() + "\\微信截图_20190304212953.png";
-            var stream = System.IO.File.OpenRead(addrUrl);
+            string foldername = "";
+            string filepath = Path.Combine(environment.WebRootPath, foldername, "测试下载中文名称的图片.png");
+            var stream = System.IO.File.OpenRead(filepath);
             string fileExt = ".jpg";  // 这里可以写一个获取文件扩展名的方法，获取扩展名
             //获取文件的ContentType
             var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
             var memi = provider.Mappings[fileExt];
-            var fileName = Path.GetFileName(addrUrl);
+            var fileName = Path.GetFileName(filepath);
 
 
             return File(stream, memi, fileName);
         }
 
-
+        /// <summary>
+        /// 上传图片
+        /// </summary>
+        /// <param name="environment"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Pic")]
         public async Task<MessageModel<string>> InsertPicture([FromServices]IHostingEnvironment environment)

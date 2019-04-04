@@ -40,4 +40,12 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Log\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\测试下载中文名称的图片.png" />
+  </ItemGroup>
+
 </Project>
