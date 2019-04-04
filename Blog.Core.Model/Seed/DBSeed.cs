@@ -25,6 +25,7 @@ namespace Blog.Core.Model.Models
                 // 后期单独处理某些表
                 //myContext.Db.CodeFirst.InitTables(typeof(sysUserInfo));
                 //myContext.Db.CodeFirst.InitTables(typeof(Permission)); 
+                //myContext.Db.CodeFirst.InitTables(typeof(Advertisement));
 
 
                 #region Advertisement
@@ -222,7 +223,7 @@ namespace Blog.Core.Model.Models
             }
             catch (Exception ex)
             {
-                throw new Exception("注意要先创建空的数据库");
+                throw new Exception("1、注意要先创建空的数据库\n2、"+ex.Message);
             }
         }
     }

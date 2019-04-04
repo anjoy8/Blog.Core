@@ -26,12 +26,13 @@ namespace Blog.Core
                     var myContext = services.GetRequiredService<MyContext>();
                     // 为了大家的数据安全，这里先注释掉了，大家自己先测试玩一玩吧。
                     // 数据库连接字符串是在 Model 层的 Seed 文件夹下的 MyContext.cs 中
-                    // DBSeed.SeedAsync(myContext).Wait();
+                    //DBSeed.SeedAsync(myContext).Wait();
                 }
                 catch (Exception e)
                 {
                     var logger = loggerFactory.CreateLogger<Program>();
                     logger.LogError(e, "Error occured seeding the Database.");
+                    throw;
                 }
             }
 
