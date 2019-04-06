@@ -11,7 +11,7 @@ namespace Blog.Core.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize("Permission")]
+    [Authorize(PermissionNames.Permission)]
     public class RoleController : ControllerBase
     {
         readonly IRoleServices _roleServices;

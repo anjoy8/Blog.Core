@@ -13,7 +13,7 @@ namespace Blog.Core.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize("Permission")]
+    [Authorize(PermissionNames.Permission)]
     public class PermissionController : ControllerBase
     {
         readonly IPermissionServices _permissionServices;

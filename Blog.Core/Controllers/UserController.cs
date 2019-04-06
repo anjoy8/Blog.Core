@@ -13,7 +13,7 @@ namespace Blog.Core.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize("Permission")]
+    [Authorize(PermissionNames.Permission)]
     public class UserController : ControllerBase
     {
         readonly ISysUserInfoServices _sysUserInfoServices;

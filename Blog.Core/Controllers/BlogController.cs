@@ -117,7 +117,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
-        //[Authorize("Permission")]
+        //[Authorize(PermissionNames.Permission)]
         public async Task<object> Get(int id)
         {
             var model = await _blogArticleServices.GetBlogDetails(id);
