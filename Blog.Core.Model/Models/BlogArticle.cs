@@ -62,5 +62,12 @@ namespace Blog.Core.Model.Models
         /// </summary>
         [SugarColumn(Length = int.MaxValue, IsNullable = true)]
         public string bRemark { get; set; }
+
+        /// <summary>
+        /// 逻辑删除
+        /// </summary>
+        [SugarColumn(IsNullable = true)]
+        public bool? IsDeleted { get; set; }
+
     }
 }

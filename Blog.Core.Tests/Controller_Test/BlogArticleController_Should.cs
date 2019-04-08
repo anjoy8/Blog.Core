@@ -9,18 +9,16 @@ using System;
 
 namespace Blog.Core.Tests
 {
-    public class BlogArticleShould
+    public class BlogArticleController_Should
     {
         Mock<IBlogArticleServices> mockBlogSev = new Mock<IBlogArticleServices>();
         Mock<IRedisCacheManager> mockRedisMag = new Mock<IRedisCacheManager>();
         BlogController blogController;
 
-        public BlogArticleShould()
+        public BlogArticleController_Should()
         {
             mockBlogSev.Setup(r => r.Query());
             blogController = new BlogController(mockBlogSev.Object, mockRedisMag.Object);
-
-
         }
 
         [Fact]
@@ -31,20 +29,23 @@ namespace Blog.Core.Tests
             Assert.True(blogArticle.bID >= 0);
         }
         [Fact]
-        public void AddEntity()
+        public async void AddEntity()
         {
             BlogArticle blogArticle = new BlogArticle()
             {
                 bCreateTime = DateTime.Now,
                 bUpdateTime = DateTime.Now,
-                btitle = "xuint",
+                btitle = "xuint :test controller addEntity",
 
             };
-            //blogController.Post(blogArticle).Wait();
 
-            var data = blogController.Get(1);
-            Assert.Null(data);//为空包错了，证明不为空, 
-            //Assert.NotNull(data); 你可以这么判断不为空 
+            var res = await blogController.Post(blogArticle);
+
+            Assert.True(res.success);
+
+            var data = res.response;
+
+            Assert.NotNull(data);
         }
     }
 }
