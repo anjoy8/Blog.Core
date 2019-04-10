@@ -78,7 +78,7 @@ QQ群：867095512
 
 
 3【重要】、如何你使用Redis，需要安装Redis服务端，安装和使用说明地址：
-https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
+https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-3-4-0
 
 
 4【重要+】、系统新增自动化生成数据库，和生成种子数据的功能，
