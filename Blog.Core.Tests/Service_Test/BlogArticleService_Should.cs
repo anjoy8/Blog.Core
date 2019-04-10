@@ -9,19 +9,20 @@ using System;
 using System.Linq;
 using Blog.Core.Services;
 using AutoMapper;
+using Blog.Core.Repository;
 
 namespace Blog.Core.Tests
 {
     public class BlogArticleService_Should
     {
 
-        Mock<IBlogArticleRepository> mockBlogRep = new Mock<IBlogArticleRepository>();
+        Mock<BlogArticleRepository> mockBlogRep = new Mock<BlogArticleRepository>();
         Mock<IMapper> mockMap = new Mock<IMapper>();
         BlogArticleServices _blogArticleServices;
 
         public BlogArticleService_Should()
         {
-            mockBlogRep.Setup(r => r.Query());
+            //mockBlogRep.Setup(r => r.Query());
             _blogArticleServices = new BlogArticleServices(mockBlogRep.Object, mockMap.Object);
         }
 
@@ -38,7 +39,7 @@ namespace Blog.Core.Tests
         {
             var data = await _blogArticleServices.GetBlogs();
 
-            Assert.NotNull(data);
+            Assert.True(data.Any());
         }
 
         [Fact]

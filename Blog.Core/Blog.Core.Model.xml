@@ -69,7 +69,7 @@
             创建时间
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Blog.Core.Model.Models.BlogArticle" -->
+        <!-- 对于成员“T:Blog.Core.Model.Models.BlogArticle”忽略有格式错误的 XML 注释 -->
         <member name="P:Blog.Core.Model.Models.BlogArticle.bID">
             <summary>
             主键
@@ -636,8 +636,8 @@
             登录账号
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Blog.Core.Model.Models.Topic" -->
-        <!-- Badly formed XML comment ignored for member "T:Blog.Core.Model.Models.TopicDetail" -->
+        <!-- 对于成员“T:Blog.Core.Model.Models.Topic”忽略有格式错误的 XML 注释 -->
+        <!-- 对于成员“T:Blog.Core.Model.Models.TopicDetail”忽略有格式错误的 XML 注释 -->
         <member name="T:Blog.Core.Model.Models.UserRole">
             <summary>
             用户跟角色关联表
