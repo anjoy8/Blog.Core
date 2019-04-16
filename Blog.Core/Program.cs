@@ -2,6 +2,7 @@
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -23,10 +24,14 @@ namespace Blog.Core
                 try
                 {
                     // 从 system.IServicec提供程序获取 T 类型的服务。
-                    var myContext = services.GetRequiredService<MyContext>();
                     // 为了大家的数据安全，这里先注释掉了，大家自己先测试玩一玩吧。
                     // 数据库连接字符串是在 Model 层的 Seed 文件夹下的 MyContext.cs 中
-                    //DBSeed.SeedAsync(myContext).Wait();
+                    var configuration = services.GetRequiredService<IConfiguration>();
+                    if (configuration.GetSection("AppSettings")["SeedDBEnabled"].ObjToBool())
+                    {
+                        var myContext = services.GetRequiredService<MyContext>();
+                        DBSeed.SeedAsync(myContext).Wait();
+                    }
                 }
                 catch (Exception e)
                 {

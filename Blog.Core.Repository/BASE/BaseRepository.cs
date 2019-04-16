@@ -1,4 +1,5 @@
-﻿using Blog.Core.IRepository.Base;
+﻿using Blog.Core.Common.DB;
+using Blog.Core.IRepository.Base;
 using Blog.Core.Model;
 using SqlSugar;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Core.Repository.Base
 {
-    public  class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
     {
         private DbContext _context;
         private SqlSugarClient _db;
@@ -32,7 +33,7 @@ namespace Blog.Core.Repository.Base
         }
         public BaseRepository()
         {
-            DbContext.Init(BaseDBConfig.ConnectionString);
+            DbContext.Init(BaseDBConfig.ConnectionString, (DbType)BaseDBConfig.DbType);
             _context = DbContext.GetDbContext();
             _db = _context.Db;
             _entityDb = _context.GetEntityDB<TEntity>(_db);
@@ -259,7 +260,7 @@ namespace Blog.Core.Repository.Base
             return await Task.Run(() => _db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds).WhereIF(!string.IsNullOrEmpty(strWhere), strWhere).Take(intTop).ToList());
         }
 
-   
+
 
         /// <summary>
         /// 功能描述:分页查询
@@ -300,7 +301,7 @@ namespace Blog.Core.Repository.Base
             return await Task.Run(() => _db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds).WhereIF(!string.IsNullOrEmpty(strWhere), strWhere).ToPageList(intPageIndex, intPageSize));
         }
 
-     
+
 
 
         public async Task<List<TEntity>> QueryPage(Expression<Func<TEntity, bool>> whereExpression,

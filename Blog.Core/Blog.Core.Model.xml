@@ -69,7 +69,7 @@
             创建时间
             </summary>
         </member>
-        <!-- 对于成员“T:Blog.Core.Model.Models.BlogArticle”忽略有格式错误的 XML 注释 -->
+        <!-- Badly formed XML comment ignored for member "T:Blog.Core.Model.Models.BlogArticle" -->
         <member name="P:Blog.Core.Model.Models.BlogArticle.bID">
             <summary>
             主键
@@ -576,6 +576,11 @@
             修改时间
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.RootEntity.Id">
+            <summary>
+            ID
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.Models.sysUserInfo">
             <summary>
             用户信息表
@@ -636,8 +641,8 @@
             登录账号
             </summary>
         </member>
-        <!-- 对于成员“T:Blog.Core.Model.Models.Topic”忽略有格式错误的 XML 注释 -->
-        <!-- 对于成员“T:Blog.Core.Model.Models.TopicDetail”忽略有格式错误的 XML 注释 -->
+        <!-- Badly formed XML comment ignored for member "T:Blog.Core.Model.Models.Topic" -->
+        <!-- Badly formed XML comment ignored for member "T:Blog.Core.Model.Models.TopicDetail" -->
         <member name="T:Blog.Core.Model.Models.UserRole">
             <summary>
             用户跟角色关联表
@@ -686,11 +691,6 @@
         <member name="P:Blog.Core.Model.Models.UserRole.ModifyTime">
             <summary>
             修改时间
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RootEntity.Id">
-            <summary>
-            ID
             </summary>
         </member>
         <member name="M:Blog.Core.Model.Models.DBSeed.SeedAsync(Blog.Core.Model.Models.MyContext)">
@@ -1093,93 +1093,6 @@
             <summary>博客标题
             
             </summary>
-        </member>
-        <member name="T:Blog.Core.UtilConvert">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Blog.Core.UtilConvert.ObjToInt(System.Object)">
-            <summary>
-            
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.UtilConvert.ObjToInt(System.Object,System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="thisValue"></param>
-            <param name="errorValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.UtilConvert.ObjToMoney(System.Object)">
-            <summary>
-            
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.UtilConvert.ObjToMoney(System.Object,System.Double)">
-            <summary>
-            
-            </summary>
-            <param name="thisValue"></param>
-            <param name="errorValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.UtilConvert.ObjToString(System.Object)">
-            <summary>
-            
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.UtilConvert.ObjToString(System.Object,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="thisValue"></param>
-            <param name="errorValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.UtilConvert.ObjToDecimal(System.Object)">
-            <summary>
-            
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.UtilConvert.ObjToDecimal(System.Object,System.Decimal)">
-            <summary>
-            
-            </summary>
-            <param name="thisValue"></param>
-            <param name="errorValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.UtilConvert.ObjToDate(System.Object)">
-            <summary>
-            
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.UtilConvert.ObjToDate(System.Object,System.DateTime)">
-            <summary>
-            
-            </summary>
-            <param name="thisValue"></param>
-            <param name="errorValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.UtilConvert.ObjToBool(System.Object)">
-            <summary>
-            
-            </summary>
-            <param name="thisValue"></param>
-            <returns></returns>
         </member>
     </members>
 </doc>

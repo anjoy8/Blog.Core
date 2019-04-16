@@ -1,14 +1,11 @@
-﻿using Blog.Core.Common;
-using Blog.Core.Controllers;
-using Blog.Core.IRepository;
-using Blog.Core.IServices;
-using Blog.Core.Model.Models;
-using Moq;
+﻿using Blog.Core.Model.Models;
 using Xunit;
 using System;
 using Blog.Core.Repository.Base;
 using Blog.Core.Repository;
 using System.Linq;
+using Blog.Core.Common.DB;
+using SqlSugar;
 
 namespace Blog.Core.Tests
 {
@@ -18,7 +15,7 @@ namespace Blog.Core.Tests
 
         public Repository_Base_Should()
         {
-            DbContext.Init(BaseDBConfig.ConnectionString);
+            DbContext.Init(BaseDBConfig.ConnectionString,(DbType)BaseDBConfig.DbType);
         }
 
 
