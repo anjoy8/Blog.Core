@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using Blog.Core.Common;
+using log4net;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -27,7 +28,8 @@ namespace Blog.Core.Log
             }
             else
             {
-                ILog logger = LogManager.GetLogger(Startup.repository.Name, source);
+                var repositoryName = Appsettings.app(new string[] { "Logging", "Log4Net", "Name" });
+                ILog logger = LogManager.GetLogger(repositoryName, source);
                 Loggers.TryAdd(source, logger);
                 return logger;
             }

@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using Blog.Core.Log;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +15,7 @@ namespace Blog.Core.Repository
         private static string _connectionString;
         private static DbType _dbType;
         private SqlSugarClient _db;
+        private readonly ILoggerHelper _loggerHelper = new LogHelper();
 
         /// <summary>
         /// 连接字符串 
