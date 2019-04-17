@@ -63,34 +63,8 @@ namespace Blog.Core.Repository
         /// 功能描述:构造函数
         /// 作　　者:Blog.Core
         /// </summary>
-        private DbContext()
-        {
-            if (string.IsNullOrEmpty(_connectionString))
-                throw new ArgumentNullException("数据库连接字符串为空");
-            _db = new SqlSugarClient(new ConnectionConfig()
-            {
-                ConnectionString = _connectionString,
-                DbType = _dbType,
-                IsAutoCloseConnection = true,
-                IsShardSameThread = true,
-                ConfigureExternalServices = new ConfigureExternalServices()
-                {
-                    //DataInfoCacheService = new HttpRuntimeCache()
-                },
-                MoreSettings = new ConnMoreSettings()
-                {
-                    //IsWithNoLockQuery = true,
-                    IsAutoRemoveDataCache = true
-                }
-            });
-        }
-
-        /// <summary>
-        /// 功能描述:构造函数
-        /// 作　　者:Blog.Core
-        /// </summary>
         /// <param name="blnIsAutoCloseConnection">是否自动关闭连接</param>
-        private DbContext(bool blnIsAutoCloseConnection)
+        private DbContext(bool blnIsAutoCloseConnection = true)
         {
             if (string.IsNullOrEmpty(_connectionString))
                 throw new ArgumentNullException("数据库连接字符串为空");
@@ -355,10 +329,10 @@ namespace {Namespace}
                 string logFilePath = path + $@"\SqlLog.log";
                 var now = DateTime.Now;
                 var logContent = string.Format("--------------------------------\n" +
-                    DateTime.Now+"\n"+
-                    pars+"\n"+
-                    sql + "\n"+
-                    "--------------------------------\n" 
+                    DateTime.Now + "\n" +
+                    pars + "\n" +
+                    sql + "\n" +
+                    "--------------------------------\n"
                     );
 
                 File.AppendAllText(logFilePath, logContent);
