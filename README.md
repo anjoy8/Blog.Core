@@ -83,8 +83,8 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-3-4-0
 
 
 4【重要+】、系统新增自动化生成数据库，和生成种子数据的功能，
-在Blog.Core层中的 Progrm.cs 中，取消对 DBSeed.SeedAsync(myContext).Wait(); 的注释即可。
-注意不要注释Blog.Core.Model层DBSeed -> SeedAsync -》  myContext.CreateTableByEntity(false, typ）。
+在Blog.Core层中的 appsettings.json 中开启 SeedDBEnabled：true 即可。
+具体文章请看：《[支持多种数据库 & 快速数据库生成](https://www.cnblogs.com/laozhang-is-phi/p/10718755.html)》。
 
 
 5、如果你不想用CodeFirst 和种子数据，可以用数据库表结构Sql文件在数据库里执行，
