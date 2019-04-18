@@ -12,13 +12,28 @@ namespace Blog.Core.Common
     public class Appsettings
     {
         static IConfiguration Configuration { get; set; }
+
+        //static Appsettings()
+        //{
+        //    //ReloadOnChange = true 当appsettings.json被修改时重新加载
+        //    Configuration = new ConfigurationBuilder()
+        //    .Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })//请注意要把当前appsetting.json 文件->右键->属性->复制到输出目录->始终复制
+        //    .Build();
+        //}
+
         static Appsettings()
         {
-            //ReloadOnChange = true 当appsettings.json被修改时重新加载
+            string Path = "appsettings.json";
+            {
+                //如果你把配置文件 是 根据环境变量来分开了，可以这样写
+                //Path = $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json";
+            }
+
             Configuration = new ConfigurationBuilder()
-            .Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })//请注意要把当前appsetting.json 文件->右键->属性->复制到输出目录->始终复制
+            .Add(new JsonConfigurationSource { Path = Path, ReloadOnChange = true })//请注意要把当前appsetting.json 文件->右键->属性->复制到输出目录->始终复制
             .Build();
         }
+
         /// <summary>
         /// 封装要操作的字符
         /// </summary>

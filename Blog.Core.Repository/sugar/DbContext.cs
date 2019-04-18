@@ -73,7 +73,7 @@ namespace Blog.Core.Repository
                 ConnectionString = _connectionString,
                 DbType = _dbType,
                 IsAutoCloseConnection = blnIsAutoCloseConnection,
-                IsShardSameThread = true,
+                IsShardSameThread = false,
                 ConfigureExternalServices = new ConfigureExternalServices()
                 {
                     //DataInfoCacheService = new HttpRuntimeCache()
