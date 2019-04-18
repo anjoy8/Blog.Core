@@ -353,7 +353,7 @@ namespace Blog.Core
                 {
                     cacheType.Add(typeof(BlogCacheAOP));
                 }
-                if (Appsettings.app(new string[] { "AppSettings", "LogoAOP", "Enabled" }).ObjToBool())
+                if (Appsettings.app(new string[] { "AppSettings", "LogAOP", "Enabled" }).ObjToBool())
                 {
                     cacheType.Add(typeof(BlogLogAOP));
                 }
