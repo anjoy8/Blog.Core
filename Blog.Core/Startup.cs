@@ -13,6 +13,7 @@ using AutoMapper;
 using Blog.Core.AOP;
 using Blog.Core.AuthHelper;
 using Blog.Core.Common;
+using Blog.Core.Common.MemoryCache;
 using Blog.Core.Filter;
 using Blog.Core.Log;
 using Blog.Core.Model;

@@ -1,4 +1,5 @@
 ﻿using Blog.Core.Common;
+using Blog.Core.Common.MemoryCache;
 using Castle.DynamicProxy;
 using System;
 using System.Linq;
