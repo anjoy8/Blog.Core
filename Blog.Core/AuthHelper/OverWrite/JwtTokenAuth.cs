@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Blog.Core.AuthHelper.OverWrite;
+using Microsoft.AspNetCore.Builder;
 
 namespace Blog.Core.AuthHelper
 {
@@ -86,6 +87,14 @@ namespace Blog.Core.AuthHelper
             return _next(httpContext);
         }
 
+    }
+
+    public static class MiddlewareHelpers
+    {
+        public static IApplicationBuilder UserJwtTokenAuth(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<JwtTokenAuth>();
+        }
     }
 }
 
