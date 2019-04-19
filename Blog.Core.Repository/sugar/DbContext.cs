@@ -1,6 +1,7 @@
 ﻿using Blog.Core.Common.LogHelper;
 using Blog.Core.Log;
 using SqlSugar;
+using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -95,7 +96,8 @@ namespace Blog.Core.Repository
             {
                 Parallel.For(0, 1, e =>
                 {
-                    LogLock.OutSql2Log("SqlLog", new string[] { GetParas(pars), "【SQL语句】："+sql });
+                    MiniProfiler.Current.CustomTiming("SQL：", GetParas(pars) + "【SQL语句】：" + sql);
+                    LogLock.OutSql2Log("SqlLog", new string[] { GetParas(pars), "【SQL语句】：" + sql });
 
                 });
             };
