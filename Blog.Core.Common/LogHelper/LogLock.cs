@@ -14,7 +14,7 @@ namespace Blog.Core.Common.LogHelper
         static int WritedCount = 0;
         static int FailedCount = 0;
 
-        public static void OutSql2Log(string filename,string[] dataParas)
+        public static void OutSql2Log(string filename, string[] dataParas)
         {
             try
             {
@@ -33,10 +33,9 @@ namespace Blog.Core.Common.LogHelper
 
                 var now = DateTime.Now;
                 var logContent = string.Format(
-                    "--------------------------------\n" +
-                    DateTime.Now + "\n" +
-                    String.Join("\n", dataParas) + "\n" +
-                    "--------------------------------\n"
+                    "--------------------------------\r\n" +
+                    DateTime.Now + "|\r\n" +
+                    String.Join("\r\n", dataParas) + "\r\n"
                     );
 
                 File.AppendAllText(logFilePath, logContent);
