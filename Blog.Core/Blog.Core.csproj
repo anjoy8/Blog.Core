@@ -35,13 +35,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Include="wwwroot\测试下载中文名称的图片.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\测试下载中文名称的图片.png" />
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
