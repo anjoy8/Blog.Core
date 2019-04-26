@@ -27,7 +27,7 @@ namespace Blog.Core.Controllers
                 .Select(d => new LogInfo
                 {
                     Datetime = d.Split("|")[0],
-                    Content = d.Split("|")[1],
+                    Content = d.Split("|")[1]?.Replace("\r\n","<br>"),
                     LogColor="AOP",
                 }).ToList();
 
@@ -38,7 +38,7 @@ namespace Blog.Core.Controllers
                 .Select(d => new LogInfo
                 {
                     Datetime = d.Split("|")[0],
-                    Content = d.Split("|")[1],
+                    Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
                     LogColor="EXC",
                 }).ToList();
 
@@ -49,12 +49,13 @@ namespace Blog.Core.Controllers
                 .Select(d => new LogInfo
                 {
                     Datetime = d.Split("|")[0],
-                    Content = d.Split("|")[1],
+                    Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
                     LogColor="SQL",
                 }).ToList();
 
             aopLogs.AddRange(excLogs);
             aopLogs.AddRange(sqlLogs);
+            aopLogs = aopLogs.OrderByDescending(d => d.Datetime).Take(100).ToList();
 
             return new MessageModel<List<LogInfo>>()
             {
