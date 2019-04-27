@@ -338,7 +338,7 @@ namespace Blog.Core
             try
             {
                 var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
-                var assemblysServices = Assembly.LoadFile(servicesDllFile);//直接采用加载文件的方法  ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
+                var assemblysServices = Assembly.LoadFrom(servicesDllFile);//直接采用加载文件的方法  ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
 
                 //builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
 
@@ -369,7 +369,7 @@ namespace Blog.Core
 
                 #region Repository.dll 注入，有对应接口
                 var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
-                var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
+                var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
                 builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
             }
             catch (Exception)
