@@ -15,6 +15,7 @@ using Blog.Core.AuthHelper;
 using Blog.Core.Common;
 using Blog.Core.Common.MemoryCache;
 using Blog.Core.Filter;
+using Blog.Core.Hubs;
 using Blog.Core.Log;
 using Blog.Core.Model;
 using log4net;
@@ -190,6 +191,8 @@ namespace Blog.Core
             .AddJsonOptions(options => { options.SerializerSettings.ContractResolver = new DefaultContractResolver(); });
 
             #endregion
+
+            services.AddSignalR();
 
             #region Authorize权限设置三种情况
 
@@ -480,6 +483,12 @@ namespace Blog.Core
             app.UseStatusCodePages();//把错误码返回前台，比如是404
 
             app.UseMvc();
+
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/api/chatHub");
+            });
         }
 
     }
