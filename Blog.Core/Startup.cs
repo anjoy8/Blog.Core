@@ -487,6 +487,8 @@ namespace Blog.Core
 
             app.UseSignalR(routes =>
             {
+                //这里要说下，为啥地址要写 /api/xxx 
+                //因为我前后端分离了，而且使用的是代理模式，所以如果你不用/api/xxx的这个规则的话，会出现跨域问题，毕竟这个不是我的controller的路由，而且自己定义的路由
                 routes.MapHub<ChatHub>("/api/chatHub");
             });
         }

@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Blog.Core.Common.Helper;
+using Blog.Core.Hubs;
+using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -54,5 +58,58 @@ namespace Blog.Core.Common.LogHelper
                 LogWriteLock.ExitWriteLock();
             }
         }
+
+
+        public static List<LogInfo> GetLogData()
+        {
+            var aopLogs = FileHelper.ReadFile(Path.Combine(Directory.GetCurrentDirectory(), "Log", "AOPLog.log"), Encoding.UTF8)
+           .Split("--------------------------------")
+           .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
+           .Select(d => new LogInfo
+           {
+               Datetime = d.Split("|")[0].ObjToDate(),
+               Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
+               LogColor = "AOP",
+           }).ToList();
+
+
+            var excLogs = FileHelper.ReadFile(Path.Combine(Directory.GetCurrentDirectory(), "Log", $"GlobalExcepLogs_{System.DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8)
+                .Split("--------------------------------")
+                .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
+                .Select(d => new LogInfo
+                {
+                    Datetime = (d.Split("|")[0]).Split(',')[0].ObjToDate(),
+                    Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
+                    LogColor = "EXC",
+                    Import=9,
+                }).ToList();
+
+
+            var sqlLogs = FileHelper.ReadFile(Path.Combine(Directory.GetCurrentDirectory(), "Log", "SqlLog.log"), Encoding.UTF8)
+                .Split("--------------------------------")
+                .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
+                .Select(d => new LogInfo
+                {
+                    Datetime = d.Split("|")[0].ObjToDate(),
+                    Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
+                    LogColor = "SQL",
+                }).ToList();
+
+            aopLogs.AddRange(excLogs);
+            aopLogs.AddRange(sqlLogs);
+            aopLogs = aopLogs.OrderByDescending(d=>d.Import).ThenByDescending(d => d.Datetime).Take(100).ToList();
+
+            return aopLogs;
+        }
+
+    }
+
+    public class LogInfo
+    {
+        public DateTime Datetime { get; set; }
+        public string Content { get; set; }
+        public string IP { get; set; }
+        public string LogColor { get; set; }
+        public int Import { get; set; } = 0;
     }
 }

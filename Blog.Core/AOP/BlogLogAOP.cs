@@ -1,5 +1,7 @@
 ﻿using Blog.Core.Common.LogHelper;
+using Blog.Core.Hubs;
 using Castle.DynamicProxy;
+using Microsoft.AspNetCore.SignalR;
 using StackExchange.Profiling;
 using System;
 using System.IO;
@@ -14,6 +16,13 @@ namespace Blog.Core.AOP
     /// </summary>
     public class BlogLogAOP : IInterceptor
     {
+        private readonly IHubContext<ChatHub> _hubContext;
+        public BlogLogAOP(IHubContext<ChatHub> hubContext)
+        {
+            _hubContext = hubContext;
+
+        }
+
 
         /// <summary>
         /// 实例化IInterceptor唯一方法 
@@ -44,8 +53,11 @@ namespace Blog.Core.AOP
 
             Parallel.For(0, 1, e =>
             {
+                LogLock log = new LogLock();
                 LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
             });
+
+            _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
 
             #region //输出到当前项目日志,多线程可能会出现争抢资源的问题，舍弃//
             //var path = Directory.GetCurrentDirectory() + @"\Log";

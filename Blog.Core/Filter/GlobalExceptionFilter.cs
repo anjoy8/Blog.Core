@@ -1,8 +1,11 @@
-﻿using Blog.Core.Log;
+﻿using Blog.Core.Common.LogHelper;
+using Blog.Core.Hubs;
+using Blog.Core.Log;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.SignalR;
 using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
@@ -19,11 +22,15 @@ namespace Blog.Core.Filter
     {
         private readonly IHostingEnvironment _env;
         private readonly ILoggerHelper _loggerHelper;
-        public GlobalExceptionsFilter(IHostingEnvironment env, ILoggerHelper loggerHelper)
+        private readonly IHubContext<ChatHub> _hubContext;
+
+        public GlobalExceptionsFilter(IHostingEnvironment env, ILoggerHelper loggerHelper, IHubContext<ChatHub> hubContext)
         {
             _env = env;
             _loggerHelper = loggerHelper;
+            _hubContext = hubContext;
         }
+
         public void OnException(ExceptionContext context)
         {
             var json = new JsonErrorResponse();
@@ -40,6 +47,8 @@ namespace Blog.Core.Filter
 
             //采用log4net 进行错误日志记录
             _loggerHelper.Error(json.Message, WriteLog(json.Message, context.Exception));
+
+            _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
 
         }
 

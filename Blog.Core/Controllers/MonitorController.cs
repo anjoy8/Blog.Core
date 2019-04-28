@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Blog.Core.Common.Helper;
+using Blog.Core.Common.LogHelper;
 using Blog.Core.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,47 +22,13 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public async Task<MessageModel<List<LogInfo>>> Get()
         {
-            var aopLogs = FileHelper.ReadFile(Path.Combine(Directory.GetCurrentDirectory(), "Log", "AOPLog.log"), Encoding.UTF8)
-                .Split("--------------------------------")
-                .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
-                .Select(d => new LogInfo
-                {
-                    Datetime = d.Split("|")[0],
-                    Content = d.Split("|")[1]?.Replace("\r\n","<br>"),
-                    LogColor="AOP",
-                }).ToList();
-
-
-            var excLogs = FileHelper.ReadFile(Path.Combine(Directory.GetCurrentDirectory(), "Log", $"GlobalExcepLogs_{System.DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8)
-                .Split("--------------------------------")
-                .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
-                .Select(d => new LogInfo
-                {
-                    Datetime = d.Split("|")[0],
-                    Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
-                    LogColor="EXC",
-                }).ToList();
-
-
-            var sqlLogs = FileHelper.ReadFile(Path.Combine(Directory.GetCurrentDirectory(), "Log", "SqlLog.log"), Encoding.UTF8)
-                .Split("--------------------------------")
-                .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
-                .Select(d => new LogInfo
-                {
-                    Datetime = d.Split("|")[0],
-                    Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
-                    LogColor="SQL",
-                }).ToList();
-
-            aopLogs.AddRange(excLogs);
-            aopLogs.AddRange(sqlLogs);
-            aopLogs = aopLogs.OrderByDescending(d => d.Datetime).Take(100).ToList();
+          
 
             return new MessageModel<List<LogInfo>>()
             {
                 msg = "获取成功",
                 success = true,
-                response = aopLogs
+                response = null
             };
         }
 
@@ -92,11 +59,5 @@ namespace Blog.Core.Controllers
 
     }
 
-    public class LogInfo
-    {
-        public string Datetime { get; set; }
-        public string Content { get; set; }
-        public string IP { get; set; }
-        public string LogColor { get; set; }
-    }
+  
 }
