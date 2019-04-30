@@ -44,6 +44,7 @@
 |-|-|-|-|
 |CURD+Seed|CURD+Seed+DI|CURD+Seed+DI+AOP等|DDD+EFCore+DI+EventBus等|
 |[NetCore-Sugar-Demo](https://github.com/anjoy8/NetCore-Sugar-Demo)|[Blog.SplRepository.Demo](https://github.com/anjoy8/Blog.SplRepository.Demo)|[Blog.Core](https://github.com/anjoy8/Blog.Core)|[ChristDDD](https://github.com/anjoy8/ChristDDD)|
+| |[Blog-EFCore-Sqlite](https://github.com/anjoy8/Blog-EFCore-Sqlite)| | |
 
 
 &nbsp;
