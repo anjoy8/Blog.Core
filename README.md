@@ -23,6 +23,11 @@
 
 
 &nbsp;
+
+
+![操作流程](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/operateFlow.gif)
+
+
 &nbsp;
 
 ## Nuget Packages
