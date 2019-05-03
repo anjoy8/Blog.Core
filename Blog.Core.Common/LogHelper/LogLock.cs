@@ -59,10 +59,38 @@ namespace Blog.Core.Common.LogHelper
             }
         }
 
+        public static string ReadLog(string Path, Encoding encode)
+        {
+            string s = "";
+            try
+            {
+                LogWriteLock.EnterReadLock();
+
+                if (!System.IO.File.Exists(Path))
+                    s = "不存在相应的目录";
+                else
+                {
+                    StreamReader f2 = new StreamReader(Path, encode);
+                    s = f2.ReadToEnd();
+                    f2.Close();
+                    f2.Dispose();
+                }
+            }
+            catch (Exception)
+            {
+                FailedCount++;
+            }
+            finally
+            {
+                LogWriteLock.ExitReadLock();
+            }
+            return s;
+        }
+
 
         public static List<LogInfo> GetLogData()
         {
-            var aopLogs = FileHelper.ReadFile(Path.Combine(Directory.GetCurrentDirectory(), "Log", "AOPLog.log"), Encoding.UTF8)
+            var aopLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", "AOPLog.log"), Encoding.UTF8)
            .Split("--------------------------------")
            .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
            .Select(d => new LogInfo
@@ -73,7 +101,7 @@ namespace Blog.Core.Common.LogHelper
            }).ToList();
 
 
-            var excLogs = FileHelper.ReadFile(Path.Combine(Directory.GetCurrentDirectory(), "Log", $"GlobalExcepLogs_{System.DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8)
+            var excLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", $"GlobalExcepLogs_{System.DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8)
                 .Split("--------------------------------")
                 .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
                 .Select(d => new LogInfo
@@ -81,11 +109,11 @@ namespace Blog.Core.Common.LogHelper
                     Datetime = (d.Split("|")[0]).Split(',')[0].ObjToDate(),
                     Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
                     LogColor = "EXC",
-                    Import=9,
+                    Import = 9,
                 }).ToList();
 
 
-            var sqlLogs = FileHelper.ReadFile(Path.Combine(Directory.GetCurrentDirectory(), "Log", "SqlLog.log"), Encoding.UTF8)
+            var sqlLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", "SqlLog.log"), Encoding.UTF8)
                 .Split("--------------------------------")
                 .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
                 .Select(d => new LogInfo
@@ -97,7 +125,7 @@ namespace Blog.Core.Common.LogHelper
 
             aopLogs.AddRange(excLogs);
             aopLogs.AddRange(sqlLogs);
-            aopLogs = aopLogs.OrderByDescending(d=>d.Import).ThenByDescending(d => d.Datetime).Take(100).ToList();
+            aopLogs = aopLogs.OrderByDescending(d => d.Import).ThenByDescending(d => d.Datetime).Take(100).ToList();
 
             return aopLogs;
         }
