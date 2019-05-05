@@ -5,6 +5,7 @@ using Blog.Core.IRepository;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Blog.Core.Common;
+using System.Linq;
 
 namespace Blog.Core.Services
 {
@@ -34,12 +35,24 @@ namespace Blog.Core.Services
         public async Task<List<RoleModulePermission>> GetRoleModule()
         {
             var roleModulePermissions = await base.Query(a => a.IsDeleted == false);
+            var roles = await _roleRepository.Query(a => a.IsDeleted == false);
+            var modules = await _moduleRepository.Query(a => a.IsDeleted == false);
+
+            //var roleModulePermissionsAsync = base.Query(a => a.IsDeleted == false);
+            //var rolesAsync = _roleRepository.Query(a => a.IsDeleted == false);
+            //var modulesAsync = _moduleRepository.Query(a => a.IsDeleted == false);
+
+            //var roleModulePermissions = await roleModulePermissionsAsync;
+            //var roles = await rolesAsync;
+            //var modules = await modulesAsync;
+
+
             if (roleModulePermissions.Count > 0)
             {
                 foreach (var item in roleModulePermissions)
                 {
-                    item.Role = await _roleRepository.QueryById(item.RoleId);
-                    item.Module = await _moduleRepository.QueryById(item.ModuleId);
+                    item.Role = roles.FirstOrDefault(d => d.Id == item.RoleId);
+                    item.Module = modules.FirstOrDefault(d => d.Id == item.ModuleId);
                 }
 
             }
