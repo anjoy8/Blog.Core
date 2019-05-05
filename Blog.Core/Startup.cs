@@ -259,7 +259,7 @@ namespace Blog.Core
             //【授权】
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Permission",
+                options.AddPolicy(PermissionNames.Permission,
                          policy => policy.Requirements.Add(permissionRequirement));
             });
 
