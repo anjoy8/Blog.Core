@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
+using Blog.Core.Hubs;
 using Blog.Core.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Blog.Core.Controllers
 {
@@ -16,13 +18,19 @@ namespace Blog.Core.Controllers
     [ApiController]
     public class MonitorController : Controller
     {
+        private readonly IHubContext<ChatHub> _hubContext;
 
+        public MonitorController(IHubContext<ChatHub> hubContext)
+        {
+            _hubContext = hubContext;
+        }
 
         // GET: api/Logs
         [HttpGet]
         public async Task<MessageModel<List<LogInfo>>> Get()
         {
-          
+
+            _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
 
             return new MessageModel<List<LogInfo>>()
             {
