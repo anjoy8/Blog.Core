@@ -169,6 +169,7 @@ namespace Blog.Core.Controllers
 
             blogArticle.bCreateTime = DateTime.Now;
             blogArticle.bUpdateTime = DateTime.Now;
+            blogArticle.IsDeleted = false;
 
             var id = (await _blogArticleServices.Add(blogArticle));
             data.success = id > 0;
