@@ -83,7 +83,7 @@ namespace Blog.Core.Common.Helper
 
         public static void LoopToAppendChildrenT<T>(List<T> all, T curItem, string parentIdName = "Pid", string idName = "value", string childrenName = "children")
         {
-            var subItems = all.Where(ee => ee.GetType().GetProperty(parentIdName).GetValue(ee, null).ToString() == curItem.GetType().GetProperty(idName).GetValue(curItem, null).ToString()).ToList(); 
+            var subItems = all.Where(ee => ee.GetType().GetProperty(parentIdName).GetValue(ee, null).ToString() == curItem.GetType().GetProperty(idName).GetValue(curItem, null).ToString()).ToList();
 
             if (subItems.Count > 0) curItem.GetType().GetField(childrenName).SetValue(curItem, subItems);
             foreach (var subItem in subItems)
@@ -110,6 +110,7 @@ namespace Blog.Core.Common.Helper
         public int pid { get; set; }
         public int order { get; set; }
         public string name { get; set; }
+        public bool IsHide { get; set; } = false;
         public string path { get; set; }
         public string iconCls { get; set; }
         public NavigationBarMeta meta { get; set; }

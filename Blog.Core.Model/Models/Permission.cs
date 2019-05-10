@@ -32,6 +32,10 @@ namespace Blog.Core.Model.Models
         /// 是否是按钮
         /// </summary>
         public bool IsButton { get; set; } = false;
+        /// <summary>
+        /// 是否是隐藏菜单
+        /// </summary>
+        public bool IsHide { get; set; } = false;
 
         /// <summary>
         /// 上一级菜单（0表示上一级无菜单）
