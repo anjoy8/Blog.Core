@@ -35,7 +35,8 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 是否是隐藏菜单
         /// </summary>
-        public bool IsHide { get; set; } = false;
+        [SugarColumn(IsNullable = true)]
+        public bool? IsHide { get; set; } = false;
 
         /// <summary>
         /// 上一级菜单（0表示上一级无菜单）

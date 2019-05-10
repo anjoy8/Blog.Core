@@ -121,6 +121,8 @@ namespace Blog.Core.Common.Helper
     {
         public string title { get; set; }
         public bool requireAuth { get; set; } = true;
+        public bool NoTabPage { get; set; } = false;
+        
 
     }
 }

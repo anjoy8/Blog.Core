@@ -252,10 +252,12 @@ namespace Blog.Core.Controllers
                                                    order = child.OrderSort,
                                                    path = child.Code,
                                                    iconCls = child.Icon,
+                                                   IsHide = child.IsHide.ObjToBool(),
                                                    meta = new NavigationBarMeta
                                                    {
                                                        requireAuth = true,
                                                        title = child.Name,
+                                                       NoTabPage=child.IsHide.ObjToBool()
                                                    }
                                                }).ToList();
 
