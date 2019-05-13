@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Blog.Core.AuthHelper;
 using Blog.Core.AuthHelper.OverWrite;
+using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors;
@@ -57,13 +58,12 @@ namespace Blog.Core.Controllers
             string jwtStr = string.Empty;
             bool suc = false;
             //这里就是用户登陆以后，通过数据库去调取数据，分配权限的操作
-            //这里直接写死了
 
-            var user = await _sysUserInfoServices.GetUserRoleNameStr(name, pass);
+            var user = await _sysUserInfoServices.GetUserRoleNameStr(name, MD5Helper.MD5Encrypt32(pass));
             if (user != null)
             {
 
-                TokenModelJwt tokenModel = new TokenModelJwt {Uid = 1, Role = user};
+                TokenModelJwt tokenModel = new TokenModelJwt { Uid = 1, Role = user };
 
                 jwtStr = JwtHelper.IssueJwt(tokenModel);
                 suc = true;
@@ -139,6 +139,8 @@ namespace Blog.Core.Controllers
                     message = "用户名或密码不能为空"
                 });
             }
+
+            pass = MD5Helper.MD5Encrypt32(pass);
 
             var user = await _sysUserInfoServices.Query(d => d.uLoginName == name && d.uLoginPWD == pass);
             if (user.Count > 0)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.AuthHelper.OverWrite;
+using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -63,7 +64,6 @@ namespace Blog.Core.Controllers
             var allRoles = await _roleServices.Query(d => d.IsDeleted == false);
             foreach (var item in sysUserInfos)
             {
-                item.uLoginPWD = "no see me";
                 item.RID = (allUserRoles.FirstOrDefault(d => d.UserId == item.uID)?.RoleId).ObjToInt();
                 item.RoleName = allRoles.FirstOrDefault(d => d.Id==item.RID)?.Name;
             }
@@ -124,6 +124,8 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<string>> Post([FromBody] sysUserInfo sysUserInfo)
         {
             var data = new MessageModel<string>();
+
+            sysUserInfo.uLoginPWD= MD5Helper.MD5Encrypt32(sysUserInfo.uLoginPWD);
 
             var id = await _sysUserInfoServices.Add(sysUserInfo);
             data.success = id > 0;
