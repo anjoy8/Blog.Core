@@ -52,7 +52,7 @@ namespace Blog.Core.Controllers
         /// <param name="ids"></param>
         /// <returns></returns>
         [HttpDelete]
-        public IEnumerable<string> BatchDelete(string[] ids)
+        public string BatchDelete(string ids)
         {
             return ids;
         }
