@@ -142,6 +142,8 @@ namespace Blog.Core.Controllers
         [HttpPut]
         public async Task<MessageModel<string>> Put([FromBody] sysUserInfo sysUserInfo)
         {
+            // 这里也要做后期处理，会有用户个人中心的业务
+
             var data = new MessageModel<string>();
             if (sysUserInfo != null && sysUserInfo.uID > 0)
             {
