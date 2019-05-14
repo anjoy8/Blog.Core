@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
+    /// <summary>
+    /// 这是一个测试的控制器，主要为了测试基于Claim的验证机制
+    /// </summary>
     //[Authorize(PermissionNames.Permission)]
     [Route("api/Claims/[action]")]
     [ApiController]

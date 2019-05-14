@@ -91,7 +91,7 @@ namespace Blog.Core.Controllers
 
 
         /// <summary>
-        /// post
+        /// 测试 post 一个对象
         /// </summary>
         /// <param name="blogArticle">model实体类参数</param>
         [HttpPost]

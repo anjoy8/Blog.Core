@@ -7,17 +7,28 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
+    /// <summary>
+    /// 类别管理
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class TopicController : ControllerBase
     {
         readonly ITopicServices _topicServices;
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="topicServices"></param>
         public TopicController(ITopicServices topicServices)
         {
             _topicServices = topicServices;
         }
 
+        /// <summary>
+        /// 获取Tibug所有分类
+        /// </summary>
+        /// <returns></returns>
         // GET: api/Topic
         [HttpGet]
         public async Task<MessageModel<List<Topic>>> Get()

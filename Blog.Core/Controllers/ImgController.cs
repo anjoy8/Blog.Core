@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
+    /// <summary>
+    /// 图片管理
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ImgController : Controller

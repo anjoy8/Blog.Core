@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
+    /// <summary>
+    /// 角色管理
+    /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(PermissionNames.Permission)]
@@ -25,6 +28,12 @@ namespace Blog.Core.Controllers
             _roleServices = roleServices;
         }
 
+        /// <summary>
+        /// 获取全部角色
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         // GET: api/User
         [HttpGet]
         public async Task<MessageModel<PageModel<Role>>> Get(int page = 1, string key = "")
@@ -71,6 +80,11 @@ namespace Blog.Core.Controllers
             return "value";
         }
 
+        /// <summary>
+        /// 添加角色
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
         // POST: api/User
         [HttpPost]
         public async Task<MessageModel<string>> Post([FromBody] Role role)
@@ -88,6 +102,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        /// <summary>
+        /// 更新角色
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
         // PUT: api/User/5
         [HttpPut]
         public async Task<MessageModel<string>> Put([FromBody] Role role)
@@ -106,6 +125,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        /// <summary>
+        /// 删除角色
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
         public async Task<MessageModel<string>> Delete(int id)

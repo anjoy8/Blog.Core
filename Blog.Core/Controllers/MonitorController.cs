@@ -25,6 +25,10 @@ namespace Blog.Core.Controllers
             _hubContext = hubContext;
         }
 
+        /// <summary>
+        /// SignalR send data
+        /// </summary>
+        /// <returns></returns>
         // GET: api/Logs
         [HttpGet]
         public async Task<MessageModel<List<LogInfo>>> Get()

@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
+    /// <summary>
+    /// 菜单管理
+    /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(PermissionNames.Permission)]
@@ -37,6 +40,12 @@ namespace Blog.Core.Controllers
 
         }
 
+        /// <summary>
+        /// 获取菜单
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         // GET: api/User
         [HttpGet]
         public async Task<MessageModel<PageModel<Permission>>> Get(int page = 1, string key = "")
@@ -117,6 +126,11 @@ namespace Blog.Core.Controllers
             return "value";
         }
 
+        /// <summary>
+        /// 添加一个菜单
+        /// </summary>
+        /// <param name="permission"></param>
+        /// <returns></returns>
         // POST: api/User
         [HttpPost]
         public async Task<MessageModel<string>> Post([FromBody] Permission permission)
@@ -134,7 +148,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
-
+        /// <summary>
+        /// 保存菜单权限分配
+        /// </summary>
+        /// <param name="assignView"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<MessageModel<string>> Assign([FromBody] AssignView assignView)
         {
@@ -187,6 +205,13 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+
+        /// <summary>
+        /// 获取菜单树
+        /// </summary>
+        /// <param name="pid"></param>
+        /// <param name="needbtn"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<MessageModel<PermissionTree>> GetPermissionTree(int pid = 0, bool needbtn = false)
         {
@@ -224,7 +249,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
-
+        /// <summary>
+        /// 获取路由树
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<MessageModel<NavigationBar>> GetNavigationBar(int uid)
@@ -290,7 +319,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
-
+        /// <summary>
+        /// 通过角色获取菜单
+        /// </summary>
+        /// <param name="rid"></param>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<MessageModel<AssignShow>> GetPermissionIdByRoleId(int rid = 0)
@@ -328,7 +361,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
-
+        /// <summary>
+        /// 更新菜单
+        /// </summary>
+        /// <param name="permission"></param>
+        /// <returns></returns>
         // PUT: api/User/5
         [HttpPut]
         public async Task<MessageModel<string>> Put([FromBody] Permission permission)
@@ -347,6 +384,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        /// <summary>
+        /// 删除菜单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
         public async Task<MessageModel<string>> Delete(int id)

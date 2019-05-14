@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
+    /// <summary>
+    /// 用户管理
+    /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(PermissionNames.Permission)]
@@ -34,6 +37,12 @@ namespace Blog.Core.Controllers
             _roleServices = roleServices;
         }
 
+        /// <summary>
+        /// 获取全部用户
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         // GET: api/User
         [HttpGet]
         public async Task<MessageModel<PageModel<sysUserInfo>>> Get(int page = 1, string key = "")
@@ -119,6 +128,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        /// <summary>
+        /// 添加一个用户
+        /// </summary>
+        /// <param name="sysUserInfo"></param>
+        /// <returns></returns>
         // POST: api/User
         [HttpPost]
         public async Task<MessageModel<string>> Post([FromBody] sysUserInfo sysUserInfo)
@@ -138,6 +152,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        /// <summary>
+        /// 更新用户与角色
+        /// </summary>
+        /// <param name="sysUserInfo"></param>
+        /// <returns></returns>
         // PUT: api/User/5
         [HttpPut]
         public async Task<MessageModel<string>> Put([FromBody] sysUserInfo sysUserInfo)
@@ -167,6 +186,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
         public async Task<MessageModel<string>> Delete(int id)

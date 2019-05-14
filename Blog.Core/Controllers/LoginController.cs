@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Blog.Core.Controllers
 {
     /// <summary>
-    /// 
+    /// 登录管理
     /// </summary>
     [Produces("application/json")]
     [Route("api/Login")]
@@ -46,7 +46,7 @@ namespace Blog.Core.Controllers
 
         #region 获取token的第1种方法
         /// <summary>
-        /// 获取JWT的方法
+        /// 获取JWT的方法1
         /// </summary>
         /// <param name="id">id</param>
         /// <param name="sub">角色</param>
@@ -81,7 +81,12 @@ namespace Blog.Core.Controllers
         }
 
 
-
+        /// <summary>
+        /// 获取JWT的方法2：给Nuxt提供
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="pass"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetTokenNuxt")]
         public async Task<object> GetJwtStrForNuxt(string name, string pass)
@@ -119,7 +124,7 @@ namespace Blog.Core.Controllers
 
 
         /// <summary>
-        /// 获取JWT的方法 3.0
+        /// 获取JWT的方法3：整个系统主要方法
         /// </summary>
         /// <param name="name"></param>
         /// <param name="pass"></param>
@@ -173,7 +178,11 @@ namespace Blog.Core.Controllers
 
         }
 
-
+        /// <summary>
+        /// 请求刷新Token（以旧换新）
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("RefreshToken")]
         public async Task<object> RefreshToken(string token = "")
@@ -220,7 +229,7 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 
+        /// 获取JWT的方法4：给 JSONP 测试
         /// </summary>
         /// <param name="id"></param>
         /// <param name="sub"></param>

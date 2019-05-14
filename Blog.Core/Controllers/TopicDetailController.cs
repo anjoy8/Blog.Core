@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
+    /// <summary>
+    /// Tibug 管理
+    /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(PermissionNames.Permission)]
@@ -19,7 +22,7 @@ namespace Blog.Core.Controllers
         readonly ITopicDetailServices _topicDetailServices;
 
         /// <summary>
-        /// TopicDetailController
+        /// 构造函数
         /// </summary>
         /// <param name="topicServices"></param>
         /// <param name="topicDetailServices"></param>
@@ -83,6 +86,11 @@ namespace Blog.Core.Controllers
 
         }
 
+        /// <summary>
+        /// 获取详情【无权限】
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: api/TopicDetail/5
         [HttpGet("{id}")]
         [AllowAnonymous]
@@ -100,6 +108,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        /// <summary>
+        /// 添加一个 BUG 【无权限】
+        /// </summary>
+        /// <param name="topicDetail"></param>
+        /// <returns></returns>
         // POST: api/TopicDetail
         [HttpPost]
         [AllowAnonymous]
@@ -124,6 +137,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        /// <summary>
+        /// 更新 bug
+        /// </summary>
+        /// <param name="topicDetail"></param>
+        /// <returns></returns>
         // PUT: api/TopicDetail/5
         [HttpPut]
         public async Task<MessageModel<string>> Update([FromBody] TopicDetail topicDetail)
@@ -142,6 +160,11 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        /// <summary>
+        /// 删除 bug
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
         public async Task<MessageModel<string>> Delete(int id)
