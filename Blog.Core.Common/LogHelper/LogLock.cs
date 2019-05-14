@@ -66,7 +66,8 @@ namespace Blog.Core.Common.LogHelper
             {
                 LogWriteLock.EnterReadLock();
 
-                if (!System.IO.File.Exists(Path)) {
+                if (!System.IO.File.Exists(Path))
+                {
                     s = null;
                 }
                 else
@@ -124,8 +125,14 @@ namespace Blog.Core.Common.LogHelper
                     LogColor = "SQL",
                 }).ToList();
 
-            aopLogs.AddRange(excLogs);
-            aopLogs.AddRange(sqlLogs);
+            if (excLogs != null)
+            {
+                aopLogs.AddRange(excLogs);
+            }
+            if (sqlLogs != null)
+            {
+                aopLogs.AddRange(sqlLogs);
+            }
             aopLogs = aopLogs.OrderByDescending(d => d.Import).ThenByDescending(d => d.Datetime).Take(100).ToList();
 
             return aopLogs;
