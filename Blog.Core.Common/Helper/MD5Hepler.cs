@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Blog.Core.Common.Helper
 {
-   public class MD5Helper
+    public class MD5Helper
     {
         /// <summary>
         /// 16位MD5加密
@@ -25,10 +25,10 @@ namespace Blog.Core.Common.Helper
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static string MD5Encrypt32(string password)
+        public static string MD5Encrypt32(string password = "")
         {
-            string cl = password;
             string pwd = "";
+            string cl = password;
             MD5 md5 = MD5.Create(); //实例化一个md5对像
                                     // 加密后是一个字节类型的数组，这里要注意编码UTF8/Unicode等的选择　
             byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(cl));
@@ -50,7 +50,7 @@ namespace Blog.Core.Common.Helper
         {
             // 实例化一个md5对像
             // 加密后是一个字节类型的数组，这里要注意编码UTF8/Unicode等的选择　
-            MD5 md5 = MD5.Create(); 
+            MD5 md5 = MD5.Create();
             byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(s);
         }

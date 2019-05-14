@@ -66,8 +66,9 @@ namespace Blog.Core.Common.LogHelper
             {
                 LogWriteLock.EnterReadLock();
 
-                if (!System.IO.File.Exists(Path))
-                    s = "不存在相应的目录";
+                if (!System.IO.File.Exists(Path)) {
+                    s = null;
+                }
                 else
                 {
                     StreamReader f2 = new StreamReader(Path, encode);
@@ -101,7 +102,7 @@ namespace Blog.Core.Common.LogHelper
            }).ToList();
 
 
-            var excLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", $"GlobalExcepLogs_{System.DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8)
+            var excLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", $"GlobalExcepLogs_{DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8)?
                 .Split("--------------------------------")
                 .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
                 .Select(d => new LogInfo
