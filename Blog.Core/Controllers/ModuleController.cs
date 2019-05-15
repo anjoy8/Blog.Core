@@ -39,38 +39,19 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public async Task<MessageModel<PageModel<Module>>> Get(int page = 1, string key = "")
         {
-            var data = new MessageModel<PageModel<Module>>();
-            int intTotalCount = 50;
-            int totalCount = 0;
-            int pageCount = 1;
-            List<Module> modules = new List<Module>();
-
-            modules = await _moduleServices.Query(a => a.IsDeleted != true );
-
-            if (!string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
-                modules = modules.Where(t => (t.Name != null && t.Name.Contains(key))).ToList();
+                key = "";
             }
+            int intPageSize = 50;
 
-
-            //筛选后的数据总数
-            totalCount = modules.Count;
-            //筛选后的总页数
-            pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
-
-            modules = modules.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
+            var data = await _moduleServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
 
             return new MessageModel<PageModel<Module>>()
             {
                 msg = "获取成功",
-                success = totalCount >= 0,
-                response = new PageModel<Module>()
-                {
-                    page = page,
-                    pageCount = pageCount,
-                    dataCount = totalCount,
-                    data = modules,
-                }
+                success = data.dataCount >= 0,
+                response = data
             };
 
         }

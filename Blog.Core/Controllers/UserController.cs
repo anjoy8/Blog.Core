@@ -47,47 +47,36 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public async Task<MessageModel<PageModel<sysUserInfo>>> Get(int page = 1, string key = "")
         {
-            var data = new MessageModel<PageModel<sysUserInfo>>();
-            int intTotalCount = 50;
-            int totalCount = 0;
-            int pageCount = 1;
-            List<sysUserInfo> sysUserInfos = new List<sysUserInfo>();
-
-            sysUserInfos = await _sysUserInfoServices.Query(a => a.tdIsDelete != true && a.uStatus >= 0);
-
-            if (!string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
-                sysUserInfos = sysUserInfos.Where(t => (t.uLoginName != null && t.uLoginName.Contains(key)) || (t.uRealName != null && t.uRealName.Contains(key))).ToList();
+                key = "";
             }
+            int intPageSize = 50;
 
 
-            //筛选后的数据总数
-            totalCount = sysUserInfos.Count;
-            //筛选后的总页数
-            pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
-
-            sysUserInfos = sysUserInfos.OrderByDescending(d => d.uID).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
+            var data = await _sysUserInfoServices.QueryPage(a => a.tdIsDelete != true && a.uStatus >= 0 && ((a.uLoginName != null && a.uLoginName.Contains(key)) || (a.uRealName != null && a.uRealName.Contains(key))), page, intPageSize, " uID desc ");
 
 
+            #region MyRegion
             var allUserRoles = await _userRoleServices.Query(d => d.IsDeleted == false);
             var allRoles = await _roleServices.Query(d => d.IsDeleted == false);
+
+            var sysUserInfos = data.data;
             foreach (var item in sysUserInfos)
             {
                 item.RID = (allUserRoles.FirstOrDefault(d => d.UserId == item.uID)?.RoleId).ObjToInt();
-                item.RoleName = allRoles.FirstOrDefault(d => d.Id==item.RID)?.Name;
+                item.RoleName = allRoles.FirstOrDefault(d => d.Id == item.RID)?.Name;
             }
+
+            data.data = sysUserInfos; 
+            #endregion
+
 
             return new MessageModel<PageModel<sysUserInfo>>()
             {
                 msg = "获取成功",
-                success = totalCount >= 0,
-                response = new PageModel<sysUserInfo>()
-                {
-                    page = page,
-                    pageCount = pageCount,
-                    dataCount = totalCount,
-                    data = sysUserInfos,
-                }
+                success = data.dataCount >= 0,
+                response = data
             };
 
         }

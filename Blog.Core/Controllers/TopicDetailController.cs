@@ -43,46 +43,29 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<MessageModel<PageModel<TopicDetail>>> Get(int page = 1, string tname = "", string key = "")
         {
-            var data = new MessageModel<PageModel<TopicDetail>>();
-            int intTotalCount = 6;
-            int totalCount = 0;
-            int pageCount = 1;
 
-            //总数据，使用AOP切面缓存
-            //topicDetails = await _topicDetailServices.GetTopicDetails();
-            var topicDetails = await _topicDetailServices.Query(a => !a.tdIsDelete && a.tdSectendDetail == "tbug");
-
-            if (!string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
-                topicDetails = topicDetails.Where(t => (t.tdName != null && t.tdName.Contains(key)) || (t.tdDetail != null && t.tdDetail.Contains(key))).ToList();
+                key = "";
             }
-
+            if (string.IsNullOrEmpty(tname) || string.IsNullOrWhiteSpace(tname))
+            {
+                tname = "";
+            }
             tname = UnicodeHelper.UnicodeToString(tname);
 
-            if (!string.IsNullOrEmpty(tname))
-            {
-                var tid = (await _topicServices.Query(ts => ts.tName == tname)).FirstOrDefault()?.Id.ObjToInt();
-                topicDetails = topicDetails.Where(t => t.TopicId == tid).ToList();
-            }
+            int intPageSize = 6;
 
-            //筛选后的数据总数
-            totalCount = topicDetails.Count;
-            //筛选后的总页数
-            pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
+            
+            var data = await _topicDetailServices.QueryPage(a => !a.tdIsDelete && a.tdSectendDetail == "tbug" && ((a.tdName != null && a.tdName.Contains(key)) || (a.tdDetail != null && a.tdDetail.Contains(key))), page, intPageSize, " Id desc ");
 
-            topicDetails = topicDetails.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
+
 
             return new MessageModel<PageModel<TopicDetail>>()
             {
                 msg = "获取成功",
-                success = totalCount >= 0,
-                response = new PageModel<TopicDetail>()
-                {
-                    page = page,
-                    pageCount = pageCount,
-                    dataCount = totalCount,
-                    data = topicDetails,
-                }
+                success = data.dataCount >= 0,
+                response = data
             };
 
         }

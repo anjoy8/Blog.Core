@@ -53,6 +53,10 @@ namespace Blog.Core.Controllers
         {
             PageModel<Permission> permissions = new PageModel<Permission>();
             int intPageSize = 50;
+            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+            {
+                key = "";
+            }
 
             #region 舍弃
             //var permissions = await _permissionServices.Query(a => a.IsDeleted != true);
@@ -68,18 +72,13 @@ namespace Blog.Core.Controllers
             #endregion
 
 
-            if (!string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key))
-            {
-                permissions = await _permissionServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
-            }
-            else
-            {
-                permissions = await _permissionServices.QueryPage(a => a.IsDeleted != true, page, intPageSize, " Id desc ");
-            }
 
-            var apis = await _moduleServices.Query(d => d.IsDeleted == false);
+            permissions = await _permissionServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
+
 
             #region 单独处理
+
+            var apis = await _moduleServices.Query(d => d.IsDeleted == false);
             var permissionsView = permissions.data;
 
             foreach (var item in permissionsView)
@@ -114,9 +113,11 @@ namespace Blog.Core.Controllers
 
                 item.MName = apis.FirstOrDefault(d => d.Id == item.Mid)?.LinkUrl;
             }
-            #endregion
 
             permissions.data = permissionsView;
+          
+            #endregion
+
 
             return new MessageModel<PageModel<Permission>>()
             {

@@ -23,7 +23,7 @@ namespace Blog.Core.Controllers
         /// 构造函数
         /// </summary>
         /// <param name="roleServices"></param>
-        public RoleController(IRoleServices roleServices )
+        public RoleController(IRoleServices roleServices)
         {
             _roleServices = roleServices;
         }
@@ -38,37 +38,20 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public async Task<MessageModel<PageModel<Role>>> Get(int page = 1, string key = "")
         {
-            var data = new MessageModel<PageModel<Role>>();
-            int intTotalCount = 50;
-            int totalCount = 0;
-            int pageCount = 1;
-
-            var roles = await _roleServices.Query(a => a.IsDeleted != true );
-
-            if (!string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
-                roles = roles.Where(t => (t.Name != null && t.Name.Contains(key))).ToList();
+                key = "";
             }
 
+            int intPageSize = 50;
 
-            //筛选后的数据总数
-            totalCount = roles.Count;
-            //筛选后的总页数
-            pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
-
-            roles = roles.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
+            var data = await _roleServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
 
             return new MessageModel<PageModel<Role>>()
             {
                 msg = "获取成功",
-                success = totalCount >= 0,
-                response = new PageModel<Role>()
-                {
-                    page = page,
-                    pageCount = pageCount,
-                    dataCount = totalCount,
-                    data = roles,
-                }
+                success = data.dataCount >= 0,
+                response = data
             };
 
         }
