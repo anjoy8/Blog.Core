@@ -92,47 +92,65 @@ namespace Blog.Core.Common.LogHelper
 
         public static List<LogInfo> GetLogData()
         {
-            var aopLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", "AOPLog.log"), Encoding.UTF8)
-           .Split("--------------------------------")
-           .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
-           .Select(d => new LogInfo
-           {
-               Datetime = d.Split("|")[0].ObjToDate(),
-               Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
-               LogColor = "AOP",
-           }).ToList();
-
-
-            var excLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", $"GlobalExcepLogs_{DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8)?
-                .Split("--------------------------------")
-                .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
-                .Select(d => new LogInfo
-                {
-                    Datetime = (d.Split("|")[0]).Split(',')[0].ObjToDate(),
-                    Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
-                    LogColor = "EXC",
-                    Import = 9,
-                }).ToList();
-
-
-            var sqlLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", "SqlLog.log"), Encoding.UTF8)
+            List<LogInfo> aopLogs = new List<LogInfo>();
+            List<LogInfo> excLogs = new List<LogInfo>();
+            List<LogInfo> sqlLogs = new List<LogInfo>();
+            try
+            {
+                aopLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", "AOPLog.log"), Encoding.UTF8)
                 .Split("--------------------------------")
                 .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
                 .Select(d => new LogInfo
                 {
                     Datetime = d.Split("|")[0].ObjToDate(),
                     Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
-                    LogColor = "SQL",
+                    LogColor = "AOP",
                 }).ToList();
 
-            if (excLogs != null)
-            {
-                aopLogs.AddRange(excLogs);
             }
-            if (sqlLogs != null)
+            catch (Exception)
             {
-                aopLogs.AddRange(sqlLogs);
+                aopLogs = new List<LogInfo>();
             }
+
+            try
+            {
+                excLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", $"GlobalExcepLogs_{DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8)?
+                      .Split("--------------------------------")
+                      .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
+                      .Select(d => new LogInfo
+                      {
+                          Datetime = (d.Split("|")[0]).Split(',')[0].ObjToDate(),
+                          Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
+                          LogColor = "EXC",
+                          Import = 9,
+                      }).ToList();
+            }
+            catch (Exception)
+            {
+                excLogs = new List<LogInfo>();
+            }
+
+
+            try
+            {
+                sqlLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", "SqlLog.log"), Encoding.UTF8)
+                      .Split("--------------------------------")
+                      .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
+                      .Select(d => new LogInfo
+                      {
+                          Datetime = d.Split("|")[0].ObjToDate(),
+                          Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
+                          LogColor = "SQL",
+                      }).ToList();
+            }
+            catch (Exception)
+            {
+                sqlLogs = new List<LogInfo>();
+            }
+
+            aopLogs.AddRange(excLogs);
+            aopLogs.AddRange(sqlLogs);
             aopLogs = aopLogs.OrderByDescending(d => d.Import).ThenByDescending(d => d.Datetime).Take(100).ToList();
 
             return aopLogs;
