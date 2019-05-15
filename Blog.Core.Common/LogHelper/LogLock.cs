@@ -14,7 +14,6 @@ namespace Blog.Core.Common.LogHelper
     {
 
         static ReaderWriterLockSlim LogWriteLock = new ReaderWriterLockSlim();
-        static int LogCount = 100;
         static int WritedCount = 0;
         static int FailedCount = 0;
 
