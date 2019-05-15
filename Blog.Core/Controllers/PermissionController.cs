@@ -48,30 +48,41 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
+        [AllowAnonymous]
         public async Task<MessageModel<PageModel<Permission>>> Get(int page = 1, string key = "")
         {
-            var data = new MessageModel<PageModel<Permission>>();
-            int intTotalCount = 50;
-            int totalCount = 0;
-            int pageCount = 1;
+            PageModel<Permission> permissions = new PageModel<Permission>();
+            int intPageSize = 50;
 
-            var permissions = await _permissionServices.Query(a => a.IsDeleted != true);
+            #region 舍弃
+            //var permissions = await _permissionServices.Query(a => a.IsDeleted != true);
+            //if (!string.IsNullOrEmpty(key))
+            //{
+            //    permissions = permissions.Where(t => (t.Name != null && t.Name.Contains(key))).ToList();
+            //}
+            ////筛选后的数据总数
+            //totalCount = permissions.Count;
+            ////筛选后的总页数
+            //pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
+            //permissions = permissions.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList(); 
+            #endregion
 
-            if (!string.IsNullOrEmpty(key))
+
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key))
             {
-                permissions = permissions.Where(t => (t.Name != null && t.Name.Contains(key))).ToList();
+                permissions = await _permissionServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
+            }
+            else
+            {
+                permissions = await _permissionServices.QueryPage(a => a.IsDeleted != true, page, intPageSize, " Id desc ");
             }
 
-
-            //筛选后的数据总数
-            totalCount = permissions.Count;
-            //筛选后的总页数
-            pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
-
-            permissions = permissions.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
             var apis = await _moduleServices.Query(d => d.IsDeleted == false);
 
-            foreach (var item in permissions)
+            #region 单独处理
+            var permissionsView = permissions.data;
+
+            foreach (var item in permissionsView)
             {
                 List<int> pidarr = new List<int>();
                 pidarr.Add(item.Pid);
@@ -79,19 +90,19 @@ namespace Blog.Core.Controllers
                 {
                     pidarr.Add(0);
                 }
-                var parent = permissions.FirstOrDefault(d => d.Id == item.Pid);
+                var parent = permissionsView.FirstOrDefault(d => d.Id == item.Pid);
 
                 while (parent != null)
                 {
                     pidarr.Add(parent.Id);
-                    parent = permissions.FirstOrDefault(d => d.Id == parent.Pid);
+                    parent = permissionsView.FirstOrDefault(d => d.Id == parent.Pid);
                 }
 
 
                 item.PidArr = pidarr.OrderBy(d => d).Distinct().ToList();
                 foreach (var pid in item.PidArr)
                 {
-                    var per = permissions.FirstOrDefault(d => d.Id == pid);
+                    var per = permissionsView.FirstOrDefault(d => d.Id == pid);
                     item.PnameArr.Add((per != null ? per.Name : "根节点") + "/");
                     //var par = Permissions.Where(d => d.Pid == item.Id ).ToList();
                     //item.PCodeArr.Add((per != null ? $"/{per.Code}/{item.Code}" : ""));
@@ -103,18 +114,15 @@ namespace Blog.Core.Controllers
 
                 item.MName = apis.FirstOrDefault(d => d.Id == item.Mid)?.LinkUrl;
             }
+            #endregion
+
+            permissions.data = permissionsView;
 
             return new MessageModel<PageModel<Permission>>()
             {
                 msg = "获取成功",
-                success = totalCount >= 0,
-                response = new PageModel<Permission>()
-                {
-                    page = page,
-                    pageCount = pageCount,
-                    dataCount = totalCount,
-                    data = permissions,
-                }
+                success = permissions.dataCount >= 0,
+                response = permissions
             };
 
         }
@@ -286,7 +294,7 @@ namespace Blog.Core.Controllers
                                                    {
                                                        requireAuth = true,
                                                        title = child.Name,
-                                                       NoTabPage=child.IsHide.ObjToBool()
+                                                       NoTabPage = child.IsHide.ObjToBool()
                                                    }
                                                }).ToList();
 

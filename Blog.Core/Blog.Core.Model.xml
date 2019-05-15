@@ -868,7 +868,7 @@
         </member>
         <member name="P:Blog.Core.Model.PageModel`1.page">
             <summary>
-            当前页数
+            当前页标
             </summary>
         </member>
         <member name="P:Blog.Core.Model.PageModel`1.pageCount">
@@ -879,6 +879,11 @@
         <member name="P:Blog.Core.Model.PageModel`1.dataCount">
             <summary>
             数据总数
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PageModel`1.PageSize">
+            <summary>
+            每页大小
             </summary>
         </member>
         <member name="P:Blog.Core.Model.PageModel`1.data">

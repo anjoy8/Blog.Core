@@ -1,5 +1,6 @@
 ﻿using Blog.Core.IRepository.Base;
 using Blog.Core.IServices.BASE;
+using Blog.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -242,11 +243,11 @@ namespace Blog.Core.Services.BASE
             strOrderByFileds);
         }
 
-        public async Task<List<TEntity>> QueryPage(Expression<Func<TEntity, bool>> whereExpression,
-        int intPageIndex = 0, int intPageSize = 20, string strOrderByFileds = null)
+        public async Task<PageModel<TEntity>> QueryPage(Expression<Func<TEntity, bool>> whereExpression,
+        int intPageIndex = 1, int intPageSize = 20, string strOrderByFileds = null)
         {
             return await BaseDal.QueryPage(whereExpression,
-         intPageIndex = 0, intPageSize, strOrderByFileds);
+         intPageIndex, intPageSize, strOrderByFileds);
         }
 
     }
