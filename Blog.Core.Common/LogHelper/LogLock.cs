@@ -110,7 +110,6 @@ namespace Blog.Core.Common.LogHelper
             }
             catch (Exception)
             {
-                aopLogs = new List<LogInfo>();
             }
 
             try
@@ -128,7 +127,6 @@ namespace Blog.Core.Common.LogHelper
             }
             catch (Exception)
             {
-                excLogs = new List<LogInfo>();
             }
 
 
@@ -146,11 +144,16 @@ namespace Blog.Core.Common.LogHelper
             }
             catch (Exception)
             {
-                sqlLogs = new List<LogInfo>();
             }
 
-            aopLogs.AddRange(excLogs);
-            aopLogs.AddRange(sqlLogs);
+            if (excLogs != null)
+            {
+                aopLogs.AddRange(excLogs);
+            }
+            if (sqlLogs != null)
+            {
+                aopLogs.AddRange(sqlLogs);
+            }
             aopLogs = aopLogs.OrderByDescending(d => d.Import).ThenByDescending(d => d.Datetime).Take(100).ToList();
 
             return aopLogs;
