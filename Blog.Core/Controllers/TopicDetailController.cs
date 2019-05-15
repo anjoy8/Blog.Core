@@ -37,6 +37,7 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <param name="page">页数</param>
         /// <param name="tname">专题类型</param>
+        /// <param name="key">关键字</param>
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]

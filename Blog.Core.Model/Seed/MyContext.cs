@@ -149,6 +149,7 @@ namespace Blog.Core.Model.Models
         /// <param name="strNameSpace">命名空间</param>
         /// <param name="lstTableNames">生产指定的表</param>
         /// <param name="strInterface">实现接口</param>
+        /// <param name="blnSerializable">是否序列化</param>
         public void CreateClassFileByDBTalbe(
           string strPath,
           string strNameSpace,
@@ -288,8 +289,7 @@ namespace {Namespace}
         /// 功能描述:获得一个DbContext
         /// 作　　者:Blog.Core
         /// </summary>
-        /// <param name="blnIsAutoCloseConnection">是否自动关闭连接（如果为false，则使用接受时需要手动关闭Db）</param>
-        /// <returns>返回值</returns>
+        /// <returns></returns>
         public static MyContext GetDbContext()
         {
             return new MyContext();

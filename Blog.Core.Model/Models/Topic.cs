@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Blog.Core.Model.Models
 {
-    /// <summary>博客文章
-    /// 
-    /// </summary
+    /// <summary>
+    /// Tibug 类别
+    /// </summary>
     public class Topic:RootEntity
     {
         public Topic()

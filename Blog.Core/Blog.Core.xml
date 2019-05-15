@@ -302,8 +302,8 @@
             <summary>
             获取JWT的方法1
             </summary>
-            <param name="id">id</param>
-            <param name="sub">角色</param>
+            <param name="name"></param>
+            <param name="pass"></param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.LoginController.GetJwtStrForNuxt(System.String,System.String)">
@@ -333,6 +333,7 @@
             <summary>
             获取JWT的方法4：给 JSONP 测试
             </summary>
+            <param name="callBack"></param>
             <param name="id"></param>
             <param name="sub"></param>
             <param name="expiresSliding"></param>
@@ -532,6 +533,7 @@
             </summary>
             <param name="page">页数</param>
             <param name="tname">专题类型</param>
+            <param name="key">关键字</param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.TopicDetailController.Get(System.Int32)">

@@ -31,7 +31,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/Logs
         [HttpGet]
-        public async Task<MessageModel<List<LogInfo>>> Get()
+        public MessageModel<List<LogInfo>> Get()
         {
 
             _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
@@ -71,5 +71,5 @@ namespace Blog.Core.Controllers
 
     }
 
-  
+
 }

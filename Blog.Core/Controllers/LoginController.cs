@@ -48,8 +48,8 @@ namespace Blog.Core.Controllers
         /// <summary>
         /// 获取JWT的方法1
         /// </summary>
-        /// <param name="id">id</param>
-        /// <param name="sub">角色</param>
+        /// <param name="name"></param>
+        /// <param name="pass"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("Token")]
@@ -89,7 +89,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetTokenNuxt")]
-        public async Task<object> GetJwtStrForNuxt(string name, string pass)
+        public object GetJwtStrForNuxt(string name, string pass)
         {
             string jwtStr = string.Empty;
             bool suc = false;
@@ -134,7 +134,6 @@ namespace Blog.Core.Controllers
         public async Task<object> GetJwtToken3(string name = "", string pass = "")
         {
             string jwtStr = string.Empty;
-            bool suc = false;
 
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(pass))
             {
@@ -188,7 +187,6 @@ namespace Blog.Core.Controllers
         public async Task<object> RefreshToken(string token = "")
         {
             string jwtStr = string.Empty;
-            bool suc = false;
 
             if (string.IsNullOrEmpty(token))
             {
@@ -231,6 +229,7 @@ namespace Blog.Core.Controllers
         /// <summary>
         /// 获取JWT的方法4：给 JSONP 测试
         /// </summary>
+        /// <param name="callBack"></param>
         /// <param name="id"></param>
         /// <param name="sub"></param>
         /// <param name="expiresSliding"></param>
