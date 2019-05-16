@@ -210,13 +210,14 @@
             <param name="blogArticleServices"></param>
             <param name="redisCacheManager"></param>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32,System.String)">
+        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32,System.String,System.String)">
             <summary>
             获取博客列表
             </summary>
             <param name="id"></param>
             <param name="page"></param>
             <param name="bcategory"></param>
+            <param name="key"></param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32)">

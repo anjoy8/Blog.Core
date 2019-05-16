@@ -43,15 +43,20 @@ namespace Blog.Core.Controllers
         /// <param name="id"></param>
         /// <param name="page"></param>
         /// <param name="bcategory"></param>
+        /// <param name="key"></param>
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<object> Get(int id, int page = 1, string bcategory = "技术博文")
+        public async Task<object> Get(int id, int page = 1, string bcategory = "技术博文", string key = "")
         {
             int intTotalCount = 6;
             int total;
             int totalCount = 1;
             List<BlogArticle> blogArticleList = new List<BlogArticle>();
+            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+            {
+                key = "";
+            }
 
             using (MiniProfiler.Current.Step("开始加载数据："))
             {
@@ -76,6 +81,8 @@ namespace Blog.Core.Controllers
                     blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
                 }
             }
+
+            blogArticleList = blogArticleList.Where(d => (d.btitle != null && d.btitle.Contains(key)) || (d.bcontent != null && d.bcontent.Contains(key))).ToList();
 
             total = blogArticleList.Count();
             totalCount = blogArticleList.Count() / intTotalCount;

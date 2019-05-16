@@ -48,7 +48,6 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        [AllowAnonymous]
         public async Task<MessageModel<PageModel<Permission>>> Get(int page = 1, string key = "")
         {
             PageModel<Permission> permissions = new PageModel<Permission>();
