@@ -280,7 +280,8 @@
         </member>
         <member name="M:Blog.Core.Controllers.ImgController.InsertPicture(Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
             <summary>
-            上传图片
+            上传图片,多文件，可以使用 postman 测试，
+            如果是单文件，可以 参数写 IFormFile file1
             </summary>
             <param name="environment"></param>
             <returns></returns>

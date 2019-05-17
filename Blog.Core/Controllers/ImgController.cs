@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
@@ -54,18 +56,30 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 上传图片
+        /// 上传图片,多文件，可以使用 postman 测试，
+        /// 如果是单文件，可以 参数写 IFormFile file1
         /// </summary>
         /// <param name="environment"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("Pic")]
+        [Authorize]
         public async Task<MessageModel<string>> InsertPicture([FromServices]IHostingEnvironment environment)
         {
             var data = new MessageModel<string>();
             string path = string.Empty;
             string foldername = "images";
-            var files = Request.Form.Files;
+            IFormFileCollection files = null;
+
+            try
+            {
+                files = Request.Form.Files;
+            }
+            catch (Exception)
+            {
+                files = null;
+            }
+
             if (files == null || !files.Any()) { data.msg = "请选择上传的文件。"; return data; }
             //格式限制
             var allowType = new string[] { "image/jpg", "image/png", "image/jpeg" };
