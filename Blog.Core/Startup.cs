@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -62,16 +63,16 @@ namespace Blog.Core
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             #region 部分服务注入-netcore自带方法
-            //缓存注入
+            // 缓存注入
             services.AddScoped<ICaching, MemoryCaching>();
             services.AddSingleton<IMemoryCache>(factory =>
             {
                 var cache = new MemoryCache(new MemoryCacheOptions());
                 return cache;
             });
-            //Redis注入
+            // Redis注入
             services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
-            //log日志注入
+            // log日志注入
             services.AddSingleton<ILoggerHelper, LogHelper>();
             #endregion
 
@@ -192,6 +193,9 @@ namespace Blog.Core
             // 取消默认驼峰
             .AddJsonOptions(options => { options.SerializerSettings.ContractResolver = new DefaultContractResolver(); });
 
+
+            // Httpcontext 注入
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             #endregion
 
             services.AddSignalR();

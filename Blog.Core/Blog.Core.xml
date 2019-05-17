@@ -393,7 +393,7 @@
             菜单管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices)">
+        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,Microsoft.AspNetCore.Http.IHttpContextAccessor)">
             <summary>
             构造函数
             </summary>
@@ -401,6 +401,7 @@
             <param name="moduleServices"></param>
             <param name="roleModulePermissionServices"></param>
             <param name="userRoleServices"></param>
+            <param name="httpContext"></param>
         </member>
         <member name="M:Blog.Core.Controllers.PermissionController.Get(System.Int32,System.String)">
             <summary>

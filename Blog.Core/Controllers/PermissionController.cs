@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
@@ -23,6 +25,7 @@ namespace Blog.Core.Controllers
         readonly IModuleServices _moduleServices;
         readonly IRoleModulePermissionServices _roleModulePermissionServices;
         readonly IUserRoleServices _userRoleServices;
+        readonly IHttpContextAccessor _httpContext;
 
         /// <summary>
         /// 构造函数
@@ -31,12 +34,14 @@ namespace Blog.Core.Controllers
         /// <param name="moduleServices"></param>
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="userRoleServices"></param>
-        public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices, IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices)
+        /// <param name="httpContext"></param>
+        public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices, IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices, IHttpContextAccessor httpContext)
         {
             _permissionServices = permissionServices;
             _moduleServices = moduleServices;
             _roleModulePermissionServices = roleModulePermissionServices;
             _userRoleServices = userRoleServices;
+            _httpContext = httpContext;
 
         }
 
@@ -114,7 +119,7 @@ namespace Blog.Core.Controllers
             }
 
             permissions.data = permissionsView;
-          
+
             #endregion
 
 
@@ -263,12 +268,19 @@ namespace Blog.Core.Controllers
         /// <param name="uid"></param>
         /// <returns></returns>
         [HttpGet]
-        [AllowAnonymous]
         public async Task<MessageModel<NavigationBar>> GetNavigationBar(int uid)
         {
+
             var data = new MessageModel<NavigationBar>();
 
-            if (uid > 0)
+            // 两种方式获取 uid
+            var uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
+                                    where item.Type == "jti"
+                                    select item.Value).FirstOrDefault().ObjToInt();
+
+            var uidInHttpcontext = (JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid;
+
+            if (uid > 0 && uid == uidInHttpcontext)
             {
                 var roleId = ((await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).FirstOrDefault()?.RoleId).ObjToInt();
                 if (roleId > 0)
