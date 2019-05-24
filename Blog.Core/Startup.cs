@@ -13,6 +13,7 @@ using AutoMapper;
 using Blog.Core.AOP;
 using Blog.Core.AuthHelper;
 using Blog.Core.Common;
+using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.MemoryCache;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
@@ -194,9 +195,16 @@ namespace Blog.Core
             .AddJsonOptions(options => { options.SerializerSettings.ContractResolver = new DefaultContractResolver(); });
 
 
+            #endregion
+
+            #region Httpcontext
+
             // Httpcontext 注入
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IUser, AspNetUser>();
+
             #endregion
+
 
             services.AddSignalR();
 
@@ -460,7 +468,7 @@ namespace Blog.Core
             #region Authen
 
             //此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件，第二种写法//app.UseMiddleware<JwtTokenAuth>(); 
-            //app.UserJwtTokenAuth(); 
+            //app.UseJwtTokenAuth(); 
 
             //如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务 (.AddAuthentication 和 .AddJwtBearer 二者缺一不可)
             app.UseAuthentication();

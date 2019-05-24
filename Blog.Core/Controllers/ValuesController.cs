@@ -1,6 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -23,7 +27,8 @@ namespace Blog.Core.Controllers
         private IMapper _mapper;
         private readonly IAdvertisementServices _advertisementServices;
         private readonly Love _love;
-        readonly IRoleModulePermissionServices _roleModulePermissionServices;
+        private readonly IRoleModulePermissionServices _roleModulePermissionServices;
+        private readonly IUser _user;
 
         /// <summary>
         /// ValuesController
@@ -32,13 +37,16 @@ namespace Blog.Core.Controllers
         /// <param name="advertisementServices"></param>
         /// <param name="love"></param>
         /// <param name="roleModulePermissionServices"></param>
-        public ValuesController(IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices)
+        /// <param name="user"></param>
+        public ValuesController(IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
             _advertisementServices = advertisementServices;
             _love = love;
             _roleModulePermissionServices = roleModulePermissionServices;
+            // 测试 Httpcontext
+            _user = user;
         }
         /// <summary>
         /// Get方法
@@ -77,7 +85,7 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 参数必填项
+        /// 测试参数是必填项
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -88,6 +96,23 @@ namespace Blog.Core.Controllers
             return id;
         }
 
+
+        /// <summary>
+        /// 通过 HttpContext 获取用户信息
+        /// </summary>
+        /// <param name="ClaimType">声明类型，默认 jti </param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("/api/values/UserInfo")]
+        public MessageModel<List<string>> GetUserInfo(string ClaimType = "jti")
+        {
+            return new MessageModel<List<string>>()
+            {
+                success = _user.IsAuthenticated(),
+                msg = _user.IsAuthenticated() ? _user.Name.ObjToString() : "未登录",
+                response = _user.GetClaimValueByType(ClaimType)
+            };
+        }
 
 
         /// <summary>

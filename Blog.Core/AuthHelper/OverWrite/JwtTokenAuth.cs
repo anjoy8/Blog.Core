@@ -91,7 +91,7 @@ namespace Blog.Core.AuthHelper
 
     public static class MiddlewareHelpers
     {
-        public static IApplicationBuilder UserJwtTokenAuth(this IApplicationBuilder app)
+        public static IApplicationBuilder UseJwtTokenAuth(this IApplicationBuilder app)
         {
             return app.UseMiddleware<JwtTokenAuth>();
         }

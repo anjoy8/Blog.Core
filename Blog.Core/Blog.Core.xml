@@ -657,7 +657,7 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices)">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser)">
             <summary>
             ValuesController
             </summary>
@@ -665,6 +665,7 @@
             <param name="advertisementServices"></param>
             <param name="love"></param>
             <param name="roleModulePermissionServices"></param>
+            <param name="user"></param>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get">
             <summary>
@@ -681,9 +682,16 @@
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.RequiredP(System.String)">
             <summary>
-            参数必填项
+            测试参数是必填项
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.GetUserInfo(System.String)">
+            <summary>
+            通过 HttpContext 获取用户信息
+            </summary>
+            <param name="ClaimType">声明类型，默认 jti </param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Post(Blog.Core.Model.Models.BlogArticle)">
