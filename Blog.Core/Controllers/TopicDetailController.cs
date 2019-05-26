@@ -43,6 +43,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<MessageModel<PageModel<TopicDetail>>> Get(int page = 1, string tname = "", string key = "")
         {
+            int tid = 0;
 
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -54,10 +55,15 @@ namespace Blog.Core.Controllers
             }
             tname = UnicodeHelper.UnicodeToString(tname);
 
+            if (!string.IsNullOrEmpty(tname))
+            {
+                tid = ((await _topicServices.Query(ts => ts.tName == tname)).FirstOrDefault()?.Id).ObjToInt();
+            }
+
             int intPageSize = 6;
 
-            
-            var data = await _topicDetailServices.QueryPage(a => !a.tdIsDelete && a.tdSectendDetail == "tbug" && ((a.tdName != null && a.tdName.Contains(key)) || (a.tdDetail != null && a.tdDetail.Contains(key))), page, intPageSize, " Id desc ");
+
+            var data = await _topicDetailServices.QueryPage(a => !a.tdIsDelete && a.tdSectendDetail == "tbug" && ((tid == 0 && true) || (tid > 0 && a.TopicId == tid)) && ((a.tdName != null && a.tdName.Contains(key)) || (a.tdDetail != null && a.tdDetail.Contains(key))), page, intPageSize, " Id desc ");
 
 
 
