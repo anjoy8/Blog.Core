@@ -342,6 +342,13 @@
             <param name="expiresAbsoulute"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.LoginController.Md5Password(System.String)">
+            <summary>
+            测试 MD5 加密字符串
+            </summary>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.ModuleController">
             <summary>
             接口管理

@@ -249,5 +249,18 @@ namespace Blog.Core.Controllers
             string call = callBack + "({" + response + "})";
             Response.WriteAsync(call);
         }
+
+
+        /// <summary>
+        /// 测试 MD5 加密字符串
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Md5Password")]
+        public string Md5Password(string password = "")
+        {
+            return MD5Helper.MD5Encrypt32(password);
+        }
     }
 }

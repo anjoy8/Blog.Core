@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
+using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -23,6 +24,7 @@ namespace Blog.Core.Controllers
         readonly ISysUserInfoServices _sysUserInfoServices;
         readonly IUserRoleServices _userRoleServices;
         readonly IRoleServices _roleServices;
+        private readonly IUser _user;
 
         /// <summary>
         /// 构造函数
@@ -129,6 +131,7 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>();
 
             sysUserInfo.uLoginPWD= MD5Helper.MD5Encrypt32(sysUserInfo.uLoginPWD);
+            sysUserInfo.uRemark = _user.Name;
 
             var id = await _sysUserInfoServices.Add(sysUserInfo);
             data.success = id > 0;
