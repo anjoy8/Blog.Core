@@ -386,8 +386,8 @@ namespace Blog.Core.Repository.Base
              .WhereIF(whereExpression != null, whereExpression)
              .ToPageListAsync(intPageIndex, intPageSize, totalCount);
 
-            int pageCount = (Math.Ceiling(list.Value.ObjToDecimal() / intPageSize.ObjToDecimal())).ObjToInt();
-            return new PageModel<TEntity>() { dataCount = list.Value, pageCount = pageCount, page = intPageIndex, PageSize = intPageSize, data = list.Key };
+            int pageCount = (Math.Ceiling(list.Count.ObjToDecimal() / intPageSize.ObjToDecimal())).ObjToInt();
+            return new PageModel<TEntity>() { dataCount = list.Count, pageCount = pageCount, page = intPageIndex, PageSize = intPageSize, data = list };
         }
 
     }

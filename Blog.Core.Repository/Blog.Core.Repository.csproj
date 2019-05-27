@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.138" />
+    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.165" />
   </ItemGroup>
 
   <ItemGroup>

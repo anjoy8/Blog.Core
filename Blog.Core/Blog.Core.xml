@@ -579,13 +579,14 @@
             用户管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices)">
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser)">
             <summary>
             构造函数
             </summary>
             <param name="sysUserInfoServices"></param>
             <param name="userRoleServices"></param>
             <param name="roleServices"></param>
+            <param name="user"></param>
         </member>
         <member name="M:Blog.Core.Controllers.UserController.Get(System.Int32,System.String)">
             <summary>
