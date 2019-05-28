@@ -380,14 +380,15 @@ namespace Blog.Core.Repository.Base
         /// <returns></returns>
         public async Task<PageModel<TEntity>> QueryPage(Expression<Func<TEntity, bool>> whereExpression, int intPageIndex = 1, int intPageSize = 20, string strOrderByFileds = null)
         {
-            int totalCount = 0;
+
+            RefAsync<int> totalCount = 0;
             var list = await _db.Queryable<TEntity>()
              .OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds)
              .WhereIF(whereExpression != null, whereExpression)
              .ToPageListAsync(intPageIndex, intPageSize, totalCount);
 
-            int pageCount = (Math.Ceiling(list.Count.ObjToDecimal() / intPageSize.ObjToDecimal())).ObjToInt();
-            return new PageModel<TEntity>() { dataCount = list.Count, pageCount = pageCount, page = intPageIndex, PageSize = intPageSize, data = list };
+            int pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intPageSize.ObjToDecimal())).ObjToInt();
+            return new PageModel<TEntity>() { dataCount = totalCount, pageCount = pageCount, page = intPageIndex, PageSize = intPageSize, data = list };
         }
 
     }
