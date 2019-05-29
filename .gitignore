@@ -337,3 +337,4 @@ ASALocalRun/
 *images/
 Blog.Core/WMBlog.db
 .1YourProject
+!Blog.Core.Webapi.Template.1.0.0.nupkg
