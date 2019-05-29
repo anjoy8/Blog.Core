@@ -336,3 +336,4 @@ ASALocalRun/
 # wwwroot/images
 *images/
 Blog.Core/WMBlog.db
+.1YourProject
