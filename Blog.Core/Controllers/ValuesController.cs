@@ -116,14 +116,15 @@ namespace Blog.Core.Controllers
 
 
         /// <summary>
-        /// 测试 post 一个对象
+        /// 测试 post 一个对象 + 独立参数
         /// </summary>
         /// <param name="blogArticle">model实体类参数</param>
+        /// <param name="id">独立参数</param>
         [HttpPost]
         [AllowAnonymous]
-        public object Post([FromBody]  BlogArticle blogArticle)
+        public object Post([FromBody]  BlogArticle blogArticle, int id)
         {
-            return Ok(new { success = true, data = blogArticle });
+            return Ok(new { success = true, data = blogArticle, id = id });
         }
         /// <summary>
         /// Put方法
