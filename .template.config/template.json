@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "lao zhang", 
+    "classifications": [ "Web/WebAPI" ], 
+    "name": "Blog.Core Dotnet", 
+    "identity": "Blog.Core.Template", 
+    "shortName": "blogcoretpl",
+    "tags": {
+      "language": "C#" ,
+      "type":"project"
+    },
+    "sourceName": "Blog.Core",  
+    "preferNameDirectory": true  
+}
