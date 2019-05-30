@@ -3,7 +3,7 @@
 ![Logo](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/logocore.png)
 
 
-从零开始搭建自己的前后端分离【 .NET Core2.1 Api + Vue 2.0 】框架，目前是2.2版本，各个版本见分支(注意其他分支不全，请使用主分支)。
+从零开始搭建自己的前后端分离【 .NET Core2.2 Api + Vue 2.x 】框架。（🔒目前是2.2版本，因为开源的项目较多，所以本项目其他分支不再提供支持🔒）
 
 如果你感觉看着这整个项目比较费劲，我单抽出来了几个子Demo，方便学习，项目地址 ：[https://github.com/anjoy8/BlogArti](https://github.com/anjoy8/BlogArti)
 
