@@ -166,11 +166,11 @@ namespace Blog.Core.Repository.Base
             IUpdateable<TEntity> up = _db.Updateable(entity);
             if (lstIgnoreColumns != null && lstIgnoreColumns.Count > 0)
             {
-                up = up.IgnoreColumns(it => lstIgnoreColumns.Contains(it));
+                up = up.IgnoreColumns(lstIgnoreColumns.ToArray());
             }
             if (lstColumns != null && lstColumns.Count > 0)
             {
-                up = up.UpdateColumns(it => lstColumns.Contains(it));
+                up = up.UpdateColumns(lstColumns.ToArray());
             }
             if (!string.IsNullOrEmpty(strWhere))
             {
