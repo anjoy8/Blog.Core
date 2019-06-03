@@ -65,6 +65,7 @@ namespace Blog.Core.AuthHelper
             {
                 if (tokenHeader.Length >= 128)
                 {
+                    Console.WriteLine($"{DateTime.Now} token :{tokenHeader}");
                     TokenModelJwt tm = JwtHelper.SerializeJwt(tokenHeader);
 
                     //授权
@@ -90,6 +91,6 @@ namespace Blog.Core.AuthHelper
         }
 
     }
-  
+
 }
 
