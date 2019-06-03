@@ -32,12 +32,12 @@ namespace Blog.Core.AuthHelper
 
         private void PreProceed(HttpContext next)
         {
-            Console.WriteLine($"{DateTime.Now} middleware invoke preproceed");
+            //Console.WriteLine($"{DateTime.Now} middleware invoke preproceed");
             //...
         }
         private void PostProceed(HttpContext next)
         {
-            Console.WriteLine($"{DateTime.Now} middleware invoke postproceed");
+            //Console.WriteLine($"{DateTime.Now} middleware invoke postproceed");
             //....
         }
 
