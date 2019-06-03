@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Builder;
 namespace Blog.Core.AuthHelper
 {
     /// <summary>
-    /// 
+    /// 中间件
+    /// 原做为自定义授权中间件
+    /// 先做检查 header token的使用
     /// </summary>
     public class JwtTokenAuth
     {
@@ -66,12 +68,12 @@ namespace Blog.Core.AuthHelper
                     TokenModelJwt tm = JwtHelper.SerializeJwt(tokenHeader);
 
                     //授权
-                    var claimList = new List<Claim>();
-                    var claim = new Claim(ClaimTypes.Role, tm.Role);
-                    claimList.Add(claim);
-                    var identity = new ClaimsIdentity(claimList);
-                    var principal = new ClaimsPrincipal(identity);
-                    httpContext.User = principal;
+                    //var claimList = new List<Claim>();
+                    //var claim = new Claim(ClaimTypes.Role, tm.Role);
+                    //claimList.Add(claim);
+                    //var identity = new ClaimsIdentity(claimList);
+                    //var principal = new ClaimsPrincipal(identity);
+                    //httpContext.User = principal;
                 }
 
             }
