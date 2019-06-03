@@ -35,7 +35,7 @@ namespace Blog.Core.Common.LogHelper
                 string logFilePath = path + $@"\{filename}.log";
 
                 var now = DateTime.Now;
-                var logContent = string.Format(
+                var logContent = (
                     "--------------------------------\r\n" +
                     DateTime.Now + "|\r\n" +
                     String.Join("\r\n", dataParas) + "\r\n"
@@ -44,8 +44,9 @@ namespace Blog.Core.Common.LogHelper
                 File.AppendAllText(logFilePath, logContent);
                 WritedCount++;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.Write(e.Message);
                 FailedCount++;
             }
             finally
@@ -94,6 +95,7 @@ namespace Blog.Core.Common.LogHelper
             List<LogInfo> aopLogs = new List<LogInfo>();
             List<LogInfo> excLogs = new List<LogInfo>();
             List<LogInfo> sqlLogs = new List<LogInfo>();
+            List<LogInfo> reqresLogs = new List<LogInfo>();
             try
             {
                 aopLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", "AOPLog.log"), Encoding.UTF8)
@@ -145,6 +147,22 @@ namespace Blog.Core.Common.LogHelper
             {
             }
 
+            try
+            {
+                reqresLogs = ReadLog(Path.Combine(Directory.GetCurrentDirectory(), "Log", "RequestResponseLog.log"), Encoding.UTF8)
+                      .Split("--------------------------------")
+                      .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
+                      .Select(d => new LogInfo
+                      {
+                          Datetime = d.Split("|")[0].ObjToDate(),
+                          Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
+                          LogColor = "ReqRes",
+                      }).ToList();
+            }
+            catch (Exception)
+            {
+            }
+
             if (excLogs != null)
             {
                 aopLogs.AddRange(excLogs);
@@ -152,6 +170,10 @@ namespace Blog.Core.Common.LogHelper
             if (sqlLogs != null)
             {
                 aopLogs.AddRange(sqlLogs);
+            }
+            if (reqresLogs != null)
+            {
+                aopLogs.AddRange(reqresLogs);
             }
             aopLogs = aopLogs.OrderByDescending(d => d.Import).ThenByDescending(d => d.Datetime).Take(100).ToList();
 

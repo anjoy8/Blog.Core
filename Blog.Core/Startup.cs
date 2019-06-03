@@ -18,6 +18,7 @@ using Blog.Core.Common.MemoryCache;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.Log;
+using Blog.Core.Middlewares;
 using Blog.Core.Model;
 using log4net;
 using log4net.Config;
@@ -429,11 +430,18 @@ namespace Blog.Core
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            if (Appsettings.app("AppSettings", "Middleware_RequestResponse", "Enabled").ObjToBool())
+            {
+                app.UseReuestResponseLog();//记录请求与返回数据 
+            }
+
+
             #region Environment
             if (env.IsDevelopment())
             {
                 // 在开发环境中，使用异常页面，这样可以暴露错误堆栈信息，所以不要放在生产环境。
                 app.UseDeveloperExceptionPage();
+
             }
             else
             {
@@ -444,7 +452,6 @@ namespace Blog.Core
 
             }
             #endregion
-
 
             #region Swagger
             app.UseSwagger();
@@ -487,14 +494,17 @@ namespace Blog.Core
 
             #endregion
 
+
             // 跳转https
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             // 使用静态文件
             app.UseStaticFiles();
             // 使用cookie
             app.UseCookiePolicy();
             // 返回错误码
             app.UseStatusCodePages();//把错误码返回前台，比如是404
+
+
 
             app.UseMvc();
 

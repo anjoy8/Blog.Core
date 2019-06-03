@@ -745,6 +745,23 @@
             开发环境的消息
             </summary>
         </member>
+        <member name="T:Blog.Core.Middlewares.RequRespLogMildd">
+            <summary>
+            中间件
+            记录请求和响应数据
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Middlewares.RequRespLogMildd._next">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Middlewares.RequRespLogMildd.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+        </member>
         <member name="P:Blog.Core.Startup.repository">
             <summary>
             log4net 仓储库
