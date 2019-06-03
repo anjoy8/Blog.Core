@@ -190,6 +190,7 @@ namespace Blog.Core
             {
                 // 全局异常过滤
                 o.Filters.Add(typeof(GlobalExceptionsFilter));
+                //o.Filters.Add(new GlobalAuthorizeFilter(PermissionNames.Permission));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
             // 取消默认驼峰

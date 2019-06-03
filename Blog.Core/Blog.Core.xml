@@ -61,7 +61,9 @@
         </member>
         <member name="T:Blog.Core.AuthHelper.JwtTokenAuth">
             <summary>
-            
+            中间件
+            原做为自定义授权中间件
+            先做检查 header token的使用
             </summary>
         </member>
         <member name="F:Blog.Core.AuthHelper.JwtTokenAuth._next">
@@ -540,6 +542,7 @@
         <member name="M:Blog.Core.Controllers.TopicDetailController.Get(System.Int32,System.String,System.String)">
             <summary>
             获取Bug数据列表（带分页）
+            【无权限】
             </summary>
             <param name="page">页数</param>
             <param name="tname">专题类型</param>
@@ -598,7 +601,7 @@
         </member>
         <member name="M:Blog.Core.Controllers.UserController.GetInfoByToken(System.String)">
             <summary>
-            获取用户详情根据token
+            获取用户详情根据token【无权限】
             </summary>
             <param name="token">令牌</param>
             <returns></returns>
@@ -721,6 +724,11 @@
             Delete方法
             </summary>
             <param name="id"></param>
+        </member>
+        <member name="T:Blog.Core.Filter.GlobalAuthorizeFilter">
+            <summary>
+            全局权限处理
+            </summary>
         </member>
         <member name="T:Blog.Core.Filter.GlobalExceptionsFilter">
             <summary>

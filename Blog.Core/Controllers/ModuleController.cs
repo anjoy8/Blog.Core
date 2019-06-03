@@ -15,7 +15,6 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(PermissionNames.Permission)]
     public class ModuleController : ControllerBase
     {
         readonly IModuleServices _moduleServices;
