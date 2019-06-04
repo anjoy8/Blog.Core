@@ -214,7 +214,7 @@
         </member>
         <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32,System.String,System.String)">
             <summary>
-            获取博客列表
+            获取博客列表【无权限】
             </summary>
             <param name="id"></param>
             <param name="page"></param>
@@ -290,7 +290,7 @@
         </member>
         <member name="T:Blog.Core.Controllers.LoginController">
             <summary>
-            登录管理
+            登录管理【无权限】
             </summary>
         </member>
         <member name="M:Blog.Core.Controllers.LoginController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.AuthHelper.PermissionRequirement)">
@@ -451,7 +451,7 @@
         </member>
         <member name="M:Blog.Core.Controllers.PermissionController.GetPermissionIdByRoleId(System.Int32)">
             <summary>
-            通过角色获取菜单
+            通过角色获取菜单【无权限】
             </summary>
             <param name="rid"></param>
             <returns></returns>
@@ -512,7 +512,7 @@
         </member>
         <member name="T:Blog.Core.Controllers.TopicController">
             <summary>
-            类别管理
+            类别管理【无权限】
             </summary>
         </member>
         <member name="M:Blog.Core.Controllers.TopicController.#ctor(Blog.Core.IServices.ITopicServices)">
@@ -601,7 +601,8 @@
         </member>
         <member name="M:Blog.Core.Controllers.UserController.GetInfoByToken(System.String)">
             <summary>
-            获取用户详情根据token【无权限】
+            获取用户详情根据token
+            【无权限】
             </summary>
             <param name="token">令牌</param>
             <returns></returns>
@@ -630,6 +631,7 @@
         <member name="T:Blog.Core.Controllers.UserRoleController">
             <summary>
             用户角色关系
+            【无权限】
             </summary>
         </member>
         <member name="M:Blog.Core.Controllers.UserRoleController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices)">
@@ -725,9 +727,17 @@
             </summary>
             <param name="id"></param>
         </member>
+        <member name="T:Blog.Core.Filter.GlobalRouteAuthorizeConvention">
+            <summary>
+            全局路由权限公约
+            目的是针对不同的路由，采用不同的授权过滤器
+            如果不加 [Authorize] 特性，默认是 Permission 策略
+            否则 根据 controller 自带的权限具体执行
+            </summary>
+        </member>
         <member name="T:Blog.Core.Filter.GlobalAuthorizeFilter">
             <summary>
-            全局权限处理
+            全局权限过滤器【无效】
             </summary>
         </member>
         <member name="T:Blog.Core.Filter.GlobalExceptionsFilter">

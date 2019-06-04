@@ -1,16 +1,18 @@
 ﻿using System.Threading.Tasks;
 using Blog.Core.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
     /// <summary>
     /// 用户角色关系
+    /// 【无权限】
     /// </summary>
-    //[Authorize(PermissionNames.Permission)]
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [AllowAnonymous]
     public class UserRoleController : Controller
     {
         readonly ISysUserInfoServices _sysUserInfoServices;

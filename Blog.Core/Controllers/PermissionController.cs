@@ -18,7 +18,6 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(PermissionNames.Permission)]
     public class PermissionController : ControllerBase
     {
         readonly IPermissionServices _permissionServices;
@@ -340,7 +339,7 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 通过角色获取菜单
+        /// 通过角色获取菜单【无权限】
         /// </summary>
         /// <param name="rid"></param>
         /// <returns></returns>

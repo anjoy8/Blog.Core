@@ -3,15 +3,17 @@ using System.Threading.Tasks;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
     /// <summary>
-    /// 类别管理
+    /// 类别管理【无权限】
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class TopicController : ControllerBase
     {
         readonly ITopicServices _topicServices;

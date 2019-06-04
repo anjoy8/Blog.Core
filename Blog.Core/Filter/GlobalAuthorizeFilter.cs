@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.SignalR;
@@ -16,46 +17,47 @@ using System.Threading.Tasks;
 namespace Blog.Core.Filter
 {
     /// <summary>
-    /// 全局权限处理
+    /// Summary:全局路由权限公约
+    /// Remarks:目的是针对不同的路由，采用不同的授权过滤器
+    /// 如果 controller 上不加 [Authorize] 特性，默认都是 Permission 策略
+    /// 否则，如果想特例其他授权机制的话，需要在 controller 上带上  [Authorize]，然后再action上自定义授权即可，比如 [Authorize(Roles = "Admin")]
+    /// </summary>
+    public class GlobalRouteAuthorizeConvention : IApplicationModelConvention
+    {
+        public void Apply(ApplicationModel application)
+        {
+            foreach (var c in application.Controllers)
+            {
+                if (!c.Filters.Any(e => e is AuthorizeFilter))
+                {
+                    // 没有写特性，就用全局的 Permission 授权
+                    c.Filters.Add(new AuthorizeFilter(PermissionNames.Permission));
+                }
+                else {
+                    // 写了特性，[Authorize] 或 [AllowAnonymous] ，根据情况进行权限认证
+                }
+
+            }
+        }
+    }
+
+    /// <summary>
+    /// 全局权限过滤器【无效】
     /// </summary>
     public class GlobalAuthorizeFilter : AuthorizeFilter
     {
-        public GlobalAuthorizeFilter(string policy) : base(policy)
-        {
-        }
 
-        public override Task OnAuthorizationAsync(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext context)
+        public override Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            // If there is another authorize filter, do nothing
             if (context.Filters.Any(item => item is IAsyncAuthorizationFilter && item != this))
             {
                 return Task.FromResult(0);
             }
 
 
-            if (context.ActionDescriptor.FilterDescriptors.Select(f => f.Filter).OfType<TypeFilterAttribute>().Any(f => f.ImplementationType.Equals(typeof(IgonreGlobalActionFilter))))
-            {
-                return Task.FromResult(0);
-            }
-
-
-            //Otherwise apply this policy
             return base.OnAuthorizationAsync(context);
-        }
 
-
-
-    }
-
-    public class IgonreGlobalActionFilter : IAsyncActionFilter
-    {
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
-        {
-            await context.HttpContext.Response.WriteAsync($"{GetType().Name} in. \r\n");
-
-            await next();
-
-            await context.HttpContext.Response.WriteAsync($"{GetType().Name} out. \r\n");
+          
         }
     }
 

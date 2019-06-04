@@ -16,6 +16,7 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ImgController : Controller
     {
         // GET: api/Img
@@ -63,7 +64,6 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Pic")]
-        [Authorize]
         public async Task<MessageModel<string>> InsertPicture([FromServices]IHostingEnvironment environment)
         {
             var data = new MessageModel<string>();

@@ -13,9 +13,9 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Blog.Core.Controllers
 {
-    //[Authorize(PermissionNames.Permission)]
     [Route("api/[Controller]/[action]")]
     [ApiController]
+    [AllowAnonymous]
     public class MonitorController : Controller
     {
         private readonly IHubContext<ChatHub> _hubContext;

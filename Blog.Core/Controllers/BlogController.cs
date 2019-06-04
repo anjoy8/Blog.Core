@@ -20,6 +20,7 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/Blog")]
+    [Authorize]
     public class BlogController : Controller
     {
         readonly IBlogArticleServices _blogArticleServices;
@@ -38,7 +39,7 @@ namespace Blog.Core.Controllers
 
 
         /// <summary>
-        /// 获取博客列表
+        /// 获取博客列表【无权限】
         /// </summary>
         /// <param name="id"></param>
         /// <param name="page"></param>
@@ -123,7 +124,6 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
-        //[Authorize(PermissionNames.Permission)]
         public async Task<object> Get(int id)
         {
             var model = await _blogArticleServices.GetBlogDetails(id);
@@ -142,6 +142,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("DetailNuxtNoPer")]
+        [AllowAnonymous]
         public async Task<object> DetailNuxtNoPer(int id)
         {
             var model = await _blogArticleServices.GetBlogDetails(id);
@@ -165,6 +166,7 @@ namespace Blog.Core.Controllers
         //和上边的版本控制以及路由地址都是一样的
 
         [CustomRoute(ApiVersions.V2, "Blogtest")]
+        [AllowAnonymous]
         public object V2_Blogtest()
         {
             return Ok(new { status = 220, data = "我是第二版的博客信息" });
@@ -176,6 +178,7 @@ namespace Blog.Core.Controllers
         /// <param name="blogArticle"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<MessageModel<string>> Post([FromBody] BlogArticle blogArticle)
         {
             var data = new MessageModel<string>();

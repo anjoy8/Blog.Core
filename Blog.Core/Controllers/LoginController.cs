@@ -9,6 +9,7 @@ using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Blog.Core.Controllers
 {
     /// <summary>
-    /// 登录管理
+    /// 登录管理【无权限】
     /// </summary>
     [Produces("application/json")]
     [Route("api/Login")]
+    [AllowAnonymous]
     public class LoginController : Controller
     {
         readonly ISysUserInfoServices _sysUserInfoServices;

@@ -15,7 +15,6 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(PermissionNames.Permission)]
     public class TopicDetailController : ControllerBase
     {
         readonly ITopicServices _topicServices;
@@ -34,6 +33,7 @@ namespace Blog.Core.Controllers
 
         /// <summary>
         /// 获取Bug数据列表（带分页）
+        /// 【无权限】
         /// </summary>
         /// <param name="page">页数</param>
         /// <param name="tname">专题类型</param>

@@ -18,7 +18,6 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(PermissionNames.Permission)]
     public class UserController : ControllerBase
     {
         readonly ISysUserInfoServices _sysUserInfoServices;
@@ -95,6 +94,7 @@ namespace Blog.Core.Controllers
         // GET: api/User/5
         /// <summary>
         /// 获取用户详情根据token
+        /// 【无权限】
         /// </summary>
         /// <param name="token">令牌</param>
         /// <returns></returns>
