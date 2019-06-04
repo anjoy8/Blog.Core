@@ -87,8 +87,8 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<TopicDetail>> Get(int id)
         {
             var data = new MessageModel<TopicDetail>();
-            var response = await _topicDetailServices.QueryById(id);
-            data.response = response.tdIsDelete ? null : response;
+            var response = id > 0 ? await _topicDetailServices.QueryById(id) : new TopicDetail();
+            data.response = (response?.tdIsDelete).ObjToBool() ? new TopicDetail() : response;
             if (data.response != null)
             {
                 data.success = true;
