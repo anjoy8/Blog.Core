@@ -138,7 +138,8 @@ namespace Blog.Core.Repository.Base
 
         public async Task<bool> Update(string strSql, SugarParameter[] parameters = null)
         {
-            return await Task.Run(() => _db.Ado.ExecuteCommand(strSql, parameters) > 0);
+            //return await Task.Run(() => _db.Ado.ExecuteCommand(strSql, parameters) > 0);
+            return await _db.Ado.ExecuteCommandAsync(strSql, parameters) > 0 ;
         }
 
         public async Task<bool> Update(
