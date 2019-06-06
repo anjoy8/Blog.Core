@@ -31,7 +31,7 @@ namespace Blog.Core.Filter
                 if (!c.Filters.Any(e => e is AuthorizeFilter))
                 {
                     // 没有写特性，就用全局的 Permission 授权
-                    c.Filters.Add(new AuthorizeFilter(PermissionNames.Permission));
+                    c.Filters.Add(new AuthorizeFilter(Permissions.Name));
                 }
                 else {
                     // 写了特性，[Authorize] 或 [AllowAnonymous] ，根据情况进行权限认证

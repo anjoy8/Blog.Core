@@ -1,0 +1,64 @@
+﻿using Blog.Core.Common.LogHelper;
+using Blog.Core.Hubs;
+using Blog.Core.Log;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.SignalR;
+using StackExchange.Profiling;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Blog.Core.Filter
+{
+    /// <summary>
+    /// 全局路由前缀公约
+    /// </summary>
+    public class GlobalRoutePrefixFilter : IApplicationModelConvention
+    {
+        private readonly AttributeRouteModel _centralPrefix;
+
+        public GlobalRoutePrefixFilter(IRouteTemplateProvider routeTemplateProvider)
+        {
+            _centralPrefix = new AttributeRouteModel(routeTemplateProvider);
+        }
+
+        //接口的Apply方法
+        public void Apply(ApplicationModel application)
+        {
+            //遍历所有的 Controller
+            foreach (var controller in application.Controllers)
+            {
+                // 已经标记了 RouteAttribute 的 Controller
+                var matchedSelectors = controller.Selectors.Where(x => x.AttributeRouteModel != null).ToList();
+                if (matchedSelectors.Any())
+                {
+                    foreach (var selectorModel in matchedSelectors)
+                    {
+                        // 在 当前路由上 再 添加一个 路由前缀
+                        selectorModel.AttributeRouteModel = AttributeRouteModel.CombineAttributeRouteModel(_centralPrefix,
+                            selectorModel.AttributeRouteModel);
+                    }
+                }
+
+                // 没有标记 RouteAttribute 的 Controller
+                var unmatchedSelectors = controller.Selectors.Where(x => x.AttributeRouteModel == null).ToList();
+                if (unmatchedSelectors.Any())
+                {
+                    foreach (var selectorModel in unmatchedSelectors)
+                    {
+                        // 添加一个 路由前缀
+                        selectorModel.AttributeRouteModel = _centralPrefix;
+                    }
+                }
+            }
+        }
+    }
+
+}

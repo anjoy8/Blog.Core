@@ -190,10 +190,10 @@ namespace Blog.Core
             {
                 // 全局异常过滤
                 o.Filters.Add(typeof(GlobalExceptionsFilter));
-                // 全局权限过滤【无效】
-                //o.Filters.Add(typeof(MyAuthorizeFilter));
                 // 全局路由权限公约
                 o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
+                // 全局路由前缀，统一修改路由
+                o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
             // 取消默认驼峰
@@ -278,7 +278,7 @@ namespace Blog.Core
             //【授权】
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(PermissionNames.Permission,
+                options.AddPolicy(Permissions.Name,
                          policy => policy.Requirements.Add(permissionRequirement));
             });
 

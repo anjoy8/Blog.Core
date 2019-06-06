@@ -13,7 +13,7 @@ namespace Blog.Core.Controllers.v2
     [CustomRoute(ApiVersions.V2)]
     //[Route("api/[controller]")]
     [ApiController]
-    [Authorize(PermissionNames.Permission)]
+    [Authorize(Permissions.Name)]
     public class ApbController : ControllerBase
     {
 

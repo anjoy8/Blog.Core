@@ -204,7 +204,7 @@ namespace Blog.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete]
-        [Authorize(PermissionNames.Permission)]
+        [Authorize(Permissions.Name)]
         [Route("Delete")]
         public async Task<MessageModel<string>> Delete(int id)
         {
