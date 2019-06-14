@@ -48,6 +48,8 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
+        //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(Duration = 600)]
         public async Task<object> Get(int id, int page = 1, string bcategory = "技术博文", string key = "")
         {
             int intTotalCount = 6;
