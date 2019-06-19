@@ -185,6 +185,7 @@ File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim(): "server=.;uid=sa;pwd=sa;
 
 <li><a href="https://www.cnblogs.com/laozhang-is-phi/p/10462316.html">42&nbsp;</a><a id="post_title_link_9767400" href="https://www.cnblogs.com/laozhang-is-phi/p/9767400.html">║</a><a id="post_title_link_10462316" href="https://www.cnblogs.com/laozhang-is-phi/p/10462316.html"> 完美实现 JWT 滑动授权刷新</a></li>
 <li><a id="post_title_link_10718755" href="https://www.cnblogs.com/laozhang-is-phi/p/10718755.html">43 ║ 支持多种数据库 &amp; 快速数据库生成</a></li>
+<li><a id="post_title_link_10836887" href="https://www.cnblogs.com/laozhang-is-phi/p/beautifulPublish-mostBugs.html">43 ║最全的部署方案 &amp; 最丰富的错误分析【再会】</a></li>
 
 
 
