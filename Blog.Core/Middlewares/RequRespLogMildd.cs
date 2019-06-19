@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using System.IO;
 using Blog.Core.Common.LogHelper;
 using StackExchange.Profiling;
+using System.Text.RegularExpressions;
 
 namespace Blog.Core.Middlewares
 {
@@ -100,6 +101,10 @@ namespace Blog.Core.Middlewares
         {
             ms.Position = 0;
             var ResponseBody = new StreamReader(ms).ReadToEnd();
+
+            // 去除 Html
+            var reg = "<[^>]+>";
+            var isHtml = Regex.IsMatch(ResponseBody, reg);
 
             if (!string.IsNullOrEmpty(ResponseBody))
             {

@@ -20,6 +20,7 @@ using Blog.Core.Hubs;
 using Blog.Core.Log;
 using Blog.Core.Middlewares;
 using Blog.Core.Model;
+using Blog.Core.Tasks;
 using log4net;
 using log4net.Config;
 using log4net.Repository;
@@ -202,6 +203,13 @@ namespace Blog.Core
 
             #endregion
 
+            #region TimedJob
+
+            services.AddHostedService<Job1TimedService>();
+            services.AddHostedService<Job2TimedService>();
+
+            #endregion
+
             #region Httpcontext
 
             // Httpcontext 注入
@@ -211,7 +219,7 @@ namespace Blog.Core
             #endregion
 
             #region SignalR 通讯
-            services.AddSignalR(); 
+            services.AddSignalR();
             #endregion
 
             #region Authorize 权限认证三步走
@@ -245,8 +253,8 @@ namespace Blog.Core
                 options.AddPolicy("SystemOrAdmin", policy => policy.RequireRole("Admin", "System"));
             });
 
-            
-            #endregion 
+
+            #endregion
 
             #region 【3、复杂策略授权】
 
@@ -440,11 +448,14 @@ namespace Blog.Core
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            #region ReuestResponseLog
+
             if (Appsettings.app("AppSettings", "Middleware_RequestResponse", "Enabled").ObjToBool())
             {
                 app.UseReuestResponseLog();//记录请求与返回数据 
             }
 
+            #endregion
 
             #region Environment
             if (env.IsDevelopment())

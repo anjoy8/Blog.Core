@@ -33,12 +33,14 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.165" />
+    <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="2.0.0-rtm-10046" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Blog.Core.IRepository\Blog.Core.IRepository.csproj" />
     <ProjectReference Include="..\Blog.Core.IServices\Blog.Core.IServices.csproj" />
+    <ProjectReference Include="..\Blog.Core.Tasks\Blog.Core.Tasks.csproj" />
   </ItemGroup>
 
   <ItemGroup>
