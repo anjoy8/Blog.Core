@@ -99,7 +99,8 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-3-4-0
 或者来群里，群文件的是最新的。
 
 
-6、如果想单独查看关于【JWT授权】的相关内容，可以访问 https://github.com/anjoy8/BlogArti/tree/master/Blog.Core_JWT，我单拎出来的一个demo。
+6、如果想单独查看关于【JWT授权】的相关内容，可以访问 https://github.com/anjoy8/BlogArti/tree/master/Blog.Core_JWT，
+   我单拎出来的一个demo。
 
 
 7、项目后期发布的时候可以有两个办法，一种是dotnet的kestrel部署，另一种是 IIS 发布部署，但是在发布的时候，
