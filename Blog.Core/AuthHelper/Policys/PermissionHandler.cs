@@ -26,7 +26,7 @@ namespace Blog.Core.AuthHelper
         /// <summary>
         /// services 层注入
         /// </summary>
-        public IRoleModulePermissionServices roleModulePermissionServices { get; set; }
+        public IRoleModulePermissionServices RoleModulePermissionServices { get; set; }
 
         /// <summary>
         /// 构造函数注入
@@ -36,14 +36,14 @@ namespace Blog.Core.AuthHelper
         public PermissionHandler(IAuthenticationSchemeProvider schemes, IRoleModulePermissionServices roleModulePermissionServices)
         {
             Schemes = schemes;
-            this.roleModulePermissionServices = roleModulePermissionServices;
+            this.RoleModulePermissionServices = roleModulePermissionServices;
         }
 
         // 重载异步处理程序
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
             // 将最新的角色和接口列表更新
-            var data = await roleModulePermissionServices.GetRoleModule();
+            var data = await RoleModulePermissionServices.GetRoleModule();
             var list = (from item in data
                         where item.IsDeleted == false
                         orderby item.Id

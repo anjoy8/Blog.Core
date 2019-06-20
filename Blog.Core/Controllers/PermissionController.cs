@@ -86,8 +86,10 @@ namespace Blog.Core.Controllers
 
             foreach (var item in permissionsView)
             {
-                List<int> pidarr = new List<int>();
-                pidarr.Add(item.Pid);
+                List<int> pidarr = new List<int>
+                {
+                    item.Pid
+                };
                 if (item.Pid > 0)
                 {
                     pidarr.Add(0);
@@ -241,10 +243,12 @@ namespace Blog.Core.Controllers
                                        isbtn = child.IsButton,
                                        order = child.OrderSort,
                                    }).ToList();
-            PermissionTree rootRoot = new PermissionTree();
-            rootRoot.value = 0;
-            rootRoot.Pid = 0;
-            rootRoot.label = "根节点";
+            PermissionTree rootRoot = new PermissionTree
+            {
+                value = 0,
+                Pid = 0,
+                label = "根节点"
+            };
 
             permissionTrees = permissionTrees.OrderBy(d => d.order).ToList();
 

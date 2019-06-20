@@ -60,7 +60,7 @@ namespace Blog.Core.Middlewares
                         await ms.CopyToAsync(originalBody);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // 记录异常
                     //ErrorLogData(context.Response, ex);

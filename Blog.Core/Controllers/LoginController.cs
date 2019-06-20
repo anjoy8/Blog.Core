@@ -25,8 +25,8 @@ namespace Blog.Core.Controllers
     public class LoginController : Controller
     {
         readonly ISysUserInfoServices _sysUserInfoServices;
-        IUserRoleServices _userRoleServices;
-        IRoleServices _roleServices;
+        readonly IUserRoleServices _userRoleServices;
+        readonly IRoleServices _roleServices;
         readonly PermissionRequirement _requirement;
 
 
@@ -99,9 +99,11 @@ namespace Blog.Core.Controllers
             //这里直接写死了
             if (name == "admins" && pass == "admins")
             {
-                TokenModelJwt tokenModel = new TokenModelJwt();
-                tokenModel.Uid = 1;
-                tokenModel.Role = "Admin";
+                TokenModelJwt tokenModel = new TokenModelJwt
+                {
+                    Uid = 1,
+                    Role = "Admin"
+                };
 
                 jwtStr = JwtHelper.IssueJwt(tokenModel);
                 suc = true;
@@ -241,9 +243,11 @@ namespace Blog.Core.Controllers
         [Route("jsonp")]
         public void Getjsonp(string callBack, long id = 1, string sub = "Admin", int expiresSliding = 30, int expiresAbsoulute = 30)
         {
-            TokenModelJwt tokenModel = new TokenModelJwt();
-            tokenModel.Uid = id;
-            tokenModel.Role = sub;
+            TokenModelJwt tokenModel = new TokenModelJwt
+            {
+                Uid = id,
+                Role = sub
+            };
 
             string jwtStr = JwtHelper.IssueJwt(tokenModel);
 

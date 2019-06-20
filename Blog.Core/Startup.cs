@@ -47,15 +47,15 @@ namespace Blog.Core
         /// <summary>
         /// log4net 仓储库
         /// </summary>
-        public static ILoggerRepository repository { get; set; }
+        public static ILoggerRepository Repository { get; set; }
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             //log4net
-            repository = LogManager.CreateRepository(Configuration["Logging:Log4Net:Name"]);
+            Repository = LogManager.CreateRepository(Configuration["Logging:Log4Net:Name"]);
             //指定配置文件，如果这里你遇到问题，应该是使用了InProcess模式，请查看Blog.Core.csproj,并删之
-            XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));
+            XmlConfigurator.Configure(Repository, new FileInfo("log4net.config"));
 
         }
 

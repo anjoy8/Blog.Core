@@ -111,8 +111,8 @@ namespace Blog.Core.Controllers
             return Ok(new
             {
                 success = true,
-                page = page,
-                total = total,
+                page,
+                total,
                 pageCount = totalCount,
                 data = blogArticleList
             });

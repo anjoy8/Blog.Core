@@ -26,7 +26,7 @@ namespace Blog.Core.Repository.Base
             get { return _db; }
             private set { _db = value; }
         }
-        internal SimpleClient<TEntity> entityDb
+        internal SimpleClient<TEntity> EntityDb
         {
             get { return _entityDb; }
             private set { _entityDb = value; }
