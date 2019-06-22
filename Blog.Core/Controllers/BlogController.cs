@@ -73,7 +73,7 @@ namespace Blog.Core.Controllers
                     else
                     {
                         MiniProfiler.Current.Step("从MSSQL服务器中加载数据：");
-                        blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted != false);
+                        blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
                         _redisCacheManager.Set("Redis.Blog", blogArticleList, TimeSpan.FromHours(2));
                     }
 
