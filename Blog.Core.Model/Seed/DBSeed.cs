@@ -20,8 +20,11 @@ namespace Blog.Core.Model.Models
         {
             try
             {
-                // 注意！一定要先手动创建一个【空的数据库】
                 // 如果生成过了，第二次，就不用再执行一遍了,注释掉该方法即可
+               
+                // 自动创建数据库，注意版本是 sugar 5.x 版本的
+                myContext.Db.DbMaintenance.CreateDatabase();
+                // 创建表
                 myContext.CreateTableByEntity(false,
                     typeof(Advertisement),
                     typeof(BlogArticle),
