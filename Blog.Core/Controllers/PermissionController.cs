@@ -84,6 +84,7 @@ namespace Blog.Core.Controllers
             var apis = await _moduleServices.Query(d => d.IsDeleted == false);
             var permissionsView = permissions.data;
 
+            var permissionAll = await _permissionServices.Query(d => d.IsDeleted != true);
             foreach (var item in permissionsView)
             {
                 List<int> pidarr = new List<int>
@@ -94,19 +95,19 @@ namespace Blog.Core.Controllers
                 {
                     pidarr.Add(0);
                 }
-                var parent = permissionsView.FirstOrDefault(d => d.Id == item.Pid);
+                var parent = permissionAll.FirstOrDefault(d => d.Id == item.Pid);
 
                 while (parent != null)
                 {
                     pidarr.Add(parent.Id);
-                    parent = permissionsView.FirstOrDefault(d => d.Id == parent.Pid);
+                    parent = permissionAll.FirstOrDefault(d => d.Id == parent.Pid);
                 }
 
 
                 item.PidArr = pidarr.OrderBy(d => d).Distinct().ToList();
                 foreach (var pid in item.PidArr)
                 {
-                    var per = permissionsView.FirstOrDefault(d => d.Id == pid);
+                    var per = permissionAll.FirstOrDefault(d => d.Id == pid);
                     item.PnameArr.Add((per != null ? per.Name : "根节点") + "/");
                     //var par = Permissions.Where(d => d.Pid == item.Id ).ToList();
                     //item.PCodeArr.Add((per != null ? $"/{per.Code}/{item.Code}" : ""));
