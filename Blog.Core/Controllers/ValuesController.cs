@@ -59,7 +59,11 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<ResponseEnum>();
 
-            var list = await _roleModulePermissionServices.TestModelWithChildren();
+            var roleModuleTask = _roleModulePermissionServices.Query();
+            var listTask = _advertisementServices.Query();
+
+            var ad = await roleModuleTask;
+            var list = await listTask;
 
 
             _advertisementServices.ReturnExp();
