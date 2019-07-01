@@ -144,8 +144,12 @@ namespace Blog.Core.AuthHelper
                             if (currentUserRoles.Count <= 0 || !isMatchRole)
                             {
 
-                                //context.Fail();
+
+                                // 可以在这里设置跳转页面
+                                //httpContext.Response.Redirect(requirement.DeniedAction);
+                                //context.Succeed(requirement);
                                 //return;
+
 
 
                                 //自定义返回数据
@@ -156,8 +160,6 @@ namespace Blog.Core.AuthHelper
                                 return;
 
 
-                                // 可以在这里设置跳转页面，不过还是会访问当前接口地址的
-                                //httpContext.Response.Redirect(requirement.DeniedAction);
                             }
                         }
                         //else
