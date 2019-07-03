@@ -250,6 +250,10 @@ namespace Blog.Core.Services.BASE
          intPageIndex, intPageSize, strOrderByFileds);
         }
 
+        public async Task<List<TResult>> QueryMuch<T, T2, T3, TResult>(Expression<Func<T, T2, T3, object[]>> joinExpression, Expression<Func<T, T2, T3, TResult>> selectExpression, Expression<Func<T, T2, T3, bool>> whereLambda = null) where T : class, new()
+        {
+            return await BaseDal.QueryMuch(joinExpression, selectExpression, whereLambda);
+        }
     }
 
 }

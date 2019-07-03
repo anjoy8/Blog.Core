@@ -107,7 +107,7 @@
             验证方案提供对象
             </summary>
         </member>
-        <member name="P:Blog.Core.AuthHelper.PermissionHandler.roleModulePermissionServices">
+        <member name="P:Blog.Core.AuthHelper.PermissionHandler.RoleModulePermissionServices">
             <summary>
             services 层注入
             </summary>
@@ -785,7 +785,7 @@
             </summary>
             <param name="next"></param>
         </member>
-        <member name="P:Blog.Core.Startup.repository">
+        <member name="P:Blog.Core.Startup.Repository">
             <summary>
             log4net 仓储库
             </summary>

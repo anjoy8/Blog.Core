@@ -11,5 +11,6 @@ namespace Blog.Core.IRepository
 	public interface IRoleModulePermissionRepository : IBaseRepository<RoleModulePermission>//类名
     {
         Task<List<RoleModulePermission>> WithChildrenModel();
+        Task<List<TestMuchTableResult>> QueryMuchTable();
     }
 }

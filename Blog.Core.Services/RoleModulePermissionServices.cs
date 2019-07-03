@@ -63,5 +63,9 @@ namespace Blog.Core.Services
         {
             return await _dal.WithChildrenModel();
         }
+        public async Task<List<TestMuchTableResult>> QueryMuchTable()
+        {
+            return await _dal.QueryMuchTable();
+        }
     }
 }
