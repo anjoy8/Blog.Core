@@ -35,7 +35,6 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        [ResponseCache(Duration = 3600)]
         public async Task<MessageModel<PageModel<Role>>> Get(int page = 1, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))

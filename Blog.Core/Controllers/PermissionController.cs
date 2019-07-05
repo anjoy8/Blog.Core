@@ -272,7 +272,6 @@ namespace Blog.Core.Controllers
         /// <param name="uid"></param>
         /// <returns></returns>
         [HttpGet]
-        [ResponseCache(Duration = 3600)]
         public async Task<MessageModel<NavigationBar>> GetNavigationBar(int uid)
         {
 
