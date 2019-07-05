@@ -714,6 +714,13 @@
             <param name="blogArticle">model实体类参数</param>
             <param name="id">独立参数</param>
         </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.TestPostPara(System.String)">
+            <summary>
+            测试 post 参数
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Put(System.Int32,System.String)">
             <summary>
             Put方法

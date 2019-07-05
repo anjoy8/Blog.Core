@@ -130,6 +130,21 @@ namespace Blog.Core.Controllers
         {
             return Ok(new { success = true, data = blogArticle, id = id });
         }
+
+
+        /// <summary>
+        /// 测试 post 参数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("TestPostPara")]
+        public object TestPostPara(string name)
+        {
+            return Ok(new { success = true, name = name });
+        }
+
+
         /// <summary>
         /// Put方法
         /// </summary>
