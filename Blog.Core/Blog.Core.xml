@@ -25,6 +25,26 @@
             面向切面的缓存使用
             </summary>
         </member>
+        <member name="M:Blog.Core.AOP.CacheAOPbase.Intercept(Castle.DynamicProxy.IInvocation)">
+            <summary>
+            AOP的拦截方法
+            </summary>
+            <param name="invocation"></param>
+        </member>
+        <member name="M:Blog.Core.AOP.CacheAOPbase.CustomCacheKey(Castle.DynamicProxy.IInvocation)">
+            <summary>
+            自定义缓存的key
+            </summary>
+            <param name="invocation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.AOP.CacheAOPbase.GetArgumentValue(System.Object)">
+            <summary>
+            object 转 string
+            </summary>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.AuthHelper.OverWrite.JwtHelper.IssueJwt(Blog.Core.AuthHelper.OverWrite.TokenModelJwt)">
             <summary>
             颁发JWT字符串

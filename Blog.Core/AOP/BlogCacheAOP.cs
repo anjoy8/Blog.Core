@@ -9,7 +9,7 @@ namespace Blog.Core.AOP
     /// <summary>
     /// 面向切面的缓存使用
     /// </summary>
-    public class BlogCacheAOP : IInterceptor
+    public class BlogCacheAOP : CacheAOPbase
     {
         //通过注入的方式，把缓存操作接口通过构造函数注入
         private readonly ICaching _cache;
@@ -17,8 +17,9 @@ namespace Blog.Core.AOP
         {
             _cache = cache;
         }
+
         //Intercept方法是拦截的关键所在，也是IInterceptor接口中的唯一定义
-        public void Intercept(IInvocation invocation)
+        public override void Intercept(IInvocation invocation)
         {
             var method = invocation.MethodInvocationTarget ?? invocation.Method;
             //对当前方法的特性验证
@@ -47,33 +48,6 @@ namespace Blog.Core.AOP
             {
                 invocation.Proceed();//直接执行被拦截方法
             }
-        }
-
-        //自定义缓存键
-        private string CustomCacheKey(IInvocation invocation)
-        {
-            var typeName = invocation.TargetType.Name;
-            var methodName = invocation.Method.Name;
-            var methodArguments = invocation.Arguments.Select(GetArgumentValue).Take(3).ToList();//获取参数列表，最多三个
-
-            string key = $"{typeName}:{methodName}:";
-            foreach (var param in methodArguments)
-            {
-                key += $"{param}:";
-            }
-
-            return key.TrimEnd(':');
-        }
-        //object 转 string
-        private string GetArgumentValue(object arg)
-        {
-            if (arg is int || arg is long || arg is string)
-                return arg.ToString();
-
-            if (arg is DateTime)
-                return ((DateTime)arg).ToString("yyyyMMddHHmmss");
-
-            return "";
         }
     }
 
