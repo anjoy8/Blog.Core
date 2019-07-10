@@ -57,7 +57,7 @@ namespace Blog.Core.AOP
                             async () => await TestActionAsync(invocation),
                             ex =>
                             {
-                                LogEx(ex,ref dataIntercept);
+                                LogEx(ex, ref dataIntercept);
                             });
                     }
                     else //Task<TResult>
@@ -68,20 +68,21 @@ namespace Blog.Core.AOP
                          async () => await TestActionAsync(invocation),
                          ex =>
                          {
-                             LogEx(ex,ref dataIntercept);
+                             LogEx(ex, ref dataIntercept);
                          });
 
                     }
 
                 }
-                else {// 同步1
+                else
+                {// 同步1
 
 
                 }
             }
             catch (Exception ex)// 同步2
             {
-                LogEx(ex,ref dataIntercept);
+                LogEx(ex, ref dataIntercept);
 
             }
 
@@ -119,12 +120,15 @@ namespace Blog.Core.AOP
             Console.WriteLine("Waited after method execution for " + invocation.MethodInvocationTarget.Name);
         }
 
-        private void LogEx(Exception ex,ref string dataIntercept)
+        private void LogEx(Exception ex, ref string dataIntercept)
         {
-            //执行的 service 中，收录异常
-            MiniProfiler.Current.CustomTiming("Errors：", ex.Message);
-            //执行的 service 中，捕获异常
-            dataIntercept += ($"方法执行中出现异常：{ex.Message + ex.InnerException}\r\n");
+            if (ex != null)
+            {
+                //执行的 service 中，收录异常
+                MiniProfiler.Current.CustomTiming("Errors：", ex.Message);
+                //执行的 service 中，捕获异常
+                dataIntercept += ($"方法执行中出现异常：{ex.Message + ex.InnerException}\r\n");
+            }
         }
 
 
