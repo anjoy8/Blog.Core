@@ -29,9 +29,17 @@ namespace Blog.Core.Tasks
             return Task.CompletedTask;
         }
 
-        private void DoWork(object state)
+        private async void DoWork(object state)
         {
-            //var model = await _blogArticleServices.GetBlogDetails(5);
+            try
+            {
+                var model =await _blogArticleServices.GetBlogDetails(5);
+                Console.WriteLine($"BlogArticle:{model.bCreateTime}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error:{ex.Message}");
+            }
 
             ConsoleHelper.WriteSuccessLine($"Job 1： {DateTime.Now}");
         }
