@@ -18,6 +18,7 @@ using Blog.Core.Common.LogHelper;
 using Blog.Core.Common.MemoryCache;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
+using Blog.Core.IServices;
 using Blog.Core.Log;
 using Blog.Core.Middlewares;
 using Blog.Core.Model;
@@ -455,11 +456,8 @@ namespace Blog.Core
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IBlogArticleServices _blogArticleServices)
         {
-
-
-
 
             #region ReuestResponseLog
 
@@ -478,6 +476,8 @@ namespace Blog.Core
 
                 app.Use(async (context, next) =>
                 {
+                    //这里会多次调用，这里测试一下就行，不要打开注释
+                    //var blogs =await _blogArticleServices.GetBlogs();
                     var processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
                     Console.WriteLine(processName);
                     await next();

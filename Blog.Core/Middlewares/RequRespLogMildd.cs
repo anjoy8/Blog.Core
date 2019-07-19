@@ -10,6 +10,7 @@ using System.IO;
 using Blog.Core.Common.LogHelper;
 using StackExchange.Profiling;
 using System.Text.RegularExpressions;
+using Blog.Core.IServices;
 
 namespace Blog.Core.Middlewares
 {
@@ -23,13 +24,16 @@ namespace Blog.Core.Middlewares
         /// 
         /// </summary>
         private readonly RequestDelegate _next;
+        private readonly IBlogArticleServices _blogArticleServices;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="next"></param>
-        public RequRespLogMildd(RequestDelegate next)
+        /// <param name="blogArticleServices"></param>
+        public RequRespLogMildd(RequestDelegate next, IBlogArticleServices blogArticleServices)
         {
             _next = next;
+            _blogArticleServices = blogArticleServices;
         }
 
 
