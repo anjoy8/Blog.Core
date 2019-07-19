@@ -86,7 +86,6 @@ namespace Blog.Core.Middlewares
             {
                 Parallel.For(0, 1, e =>
                 {
-                    LogLock log = new LogLock();
                     LogLock.OutSql2Log("RequestResponseLog", new string[] { "Request Data:", content });
 
                 });
@@ -110,7 +109,6 @@ namespace Blog.Core.Middlewares
             {
                 Parallel.For(0, 1, e =>
                 {
-                    LogLock log = new LogLock();
                     LogLock.OutSql2Log("RequestResponseLog", new string[] { "Response Data:", ResponseBody });
 
                 });

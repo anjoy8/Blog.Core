@@ -90,26 +90,11 @@ namespace Blog.Core.AOP
 
             Parallel.For(0, 1, e =>
             {
-                LogLock log = new LogLock();
                 LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
             });
 
             _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
 
-            #region //输出到当前项目日志,多线程可能会出现争抢资源的问题，舍弃//
-            //var path = Directory.GetCurrentDirectory() + @"\Log";
-            //if (!Directory.Exists(path))
-            //{
-            //    Directory.CreateDirectory(path);
-            //}
-
-            //string fileName = path + $@"\AOPLog.log";
-
-            //StreamWriter sw = File.AppendText(fileName);
-            //sw.WriteLine(dataIntercept);
-            //sw.WriteLine();
-            //sw.Close();
-            #endregion
 
         }
 

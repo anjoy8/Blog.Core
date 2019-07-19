@@ -14,6 +14,7 @@ using Blog.Core.AOP;
 using Blog.Core.AuthHelper;
 using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
+using Blog.Core.Common.LogHelper;
 using Blog.Core.Common.MemoryCache;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
@@ -49,17 +50,21 @@ namespace Blog.Core
         /// </summary>
         public static ILoggerRepository Repository { get; set; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
             //log4net
             Repository = LogManager.CreateRepository(Configuration["Logging:Log4Net:Name"]);
             //指定配置文件，如果这里你遇到问题，应该是使用了InProcess模式，请查看Blog.Core.csproj,并删之
-            XmlConfigurator.Configure(Repository, new FileInfo("log4net.config"));
+            var contentPath = env.ContentRootPath;
+            var log4Config = Path.Combine(contentPath, "log4net.config");
+            XmlConfigurator.Configure(Repository, new FileInfo(log4Config));
 
         }
 
         public IConfiguration Configuration { get; }
+        public IHostingEnvironment Env { get; }
         private const string ApiName = "Blog.Core";
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -355,6 +360,9 @@ namespace Blog.Core
 
             #endregion
 
+            services.AddSingleton(new Appsettings(Env));
+            services.AddSingleton(new LogLock(Env));
+
 
             #region AutoFac DI
             //实例化 AutoFac  容器   
@@ -408,9 +416,9 @@ namespace Blog.Core
                 var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
                 builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("※※★※※ 如果你是第一次下载项目，请先对整个解决方案dotnet build（F6编译），然后再对api层 dotnet run（F5执行），\n因为解耦了，如果你是发布的模式，请检查bin文件夹是否存在Repository.dll和service.dll ※※★※※");
+                throw new Exception("※※★※※ 如果你是第一次下载项目，请先对整个解决方案dotnet build（F6编译），然后再对api层 dotnet run（F5执行），\n因为解耦了，如果你是发布的模式，请检查bin文件夹是否存在Repository.dll和service.dll ※※★※※" + ex.Message + "\n" + ex.InnerException);
             }
             #endregion
             #endregion
@@ -449,6 +457,10 @@ namespace Blog.Core
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+
+
+
             #region ReuestResponseLog
 
             if (Appsettings.app("AppSettings", "Middleware_RequestResponse", "Enabled").ObjToBool())
@@ -464,6 +476,12 @@ namespace Blog.Core
                 // 在开发环境中，使用异常页面，这样可以暴露错误堆栈信息，所以不要放在生产环境。
                 app.UseDeveloperExceptionPage();
 
+                app.Use(async (context, next) =>
+                {
+                    var processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+                    Console.WriteLine(processName);
+                    await next();
+                });
             }
             else
             {
@@ -497,7 +515,7 @@ namespace Blog.Core
             #region 第三步：开启认证中间件
 
             //此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件，第二种写法//app.UseMiddleware<JwtTokenAuth>(); 
-            app.UseJwtTokenAuth(); 
+            app.UseJwtTokenAuth();
 
             //如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务 (.AddAuthentication 和 .AddJwtBearer 二者缺一不可)
             app.UseAuthentication();
@@ -525,7 +543,6 @@ namespace Blog.Core
             app.UseCookiePolicy();
             // 返回错误码
             app.UseStatusCodePages();//把错误码返回前台，比如是404
-
 
 
             app.UseMvc();

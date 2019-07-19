@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,12 @@ namespace Blog.Core.Common
     public class Appsettings
     {
         static IConfiguration Configuration { get; set; }
+        static string contentPath { get; set; }
+
+        //public Appsettings(IHostingEnvironment env)
+        //{
+        //    contentPath = env.ContentRootPath;
+        //}
 
         //static Appsettings()
         //{
@@ -22,9 +29,10 @@ namespace Blog.Core.Common
         //    .Build();
         //}
 
-        static Appsettings()
+        public Appsettings(IHostingEnvironment env)
         {
             string Path = "appsettings.json";
+
             {
                 //如果你把配置文件 是 根据环境变量来分开了，可以这样写
                 //Path = $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json";
@@ -34,8 +42,10 @@ namespace Blog.Core.Common
             //.Add(new JsonConfigurationSource { Path = Path, ReloadOnChange = true })//请注意要把当前appsetting.json 文件->右键->属性->复制到输出目录->始终复制
             //.Build();
 
+
+            var contentPath = env.ContentRootPath;
             Configuration = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory())
+               .SetBasePath(contentPath)
                .Add(new JsonConfigurationSource { Path = Path, Optional = false, ReloadOnChange = true })//这样的话，可以直接读目录里的json文件，而不是 bin 文件夹下的，所以不用修改复制属性
                .Build();
 

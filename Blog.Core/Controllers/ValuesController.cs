@@ -59,6 +59,9 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<ResponseEnum>();
 
+            var i = 0;
+            var d = 3 / i;
+
             var roleModulePermissions = await _roleModulePermissionServices.QueryMuchTable();
 
             var roleModuleTask = _roleModulePermissionServices.Query();
