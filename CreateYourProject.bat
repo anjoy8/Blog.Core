@@ -1,4 +1,4 @@
-dotnet new -i Blog.Core.Webapi.Template.1.0.0.nupkg
+dotnet new -i Blog.Core.Webapi.Template.1.1.1.nupkg
 
 set /p OP=Please set your project name:
 
