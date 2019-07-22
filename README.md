@@ -26,6 +26,12 @@
 
 ### 初始项目
 
+#### 不要再使用 .sql 文件了，不更新了，用下边动图的方法，直接 seed data.
+
+ 
+ 
+
+
 ![操作流程](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/operateFlow.gif)
 
 
