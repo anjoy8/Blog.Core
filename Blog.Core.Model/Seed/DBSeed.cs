@@ -24,7 +24,9 @@ namespace Blog.Core.Model.Models
 
                 #region 自动创建数据库暂停服务
                 // 自动创建数据库，注意版本是 sugar 5.x 版本的
+
                 // 注意：这里还是有些问题，比如使用mysql的话，如果通过这个方法创建空数据库，字符串不是utf8的，所以还是手动创建空的数据库吧，然后设置数据库为utf-8，我再和作者讨论一下。
+                // 但是使用SqlServer 和 Sqlite 好像没有这个问题。
                 //myContext.Db.DbMaintenance.CreateDatabase(); 
                 #endregion
 
