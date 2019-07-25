@@ -21,9 +21,14 @@ namespace Blog.Core.Model.Models
             try
             {
                 // 如果生成过了，第二次，就不用再执行一遍了,注释掉该方法即可
-               
+
+                #region 自动创建数据库暂停服务
                 // 自动创建数据库，注意版本是 sugar 5.x 版本的
-                myContext.Db.DbMaintenance.CreateDatabase();
+                // 注意：这里还是有些问题，比如使用mysql的话，如果通过这个方法创建空数据库，字符串不是utf8的，所以还是手动创建空的数据库吧，然后设置数据库为utf-8，我再和作者讨论一下。
+                //myContext.Db.DbMaintenance.CreateDatabase(); 
+                #endregion
+
+
                 // 创建表
                 myContext.CreateTableByEntity(false,
                     typeof(Advertisement),
