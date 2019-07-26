@@ -100,9 +100,9 @@ namespace Blog.Core.AOP
 
         private async Task TestActionAsync(IInvocation invocation)
         {
-            Console.WriteLine("Waiting after method execution for " + invocation.MethodInvocationTarget.Name);
-            await Task.Delay(200); // 仅作测试
-            Console.WriteLine("Waited after method execution for " + invocation.MethodInvocationTarget.Name);
+            //Console.WriteLine("Waiting after method execution for " + invocation.MethodInvocationTarget.Name);
+            //await Task.Delay(200); // 仅作测试
+            //Console.WriteLine("Waited after method execution for " + invocation.MethodInvocationTarget.Name);
         }
 
         private void LogEx(Exception ex, ref string dataIntercept)

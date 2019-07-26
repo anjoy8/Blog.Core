@@ -474,14 +474,14 @@ namespace Blog.Core
                 // 在开发环境中，使用异常页面，这样可以暴露错误堆栈信息，所以不要放在生产环境。
                 app.UseDeveloperExceptionPage();
 
-                app.Use(async (context, next) =>
-                {
-                    //这里会多次调用，这里测试一下就行，不要打开注释
-                    //var blogs =await _blogArticleServices.GetBlogs();
-                    var processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-                    Console.WriteLine(processName);
-                    await next();
-                });
+                //app.Use(async (context, next) =>
+                //{
+                //    //这里会多次调用，这里测试一下就行，不要打开注释
+                //    //var blogs =await _blogArticleServices.GetBlogs();
+                //    var processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+                //    Console.WriteLine(processName);
+                //    await next();
+                //});
             }
             else
             {

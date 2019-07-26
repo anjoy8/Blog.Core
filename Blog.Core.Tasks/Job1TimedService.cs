@@ -31,15 +31,15 @@ namespace Blog.Core.Tasks
 
         private async void DoWork(object state)
         {
-            try
-            {
-                var model =await _blogArticleServices.GetBlogDetails(5);
-                Console.WriteLine($"BlogArticle:{model.bCreateTime}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error:{ex.Message}");
-            }
+            //try
+            //{
+            //    var model =await _blogArticleServices.GetBlogDetails(5);
+            //    Console.WriteLine($"BlogArticle:{model.bCreateTime}");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Error:{ex.Message}");
+            //}
 
             ConsoleHelper.WriteSuccessLine($"Job 1： {DateTime.Now}");
         }
