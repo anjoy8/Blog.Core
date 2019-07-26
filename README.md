@@ -30,7 +30,7 @@
 
 数据查看：[Blog.Core.Data.json](https://github.com/anjoy8/Blog.Data.Share/tree/master/Blog.Core.Data.json)
 
-文章讲解：[详解授权持久化 & 用户数据迁移](https://www.cnblogs.com/laozhang-is-phi/p/10660403.html)
+文章讲解：[支持多种数据库 & 快速数据库生成](https://www.cnblogs.com/laozhang-is-phi/p/10718755.html)
  
 &nbsp;
 
