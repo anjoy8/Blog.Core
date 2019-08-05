@@ -39,7 +39,7 @@ namespace Blog.Core.AuthHelper
             this.RoleModulePermissionServices = roleModulePermissionServices;
         }
 
-        // 重载异步处理程序
+        // 重写异步处理程序
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
             // 将最新的角色和接口列表更新
