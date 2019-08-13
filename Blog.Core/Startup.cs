@@ -327,11 +327,9 @@ namespace Blog.Core
             };
 
             //2.1【认证】、core自带官方JWT认证
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+            // 开启Bearer认证
+            services.AddAuthentication("Bearer")
+                // 添加JwtBearer服务
              .AddJwtBearer(o =>
              {
                  o.TokenValidationParameters = tokenValidationParameters;
