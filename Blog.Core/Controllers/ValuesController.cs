@@ -30,16 +30,18 @@ namespace Blog.Core.Controllers
         private readonly Love _love;
         private readonly IRoleModulePermissionServices _roleModulePermissionServices;
         private readonly IUser _user;
+        readonly IBlogArticleServices _blogArticleServices;
 
         /// <summary>
         /// ValuesController
         /// </summary>
+        /// <param name="blogArticleServices"></param>
         /// <param name="mapper"></param>
         /// <param name="advertisementServices"></param>
         /// <param name="love"></param>
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="user"></param>
-        public ValuesController(IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user)
+        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
@@ -48,6 +50,8 @@ namespace Blog.Core.Controllers
             _roleModulePermissionServices = roleModulePermissionServices;
             // 测试 Httpcontext
             _user = user;
+            // 测试AOP加载顺序，配合 return
+            _blogArticleServices = blogArticleServices;
         }
         /// <summary>
         /// Get方法
@@ -61,6 +65,8 @@ namespace Blog.Core.Controllers
 
             var i = 0;
             var d = 3 / i;
+
+            var blogArticles = await _blogArticleServices.GetBlogs();
 
             var roleModulePermissions = await _roleModulePermissionServices.QueryMuchTable();
 
