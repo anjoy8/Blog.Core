@@ -5,6 +5,15 @@
 
 从零开始搭建自己的前后端分离【 .NET Core2.2 Api + Vue 2.x 】框架。（🔒目前是2.2版本，因作者开源的项目较多，维护成本过高，所以本项目其他分支不再提供支持🔒）
 
+
+&nbsp;
+### 系统架构图
+
+
+![系统架构图](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core.System.Architecture.png)
+
+&nbsp;
+
 如果你感觉看着这整个项目比较费劲，我单抽出来了几个子Demo，方便学习，项目地址 ：[https://github.com/anjoy8/BlogArti](https://github.com/anjoy8/BlogArti)
 
 
@@ -18,7 +27,7 @@
 |个人博客Vue版本|tBug项目Nuxt版本|VueAdmin管理后台(更新中)|
 |-|-|-|
 |[https://github.com/anjoy8/Blog.Vue](https://github.com/anjoy8/Blog.Vue)|[https://github.com/anjoy8/Nuxt.tBug](https://github.com/anjoy8/Nuxt.tBug)|[https://github.com/anjoy8/Blog.Admin](https://github.com/anjoy8/Blog.Admin)|
-|[http://123.206.33.109:8077](http://123.206.33.109:8077)|[http://123.206.33.109:7090](http://123.206.33.109:7090)|[http://123.206.33.109:2364](http://123.206.33.109:2364)|
+|[http://vueblog.neters.club](http://vueblog.neters.club)|[http://vueblog.neters.club](http://vueblog.neters.club)|[http://vueadmin.neters.club](http://vueadmin.neters.club)|
 
 
 
