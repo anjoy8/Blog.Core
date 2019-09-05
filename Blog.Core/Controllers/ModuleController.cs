@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Blog.Core.IServices;
 using Blog.Core.Model;
@@ -44,7 +45,9 @@ namespace Blog.Core.Controllers
             }
             int intPageSize = 50;
 
-            var data = await _moduleServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
+            Expression<Func<Module, bool>> whereExpression = a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key));
+
+            var data = await _moduleServices.QueryPage(whereExpression, page, intPageSize, " Id desc ");
 
             return new MessageModel<PageModel<Module>>()
             {
