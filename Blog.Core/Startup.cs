@@ -235,11 +235,35 @@ namespace Blog.Core
 
             #region Authorize 权限认证三步走
 
-            //使用说明：
+            //Tips：注释中的中括号【xxx】的内容，与下边region中的模块，是一一匹配的
 
-            //1、如果你只是简单的基于角色授权的，仅仅在 api 上配置，第一步：【1/2 简单角色授权】，第二步：配置【统一认证服务】，第三步：开启中间件
+            /*
+             * 如果不想走数据库，仅仅想在代码里配置授权，这里可以按照下边的步骤：
+             * 1步、【1、基于角色的API授权】
+             * 很简单，只需要在指定的接口上，配置特性即可，比如：[Authorize(Roles = "Admin,System,Others")]
+             * 
+             * 但是如果你感觉"Admin,System,Others"，这样的字符串太长的话，可以把这个融合到简单策略里          
+             * 具体的配置，看下文的Region模块【2、基于策略的授权（简单版）】 ，然后在接口上，配置特性：[Authorize(Policy = "A_S_O")]
+             * 
+             * 
+             * 2步、配置Bearer认证服务，具体代码看下文的 region 【第二步：配置认证服务】
+             * 
+             * 3步、开启中间件
+             */
 
-            //2、如果你是用的复杂的基于策略授权，配置权限在数据库，第一步：【3复杂策略授权】，第二步：配置【统一认证服务】，第三步：开启中间件app.UseAuthentication();
+
+
+            /*
+             * 如果想要把权限配置到数据库，步骤如下：
+             * 1步、【3复杂策略授权】
+             * 具体的查看下边 region 内的内容
+             * 
+             * 2步、配置Bearer认证服务，具体代码看下文的 region 【第二步：配置认证服务】
+             * 
+             * 3步、开启中间件
+             */
+
+
 
             //3、综上所述，设置权限，必须要三步走，授权 + 配置认证服务 + 开启授权中间件，只不过自定义的中间件不能验证过期时间，所以我都是用官方的。
 
@@ -262,6 +286,7 @@ namespace Blog.Core
                 options.AddPolicy("Client", policy => policy.RequireRole("Client").Build());
                 options.AddPolicy("Admin", policy => policy.RequireRole("Admin").Build());
                 options.AddPolicy("SystemOrAdmin", policy => policy.RequireRole("Admin", "System"));
+                options.AddPolicy("A_S_O", policy => policy.RequireRole("Admin", "System", "Others"));
             });
 
 
