@@ -201,19 +201,20 @@ namespace Blog.Core
                 // 全局路由前缀，统一修改路由
                 o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
             })
-            .AddNewtonsoftJson()
             //全局配置Json序列化处理
-            .AddJsonOptions(options =>
+            .AddNewtonsoftJson(options =>
             {
                 //忽略循环引用
-                //options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                ////不使用驼峰样式的key
-                //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                ////设置时间格式
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                //不使用驼峰样式的key
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                //设置时间格式
                 //options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
             });
 
-        
+          
+
+
 
             #endregion
 
