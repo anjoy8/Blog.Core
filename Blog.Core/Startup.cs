@@ -35,7 +35,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using StackExchange.Profiling.Storage;
 using Swashbuckle.AspNetCore.Swagger;
@@ -51,7 +53,7 @@ namespace Blog.Core
         /// </summary>
         public static ILoggerRepository Repository { get; set; }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             Env = env;
@@ -65,11 +67,11 @@ namespace Blog.Core
         }
 
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment Env { get; }
+        public IWebHostEnvironment Env { get; }
         private const string ApiName = "Blog.Core";
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             #region 部分服务注入-netcore自带方法
             // 缓存注入
@@ -98,17 +100,6 @@ namespace Blog.Core
             //跨域第二种方法，声明策略，记得下边app中配置
             services.AddCors(c =>
             {
-                //↓↓↓↓↓↓↓注意正式环境不要使用这种全开放的处理↓↓↓↓↓↓↓↓↓↓
-                c.AddPolicy("AllRequests", policy =>
-                {
-                    policy
-                    .AllowAnyOrigin()//允许任何源
-                    .AllowAnyMethod()//允许任何方式
-                    .AllowAnyHeader()//允许任何头
-                    .AllowCredentials();//允许cookie
-                });
-                //↑↑↑↑↑↑↑注意正式环境不要使用这种全开放的处理↑↑↑↑↑↑↑↑↑↑
-
 
                 //一般采用这种方法
                 c.AddPolicy("LimitRequests", policy =>
@@ -151,16 +142,14 @@ namespace Blog.Core
                 //遍历出全部的版本，做文档信息展示
                 typeof(ApiVersions).GetEnumNames().ToList().ForEach(version =>
                 {
-                    c.SwaggerDoc(version, new Info
+                    c.SwaggerDoc(version, new OpenApiInfo
                     {
                         // {ApiName} 定义成全局变量，方便修改
                         Version = version,
                         Title = $"{ApiName} 接口文档",
                         Description = $"{ApiName} HTTP API " + version,
-                        TermsOfService = "None",
-                        Contact = new Contact { Name = "Blog.Core", Email = "Blog.Core@xxx.com", Url = "https://www.jianshu.com/u/94102b59cc2a" }
+                        Contact = new OpenApiContact { Name = "Blog.Core", Email = "Blog.Core@xxx.com", Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") }
                     });
-                    // 按相对路径排序，作者：Alby
                     c.OrderActionsBy(o => o.RelativePath);
                 });
 
@@ -174,21 +163,19 @@ namespace Blog.Core
 
                 #region Token绑定到ConfigureServices
 
-                //添加header验证信息
-                //c.OperationFilter<SwaggerHeader>();
 
                 // 发行人
-                var IssuerName = (Configuration.GetSection("Audience"))["Issuer"];
-                var security = new Dictionary<string, IEnumerable<string>> { { IssuerName, new string[] { } }, };
-                c.AddSecurityRequirement(security);
+                //var IssuerName = (Configuration.GetSection("Audience"))["Issuer"];
+                //var security = new Dictionary<string, IEnumerable<string>> { { IssuerName, new string[] { } }, };
+                //c.AddSecurityRequirement(security);
 
                 //方案名称“Blog.Core”可自定义，上下一致即可
-                c.AddSecurityDefinition(IssuerName, new ApiKeyScheme
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
                     Name = "Authorization",//jwt默认的参数名称
-                    In = "header",//jwt默认存放Authorization信息的位置(请求头中)
-                    Type = "apiKey"
+                    In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
+                    Type = SecuritySchemeType.ApiKey
                 });
                 #endregion
             });
@@ -197,8 +184,9 @@ namespace Blog.Core
 
             #region MVC + GlobalExceptions
 
+
             //注入全局异常捕获
-            services.AddMvc(o =>
+            services.AddControllers(o =>
             {
                 // 全局异常过滤
                 o.Filters.Add(typeof(GlobalExceptionsFilter));
@@ -206,10 +194,20 @@ namespace Blog.Core
                 o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
                 // 全局路由前缀，统一修改路由
                 o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
-            })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-            // 取消默认驼峰
-            .AddJsonOptions(options => { options.SerializerSettings.ContractResolver = new DefaultContractResolver(); });
+            });
+
+           // services.AddMvc(o =>
+           // {
+           //     // 全局异常过滤
+           //     o.Filters.Add(typeof(GlobalExceptionsFilter));
+           //     // 全局路由权限公约
+           //     o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
+           //     // 全局路由前缀，统一修改路由
+           //     o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
+           // })
+           // .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+           // // 取消默认驼峰
+           //;
 
 
             #endregion
@@ -389,13 +387,20 @@ namespace Blog.Core
 
             #endregion
 
-            services.AddSingleton(new Appsettings(Env));
-            services.AddSingleton(new LogLock(Env));
+            services.AddSingleton(new Appsettings(Env.ContentRootPath));
+            services.AddSingleton(new LogLock(Env.ContentRootPath));
 
 
-            #region AutoFac DI
-            //实例化 AutoFac  容器   
-            var builder = new ContainerBuilder();
+            
+
+            //return new AutofacServiceProvider(ApplicationContainer);//第三方IOC接管 core内置DI容器
+
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
+          
             //注册要通过反射创建的组件
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
             builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
@@ -470,21 +475,13 @@ namespace Blog.Core
 
             #endregion
 
-
-            //将services填充到Autofac容器生成器中
-            builder.Populate(services);
-
             //使用已进行的组件登记创建新容器
-            var ApplicationContainer = builder.Build();
-
-            #endregion
-
-            return new AutofacServiceProvider(ApplicationContainer);//第三方IOC接管 core内置DI容器
+            //var ApplicationContainer = builder.Build();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IBlogArticleServices _blogArticleServices)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBlogArticleServices _blogArticleServices)
         {
 
             #region ReuestResponseLog
@@ -573,15 +570,27 @@ namespace Blog.Core
             app.UseStatusCodePages();//把错误码返回前台，比如是404
 
 
-            app.UseMvc();
 
+            app.UseRouting();
 
-            app.UseSignalR(routes =>
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                //这里要说下，为啥地址要写 /api/xxx 
-                //因为我前后端分离了，而且使用的是代理模式，所以如果你不用/api/xxx的这个规则的话，会出现跨域问题，毕竟这个不是我的controller的路由，而且自己定义的路由
-                routes.MapHub<ChatHub>("/api2/chatHub");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //app.UseMvc();
+
+
+            //app.UseSignalR(routes =>
+            //{
+            //    //这里要说下，为啥地址要写 /api/xxx 
+            //    //因为我前后端分离了，而且使用的是代理模式，所以如果你不用/api/xxx的这个规则的话，会出现跨域问题，毕竟这个不是我的controller的路由，而且自己定义的路由
+            //    routes.MapHub<ChatHub>("/api2/chatHub");
+            //});
         }
 
     }
