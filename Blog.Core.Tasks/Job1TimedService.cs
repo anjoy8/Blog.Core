@@ -29,7 +29,7 @@ namespace Blog.Core.Tasks
             return Task.CompletedTask;
         }
 
-        private async void DoWork(object state)
+        private  void DoWork(object state)
         {
             //try
             //{

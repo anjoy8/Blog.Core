@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Hosting;
 using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,11 @@ namespace Blog.Core.Filter
     /// </summary>
     public class GlobalExceptionsFilter : IExceptionFilter
     {
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
         private readonly ILoggerHelper _loggerHelper;
         private readonly IHubContext<ChatHub> _hubContext;
 
-        public GlobalExceptionsFilter(IHostingEnvironment env, ILoggerHelper loggerHelper, IHubContext<ChatHub> hubContext)
+        public GlobalExceptionsFilter(IWebHostEnvironment env, ILoggerHelper loggerHelper, IHubContext<ChatHub> hubContext)
         {
             _env = env;
             _loggerHelper = loggerHelper;

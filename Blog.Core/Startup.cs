@@ -40,6 +40,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using StackExchange.Profiling.Storage;
+using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
 
@@ -73,7 +74,7 @@ namespace Blog.Core
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            #region 部分服务注入-netcore自带方法
+            #region 部分工具类服务注入-netcore原生方法
             // 缓存注入
             services.AddScoped<ICaching, MemoryCaching>();
             services.AddSingleton<IMemoryCache>(factory =>
@@ -85,6 +86,10 @@ namespace Blog.Core
             services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
             // log日志注入
             services.AddSingleton<ILoggerHelper, LogHelper>();
+
+            services.AddSingleton(new Appsettings(Env.ContentRootPath));
+
+            services.AddSingleton(new LogLock(Env.ContentRootPath));
             #endregion
 
             #region 初始化DB
@@ -148,7 +153,8 @@ namespace Blog.Core
                         Version = version,
                         Title = $"{ApiName} 接口文档",
                         Description = $"{ApiName} HTTP API " + version,
-                        Contact = new OpenApiContact { Name = "Blog.Core", Email = "Blog.Core@xxx.com", Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") }
+                        Contact = new OpenApiContact { Name = ApiName, Email = "Blog.Core@xxx.com", Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") },
+                        License = new OpenApiLicense { Name = ApiName, Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") }
                     });
                     c.OrderActionsBy(o => o.RelativePath);
                 });
@@ -161,15 +167,15 @@ namespace Blog.Core
                 var xmlModelPath = Path.Combine(basePath, "Blog.Core.Model.xml");//这个就是Model层的xml文件名
                 c.IncludeXmlComments(xmlModelPath);
 
+                c.OperationFilter<AddResponseHeadersFilter>();
+                c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
+
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
+
+
                 #region Token绑定到ConfigureServices
 
 
-                // 发行人
-                //var IssuerName = (Configuration.GetSection("Audience"))["Issuer"];
-                //var security = new Dictionary<string, IEnumerable<string>> { { IssuerName, new string[] { } }, };
-                //c.AddSecurityRequirement(security);
-
-                //方案名称“Blog.Core”可自定义，上下一致即可
                 c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
@@ -184,7 +190,6 @@ namespace Blog.Core
 
             #region MVC + GlobalExceptions
 
-
             //注入全局异常捕获
             services.AddControllers(o =>
             {
@@ -194,20 +199,8 @@ namespace Blog.Core
                 o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
                 // 全局路由前缀，统一修改路由
                 o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
-            });
-
-           // services.AddMvc(o =>
-           // {
-           //     // 全局异常过滤
-           //     o.Filters.Add(typeof(GlobalExceptionsFilter));
-           //     // 全局路由权限公约
-           //     o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
-           //     // 全局路由前缀，统一修改路由
-           //     o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
-           // })
-           // .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-           // // 取消默认驼峰
-           //;
+            })
+            .AddNewtonsoftJson(); 
 
 
             #endregion
@@ -352,7 +345,7 @@ namespace Blog.Core
             //2.1【认证】、core自带官方JWT认证
             // 开启Bearer认证
             services.AddAuthentication("Bearer")
-                // 添加JwtBearer服务
+             // 添加JwtBearer服务
              .AddJwtBearer(o =>
              {
                  o.TokenValidationParameters = tokenValidationParameters;
@@ -387,11 +380,6 @@ namespace Blog.Core
 
             #endregion
 
-            services.AddSingleton(new Appsettings(Env.ContentRootPath));
-            services.AddSingleton(new LogLock(Env.ContentRootPath));
-
-
-            
 
             //return new AutofacServiceProvider(ApplicationContainer);//第三方IOC接管 core内置DI容器
 
@@ -400,7 +388,7 @@ namespace Blog.Core
         public void ConfigureContainer(ContainerBuilder builder)
         {
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
-          
+
             //注册要通过反射创建的组件
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
             builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
@@ -580,17 +568,11 @@ namespace Blog.Core
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHub<ChatHub>("/api2/chatHub");
             });
 
-            //app.UseMvc();
 
-
-            //app.UseSignalR(routes =>
-            //{
-            //    //这里要说下，为啥地址要写 /api/xxx 
-            //    //因为我前后端分离了，而且使用的是代理模式，所以如果你不用/api/xxx的这个规则的话，会出现跨域问题，毕竟这个不是我的controller的路由，而且自己定义的路由
-            //    routes.MapHub<ChatHub>("/api2/chatHub");
-            //});
         }
 
     }

@@ -18,6 +18,7 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(Permissions.Name)]
     public class PermissionController : ControllerBase
     {
         readonly IPermissionServices _permissionServices;
