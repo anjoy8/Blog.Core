@@ -1,8 +1,8 @@
 color 3
 
-dotnet new -i Blog.Core.Webapi.Template::1.1.1
+dotnet new -i Blog.Core.Webapi.Template::1.1.2
 
-set /p OP=Please set your project name(for example£ºBaidu.Api):
+set /p OP=Please set your project name(for example:Baidu.Api):
 
 md .1YourProject
 
