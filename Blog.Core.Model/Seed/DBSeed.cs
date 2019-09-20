@@ -10,7 +10,14 @@ namespace Blog.Core.Model.Models
 {
     public class DBSeed
     {
+        // 这是我的在线demo数据，比较多，且杂乱
         private static string GitJsonFileFormat = "https://github.com/anjoy8/Blog.Data.Share/raw/master/Blog.Core.Data.json/{0}.tsv";
+
+
+        // 这里我把重要的权限数据提出来的精简版，默认一个Admin_Role + 一个管理员用户，
+        // 然后就是菜单+接口+权限分配，注意没有其他博客信息了，下边seeddata 的时候，删掉即可。
+        private static string GitJsonFileFormat2 = "https://github.com/anjoy8/Blog.Data.Share/raw/master/Student.Achieve.json/{0}.tsv";
+
         /// <summary>
         /// 异步添加种子数据
         /// </summary>
