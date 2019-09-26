@@ -1,7 +1,16 @@
-﻿<script async="async" id="mini-profiler" src="/profiler/includes.min.js?v=4.0.138+gcc91adf599"
-        data-version="4.0.138+gcc91adf599" data-path="/profiler/"
-        data-current-id="4ec7c742-49d4-4eaf-8281-3c1e0efa748a" data-ids="" data-position="Left"
+﻿<!--<script async="async" id="mini-profiler" src="/profiler/includes.min.js?v=4.1.0+c940f0f28d"
+        data-version="4.1.0+c940f0f28d" data-path="/profiler/"
+        data-current-id="" data-ids="" data-position="Left"
         data-authorized="true" data-max-traces="15" data-toggle-shortcut="Alt+P"
+        data-trivial-milliseconds="2.0" data-ignored-duplicate-execute-types="Open,OpenAsync,Close,CloseAsync">
+</script>-->
+
+<!--1、版本号要与nuget包一致；2、id不能为空-->
+<script async="async" id="mini-profiler" src="/profiler/includes.min.js?v=4.1.0+c940f0f28d"
+        data-version="4.1.0+c940f0f28d" data-path="/profiler/"
+        data-current-id="4ec7c742-49d4-4eaf-8281-3c1e0efa8888" data-ids="4ec7c742-49d4-4eaf-8281-3c1e0efa8888"
+        data-position="Left"
+        data-authorized="true" data-max-traces="5" data-toggle-shortcut="Alt+P"
         data-trivial-milliseconds="2.0" data-ignored-duplicate-execute-types="Open,OpenAsync,Close,CloseAsync">
 </script>
 
@@ -34,14 +43,17 @@
             margin: 0;
             background: #fafafa;
         }
+
         .qqgroup {
             float: right;
         }
+
         .info {
             float: left;
         }
-        .download-contents{
-            display:none;
+
+        .download-contents {
+            display: none;
         }
     </style>
     %(HeadContent)
@@ -105,7 +117,7 @@
             ui.initOAuth(oauthConfigObject);
 
 
-             int =  setInterval(function () {
+            int = setInterval(function () {
                 getData();
             }, 1000);
             $("img").attr("src", "./logo/favicon-32x32.png");
@@ -113,7 +125,7 @@
         function getData() {
 
             console.log(1);
-            if ($(".qqgroup").length<=0) {
+            if ($(".qqgroup").length <= 0) {
                 $('.info').after("<div class='qqgroup'><img  src='http://123.206.33.109:26898/QQGroup.png' alt='QQ二维码' style='width: 200px;'></div><div style='clear: both;'></div>");
                 console.log(2);
                 clearInterval(int);

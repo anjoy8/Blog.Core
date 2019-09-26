@@ -234,7 +234,7 @@ namespace Blog.Core
             #endregion
 
             #region SignalR 通讯
-            services.AddSignalR();
+            services.AddSignalR().AddNewtonsoftJsonProtocol();
             #endregion
 
             #region Authorize 权限认证三步走
