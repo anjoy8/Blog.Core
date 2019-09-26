@@ -152,7 +152,7 @@ namespace Blog.Core
                     {
                         // {ApiName} 定义成全局变量，方便修改
                         Version = version,
-                        Title = $"{ApiName} 接口文档",
+                        Title = $"{ApiName} 接口文档——Netcore 3.0",
                         Description = $"{ApiName} HTTP API " + version,
                         Contact = new OpenApiContact { Name = ApiName, Email = "Blog.Core@xxx.com", Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") },
                         License = new OpenApiLicense { Name = ApiName, Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") }
