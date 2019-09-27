@@ -1,4 +1,5 @@
-﻿using Blog.Core.Common.LogHelper;
+﻿using Blog.Core.Common;
+using Blog.Core.Common.LogHelper;
 using Blog.Core.Log;
 using SqlSugar;
 using StackExchange.Profiling;
@@ -87,20 +88,19 @@ namespace Blog.Core.Repository
                 }
             });
 
-            //_db.Aop.OnLogExecuted = (sql, pars) => //SQL执行完事件
-            //{
-            //    OutSql2Log(sql, GetParas(pars));
-            //};
 
-            _db.Aop.OnLogExecuting = (sql, pars) => //SQL执行中事件
+            if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
             {
-                Parallel.For(0, 1, e =>
+                _db.Aop.OnLogExecuting = (sql, pars) => //SQL执行中事件
                 {
-                    MiniProfiler.Current.CustomTiming("SQL：", GetParas(pars) + "【SQL语句】：" + sql);
-                    LogLock.OutSql2Log("SqlLog", new string[] { GetParas(pars), "【SQL语句】：" + sql });
+                    Parallel.For(0, 1, e =>
+                    {
+                        MiniProfiler.Current.CustomTiming("SQL：", GetParas(pars) + "【SQL语句】：" + sql);
+                        LogLock.OutSql2Log("SqlLog", new string[] { GetParas(pars), "【SQL语句】：" + sql });
 
-                });
-            };
+                    });
+                }; 
+            }
 
         }
 
