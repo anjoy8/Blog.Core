@@ -14,6 +14,14 @@
 
 &nbsp;
 
+&nbsp;
+### 系统压测结果报告
+
+
+![系统压测结果报告](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/JMeterTest.png)
+
+&nbsp;
+
 如果你感觉看着这整个项目比较费劲，我单抽出来了几个子Demo，方便学习，项目地址 ：[https://github.com/anjoy8/BlogArti](https://github.com/anjoy8/BlogArti)
 
 
