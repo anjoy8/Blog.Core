@@ -18,6 +18,12 @@
 ### 系统压测结果报告
 
 
+&nbsp;
+其他接口压测内存占用在：220~350 m 之间，具体的，自行压测即可。
+&nbsp;
+
+
+
 ![系统压测结果报告](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/JMeterTest.png)
 
 &nbsp;
