@@ -34,12 +34,12 @@ namespace Blog.Core.Common.LogHelper
                 //      因进入与退出写入模式应在同一个try finally语句块内，所以在请求进入写入模式之前不能触发异常，否则释放次数大于请求次数将会触发异常
                 LogWriteLock.EnterWriteLock();
 
-                var path = _contentRoot + @"\Log";
+                var path = Path.Combine(_contentRoot, "Log");
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
-                string logFilePath = path + $@"\{filename}.log";
+                string logFilePath = Path.Combine(path, $@"{filename}.log");
 
                 var now = DateTime.Now;
                 var logContent = (
