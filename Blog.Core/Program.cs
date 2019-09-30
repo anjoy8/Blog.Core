@@ -63,16 +63,20 @@ namespace Blog.Core
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder
-                  .UseStartup<Startup>()
-                  .UseUrls("http://localhost:8081")
-                  .ConfigureLogging((hostingContext, builder) =>
-                  {
-                      builder.ClearProviders();
-                      builder.SetMinimumLevel(LogLevel.Trace);
-                      builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                      builder.AddConsole();
-                      builder.AddDebug();
-                  });
+                .ConfigureKestrel(serverOptions =>
+                {
+                    serverOptions.AllowSynchronousIO = true;//启用同步 IO
+                })
+                .UseStartup<Startup>()
+                .UseUrls("http://localhost:8081")
+                .ConfigureLogging((hostingContext, builder) =>
+                {
+                    builder.ClearProviders();
+                    builder.SetMinimumLevel(LogLevel.Trace);
+                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    builder.AddConsole();
+                    builder.AddDebug();
+                });
             });
     }
 }
