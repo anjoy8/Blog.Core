@@ -293,7 +293,9 @@ namespace Blog.Core.Controllers
 
                     if (pids.Any())
                     {
-                        var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
+                        //var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
+                        var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id))).OrderBy(c => c.OrderSort);
+
                         var permissionTrees = (from child in rolePermissionMoudles
                                                where child.IsDeleted == false
                                                orderby child.Id
@@ -305,6 +307,8 @@ namespace Blog.Core.Controllers
                                                    order = child.OrderSort,
                                                    path = child.Code,
                                                    iconCls = child.Icon,
+                                                   IsButton=child.IsButton.ObjToBool(),
+                                                   Func=child.Func,
                                                    IsHide = child.IsHide.ObjToBool(),
                                                    meta = new NavigationBarMeta
                                                    {

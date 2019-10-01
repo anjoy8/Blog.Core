@@ -44,6 +44,12 @@ namespace Blog.Core.Model.Models
         public int Pid { get; set; }
 
         /// <summary>
+        /// 按钮事件
+        /// </summary>
+        [SugarColumn(IsNullable = true)]
+        public string Func { get; set; }
+
+        /// <summary>
         /// 接口api
         /// </summary>
         public int Mid { get; set; }
