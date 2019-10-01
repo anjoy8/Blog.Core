@@ -280,8 +280,8 @@ namespace Blog.Core.Controllers
 
             // 两种方式获取 uid
             var uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
-                                    where item.Type == "jti"
-                                    select item.Value).FirstOrDefault().ObjToInt();
+                                     where item.Type == "jti"
+                                     select item.Value).FirstOrDefault().ObjToInt();
 
             var uidInHttpcontext = (JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid;
 
@@ -294,7 +294,8 @@ namespace Blog.Core.Controllers
 
                     if (pids.Any())
                     {
-                        var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
+                        //var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
+                        var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id))).OrderBy(c => c.OrderSort);
                         var permissionTrees = (from child in rolePermissionMoudles
                                                where child.IsDeleted == false
                                                orderby child.Id
@@ -306,7 +307,9 @@ namespace Blog.Core.Controllers
                                                    order = child.OrderSort,
                                                    path = child.Code,
                                                    iconCls = child.Icon,
+                                                   Func=child.Func,
                                                    IsHide = child.IsHide.ObjToBool(),
+                                                   IsButton=child.IsButton.ObjToBool(),
                                                    meta = new NavigationBarMeta
                                                    {
                                                        requireAuth = true,

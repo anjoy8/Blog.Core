@@ -405,6 +405,11 @@
             是否是隐藏菜单
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.Permission.Func">
+            <summary>
+            按钮事件
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Permission.Pid">
             <summary>
             上一级菜单（0表示上一级无菜单）
