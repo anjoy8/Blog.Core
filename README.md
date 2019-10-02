@@ -1,6 +1,6 @@
 Dev Build:: 
 
-[![Gitter](https://badges.gitter.im/Blog_core/community.svg)](https://gitter.im/Blog_core/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Build status](https://ci.appveyor.com/api/projects/status/facdw9pinrxs1610?svg=true)](https://ci.appveyor.com/project/anjoy8/blog-core)
+[![Gitter](https://badges.gitter.im/Blog_core/community.svg)](https://gitter.im/Blog_core/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Build status](https://ci.appveyor.com/api/projects/status/facdw9pinrxs1610?svg=true)](https://ci.appveyor.com/project/anjoy8/blog-core) [![codecov](https://codecov.io/gh/anjoy8/Blog.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/anjoy8/Blog.Core)
 
 
 
