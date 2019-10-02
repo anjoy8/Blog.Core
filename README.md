@@ -1,4 +1,13 @@
-﻿[ENGLISH](https://github.com/anjoy8/Blog.Core/blob/master/README-en.md) | [中文版](https://github.com/anjoy8/Blog.Core/blob/master/README.md)
+Dev Build:: 
+
+[![Gitter](https://badges.gitter.im/Blog_core/community.svg)](https://gitter.im/Blog_core/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Build status](https://ci.appveyor.com/api/projects/status/facdw9pinrxs1610?svg=true)](https://ci.appveyor.com/project/anjoy8/blog-core)
+
+
+
+&nbsp;
+&nbsp;
+
+[ENGLISH](https://github.com/anjoy8/Blog.Core/blob/master/README-en.md) | [中文版](https://github.com/anjoy8/Blog.Core/blob/master/README.md)
 
 ![Logo](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/logocore.png)
 
