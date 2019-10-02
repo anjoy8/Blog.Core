@@ -389,8 +389,8 @@ namespace Blog.Core
 
             #endregion
 
-            services.AddSingleton(new Appsettings(Env));
-            services.AddSingleton(new LogLock(Env));
+            services.AddSingleton(new Appsettings(Env.ContentRootPath));
+            services.AddSingleton(new LogLock(Env.ContentRootPath));
 
 
             #region AutoFac DI

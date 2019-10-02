@@ -343,7 +343,7 @@ healthchecksdb
 
 # wwwroot/images
 *images/
-Blog.Core/WMBlog.db
+!Blog.Core/WMBlog.db
 .1YourProject
 .PublishFiles
 !Blog.Core.Webapi.Template.1.0.0.nupkg
