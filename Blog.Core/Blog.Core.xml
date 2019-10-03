@@ -132,12 +132,13 @@
             services 层注入
             </summary>
         </member>
-        <member name="M:Blog.Core.AuthHelper.PermissionHandler.#ctor(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider,Blog.Core.IServices.IRoleModulePermissionServices)">
+        <member name="M:Blog.Core.AuthHelper.PermissionHandler.#ctor(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider,Blog.Core.IServices.IRoleModulePermissionServices,Microsoft.AspNetCore.Http.IHttpContextAccessor)">
             <summary>
             构造函数注入
             </summary>
             <param name="schemes"></param>
             <param name="roleModulePermissionServices"></param>
+            <param name="accessor"></param>
         </member>
         <member name="T:Blog.Core.AuthHelper.PermissionItem">
             <summary>
