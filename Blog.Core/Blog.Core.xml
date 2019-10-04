@@ -377,12 +377,6 @@
             接口管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ModuleController.#ctor(Blog.Core.IServices.IModuleServices)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="moduleServices"></param>
-        </member>
         <member name="M:Blog.Core.Controllers.ModuleController.Get(System.Int32,System.String)">
             <summary>
             获取全部接口api
@@ -423,7 +417,7 @@
             菜单管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,Microsoft.AspNetCore.Http.IHttpContextAccessor,Blog.Core.Common.HttpContextUser.IUser)">
             <summary>
             构造函数
             </summary>
@@ -432,6 +426,7 @@
             <param name="roleModulePermissionServices"></param>
             <param name="userRoleServices"></param>
             <param name="httpContext"></param>
+            <param name="user"></param>
         </member>
         <member name="M:Blog.Core.Controllers.PermissionController.Get(System.Int32,System.String)">
             <summary>
@@ -495,12 +490,6 @@
             <summary>
             角色管理
             </summary>
-        </member>
-        <member name="M:Blog.Core.Controllers.RoleController.#ctor(Blog.Core.IServices.IRoleServices)">
-            <summary>
-            构造函数
-            </summary>
-            <param name="roleServices"></param>
         </member>
         <member name="M:Blog.Core.Controllers.RoleController.Get(System.Int32,System.String)">
             <summary>

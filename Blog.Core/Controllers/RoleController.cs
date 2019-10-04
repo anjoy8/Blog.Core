@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -18,14 +19,13 @@ namespace Blog.Core.Controllers
     public class RoleController : ControllerBase
     {
         readonly IRoleServices _roleServices;
+        readonly IUser _user;
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="roleServices"></param>
-        public RoleController(IRoleServices roleServices)
+     
+        public RoleController(IRoleServices roleServices, IUser user)
         {
             _roleServices = roleServices;
+            _user = user;
         }
 
         /// <summary>
@@ -73,6 +73,9 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<string>> Post([FromBody] Role role)
         {
             var data = new MessageModel<string>();
+
+            role.CreateId = _user.ID;
+            role.CreateBy = _user.Name;
 
             var id = (await _roleServices.Add(role));
             data.success = id > 0;

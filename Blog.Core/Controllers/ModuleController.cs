@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -20,14 +21,13 @@ namespace Blog.Core.Controllers
     public class ModuleController : ControllerBase
     {
         readonly IModuleServices _moduleServices;
+        readonly IUser _user;
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="moduleServices"></param>
-        public ModuleController(IModuleServices moduleServices )
+       
+        public ModuleController(IModuleServices moduleServices, IUser user)
         {
             _moduleServices = moduleServices;
+            _user = user;
         }
 
         /// <summary>
@@ -76,6 +76,9 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<string>> Post([FromBody] Module module)
         {
             var data = new MessageModel<string>();
+
+            module.CreateId = _user.ID;
+            module.CreateBy = _user.Name;
 
             var id = (await _moduleServices.Add(module));
             data.success = id > 0;

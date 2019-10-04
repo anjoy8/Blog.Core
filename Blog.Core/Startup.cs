@@ -536,14 +536,7 @@ namespace Blog.Core
             app.UseMiniProfiler();
             #endregion
 
-            #region 第三步：开启认证中间件
-
-            //此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件，第二种写法//app.UseMiddleware<JwtTokenAuth>(); 
-            app.UseJwtTokenAuth();
-
-            //如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务 (.AddAuthentication 和 .AddJwtBearer 二者缺一不可)
-            app.UseAuthentication();
-            #endregion
+            
 
             #region CORS
             //跨域第二种方法，使用策略，详细策略信息在ConfigureService中
@@ -571,6 +564,15 @@ namespace Blog.Core
 
 
             app.UseRouting();
+
+            #region 第三步：开启认证中间件
+
+            //此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件，第二种写法//app.UseMiddleware<JwtTokenAuth>(); 
+            //app.UseJwtTokenAuth();
+
+            //如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务 (.AddAuthentication 和 .AddJwtBearer 二者缺一不可)
+            app.UseAuthentication();
+            #endregion
 
             app.UseAuthorization();
 
