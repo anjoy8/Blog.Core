@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
+using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -18,6 +19,7 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(Permissions.Name)]
     public class PermissionController : ControllerBase
     {
         readonly IPermissionServices _permissionServices;
@@ -25,6 +27,7 @@ namespace Blog.Core.Controllers
         readonly IRoleModulePermissionServices _roleModulePermissionServices;
         readonly IUserRoleServices _userRoleServices;
         readonly IHttpContextAccessor _httpContext;
+        readonly IUser _user;
 
         /// <summary>
         /// 构造函数
@@ -34,13 +37,15 @@ namespace Blog.Core.Controllers
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="userRoleServices"></param>
         /// <param name="httpContext"></param>
-        public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices, IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices, IHttpContextAccessor httpContext)
+        /// <param name="user"></param>
+        public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices, IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices, IHttpContextAccessor httpContext, IUser user)
         {
             _permissionServices = permissionServices;
             _moduleServices = moduleServices;
             _roleModulePermissionServices = roleModulePermissionServices;
             _userRoleServices = userRoleServices;
             _httpContext = httpContext;
+            _user = user;
 
         }
 
@@ -152,6 +157,9 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<string>();
 
+            permission.CreateId = _user.ID;
+            permission.CreateBy = _user.Name;
+
             var id = (await _permissionServices.Add(permission));
             data.success = id > 0;
             if (data.success)
@@ -198,6 +206,10 @@ namespace Blog.Core.Controllers
                                 ModuleId = moduleid.ObjToInt(),
                                 PermissionId = item,
                             };
+
+
+                            roleModulePermission.CreateId = _user.ID;
+                            roleModulePermission.CreateBy = _user.Name;
 
                             data.success |= (await _roleModulePermissionServices.Add(roleModulePermission)) > 0;
 
@@ -277,12 +289,14 @@ namespace Blog.Core.Controllers
 
             var data = new MessageModel<NavigationBar>();
 
-            // 两种方式获取 uid
+            // 三种方式获取 uid
             var uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
-                                    where item.Type == "jti"
-                                    select item.Value).FirstOrDefault().ObjToInt();
+                                     where item.Type == "jti"
+                                     select item.Value).FirstOrDefault().ObjToInt();
 
             var uidInHttpcontext = (JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid;
+
+            var uName = _user.Name;
 
             if (uid > 0 && uid == uidInHttpcontext)
             {
@@ -295,7 +309,6 @@ namespace Blog.Core.Controllers
                     {
                         //var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
                         var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id))).OrderBy(c => c.OrderSort);
-
                         var permissionTrees = (from child in rolePermissionMoudles
                                                where child.IsDeleted == false
                                                orderby child.Id
@@ -307,9 +320,9 @@ namespace Blog.Core.Controllers
                                                    order = child.OrderSort,
                                                    path = child.Code,
                                                    iconCls = child.Icon,
-                                                   IsButton=child.IsButton.ObjToBool(),
                                                    Func=child.Func,
                                                    IsHide = child.IsHide.ObjToBool(),
+                                                   IsButton=child.IsButton.ObjToBool(),
                                                    meta = new NavigationBarMeta
                                                    {
                                                        requireAuth = true,

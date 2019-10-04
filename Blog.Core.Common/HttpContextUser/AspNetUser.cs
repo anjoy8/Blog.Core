@@ -15,6 +15,7 @@ namespace Blog.Core.Common.HttpContextUser
         }
 
         public string Name => _accessor.HttpContext.User.Identity.Name;
+        public int ID => GetClaimValueByType("jti").FirstOrDefault().ObjToInt();
 
         public bool IsAuthenticated()
         {
