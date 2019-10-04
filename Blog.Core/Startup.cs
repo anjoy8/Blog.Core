@@ -7,12 +7,12 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
 using AutoMapper;
 using Blog.Core.AOP;
 using Blog.Core.AuthHelper;
 using Blog.Core.Common;
+using Blog.Core.Common.AppConfig;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Common.MemoryCache;
@@ -40,9 +40,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using StackExchange.Profiling.Storage;
 using Swashbuckle.AspNetCore.Filters;
-using Swashbuckle.AspNetCore.Swagger;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
 
 namespace Blog.Core
@@ -212,7 +210,7 @@ namespace Blog.Core
                 //options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
             });
 
-          
+
 
 
 
@@ -301,7 +299,7 @@ namespace Blog.Core
             #region 参数
             //读取配置文件
             var audienceConfig = Configuration.GetSection("Audience");
-            var symmetricKeyAsBase64 = audienceConfig["Secret"];
+            var symmetricKeyAsBase64 = AppSecretConfig.Audience_Secret_String;
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
             var signingKey = new SymmetricSecurityKey(keyByteArray);
 

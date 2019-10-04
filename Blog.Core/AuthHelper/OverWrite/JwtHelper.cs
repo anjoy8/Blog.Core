@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Blog.Core.Common;
+using Blog.Core.Common.AppConfig;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Blog.Core.AuthHelper.OverWrite
@@ -21,7 +22,7 @@ namespace Blog.Core.AuthHelper.OverWrite
         {
             string iss = Appsettings.app(new string[] { "Audience", "Issuer" });
             string aud = Appsettings.app(new string[] { "Audience", "Audience" });
-            string secret = Appsettings.app(new string[] { "Audience", "Secret" });
+            string secret = AppSecretConfig.Audience_Secret_String;
 
             //var claims = new Claim[] //old
             var claims = new List<Claim>
