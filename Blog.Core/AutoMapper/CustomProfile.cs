@@ -12,6 +12,7 @@ namespace Blog.Core.AutoMapper
         public CustomProfile()
         {
             CreateMap<BlogArticle, BlogViewModels>();
+            CreateMap<BlogViewModels, BlogArticle>();
         }
     }
 }
