@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Blog.Core.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.1.0" />
   </ItemGroup>
 

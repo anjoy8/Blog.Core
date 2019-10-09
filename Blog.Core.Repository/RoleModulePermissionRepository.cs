@@ -4,6 +4,7 @@ using Blog.Core.IRepository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SqlSugar;
+using Blog.Core.IRepository.UnitOfWork;
 
 namespace Blog.Core.Repository
 {
@@ -12,6 +13,9 @@ namespace Blog.Core.Repository
     /// </summary>	
     public class RoleModulePermissionRepository : BaseRepository<RoleModulePermission>, IRoleModulePermissionRepository
     {
+        public RoleModulePermissionRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
+        {
+        }
 
         public async Task<List<RoleModulePermission>> WithChildrenModel()
         {
