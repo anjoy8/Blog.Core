@@ -6,15 +6,26 @@ using Blog.Core.Repository;
 using System.Linq;
 using Blog.Core.Common.DB;
 using SqlSugar;
+using Microsoft.AspNetCore.Hosting;
+using Autofac;
+using Blog.Core.Common;
+using Blog.Core.IServices;
+using Blog.Core.IRepository;
 
 namespace Blog.Core.Tests
 {
     public class Repository_Base_Should
     {
-        BaseRepository<BlogArticle> baseRepository = new BaseRepository<BlogArticle>();
+        private IBlogArticleRepository baseRepository;
+        DI_Test dI_Test = new DI_Test();
 
         public Repository_Base_Should()
         {
+
+            var container = dI_Test.DICollections();
+
+            baseRepository = container.Resolve<IBlogArticleRepository>();
+
             DbContext.Init(BaseDBConfig.ConnectionString,(DbType)BaseDBConfig.DbType);
         }
 

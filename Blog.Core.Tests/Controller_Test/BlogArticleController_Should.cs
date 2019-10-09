@@ -41,11 +41,11 @@ namespace Blog.Core.Tests
 
             var res = await blogController.Post(blogArticle);
 
-            Assert.True(res.success);
+            Assert.False(res.success);
 
             var data = res.response;
 
-            Assert.NotNull(data);
+            Assert.Null(data);
         }
     }
 }

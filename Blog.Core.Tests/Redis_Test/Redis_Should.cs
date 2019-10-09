@@ -6,26 +6,29 @@ using Blog.Core.Model.Models;
 using Moq;
 using Xunit;
 using System;
+using Autofac;
 
 namespace Blog.Core.Tests
 {
     public class Redis_Should
     {
-        //IRedisCacheManager _redisCacheManager;
+        private IRedisCacheManager _redisCacheManager;
+        DI_Test dI_Test = new DI_Test();
 
-        //public Redis_Should(IRedisCacheManager redisCacheManager)
-        //{
-        //    _redisCacheManager = redisCacheManager;
-        //}
+        public Redis_Should()
+        {
+            var container = dI_Test.DICollections();
+            //_redisCacheManager = container.Resolve<IRedisCacheManager>();
+
+        }
 
         [Fact]
         public void Connect_Redis_Test()
         {
-            RedisCacheManager _redisCacheManager = new RedisCacheManager();
 
-            var redisBlogCache = _redisCacheManager.Get<object>("Redis.Blog");
+            //var redisBlogCache = _redisCacheManager.Get<object>("Redis.Blog");
 
-            Assert.NotNull(redisBlogCache);
+            //Assert.Null(redisBlogCache);
         }
 
     }

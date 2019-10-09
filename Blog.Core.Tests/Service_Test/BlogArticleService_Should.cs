@@ -10,34 +10,39 @@ using System.Linq;
 using Blog.Core.Services;
 using AutoMapper;
 using Blog.Core.Repository;
+using Autofac;
 
 namespace Blog.Core.Tests
 {
     public class BlogArticleService_Should
     {
 
-        Mock<BlogArticleRepository> mockBlogRep = new Mock<BlogArticleRepository>();
-        Mock<IMapper> mockMap = new Mock<IMapper>();
-        BlogArticleServices _blogArticleServices;
+        private IBlogArticleServices blogArticleServices;
+        DI_Test dI_Test = new DI_Test();
+
 
         public BlogArticleService_Should()
         {
             //mockBlogRep.Setup(r => r.Query());
-            _blogArticleServices = new BlogArticleServices(mockBlogRep.Object, mockMap.Object);
+
+            var container = dI_Test.DICollections();
+
+            blogArticleServices = container.Resolve<IBlogArticleServices>();
+
         }
 
 
         [Fact]
         public void BlogArticleServices_Test()
         {
-            Assert.NotNull(_blogArticleServices);
+            Assert.NotNull(blogArticleServices);
         }
 
 
         [Fact]
         public async void Get_Blogs_Test()
         {
-            var data = await _blogArticleServices.GetBlogs();
+            var data = await blogArticleServices.GetBlogs();
 
             Assert.True(data.Any());
         }
@@ -54,7 +59,7 @@ namespace Blog.Core.Tests
                 bsubmitter = "xuint test submitter",
             };
 
-            var BId = await _blogArticleServices.Add(blogArticle);
+            var BId = await blogArticleServices.Add(blogArticle);
 
             Assert.True(BId > 0);
         }
@@ -62,11 +67,11 @@ namespace Blog.Core.Tests
         [Fact]
         public async void Delete_Blog_Test()
         {
-            var deleteModel = (await _blogArticleServices.Query(d => d.btitle == "xuint test title")).FirstOrDefault();
+            var deleteModel = (await blogArticleServices.Query(d => d.btitle == "xuint test title")).FirstOrDefault();
 
             Assert.NotNull(deleteModel);
 
-            var IsDel = await _blogArticleServices.Delete(deleteModel);
+            var IsDel = await blogArticleServices.Delete(deleteModel);
 
             Assert.True(IsDel);
         }
