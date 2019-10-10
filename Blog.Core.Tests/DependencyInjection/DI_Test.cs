@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
 using AutoMapper;
 using Blog.Core.Common;
+using Blog.Core.Common.DB;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Services;
@@ -26,7 +27,17 @@ namespace Blog.Core.Tests
 
             IServiceCollection services = new ServiceCollection();
             services.AddAutoMapper(typeof(Startup));
-
+            services.AddScoped<SqlSugar.ISqlSugarClient>(o =>
+            {
+                return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
+                {
+                    ConnectionString = BaseDBConfig.ConnectionString,//必填, 数据库连接字符串
+                    DbType = (SqlSugar.DbType)BaseDBConfig.DbType,//必填, 数据库类型
+                    IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
+                    IsShardSameThread = true,//共享线程
+                    InitKeyType = SqlSugar.InitKeyType.SystemTable//默认SystemTable, 字段信息读取, 如：该属性是不是主键，标识列等等信息
+                });
+            });
 
             //services.AddSingleton(new Appsettings(Env));
 
@@ -76,6 +87,17 @@ namespace Blog.Core.Tests
             services.AddScoped<Blog.Core.Model.Models.DBSeed>();
             services.AddScoped<Blog.Core.Model.Models.MyContext>();
 
+            services.AddScoped<SqlSugar.ISqlSugarClient>(o =>
+            {
+                return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
+                {
+                    ConnectionString = BaseDBConfig.ConnectionString,//必填, 数据库连接字符串
+                    DbType = (SqlSugar.DbType)BaseDBConfig.DbType,//必填, 数据库类型
+                    IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
+                    IsShardSameThread = true,//共享线程
+                    InitKeyType = SqlSugar.InitKeyType.SystemTable//默认SystemTable, 字段信息读取, 如：该属性是不是主键，标识列等等信息
+                });
+            });
 
             //实例化 AutoFac  容器   
             var builder = new ContainerBuilder();
