@@ -1,13 +1,8 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
-using Blog.Core.Log;
 using SqlSugar;
 using StackExchange.Profiling;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Repository
@@ -18,7 +13,6 @@ namespace Blog.Core.Repository
         private static string _connectionString;
         private static DbType _dbType;
         private SqlSugarClient _db;
-        private readonly ILoggerHelper _loggerHelper = new LogHelper();
 
         /// <summary>
         /// 连接字符串 

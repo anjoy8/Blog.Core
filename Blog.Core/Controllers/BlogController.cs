@@ -10,6 +10,7 @@ using Blog.Core.Model.Models;
 using Blog.Core.SwaggerHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StackExchange.Profiling;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
 
@@ -25,16 +26,18 @@ namespace Blog.Core.Controllers
     {
         readonly IBlogArticleServices _blogArticleServices;
         readonly IRedisCacheManager _redisCacheManager;
+        private readonly ILogger<BlogController> _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="blogArticleServices"></param>
         /// <param name="redisCacheManager"></param>
-        public BlogController(IBlogArticleServices blogArticleServices, IRedisCacheManager redisCacheManager)
+        public BlogController(IBlogArticleServices blogArticleServices, IRedisCacheManager redisCacheManager, ILogger<BlogController> logger)
         {
             _blogArticleServices = blogArticleServices;
             _redisCacheManager = redisCacheManager;
+            _logger = logger;
         }
 
 
@@ -147,6 +150,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<object> DetailNuxtNoPer(int id)
         {
+            _logger.LogInformation("xxxxxxxxxxxxxxxxxxx");
             var model = await _blogArticleServices.GetBlogDetails(id);
             return Ok(new
             {

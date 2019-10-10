@@ -17,10 +17,10 @@ using Blog.Core.Common.DB;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Common.MemoryCache;
+using Blog.Core.Extensions;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
-using Blog.Core.Log;
 using Blog.Core.Middlewares;
 using Blog.Core.Model;
 using Blog.Core.Tasks;
@@ -37,6 +37,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -59,11 +60,13 @@ namespace Blog.Core
             Configuration = configuration;
             Env = env;
             //log4net
-            Repository = LogManager.CreateRepository(Configuration["Logging:Log4Net:Name"]);
-            //指定配置文件，如果这里你遇到问题，应该是使用了InProcess模式，请查看Blog.Core.csproj,并删之
-            var contentPath = env.ContentRootPath;
-            var log4Config = Path.Combine(contentPath, "log4net.config");
-            XmlConfigurator.Configure(Repository, new FileInfo(log4Config));
+            #region 这部分代码迁到 program.cs 文件里了
+            //Repository = LogManager.CreateRepository(Configuration["Logging:Log4Net:Name"]);
+            ////指定配置文件，如果这里你遇到问题，应该是使用了InProcess模式，请查看Blog.Core.csproj,并删之
+            //var contentPath = env.ContentRootPath;
+            //var log4Config = Path.Combine(contentPath, "log4net.config");
+            //XmlConfigurator.Configure(Repository, new FileInfo(log4Config)); 
+            #endregion
 
         }
 
@@ -84,8 +87,6 @@ namespace Blog.Core
             });
             // Redis注入
             services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
-            // log日志注入
-            services.AddSingleton<ILoggerHelper, LogHelper>();
 
             services.AddSingleton(new Appsettings(Env.ContentRootPath));
 
@@ -504,8 +505,17 @@ namespace Blog.Core
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBlogArticleServices _blogArticleServices)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBlogArticleServices _blogArticleServices, ILoggerFactory loggerFactory)
         {
+
+            #region RecordAllLogs
+
+            if (Appsettings.app("AppSettings", "Middleware_RecordAllLogs", "Enabled").ObjToBool())
+            {
+                loggerFactory.AddLog4Net();//记录所有的访问记录
+            }
+
+            #endregion
 
             #region ReuestResponseLog
 
@@ -560,8 +570,6 @@ namespace Blog.Core
             app.UseMiniProfiler();
             #endregion
 
-            
-
             #region CORS
             //跨域第二种方法，使用策略，详细策略信息在ConfigureService中
             app.UseCors("LimitRequests");//将 CORS 中间件添加到 web 应用程序管线中, 以允许跨域请求。
@@ -574,7 +582,6 @@ namespace Blog.Core
             #endregion
 
             #endregion
-
 
             // 跳转https
             //app.UseHttpsRedirection();

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Xml;
 using Autofac.Extensions.DependencyInjection;
 using Blog.Core.Model.Models;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +16,17 @@ namespace Blog.Core
     {
         public static void Main(string[] args)
         {
+            XmlDocument log4netConfig = new XmlDocument();
+            log4netConfig.Load(File.OpenRead("Log4net.config"));
+
+            var repo = log4net.LogManager.CreateRepository(
+                Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
+
+            log4net.Config.XmlConfigurator.Configure(repo, log4netConfig["log4net"]);
+
+
+
+
             // 生成承载 web 应用程序的 Microsoft.AspNetCore.Hosting.IWebHost。Build是WebHostBuilder最终的目的，将返回一个构造的WebHost，最终生成宿主。
             var host = CreateHostBuilder(args).Build();
 
