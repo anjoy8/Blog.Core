@@ -346,4 +346,4 @@ healthchecksdb
 Blog.Core/WMBlog.db
 .1YourProject
 .PublishFiles
-!Blog.Core.Webapi.Template.1.0.0.nupkg
+!Blog.Core.Webapi.Template.*.nupkg
