@@ -83,6 +83,254 @@ namespace Blog.Core.Model.Models
         }
 
 
+        #region 根据数据库表生产Model层
+
+        /// <summary>
+        /// 功能描述:根据数据库表生产Model层
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <param name="strPath">实体类存放路径</param>
+        /// <param name="strNameSpace">命名空间</param>
+        /// <param name="lstTableNames">生产指定的表</param>
+        /// <param name="strInterface">实现接口</param>
+        /// <param name="blnSerializable">是否序列化</param>
+        public void Create_Model_ClassFileByDBTalbe(
+          string strPath,
+          string strNameSpace,
+          string[] lstTableNames,
+          string strInterface,
+          bool blnSerializable = false)
+        {
+            var IDbFirst = _db.DbFirst;
+            if (lstTableNames != null && lstTableNames.Length > 0)
+            {
+                IDbFirst = IDbFirst.Where(lstTableNames);
+            }
+            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
+
+                .SettingClassTemplate(p => p = @"
+{using}
+
+namespace "+ strNameSpace + @"
+{
+    {ClassDescription}{SugarTable}" + (blnSerializable ? "[Serializable]" : "") + @"
+    public class {ClassName}" + (string.IsNullOrEmpty(strInterface) ? "" : (" : " + strInterface)) + @"
+    {
+        public {ClassName}()
+        {
+        }
+        {PropertyName}
+    }
+}
+                    ")
+
+                .SettingPropertyTemplate(p => p = @"
+        {SugarColumn}
+        public {PropertyType} {PropertyName} { get; set; }
+
+            ")
+
+                 //.SettingPropertyDescriptionTemplate(p => p = "          private {PropertyType} _{PropertyName};\r\n" + p)
+                 //.SettingConstructorTemplate(p => p = "              this._{PropertyName} ={DefaultValue};")
+
+                 .CreateClassFile(strPath, strNameSpace);
+
+        }
+        #endregion
+
+
+        #region 根据数据库表生产IRepository层
+
+        /// <summary>
+        /// 功能描述:根据数据库表生产IRepository层
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <param name="strPath">实体类存放路径</param>
+        /// <param name="strNameSpace">命名空间</param>
+        /// <param name="lstTableNames">生产指定的表</param>
+        /// <param name="strInterface">实现接口</param>
+        public void Create_IRepository_ClassFileByDBTalbe(
+          string strPath,
+          string strNameSpace,
+          string[] lstTableNames,
+          string strInterface)
+        {
+            var IDbFirst = _db.DbFirst;
+            if (lstTableNames != null && lstTableNames.Length > 0)
+            {
+                IDbFirst = IDbFirst.Where(lstTableNames);
+            }
+            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
+
+                .SettingClassTemplate(p => p = @"
+using Blog.Core.IRepository.Base;
+using Blog.Core.Model.Models;
+
+namespace "+ strNameSpace + @"
+{
+	/// <summary>
+	/// I{ClassName}Repository
+	/// </summary>	
+    public interface I{ClassName}Repository : IBaseRepository<{ClassName}>" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
+    {
+    }
+}
+                    ")
+
+                 .CreateClassFile(strPath, strNameSpace);
+
+        }
+        #endregion
+
+
+        #region 根据数据库表生产IServices层
+
+        /// <summary>
+        /// 功能描述:根据数据库表生产IServices层
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <param name="strPath">实体类存放路径</param>
+        /// <param name="strNameSpace">命名空间</param>
+        /// <param name="lstTableNames">生产指定的表</param>
+        /// <param name="strInterface">实现接口</param>
+        public void Create_IServices_ClassFileByDBTalbe(
+          string strPath,
+          string strNameSpace,
+          string[] lstTableNames,
+          string strInterface)
+        {
+            var IDbFirst = _db.DbFirst;
+            if (lstTableNames != null && lstTableNames.Length > 0)
+            {
+                IDbFirst = IDbFirst.Where(lstTableNames);
+            }
+            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
+
+                .SettingClassTemplate(p => p = @"
+using Blog.Core.IServices.BASE;
+using Blog.Core.Model.Models;
+
+namespace "+ strNameSpace + @"
+{	
+	/// <summary>
+	/// I{ClassName}Services
+	/// </summary>	
+    public interface I{ClassName}Services :IBaseServices<{ClassName}>" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
+	{
+
+       
+    }
+}
+                    ")
+
+                 .CreateClassFile(strPath, strNameSpace);
+
+        }
+        #endregion
+
+
+
+        #region 根据数据库表生产 Repository 层
+
+        /// <summary>
+        /// 功能描述:根据数据库表生产 Repository 层
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <param name="strPath">实体类存放路径</param>
+        /// <param name="strNameSpace">命名空间</param>
+        /// <param name="lstTableNames">生产指定的表</param>
+        /// <param name="strInterface">实现接口</param>
+        public void Create_Repository_ClassFileByDBTalbe(
+          string strPath,
+          string strNameSpace,
+          string[] lstTableNames,
+          string strInterface)
+        {
+            var IDbFirst = _db.DbFirst;
+            if (lstTableNames != null && lstTableNames.Length > 0)
+            {
+                IDbFirst = IDbFirst.Where(lstTableNames);
+            }
+            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
+
+                .SettingClassTemplate(p => p = @"
+using Blog.Core.IRepository;
+using Blog.Core.IRepository.UnitOfWork;
+using Blog.Core.Model.Models;
+using Blog.Core.Repository.Base;
+
+namespace "+ strNameSpace + @"
+{
+	/// <summary>
+	/// {ClassName}Repository
+	/// </summary>
+    public class {ClassName}Repository : BaseRepository<{ClassName}>, I{ClassName}Repository" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
+    {
+        public {ClassName}Repository(IUnitOfWork unitOfWork) : base(unitOfWork)
+        {
+        }
+    }
+}
+                    ")
+
+                 .CreateClassFile(strPath, strNameSpace);
+
+        }
+        #endregion
+
+
+        #region 根据数据库表生产 Services 层
+
+        /// <summary>
+        /// 功能描述:根据数据库表生产 Services 层
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <param name="strPath">实体类存放路径</param>
+        /// <param name="strNameSpace">命名空间</param>
+        /// <param name="lstTableNames">生产指定的表</param>
+        /// <param name="strInterface">实现接口</param>
+        public void Create_Services_ClassFileByDBTalbe(
+          string strPath,
+          string strNameSpace,
+          string[] lstTableNames,
+          string strInterface)
+        {
+            var IDbFirst = _db.DbFirst;
+            if (lstTableNames != null && lstTableNames.Length > 0)
+            {
+                IDbFirst = IDbFirst.Where(lstTableNames);
+            }
+            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
+
+                .SettingClassTemplate(p => p = @"
+using Blog.Core.IRepository;
+using Blog.Core.IServices;
+using Blog.Core.Model.Models;
+using Blog.Core.Services.BASE;
+
+namespace "+ strNameSpace + @"
+{
+    public partial class {ClassName}Services : BaseServices<{ClassName}>, I{ClassName}Services" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
+    {
+        I{ClassName}Repository _dal;
+        public {ClassName}Services(I{ClassName}Repository dal)
+        {
+            this._dal = dal;
+            base.BaseDal = dal;
+        }
+
+    }
+}
+                    ")
+
+                 .CreateClassFile(strPath, strNameSpace);
+
+        }
+        #endregion
+
+
+
+
 
         #region 实例方法
         /// <summary>
@@ -105,140 +353,10 @@ namespace Blog.Core.Model.Models
             return new SimpleClient<T>(db);
         }
 
-        #region 根据数据库表生产实体类
-        /// <summary>
-        /// 功能描述:根据数据库表生产实体类
-        /// 作　　者:Blog.Core
-        /// </summary>       
-        /// <param name="strPath">实体类存放路径</param>
-        public void CreateClassFileByDBTalbe(string strPath)
-        {
-            CreateClassFileByDBTalbe(strPath, "Blog.Core.Entity");
-        }
-        /// <summary>
-        /// 功能描述:根据数据库表生产实体类
-        /// 作　　者:Blog.Core
-        /// </summary>
-        /// <param name="strPath">实体类存放路径</param>
-        /// <param name="strNameSpace">命名空间</param>
-        public void CreateClassFileByDBTalbe(string strPath, string strNameSpace)
-        {
-            CreateClassFileByDBTalbe(strPath, strNameSpace, null);
-        }
 
-        /// <summary>
-        /// 功能描述:根据数据库表生产实体类
-        /// 作　　者:Blog.Core
-        /// </summary>
-        /// <param name="strPath">实体类存放路径</param>
-        /// <param name="strNameSpace">命名空间</param>
-        /// <param name="lstTableNames">生产指定的表</param>
-        public void CreateClassFileByDBTalbe(
-            string strPath,
-            string strNameSpace,
-            string[] lstTableNames)
-        {
-            CreateClassFileByDBTalbe(strPath, strNameSpace, lstTableNames, string.Empty);
-        }
 
-        /// <summary>
-        /// 功能描述:根据数据库表生产实体类
-        /// 作　　者:Blog.Core
-        /// </summary>
-        /// <param name="strPath">实体类存放路径</param>
-        /// <param name="strNameSpace">命名空间</param>
-        /// <param name="lstTableNames">生产指定的表</param>
-        /// <param name="strInterface">实现接口</param>
-        /// <param name="blnSerializable">是否序列化</param>
-        public void CreateClassFileByDBTalbe(
-          string strPath,
-          string strNameSpace,
-          string[] lstTableNames,
-          string strInterface,
-          bool blnSerializable = false)
-        {
-            if (lstTableNames != null && lstTableNames.Length > 0)
-            {
-                _db.DbFirst.Where(lstTableNames).IsCreateDefaultValue().IsCreateAttribute()
-                    .SettingClassTemplate(p => p = @"
-{using}
-
-namespace {Namespace}
-{
-    {ClassDescription}{SugarTable}" + (blnSerializable ? "[Serializable]" : "") + @"
-    public partial class {ClassName}" + (string.IsNullOrEmpty(strInterface) ? "" : (" : " + strInterface)) + @"
-    {
-        public {ClassName}()
-        {
-{Constructor}
-        }
-{PropertyName}
-    }
-}
-")
-                    .SettingPropertyTemplate(p => p = @"
-            {SugarColumn}
-            public {PropertyType} {PropertyName}
-            {
-                get
-                {
-                    return _{PropertyName};
-                }
-                set
-                {
-                    if(_{PropertyName}!=value)
-                    {
-                        base.SetValueCall(" + "\"{PropertyName}\",_{PropertyName}" + @");
-                    }
-                    _{PropertyName}=value;
-                }
-            }")
-                    .SettingPropertyDescriptionTemplate(p => p = "          private {PropertyType} _{PropertyName};\r\n" + p)
-                    .SettingConstructorTemplate(p => p = "              this._{PropertyName} ={DefaultValue};")
-                    .CreateClassFile(strPath, strNameSpace);
-            }
-            else
-            {
-                _db.DbFirst.IsCreateAttribute().IsCreateDefaultValue()
-                    .SettingClassTemplate(p => p = @"
-{using}
-
-namespace {Namespace}
-{
-    {ClassDescription}{SugarTable}" + (blnSerializable ? "[Serializable]" : "") + @"
-    public partial class {ClassName}" + (string.IsNullOrEmpty(strInterface) ? "" : (" : " + strInterface)) + @"
-    {
-        public {ClassName}()
-        {
-{Constructor}
-        }
-{PropertyName}
-    }
-}
-")
-                    .SettingPropertyTemplate(p => p = @"
-            {SugarColumn}
-            public {PropertyType} {PropertyName}
-            {
-                get
-                {
-                    return _{PropertyName};
-                }
-                set
-                {
-                    if(_{PropertyName}!=value)
-                    {
-                        base.SetValueCall(" + "\"{PropertyName}\",_{PropertyName}" + @");
-                    }
-                    _{PropertyName}=value;
-                }
-            }")
-                    .SettingPropertyDescriptionTemplate(p => p = "          private {PropertyType} _{PropertyName};\r\n" + p)
-                    .SettingConstructorTemplate(p => p = "              this._{PropertyName} ={DefaultValue};")
-                    .CreateClassFile(strPath, strNameSpace);
-            }
-        }
         #endregion
+
 
         #region 根据实体类生成数据库表
         /// <summary>
@@ -281,7 +399,6 @@ namespace {Namespace}
         }
         #endregion
 
-        #endregion
 
         #region 静态方法
 

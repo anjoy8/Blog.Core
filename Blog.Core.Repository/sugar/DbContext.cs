@@ -119,7 +119,7 @@ namespace Blog.Core.Repository
             return new SimpleClient<T>(db);
         }
 
-        #region 根据数据库表生产实体类
+        #region 根据数据库表生产实体类【这里的方法失效,具体的请看Model层 MyContext.cs 】
         /// <summary>
         /// 功能描述:根据数据库表生产实体类
         /// 作　　者:Blog.Core

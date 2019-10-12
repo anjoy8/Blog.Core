@@ -722,6 +722,41 @@
             <param name="myContext"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateModels(Blog.Core.Model.Models.MyContext)">
+            <summary>
+            生成Model层
+            </summary>
+            <param name="myContext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateIRepositorys(Blog.Core.Model.Models.MyContext)">
+            <summary>
+            生成IRepository层
+            </summary>
+            <param name="myContext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateIServices(Blog.Core.Model.Models.MyContext)">
+            <summary>
+            生成 IService 层
+            </summary>
+            <param name="myContext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateRepository(Blog.Core.Model.Models.MyContext)">
+            <summary>
+            生成 Repository 层
+            </summary>
+            <param name="myContext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateServices(Blog.Core.Model.Models.MyContext)">
+            <summary>
+            生成 Repository 层
+            </summary>
+            <param name="myContext"></param>
+            <returns></returns>
+        </member>
         <member name="P:Blog.Core.Model.Models.MyContext.ConnectionString">
             <summary>
             连接字符串 
@@ -752,6 +787,57 @@
             作　　者:Blog.Core
             </summary>
         </member>
+        <member name="M:Blog.Core.Model.Models.MyContext.Create_Model_ClassFileByDBTalbe(System.String,System.String,System.String[],System.String,System.Boolean)">
+            <summary>
+            功能描述:根据数据库表生产Model层
+            作　　者:Blog.Core
+            </summary>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+            <param name="blnSerializable">是否序列化</param>
+        </member>
+        <member name="M:Blog.Core.Model.Models.MyContext.Create_IRepository_ClassFileByDBTalbe(System.String,System.String,System.String[],System.String)">
+            <summary>
+            功能描述:根据数据库表生产IRepository层
+            作　　者:Blog.Core
+            </summary>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+        </member>
+        <member name="M:Blog.Core.Model.Models.MyContext.Create_IServices_ClassFileByDBTalbe(System.String,System.String,System.String[],System.String)">
+            <summary>
+            功能描述:根据数据库表生产IServices层
+            作　　者:Blog.Core
+            </summary>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+        </member>
+        <member name="M:Blog.Core.Model.Models.MyContext.Create_Repository_ClassFileByDBTalbe(System.String,System.String,System.String[],System.String)">
+            <summary>
+            功能描述:根据数据库表生产 Repository 层
+            作　　者:Blog.Core
+            </summary>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+        </member>
+        <member name="M:Blog.Core.Model.Models.MyContext.Create_Services_ClassFileByDBTalbe(System.String,System.String,System.String[],System.String)">
+            <summary>
+            功能描述:根据数据库表生产 Services 层
+            作　　者:Blog.Core
+            </summary>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+        </member>
         <member name="M:Blog.Core.Model.Models.MyContext.GetEntityDB``1">
             <summary>
             功能描述:获取数据库处理对象
@@ -766,41 +852,6 @@
             </summary>
             <param name="db">db</param>
             <returns>返回值</returns>
-        </member>
-        <member name="M:Blog.Core.Model.Models.MyContext.CreateClassFileByDBTalbe(System.String)">
-            <summary>
-            功能描述:根据数据库表生产实体类
-            作　　者:Blog.Core
-            </summary>       
-            <param name="strPath">实体类存放路径</param>
-        </member>
-        <member name="M:Blog.Core.Model.Models.MyContext.CreateClassFileByDBTalbe(System.String,System.String)">
-            <summary>
-            功能描述:根据数据库表生产实体类
-            作　　者:Blog.Core
-            </summary>
-            <param name="strPath">实体类存放路径</param>
-            <param name="strNameSpace">命名空间</param>
-        </member>
-        <member name="M:Blog.Core.Model.Models.MyContext.CreateClassFileByDBTalbe(System.String,System.String,System.String[])">
-            <summary>
-            功能描述:根据数据库表生产实体类
-            作　　者:Blog.Core
-            </summary>
-            <param name="strPath">实体类存放路径</param>
-            <param name="strNameSpace">命名空间</param>
-            <param name="lstTableNames">生产指定的表</param>
-        </member>
-        <member name="M:Blog.Core.Model.Models.MyContext.CreateClassFileByDBTalbe(System.String,System.String,System.String[],System.String,System.Boolean)">
-            <summary>
-            功能描述:根据数据库表生产实体类
-            作　　者:Blog.Core
-            </summary>
-            <param name="strPath">实体类存放路径</param>
-            <param name="strNameSpace">命名空间</param>
-            <param name="lstTableNames">生产指定的表</param>
-            <param name="strInterface">实现接口</param>
-            <param name="blnSerializable">是否序列化</param>
         </member>
         <member name="M:Blog.Core.Model.Models.MyContext.CreateTableByEntity``1(System.Boolean,``0[])">
             <summary>
