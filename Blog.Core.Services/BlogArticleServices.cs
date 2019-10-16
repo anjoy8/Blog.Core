@@ -72,7 +72,7 @@ namespace Blog.Core.Services
 
 
                 blogArticle.btraffic += 1;
-                await base.Update(blogArticle, new List<string> { "btraffic" });
+                //await base.Update(blogArticle, new List<string> { "btraffic" });
             }
 
             return models;
