@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Blog.Core.Common
@@ -54,25 +55,20 @@ namespace Blog.Core.Common
         /// <summary>
         /// 封装要操作的字符
         /// </summary>
-        /// <param name="sections"></param>
+        /// <param name="sections">节点配置</param>
         /// <returns></returns>
         public static string app(params string[] sections)
         {
             try
             {
-                var val = string.Empty;
-                for (int i = 0; i < sections.Length; i++)
+                if (sections.Any())
                 {
-                    val += sections[i] + ":";
+                    return Configuration[string.Join(":", sections)];
                 }
-
-                return Configuration[val.TrimEnd(':')];
             }
-            catch (Exception)
-            {
-                return "";
-            }
+            catch (Exception) { }
 
+            return "";
         }
     }
 }
