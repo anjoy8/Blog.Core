@@ -39,7 +39,6 @@ namespace Blog.Core
                 try
                 {
                     // 从 system.IServicec提供程序获取 T 类型的服务。
-                    // 为了大家的数据安全，这里先注释掉了，大家自己先测试玩一玩吧。
                     // 数据库连接字符串是在 Model 层的 Seed 文件夹下的 MyContext.cs 中
                     var configuration = services.GetRequiredService<IConfiguration>();
                     if (configuration.GetSection("AppSettings")["SeedDBEnabled"].ObjToBool())
@@ -60,15 +59,10 @@ namespace Blog.Core
             // 创建完 WebHost 之后，便调用它的 Run 方法，而 Run 方法会去调用 WebHost 的 StartAsync 方法
             // 将Initialize方法创建的Application管道传入以供处理消息
             // 执行HostedServiceExecutor.StartAsync方法
+            // ※※※※ 有异常，查看 Log 文件夹下的异常日志 ※※※※  
             host.Run();
         }
 
-        //public static IHostBuilder CreateHostBuilder2(string[] args) =>
-        //    //使用预配置的默认值初始化 Microsoft.AspNetCore.Hosting.WebHostBuilder 类的新实例。
-        //    WebHost.CreateDefaultBuilder(args)
-        //        //指定要由 web 主机使用的启动类型。相当于注册了一个IStartup服务。可以自定义启动服务，比如.UseStartup(typeof(StartupDevelopment).GetTypeInfo().Assembly.FullName)
-        //        .UseUrls("http://localhost:8081")
-        //        .UseStartup<Startup>();
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
           Host.CreateDefaultBuilder(args)

@@ -84,7 +84,7 @@ namespace Blog.Core.Middlewares
         {
             var sr = new StreamReader(request.Body);
 
-            var content = $" QueryData:{request.Path + request.QueryString}\r\n BodyData:{sr.ReadToEnd()}";
+            var content = $" QueryData:{request.Path + request.QueryString}\r\n BodyData:{sr.ReadToEndAsync()}";
 
             if (!string.IsNullOrEmpty(content))
             {
