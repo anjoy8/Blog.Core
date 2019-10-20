@@ -61,19 +61,12 @@ namespace Blog.Core.Common
         {
             try
             {
-                var val = string.Empty;
-                for (int i = 0; i < sections.Length; i++)
-                {
-                    val += sections[i] + ":";
-                }
-
-                return Configuration[val.TrimEnd(':')];
+                return Configuration[string.Join(":",sections)];
             }
             catch (Exception)
             {
-                return "";
-            }
-
+            } 
+            return "";
         }
     }
 }
