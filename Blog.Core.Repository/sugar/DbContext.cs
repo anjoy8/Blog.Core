@@ -1,13 +1,8 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
-using Blog.Core.Log;
 using SqlSugar;
 using StackExchange.Profiling;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Repository
@@ -18,7 +13,6 @@ namespace Blog.Core.Repository
         private static string _connectionString;
         private static DbType _dbType;
         private SqlSugarClient _db;
-        private readonly ILoggerHelper _loggerHelper = new LogHelper();
 
         /// <summary>
         /// 连接字符串 
@@ -124,7 +118,7 @@ namespace Blog.Core.Repository
             return new SimpleClient<T>(db);
         }
 
-        #region 根据数据库表生产实体类
+        #region 根据数据库表生产实体类【这里的方法失效,具体的请看Model层 MyContext.cs 】
         /// <summary>
         /// 功能描述:根据数据库表生产实体类
         /// 作　　者:Blog.Core

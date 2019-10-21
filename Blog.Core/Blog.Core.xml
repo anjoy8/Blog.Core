@@ -25,6 +25,17 @@
             面向切面的缓存使用
             </summary>
         </member>
+        <member name="T:Blog.Core.AOP.BlogTranAOP">
+            <summary>
+            事务拦截器BlogTranAOP 继承IInterceptor接口
+            </summary>
+        </member>
+        <member name="M:Blog.Core.AOP.BlogTranAOP.Intercept(Castle.DynamicProxy.IInvocation)">
+            <summary>
+            实例化IInterceptor唯一方法 
+            </summary>
+            <param name="invocation">包含被拦截方法的信息</param>
+        </member>
         <member name="M:Blog.Core.AOP.CacheAOPbase.Intercept(Castle.DynamicProxy.IInvocation)">
             <summary>
             AOP的拦截方法
@@ -132,12 +143,13 @@
             services 层注入
             </summary>
         </member>
-        <member name="M:Blog.Core.AuthHelper.PermissionHandler.#ctor(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider,Blog.Core.IServices.IRoleModulePermissionServices)">
+        <member name="M:Blog.Core.AuthHelper.PermissionHandler.#ctor(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider,Blog.Core.IServices.IRoleModulePermissionServices,Microsoft.AspNetCore.Http.IHttpContextAccessor)">
             <summary>
             构造函数注入
             </summary>
             <param name="schemes"></param>
             <param name="roleModulePermissionServices"></param>
+            <param name="accessor"></param>
         </member>
         <member name="T:Blog.Core.AuthHelper.PermissionItem">
             <summary>
@@ -225,7 +237,7 @@
             博客管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IBlogArticleServices,Blog.Core.Common.IRedisCacheManager)">
+        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IBlogArticleServices,Blog.Core.Common.IRedisCacheManager,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
             <summary>
             构造函数
             </summary>
@@ -288,19 +300,61 @@
             <param name="ids"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.#ctor(Blog.Core.Model.Models.MyContext)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="myContext"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFiles">
+            <summary>
+            获取 整体框架 文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetModelFiles">
+            <summary>
+            获取 Model 层文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetIRepositoryFiles">
+            <summary>
+            获取 IRepository 层文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetIServiceFiles">
+            <summary>
+            获取 IService 层文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetRepositoryFiles">
+            <summary>
+            获取 Repository 层文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetServicesFiles">
+            <summary>
+            获取 Services 层文件
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.ImgController">
             <summary>
             图片管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ImgController.DownImg(Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+        <member name="M:Blog.Core.Controllers.ImgController.DownImg(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             下载图片（支持中文字符）
             </summary>
             <param name="environment"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.ImgController.InsertPicture(Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+        <member name="M:Blog.Core.Controllers.ImgController.InsertPicture(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             上传图片,多文件，可以使用 postman 测试，
             如果是单文件，可以 参数写 IFormFile file1

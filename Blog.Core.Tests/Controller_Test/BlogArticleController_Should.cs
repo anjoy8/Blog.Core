@@ -6,6 +6,7 @@ using Blog.Core.Model.Models;
 using Moq;
 using Xunit;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace Blog.Core.Tests
 {
@@ -13,12 +14,13 @@ namespace Blog.Core.Tests
     {
         Mock<IBlogArticleServices> mockBlogSev = new Mock<IBlogArticleServices>();
         Mock<IRedisCacheManager> mockRedisMag = new Mock<IRedisCacheManager>();
+        Mock<ILogger<BlogController>> mockLogger = new Mock<ILogger<BlogController>>();
         BlogController blogController;
 
         public BlogArticleController_Should()
         {
             mockBlogSev.Setup(r => r.Query());
-            blogController = new BlogController(mockBlogSev.Object, mockRedisMag.Object);
+            blogController = new BlogController(mockBlogSev.Object, mockRedisMag.Object, mockLogger.Object);
         }
 
         [Fact]

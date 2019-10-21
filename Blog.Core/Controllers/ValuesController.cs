@@ -22,7 +22,7 @@ namespace Blog.Core.Controllers
     //[Authorize(Roles = "Admin,Client")]
     //[Authorize(Policy = "SystemOrAdmin")]
     //[Authorize(PermissionNames.Permission)]
-    [AllowAnonymous]
+    [Authorize]
     public class ValuesController : ControllerBase
     {
         private IMapper _mapper;
@@ -59,6 +59,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET api/values
         [HttpGet]
+        [AllowAnonymous]
         public async Task<MessageModel<ResponseEnum>> Get()
         {
             var data = new MessageModel<ResponseEnum>();
@@ -91,6 +92,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET api/values/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public ActionResult<string> Get(int id)
         {
             var loveu = _love.SayLoveU();
@@ -120,6 +122,7 @@ namespace Blog.Core.Controllers
         [Route("/api/values/UserInfo")]
         public MessageModel<List<string>> GetUserInfo(string ClaimType = "jti")
         {
+            var getUserInfoByToken = _user.GetUserInfoFromToken(ClaimType);
             return new MessageModel<List<string>>()
             {
                 success = _user.IsAuthenticated(),
@@ -135,6 +138,7 @@ namespace Blog.Core.Controllers
         /// <param name="blogArticle">model实体类参数</param>
         /// <param name="id">独立参数</param>
         [HttpPost]
+        [AllowAnonymous]
         public object Post([FromBody]  BlogArticle blogArticle, int id)
         {
             return Ok(new { success = true, data = blogArticle, id = id });
@@ -148,6 +152,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("TestPostPara")]
+        [AllowAnonymous]
         public object TestPostPara(string name)
         {
             return Ok(new { success = true, name = name });

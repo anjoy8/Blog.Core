@@ -10,5 +10,8 @@ namespace Blog.Core.Common.HttpContextUser
         bool IsAuthenticated();
         IEnumerable<Claim> GetClaimsIdentity();
         List<string> GetClaimValueByType(string ClaimType);
+
+        string GetToken();
+        List<string> GetUserInfoFromToken(string ClaimType);
     }
 }

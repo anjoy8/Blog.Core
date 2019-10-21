@@ -1,5 +1,6 @@
 ﻿using Blog.Core.Common.DB;
 using Blog.Core.IRepository.Base;
+using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using SqlSugar;
@@ -13,31 +14,21 @@ namespace Blog.Core.Repository.Base
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
     {
-        private DbContext _context;
-        private SqlSugarClient _db;
-        private SimpleClient<TEntity> _entityDb;
+        private  ISqlSugarClient _db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DbContext Context
-        {
-            get { return _context; }
-            set { _context = value; }
-        }
-        internal SqlSugarClient Db
+
+        internal ISqlSugarClient Db
         {
             get { return _db; }
             private set { _db = value; }
         }
-        internal SimpleClient<TEntity> EntityDb
+
+        public BaseRepository(IUnitOfWork unitOfWork)
         {
-            get { return _entityDb; }
-            private set { _entityDb = value; }
-        }
-        public BaseRepository()
-        {
+            _unitOfWork = unitOfWork;
+            _db = unitOfWork.GetDbClient();
             DbContext.Init(BaseDBConfig.ConnectionString, (DbType)BaseDBConfig.DbType);
-            _context = DbContext.GetDbContext();
-            _db = _context.Db;
-            _entityDb = _context.GetEntityDB<TEntity>(_db);
         }
 
 
@@ -226,7 +217,6 @@ namespace Blog.Core.Repository.Base
         /// <returns>数据列表</returns>
         public async Task<List<TEntity>> Query()
         {
-            //return await Task.Run(() => _entityDb.GetList());
             return await _db.Queryable<TEntity>().ToListAsync();
         }
 
@@ -250,7 +240,6 @@ namespace Blog.Core.Repository.Base
         /// <returns>数据列表</returns>
         public async Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression)
         {
-            //return await Task.Run(() => _entityDb.GetList(whereExpression));
             return await _db.Queryable<TEntity>().WhereIF(whereExpression != null, whereExpression).ToListAsync();
         }
 

@@ -64,14 +64,15 @@ namespace Blog.Core.Services
                             models.previous = prevblog.btitle;
                             models.previousID = prevblog.bID;
                         }
+                        var entity2Viewmodel = _mapper.Map<BlogArticle>(models);
 
                     }
-                    catch (Exception) { }
+                    catch (Exception ex) { throw new Exception(ex.Message); }
                 }
 
 
                 blogArticle.btraffic += 1;
-                await base.Update(blogArticle, new List<string> { "btraffic" });
+                //await base.Update(blogArticle, new List<string> { "btraffic" });
             }
 
             return models;

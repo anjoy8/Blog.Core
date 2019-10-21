@@ -41,7 +41,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("down")]
-        public FileStreamResult DownImg([FromServices]IHostingEnvironment environment)
+        public FileStreamResult DownImg([FromServices]IWebHostEnvironment environment)
         {
             string foldername = "";
             string filepath = Path.Combine(environment.WebRootPath, foldername, "测试下载中文名称的图片.png");
@@ -64,7 +64,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Pic")]
-        public async Task<MessageModel<string>> InsertPicture([FromServices]IHostingEnvironment environment)
+        public async Task<MessageModel<string>> InsertPicture([FromServices]IWebHostEnvironment environment)
         {
             var data = new MessageModel<string>();
             string path = string.Empty;

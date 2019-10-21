@@ -64,7 +64,7 @@ namespace Blog.Core.Middlewares
                         await ms.CopyToAsync(originalBody);
                     }
                 }
-                catch (Exception)
+                    catch (Exception)
                 {
                     // 记录异常
                     //ErrorLogData(context.Response, ex);
@@ -84,7 +84,7 @@ namespace Blog.Core.Middlewares
         {
             var sr = new StreamReader(request.Body);
 
-            var content = $" QueryData:{request.Path + request.QueryString}\r\n BodyData:{sr.ReadToEnd()}";
+            var content = $" QueryData:{request.Path + request.QueryString}\r\n BodyData:{sr.ReadToEndAsync()}";
 
             if (!string.IsNullOrEmpty(content))
             {

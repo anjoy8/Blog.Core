@@ -7,19 +7,20 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
 using AutoMapper;
 using Blog.Core.AOP;
 using Blog.Core.AuthHelper;
 using Blog.Core.Common;
+using Blog.Core.Common.AppConfig;
+using Blog.Core.Common.DB;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Common.MemoryCache;
+using Blog.Core.Extensions;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
-using Blog.Core.Log;
 using Blog.Core.Middlewares;
 using Blog.Core.Model;
 using Blog.Core.Tasks;
@@ -35,10 +36,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using StackExchange.Profiling.Storage;
-using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.Filters;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
 
 namespace Blog.Core
@@ -50,28 +54,31 @@ namespace Blog.Core
         /// log4net 仓储库
         /// </summary>
         public static ILoggerRepository Repository { get; set; }
-
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        private static readonly ILog log =
+        LogManager.GetLogger(typeof(GlobalExceptionsFilter));
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             Env = env;
             //log4net
-            Repository = LogManager.CreateRepository(Configuration["Logging:Log4Net:Name"]);
-            //指定配置文件，如果这里你遇到问题，应该是使用了InProcess模式，请查看Blog.Core.csproj,并删之
-            var contentPath = env.ContentRootPath;
-            var log4Config = Path.Combine(contentPath, "log4net.config");
-            XmlConfigurator.Configure(Repository, new FileInfo(log4Config));
+            #region 这部分代码迁到 program.cs 文件里了
+            //Repository = LogManager.CreateRepository(Configuration["Logging:Log4Net:Name"]);
+            ////指定配置文件，如果这里你遇到问题，应该是使用了InProcess模式，请查看Blog.Core.csproj,并删之
+            //var contentPath = env.ContentRootPath;
+            //var log4Config = Path.Combine(contentPath, "log4net.config");
+            //XmlConfigurator.Configure(Repository, new FileInfo(log4Config)); 
+            #endregion
 
         }
 
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment Env { get; }
+        public IWebHostEnvironment Env { get; }
         private const string ApiName = "Blog.Core";
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            #region 部分服务注入-netcore自带方法
+            #region 部分工具类服务注入-netcore原生方法
             // 缓存注入
             services.AddScoped<ICaching, MemoryCaching>();
             services.AddSingleton<IMemoryCache>(factory =>
@@ -81,8 +88,26 @@ namespace Blog.Core
             });
             // Redis注入
             services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
-            // log日志注入
-            services.AddSingleton<ILoggerHelper, LogHelper>();
+
+            services.AddSingleton(new Appsettings(Env.ContentRootPath));
+
+            services.AddSingleton(new LogLock(Env.ContentRootPath));
+            #endregion
+
+            #region ISqlSugarClient
+
+            services.AddScoped<SqlSugar.ISqlSugarClient>(o =>
+            {
+                return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
+                {
+                    ConnectionString = BaseDBConfig.ConnectionString,//必填, 数据库连接字符串
+                    DbType = (SqlSugar.DbType)BaseDBConfig.DbType,//必填, 数据库类型
+                    IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
+                    IsShardSameThread = true,//共享线程
+                    InitKeyType = SqlSugar.InitKeyType.SystemTable//默认SystemTable, 字段信息读取, 如：该属性是不是主键，标识列等等信息
+                });
+            });
+
             #endregion
 
             #region 初始化DB
@@ -98,17 +123,6 @@ namespace Blog.Core
             //跨域第二种方法，声明策略，记得下边app中配置
             services.AddCors(c =>
             {
-                //↓↓↓↓↓↓↓注意正式环境不要使用这种全开放的处理↓↓↓↓↓↓↓↓↓↓
-                c.AddPolicy("AllRequests", policy =>
-                {
-                    policy
-                    .AllowAnyOrigin()//允许任何源
-                    .AllowAnyMethod()//允许任何方式
-                    .AllowAnyHeader()//允许任何头
-                    .AllowCredentials();//允许cookie
-                });
-                //↑↑↑↑↑↑↑注意正式环境不要使用这种全开放的处理↑↑↑↑↑↑↑↑↑↑
-
 
                 //一般采用这种方法
                 c.AddPolicy("LimitRequests", policy =>
@@ -151,44 +165,48 @@ namespace Blog.Core
                 //遍历出全部的版本，做文档信息展示
                 typeof(ApiVersions).GetEnumNames().ToList().ForEach(version =>
                 {
-                    c.SwaggerDoc(version, new Info
+                    c.SwaggerDoc(version, new OpenApiInfo
                     {
                         // {ApiName} 定义成全局变量，方便修改
                         Version = version,
-                        Title = $"{ApiName} 接口文档",
+                        Title = $"{ApiName} 接口文档——Netcore 3.0",
                         Description = $"{ApiName} HTTP API " + version,
-                        TermsOfService = "None",
-                        Contact = new Contact { Name = "Blog.Core", Email = "Blog.Core@xxx.com", Url = "https://www.jianshu.com/u/94102b59cc2a" }
+                        Contact = new OpenApiContact { Name = ApiName, Email = "Blog.Core@xxx.com", Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") },
+                        License = new OpenApiLicense { Name = ApiName, Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") }
                     });
-                    // 按相对路径排序，作者：Alby
                     c.OrderActionsBy(o => o.RelativePath);
                 });
 
 
-                //就是这里
-                var xmlPath = Path.Combine(basePath, "Blog.Core.xml");//这个就是刚刚配置的xml文件名
-                c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
+                try
+                {
+                    //就是这里
+                    var xmlPath = Path.Combine(basePath, "Blog.Core.xml");//这个就是刚刚配置的xml文件名
+                    c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
 
-                var xmlModelPath = Path.Combine(basePath, "Blog.Core.Model.xml");//这个就是Model层的xml文件名
-                c.IncludeXmlComments(xmlModelPath);
+                    var xmlModelPath = Path.Combine(basePath, "Blog.Core.Model.xml");//这个就是Model层的xml文件名
+                    c.IncludeXmlComments(xmlModelPath);
+                }
+                catch (Exception ex)
+                {
+                    log.Error("Blog.Core.xml和Blog.Core.Model.xml 丢失，请检查并拷贝。\n" + ex.Message);
+                }
+
+                c.OperationFilter<AddResponseHeadersFilter>();
+                c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
+
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
+
 
                 #region Token绑定到ConfigureServices
 
-                //添加header验证信息
-                //c.OperationFilter<SwaggerHeader>();
 
-                // 发行人
-                var IssuerName = (Configuration.GetSection("Audience"))["Issuer"];
-                var security = new Dictionary<string, IEnumerable<string>> { { IssuerName, new string[] { } }, };
-                c.AddSecurityRequirement(security);
-
-                //方案名称“Blog.Core”可自定义，上下一致即可
-                c.AddSecurityDefinition(IssuerName, new ApiKeyScheme
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
                     Name = "Authorization",//jwt默认的参数名称
-                    In = "header",//jwt默认存放Authorization信息的位置(请求头中)
-                    Type = "apiKey"
+                    In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
+                    Type = SecuritySchemeType.ApiKey
                 });
                 #endregion
             });
@@ -198,18 +216,28 @@ namespace Blog.Core
             #region MVC + GlobalExceptions
 
             //注入全局异常捕获
-            services.AddMvc(o =>
+            services.AddControllers(o =>
             {
                 // 全局异常过滤
                 o.Filters.Add(typeof(GlobalExceptionsFilter));
                 // 全局路由权限公约
-                o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
+                //o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
                 // 全局路由前缀，统一修改路由
                 o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
             })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-            // 取消默认驼峰
-            .AddJsonOptions(options => { options.SerializerSettings.ContractResolver = new DefaultContractResolver(); });
+            //全局配置Json序列化处理
+            .AddNewtonsoftJson(options =>
+            {
+                //忽略循环引用
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                //不使用驼峰样式的key
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                //设置时间格式
+                //options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
+            });
+
+
+
 
 
             #endregion
@@ -230,7 +258,7 @@ namespace Blog.Core
             #endregion
 
             #region SignalR 通讯
-            services.AddSignalR();
+            services.AddSignalR().AddNewtonsoftJsonProtocol();
             #endregion
 
             #region Authorize 权限认证三步走
@@ -297,7 +325,7 @@ namespace Blog.Core
             #region 参数
             //读取配置文件
             var audienceConfig = Configuration.GetSection("Audience");
-            var symmetricKeyAsBase64 = audienceConfig["Secret"];
+            var symmetricKeyAsBase64 = AppSecretConfig.Audience_Secret_String;
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
             var signingKey = new SymmetricSecurityKey(keyByteArray);
 
@@ -354,7 +382,7 @@ namespace Blog.Core
             //2.1【认证】、core自带官方JWT认证
             // 开启Bearer认证
             services.AddAuthentication("Bearer")
-                // 添加JwtBearer服务
+             // 添加JwtBearer服务
              .AddJwtBearer(o =>
              {
                  o.TokenValidationParameters = tokenValidationParameters;
@@ -389,18 +417,20 @@ namespace Blog.Core
 
             #endregion
 
-            services.AddSingleton(new Appsettings(Env.ContentRootPath));
-            services.AddSingleton(new LogLock(Env.ContentRootPath));
+        }
 
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
 
-            #region AutoFac DI
-            //实例化 AutoFac  容器   
-            var builder = new ContainerBuilder();
             //注册要通过反射创建的组件
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
             builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
             builder.RegisterType<BlogRedisCacheAOP>();//可以直接替换其他拦截器
             builder.RegisterType<BlogLogAOP>();//这样可以注入第二个
+            builder.RegisterType<BlogRedisCacheAOP>();
+            builder.RegisterType<BlogLogAOP>();
+            builder.RegisterType<BlogTranAOP>();
 
             // ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
 
@@ -426,6 +456,10 @@ namespace Blog.Core
                 {
                     cacheType.Add(typeof(BlogCacheAOP));
                 }
+                if (Appsettings.app(new string[] { "AppSettings", "TranAOP", "Enabled" }).ObjToBool())
+                {
+                    cacheType.Add(typeof(BlogTranAOP));
+                }
                 if (Appsettings.app(new string[] { "AppSettings", "LogAOP", "Enabled" }).ObjToBool())
                 {
                     cacheType.Add(typeof(BlogLogAOP));
@@ -440,14 +474,16 @@ namespace Blog.Core
                           .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。 
                 #endregion
 
-                #region Repository.dll 注入，有对应接口
+            #region Repository.dll 注入，有对应接口
                 var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
                 var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
                 builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
             }
             catch (Exception ex)
             {
-                throw new Exception("※※★※※ 如果你是第一次下载项目，请先对整个解决方案dotnet build（F6编译），然后再对api层 dotnet run（F5执行），\n因为解耦了，如果你是发布的模式，请检查bin文件夹是否存在Repository.dll和service.dll ※※★※※" + ex.Message + "\n" + ex.InnerException);
+                log.Error("Repository.dll和service.dll 丢失，因为项目解耦了，所以需要先F6编译，再F5运行，请检查并拷贝。\n" + ex.Message);
+
+                //throw new Exception("※※★※※ 如果你是第一次下载项目，请先对整个解决方案dotnet build（F6编译），然后再对api层 dotnet run（F5执行），\n因为解耦了，如果你是发布的模式，请检查bin文件夹是否存在Repository.dll和service.dll ※※★※※" + ex.Message + "\n" + ex.InnerException);
             }
             #endregion
             #endregion
@@ -470,22 +506,23 @@ namespace Blog.Core
 
             #endregion
 
-
-            //将services填充到Autofac容器生成器中
-            builder.Populate(services);
-
             //使用已进行的组件登记创建新容器
-            var ApplicationContainer = builder.Build();
-
-            #endregion
-
-            return new AutofacServiceProvider(ApplicationContainer);//第三方IOC接管 core内置DI容器
+            //var ApplicationContainer = builder.Build();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IBlogArticleServices _blogArticleServices)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBlogArticleServices _blogArticleServices, ILoggerFactory loggerFactory)
         {
+
+            #region RecordAllLogs
+
+            if (Appsettings.app("AppSettings", "Middleware_RecordAllLogs", "Enabled").ObjToBool())
+            {
+                loggerFactory.AddLog4Net();//记录所有的访问记录
+            }
+
+            #endregion
 
             #region ReuestResponseLog
 
@@ -540,15 +577,6 @@ namespace Blog.Core
             app.UseMiniProfiler();
             #endregion
 
-            #region 第三步：开启认证中间件
-
-            //此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件，第二种写法//app.UseMiddleware<JwtTokenAuth>(); 
-            app.UseJwtTokenAuth();
-
-            //如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务 (.AddAuthentication 和 .AddJwtBearer 二者缺一不可)
-            app.UseAuthentication();
-            #endregion
-
             #region CORS
             //跨域第二种方法，使用策略，详细策略信息在ConfigureService中
             app.UseCors("LimitRequests");//将 CORS 中间件添加到 web 应用程序管线中, 以允许跨域请求。
@@ -562,7 +590,6 @@ namespace Blog.Core
 
             #endregion
 
-
             // 跳转https
             //app.UseHttpsRedirection();
             // 使用静态文件
@@ -573,15 +600,30 @@ namespace Blog.Core
             app.UseStatusCodePages();//把错误码返回前台，比如是404
 
 
-            app.UseMvc();
 
+            app.UseRouting();
 
-            app.UseSignalR(routes =>
+            #region 第三步：开启认证中间件
+
+            //此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件，第二种写法//app.UseMiddleware<JwtTokenAuth>(); 
+            //app.UseJwtTokenAuth();
+
+            //如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务 (.AddAuthentication 和 .AddJwtBearer 二者缺一不可)
+            app.UseAuthentication();
+            #endregion
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                //这里要说下，为啥地址要写 /api/xxx 
-                //因为我前后端分离了，而且使用的是代理模式，所以如果你不用/api/xxx的这个规则的话，会出现跨域问题，毕竟这个不是我的controller的路由，而且自己定义的路由
-                routes.MapHub<ChatHub>("/api2/chatHub");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHub<ChatHub>("/api2/chatHub");
             });
+
+
         }
 
     }

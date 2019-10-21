@@ -38,16 +38,20 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public bool? IsHide { get; set; } = false;
 
-        /// <summary>
-        /// 上一级菜单（0表示上一级无菜单）
-        /// </summary>
-        public int Pid { get; set; }
 
         /// <summary>
         /// 按钮事件
         /// </summary>
         [SugarColumn(IsNullable = true)]
         public string Func { get; set; }
+
+
+
+        /// <summary>
+        /// 上一级菜单（0表示上一级无菜单）
+        /// </summary>
+        public int Pid { get; set; }
+
 
         /// <summary>
         /// 接口api

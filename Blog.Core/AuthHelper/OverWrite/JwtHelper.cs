@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Blog.Core.Common;
+using Blog.Core.Common.AppConfig;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Blog.Core.AuthHelper.OverWrite
@@ -21,7 +22,7 @@ namespace Blog.Core.AuthHelper.OverWrite
         {
             string iss = Appsettings.app(new string[] { "Audience", "Issuer" });
             string aud = Appsettings.app(new string[] { "Audience", "Audience" });
-            string secret = Appsettings.app(new string[] { "Audience", "Secret" });
+            string secret = AppSecretConfig.Audience_Secret_String;
 
             //var claims = new Claim[] //old
             var claims = new List<Claim>
@@ -39,6 +40,7 @@ namespace Blog.Core.AuthHelper.OverWrite
                 new Claim(JwtRegisteredClaimNames.Nbf,$"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}") ,
                 //这个就是过期时间，目前是过期1000秒，可自定义，注意JWT有自己的缓冲过期时间
                 new Claim (JwtRegisteredClaimNames.Exp,$"{new DateTimeOffset(DateTime.Now.AddSeconds(1000)).ToUnixTimeSeconds()}"),
+                new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(1000).ToString()),
                 new Claim(JwtRegisteredClaimNames.Iss,iss),
                 new Claim(JwtRegisteredClaimNames.Aud,aud),
                 

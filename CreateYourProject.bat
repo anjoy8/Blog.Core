@@ -1,6 +1,6 @@
 color 3
 
-dotnet new -i .template.config\Blog.Core.Webapi.Template.1.2.0.nupkg
+dotnet new -i .template.config\Blog.Core.Webapi.Template.1.1.3.nupkg
 
 set /p OP=Please set your project name(for example:Baidu.Api):
 

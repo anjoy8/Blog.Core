@@ -15,6 +15,7 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(Permissions.Name)]
     public class TopicDetailController : ControllerBase
     {
         readonly ITopicServices _topicServices;
