@@ -694,7 +694,6 @@
         <member name="T:Blog.Core.Controllers.UserRoleController">
             <summary>
             用户角色关系
-            【无权限】
             </summary>
         </member>
         <member name="M:Blog.Core.Controllers.UserRoleController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices)">

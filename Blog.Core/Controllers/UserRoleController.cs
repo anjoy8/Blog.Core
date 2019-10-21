@@ -7,12 +7,11 @@ namespace Blog.Core.Controllers
 {
     /// <summary>
     /// 用户角色关系
-    /// 【无权限】
     /// </summary>
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize(Permissions.Name)]
     public class UserRoleController : Controller
     {
         readonly ISysUserInfoServices _sysUserInfoServices;
