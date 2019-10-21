@@ -7,20 +7,33 @@ using Moq;
 using Xunit;
 using System;
 using Microsoft.Extensions.Logging;
+using Autofac;
 
 namespace Blog.Core.Tests
 {
-    public class BlogArticleController_Should
+    public class BlogController_Should
     {
         Mock<IBlogArticleServices> mockBlogSev = new Mock<IBlogArticleServices>();
         Mock<IRedisCacheManager> mockRedisMag = new Mock<IRedisCacheManager>();
         Mock<ILogger<BlogController>> mockLogger = new Mock<ILogger<BlogController>>();
         BlogController blogController;
 
-        public BlogArticleController_Should()
+        private IBlogArticleServices blogArticleServices;
+        private IRedisCacheManager _redisCacheManager;
+        private readonly ILogger<BlogController> _logger;
+        DI_Test dI_Test = new DI_Test();
+
+
+
+        public BlogController_Should()
         {
             mockBlogSev.Setup(r => r.Query());
-            blogController = new BlogController(mockBlogSev.Object, mockRedisMag.Object, mockLogger.Object);
+
+
+            var container = dI_Test.DICollections();
+            _redisCacheManager = container.Resolve<IRedisCacheManager>();
+            blogArticleServices = container.Resolve<IBlogArticleServices>();
+            blogController = new BlogController(blogArticleServices, _redisCacheManager, mockLogger.Object);
         }
 
         [Fact]
@@ -31,7 +44,15 @@ namespace Blog.Core.Tests
             Assert.True(blogArticle.bID >= 0);
         }
         [Fact]
-        public async void AddEntity()
+        public async void GetBlogsTest()
+        {
+            object blogs =await blogController.Get(1);
+
+            Assert.NotNull(blogs);
+        }
+
+        [Fact]
+        public async void PostTest()
         {
             BlogArticle blogArticle = new BlogArticle()
             {
@@ -43,11 +64,19 @@ namespace Blog.Core.Tests
 
             var res = await blogController.Post(blogArticle);
 
-            Assert.False(res.success);
+            Assert.True(res.success);
 
             var data = res.response;
 
-            Assert.Null(data);
+            Assert.NotNull(data);
+        }
+
+        [Fact]
+        public async void DeleteTest()
+        {
+            var res = await blogController.Delete(1);
+
+            Assert.True(res.success);
         }
     }
 }

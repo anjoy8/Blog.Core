@@ -2,18 +2,25 @@
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
 using AutoMapper;
+using Blog.Core.AuthHelper;
 using Blog.Core.Common;
 using Blog.Core.Common.DB;
+using Blog.Core.Common.LogHelper;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Services;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting.Internal;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Xunit;
+using System;
+using System.Security.Claims;
+using System.Configuration;
+using Blog.Core.Common.AppConfig;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 
 namespace Blog.Core.Tests
 {
@@ -84,9 +91,40 @@ namespace Blog.Core.Tests
             services.AddAutoMapper(typeof(Startup));
 
             services.AddSingleton(new Appsettings(basePath));
+            services.AddSingleton(new LogLock(basePath));
             services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
             services.AddScoped<Blog.Core.Model.Models.DBSeed>();
             services.AddScoped<Blog.Core.Model.Models.MyContext>();
+
+            //读取配置文件
+            var symmetricKeyAsBase64 = AppSecretConfig.Audience_Secret_String;
+            var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
+            var signingKey = new SymmetricSecurityKey(keyByteArray);
+
+
+            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+
+            var permission = new List<PermissionItem>();
+
+            var permissionRequirement = new PermissionRequirement(
+            "/api/denied",
+            permission,
+            ClaimTypes.Role,
+            Appsettings.app(new string[] { "Audience", "Issuer" }),
+            Appsettings.app(new string[] { "Audience", "Audience" }),
+            signingCredentials,//签名凭据
+            expiration: TimeSpan.FromSeconds(60 * 60)//接口的过期时间
+            );
+            services.AddSingleton(permissionRequirement);
+
+            //【授权】
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Permissions.Name,
+                         policy => policy.Requirements.Add(permissionRequirement));
+            });
+
+
 
             services.AddScoped<SqlSugar.ISqlSugarClient>(o =>
             {

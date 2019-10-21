@@ -18,7 +18,7 @@ namespace Blog.Core.Tests
         public Redis_Should()
         {
             var container = dI_Test.DICollections();
-            //_redisCacheManager = container.Resolve<IRedisCacheManager>();
+            _redisCacheManager = container.Resolve<IRedisCacheManager>();
 
         }
 
