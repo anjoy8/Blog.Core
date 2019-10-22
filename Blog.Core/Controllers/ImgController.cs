@@ -19,20 +19,6 @@ namespace Blog.Core.Controllers
     [Authorize]
     public class ImgController : Controller
     {
-        // GET: api/Img
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/Img/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // GET: api/Download
         /// <summary>
         /// 下载图片（支持中文字符）
