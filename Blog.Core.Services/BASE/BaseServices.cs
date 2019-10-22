@@ -1,4 +1,5 @@
-﻿using Blog.Core.IRepository.Base;
+﻿using Blog.Core.Common;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IServices.BASE;
 using Blog.Core.Model;
 using System;
@@ -135,6 +136,7 @@ namespace Blog.Core.Services.BASE
         /// </summary>
         /// <param name="whereExpression">whereExpression</param>
         /// <returns>数据列表</returns>
+        [Caching(AbsoluteExpiration =10)]
         public async Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression)
         {
             return await BaseDal.Query(whereExpression);
