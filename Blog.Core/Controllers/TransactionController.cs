@@ -30,17 +30,17 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public async Task<IEnumerable<string>> Get()
         {
+            List<string> returnMsg = new List<string>() { };
             try
             {
-                Console.WriteLine($"");
-                Console.WriteLine($"Begin Transaction");
+                returnMsg.Add($"Begin Transaction");
+
                 _unitOfWork.BeginTran();
-                Console.WriteLine($"");
                 var passwords = await _passwordLibServices.Query(d=>d.IsDeleted==false);
-                Console.WriteLine($"first time : the count of passwords is :{passwords.Count}");
+                returnMsg.Add($"first time : the count of passwords is :{passwords.Count}");
 
 
-                Console.WriteLine($"insert a data into the table PasswordLib now.");
+                returnMsg.Add($"insert a data into the table PasswordLib now.");
                 var insertPassword = await _passwordLibServices.Add(new PasswordLib()
                 {
                     IsDeleted = false,
@@ -50,19 +50,19 @@ namespace Blog.Core.Controllers
 
 
                 passwords = await _passwordLibServices.Query(d => d.IsDeleted == false);
-                Console.WriteLine($"second time : the count of passwords is :{passwords.Count}");
+                returnMsg.Add($"second time : the count of passwords is :{passwords.Count}");
+                returnMsg.Add($" ");
 
                 //......
 
-                Console.WriteLine($"");
                 var guestbooks = await _guestbookServices.Query();
-                Console.WriteLine($"first time : the count of guestbooks is :{guestbooks.Count}");
+                returnMsg.Add($"first time : the count of guestbooks is :{guestbooks.Count}");
 
                 int ex = 0;
-                Console.WriteLine($"\nThere's an exception!!");
+                returnMsg.Add($"There's an exception!!");
+                returnMsg.Add($" ");
                 int throwEx = 1 / ex;
 
-                Console.WriteLine($"insert a data into the table Guestbook now.");
                 var insertGuestbook = await _guestbookServices.Add(new Guestbook()
                 {
                     username = "bbb",
@@ -72,7 +72,8 @@ namespace Blog.Core.Controllers
                 });
 
                 guestbooks = await _guestbookServices.Query();
-                Console.WriteLine($"second time : the count of guestbooks is :{guestbooks.Count}");
+                returnMsg.Add($"first time : the count of guestbooks is :{guestbooks.Count}");
+                returnMsg.Add($" ");
 
                 _unitOfWork.CommitTran();
             }
@@ -80,13 +81,13 @@ namespace Blog.Core.Controllers
             {
                 _unitOfWork.RollbackTran();
                 var passwords = await _passwordLibServices.Query();
-                Console.WriteLine($"third time : the count of passwords is :{passwords.Count}");
+                returnMsg.Add($"third time : the count of passwords is :{passwords.Count}");
 
-               var guestbooks = await _guestbookServices.Query();
-                Console.WriteLine($"third time : the count of guestbooks is :{guestbooks.Count}");
+                var guestbooks = await _guestbookServices.Query();
+                returnMsg.Add($"third time : the count of guestbooks is :{guestbooks.Count}");
             }
 
-            return new string[] { "value1", "value2" };
+            return returnMsg;
         }
 
         // GET: api/Transaction/5

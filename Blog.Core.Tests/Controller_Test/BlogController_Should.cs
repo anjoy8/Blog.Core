@@ -70,13 +70,5 @@ namespace Blog.Core.Tests
 
             Assert.NotNull(data);
         }
-
-        [Fact]
-        public async void DeleteTest()
-        {
-            var res = await blogController.Delete(1);
-
-            Assert.True(res.success);
-        }
     }
 }

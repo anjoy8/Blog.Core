@@ -68,7 +68,6 @@ namespace Blog.Core.Model.Models
                 ConnectionString = _connectionString,
                 DbType = _dbType,
                 IsAutoCloseConnection = true,
-                IsShardSameThread = false,
                 InitKeyType = InitKeyType.Attribute,//mark
                 ConfigureExternalServices = new ConfigureExternalServices()
                 {

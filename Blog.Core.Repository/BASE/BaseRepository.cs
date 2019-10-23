@@ -14,21 +14,20 @@ namespace Blog.Core.Repository.Base
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
     {
-        private  ISqlSugarClient _db;
+        private readonly ISqlSugarClient _db;
         private readonly IUnitOfWork _unitOfWork;
 
 
         internal ISqlSugarClient Db
         {
             get { return _db; }
-            private set { _db = value; }
         }
 
         public BaseRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _db = unitOfWork.GetDbClient();
-            DbContext.Init(BaseDBConfig.ConnectionString, (DbType)BaseDBConfig.DbType);
+            //DbContext.Init(BaseDBConfig.ConnectionString, (DbType)BaseDBConfig.DbType);
         }
 
 

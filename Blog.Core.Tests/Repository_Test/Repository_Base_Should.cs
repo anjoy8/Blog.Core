@@ -26,7 +26,7 @@ namespace Blog.Core.Tests
 
             baseRepository = container.Resolve<IBlogArticleRepository>();
 
-            DbContext.Init(BaseDBConfig.ConnectionString,(DbType)BaseDBConfig.DbType);
+            //DbContext.Init(BaseDBConfig.ConnectionString,(DbType)BaseDBConfig.DbType);
         }
 
 
