@@ -3,6 +3,7 @@ using Blog.Core.Hubs;
 using Blog.Core.Model.Models;
 using Castle.DynamicProxy;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
@@ -86,7 +87,17 @@ namespace Blog.Core.AOP
 
             }
 
-            dataIntercept += ($"【执行完成结果】：{invocation.ReturnValue}");
+            var type = invocation.Method.ReturnType;
+            if (typeof(Task).IsAssignableFrom(type))
+            {
+                var resultProperty = type.GetProperty("Result");
+                dataIntercept += ($"【执行完成结果】：{JsonConvert.SerializeObject(resultProperty.GetValue(invocation.ReturnValue))}");
+            }
+            else
+            {
+                dataIntercept += ($"【执行完成结果】：{invocation.ReturnValue}");
+            }
+
 
             Parallel.For(0, 1, e =>
             {
