@@ -93,17 +93,15 @@ namespace Blog.Core.AuthHelper
                 {
                     if (await handlers.GetHandlerAsync(httpContext, scheme.Name) is IAuthenticationRequestHandler handler && await handler.HandleRequestAsync())
                     {
-                        context.Fail();
-                        return;
-
+                        //context.Fail();
+                        //return;
 
                         //自定义返回数据
-                        var payload = JsonConvert.SerializeObject(new { Code = "401", Message = "很抱歉，您无权访问该接口!" });
+                        var payload = JsonConvert.SerializeObject(new { Code = "401", Message = "很抱歉，您无权访问该接口，请确保已经登录!" });
                         httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        filterContext.Result = new JsonResult(payload);
-                        context.Succeed(requirement);
+                        httpContext.Response.ContentType = "application/json";
+                        await httpContext.Response.WriteAsync(payload);
                         return;
-
                     }
                 }
                 //判断请求是否拥有凭据，即有没有登录
@@ -114,10 +112,7 @@ namespace Blog.Core.AuthHelper
                     //result?.Principal不为空即登录成功
                     if (result?.Principal != null)
                     {
-
                         httpContext.User = result.Principal;
-
-
 
                         //权限中是否存在请求的url
                         //if (requirement.Permissions.GroupBy(g => g.Url).Where(w => w.Key?.ToLower() == questUrl).Count() > 0)
@@ -151,30 +146,20 @@ namespace Blog.Core.AuthHelper
                             //if (currentUserRoles.Count <= 0 || requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role) && w.Url.ToLower() == questUrl).Count() <= 0)
                             if (currentUserRoles.Count <= 0 || !isMatchRole)
                             {
-
-
                                 // 可以在这里设置跳转页面
-                                context.Fail();
-                                return;
-
-
-
-                                //自定义返回数据
-                                //var payload = JsonConvert.SerializeObject(new { Code = "403", Message = "很抱歉，您无权访问该接口!" });
-                                //httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                                ////filterContext.Result = new JsonResult(payload);
-                                //context.Succeed(requirement);
+                                //context.Fail();
                                 //return;
+
+                                var payload = JsonConvert.SerializeObject(new { Code = "403", Message = "很抱歉，您的访问权限等级不够，联系管理员!" });
+                                httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                                httpContext.Response.ContentType = "application/json";
+                                await httpContext.Response.WriteAsync(payload);
+                                return;
 
 
                             }
                         }
-                        //else
-                        //{
-                        //    context.Fail();
-                        //    return;
-
-                        //}
+                       
                         //判断过期时间（这里仅仅是最坏验证原则，你可以不要这个if else的判断，因为我们使用的官方验证，Token过期后上边的result?.Principal 就为 null 了，进不到这里了，因此这里其实可以不用验证过期时间，只是做最后严谨判断）
                         if ((httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value) != null && DateTime.Parse(httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value) >= DateTime.Now)
                         {
@@ -182,34 +167,31 @@ namespace Blog.Core.AuthHelper
                         }
                         else
                         {
-                            context.Fail();
-                            return;
-
+                            //context.Fail();
+                            //return;
 
                             //自定义返回数据
-                            //var payload = JsonConvert.SerializeObject(new { Code = "401", Message = "很抱歉，您无权访问该接口!" });
-                            //httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                            //filterContext.Result = new JsonResult(payload);
-                            //context.Succeed(requirement);
-                            //return;
+                            var payload = JsonConvert.SerializeObject(new { Code = "401", Message = "很抱歉，您无权访问该接口，请确保已经登录!" });
+                            httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            httpContext.Response.ContentType = "application/json";
+                            await httpContext.Response.WriteAsync(payload);
+                            return;
                         }
                         return;
                     }
                 }
                 //判断没有登录时，是否访问登录的url,并且是Post请求，并且是form表单提交类型，否则为失败
-                if (!questUrl.Equals(requirement.LoginPath.ToLower(), StringComparison.Ordinal) && (!httpContext.Request.Method.Equals("POST")
-                                                                                                    || !httpContext.Request.HasFormContentType))
+                if (!questUrl.Equals(requirement.LoginPath.ToLower(), StringComparison.Ordinal) && (!httpContext.Request.Method.Equals("POST") || !httpContext.Request.HasFormContentType))
                 {
-                    context.Fail();
-                    return;
-
+                    //context.Fail();
+                    //return;
 
                     //自定义返回数据
-                    //var payload = JsonConvert.SerializeObject(new { Code = "401", Message = "很抱歉，您无权访问该接口!" });
-                    //httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    ////filterContext.Result = new JsonResult(payload);
-                    //context.Succeed(requirement);
-                    //return;
+                    var payload = JsonConvert.SerializeObject(new { Code = "401", Message = "很抱歉，您无权访问该接口，请确保已经登录!" });
+                    httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    httpContext.Response.ContentType = "application/json";
+                    await httpContext.Response.WriteAsync(payload);
+                    return;
                 }
             }
 
