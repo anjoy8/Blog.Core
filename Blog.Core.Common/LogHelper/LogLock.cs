@@ -24,7 +24,7 @@ namespace Blog.Core.Common.LogHelper
             _contentRoot = contentPath;
         }
 
-        public static void OutSql2Log(string filename, string[] dataParas)
+        public static void OutSql2Log(string filename, string[] dataParas, bool IsHeader = true)
         {
             try
             {
@@ -42,11 +42,15 @@ namespace Blog.Core.Common.LogHelper
                 string logFilePath = Path.Combine(path, $@"{filename}.log");
 
                 var now = DateTime.Now;
-                var logContent = (
-                    "--------------------------------\r\n" +
-                    DateTime.Now + "|\r\n" +
-                    String.Join("\r\n", dataParas) + "\r\n"
-                    );
+                string logContent = String.Join("\r\n", dataParas);
+                if (IsHeader)
+                {
+                    logContent = (
+                       "--------------------------------\r\n" +
+                       DateTime.Now + "|\r\n" +
+                       String.Join("\r\n", dataParas) + "\r\n"
+                       );
+                }
 
                 File.AppendAllText(logFilePath, logContent);
                 WritedCount++;

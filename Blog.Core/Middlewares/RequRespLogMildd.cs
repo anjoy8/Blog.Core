@@ -11,6 +11,7 @@ using Blog.Core.Common.LogHelper;
 using StackExchange.Profiling;
 using System.Text.RegularExpressions;
 using Blog.Core.IServices;
+using Newtonsoft.Json;
 
 namespace Blog.Core.Middlewares
 {
@@ -49,7 +50,7 @@ namespace Blog.Core.Middlewares
                 try
                 {
                     // 存储请求数据
-                    RequestDataLog(context.Request);
+                    RequestDataLog(context);
 
                     using (var ms = new MemoryStream())
                     {
@@ -64,7 +65,7 @@ namespace Blog.Core.Middlewares
                         await ms.CopyToAsync(originalBody);
                     }
                 }
-                    catch (Exception)
+                catch (Exception)
                 {
                     // 记录异常
                     //ErrorLogData(context.Response, ex);
@@ -80,8 +81,9 @@ namespace Blog.Core.Middlewares
             }
         }
 
-        private void RequestDataLog(HttpRequest request)
+        private void RequestDataLog(HttpContext context)
         {
+            var request = context.Request;
             var sr = new StreamReader(request.Body);
 
             var content = $" QueryData:{request.Path + request.QueryString}\r\n BodyData:{sr.ReadToEndAsync()}";
@@ -96,6 +98,19 @@ namespace Blog.Core.Middlewares
 
                 request.Body.Position = 0;
             }
+
+            var requestInfo = JsonConvert.SerializeObject(new RequestInfo() { Ip = "", Url = request.Path, Datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") });
+
+            if (!string.IsNullOrEmpty(requestInfo))
+            {
+                Parallel.For(0, 1, e =>
+                {
+                    LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
+                });
+
+                request.Body.Position = 0;
+            }
+
 
         }
 
@@ -119,6 +134,12 @@ namespace Blog.Core.Middlewares
             }
         }
 
+    }
+    public class RequestInfo
+    {
+        public string Ip { get; set; }
+        public string Url { get; set; }
+        public string Datetime { get; set; }
     }
 }
 
