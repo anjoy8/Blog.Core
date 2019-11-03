@@ -99,7 +99,14 @@ namespace Blog.Core.Middlewares
                 request.Body.Position = 0;
             }
 
-            var requestInfo = JsonConvert.SerializeObject(new RequestInfo() { Ip = "", Url = request.Path, Datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") });
+            var requestInfo = JsonConvert.SerializeObject(new RequestInfo()
+            {
+                Ip = "",
+                Url = request.Path.ObjToString().TrimEnd('/').ToLower(),
+                Datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                Date = DateTime.Now.ToString("yyyy-MM-dd"),
+                Week = GetWeek(),
+            });
 
             if (!string.IsNullOrEmpty(requestInfo))
             {
@@ -112,6 +119,38 @@ namespace Blog.Core.Middlewares
             }
 
 
+        }
+        private string GetWeek()
+        {
+            string week = string.Empty;
+            switch (DateTime.Now.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    week = "周一";
+                    break;
+                case DayOfWeek.Tuesday:
+                    week = "周二";
+                    break;
+                case DayOfWeek.Wednesday:
+                    week = "周三";
+                    break;
+                case DayOfWeek.Thursday:
+                    week = "周四";
+                    break;
+                case DayOfWeek.Friday:
+                    week = "周五";
+                    break;
+                case DayOfWeek.Saturday:
+                    week = "周六";
+                    break;
+                case DayOfWeek.Sunday:
+                    week = "周日";
+                    break;
+                default:
+                    week = "N/A";
+                    break;
+            }
+            return week;
         }
 
 
@@ -133,13 +172,6 @@ namespace Blog.Core.Middlewares
                 });
             }
         }
-
-    }
-    public class RequestInfo
-    {
-        public string Ip { get; set; }
-        public string Url { get; set; }
-        public string Datetime { get; set; }
     }
 }
 

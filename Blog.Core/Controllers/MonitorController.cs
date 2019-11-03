@@ -44,29 +44,28 @@ namespace Blog.Core.Controllers
             };
         }
 
-        // GET: api/Logs/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+
+
+        [HttpGet]
+        public MessageModel<RequestApiWeekView> GetRequestApiinfoByWeek()
         {
-            return "value";
+            return new MessageModel<RequestApiWeekView>()
+            {
+                msg = "获取成功",
+                success = true,
+                response = LogLock.RequestApiinfoByWeek()
+            };
         }
 
-        // POST: api/Logs
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet]
+        public MessageModel<AccessApiDateView> GetAccessApiByDate()
         {
-        }
-
-        // PUT: api/Logs/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return new MessageModel<AccessApiDateView>()
+            {
+                msg = "获取成功",
+                success = true,
+                response = LogLock.AccessApiByDate()
+            };
         }
 
     }

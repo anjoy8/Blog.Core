@@ -2,6 +2,7 @@
 using Blog.Core.Hubs;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -191,14 +192,108 @@ namespace Blog.Core.Common.LogHelper
             return aopLogs;
         }
 
+
+        public static RequestApiWeekView RequestApiinfoByWeek()
+        {
+            List<RequestInfo> Logs = new List<RequestInfo>();
+            List<ApiWeek> apiWeeks = new List<ApiWeek>();
+            string apiWeeksJson = string.Empty;
+            List<string> columns = new List<string>();
+            columns.Add("日期");
+
+
+            try
+            {
+                Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log", "RequestIpInfoLog.log"), Encoding.UTF8) + "]");
+
+                var ddd = Logs.Where(d => d.Week == "周日").ToList();
+
+                apiWeeks = (from n in Logs
+                            group n by new { n.Week, n.Url } into g
+                            where g.Count() >= 2
+                            select new ApiWeek
+                            {
+                                week = g.Key.Week,
+                                url = g.Key.Url,
+                                count = g.Count(),
+                            }).ToList();
+
+                apiWeeks = apiWeeks.OrderBy(d => d.count).Take(8).ToList();
+
+            }
+            catch (Exception)
+            {
+            }
+
+            StringBuilder jsonBuilder = new StringBuilder();
+            jsonBuilder.Append("[");
+
+            var weeks = apiWeeks.GroupBy(x => new { x.week }).Select(s => s.First()).ToList();
+            foreach (var week in weeks)
+            {
+                var apiweeksCurrentWeek = apiWeeks.Where(d => d.week == week.week).ToList();
+                jsonBuilder.Append("{");
+
+                jsonBuilder.Append("\"");
+                jsonBuilder.Append("日期");
+                jsonBuilder.Append("\":\"");
+                jsonBuilder.Append(week.week);
+                jsonBuilder.Append("\",");
+
+                foreach (var item in apiweeksCurrentWeek)
+                {
+                    jsonBuilder.Append("\"");
+                    jsonBuilder.Append(item.url);
+                    jsonBuilder.Append("\":\"");
+                    jsonBuilder.Append(item.count);
+                    jsonBuilder.Append("\",");
+                }
+                jsonBuilder.Remove(jsonBuilder.Length - 1, 1);
+                jsonBuilder.Append("},");
+            }
+
+            jsonBuilder.Remove(jsonBuilder.Length - 1, 1);
+            jsonBuilder.Append("]");
+
+            columns.AddRange(apiWeeks.Select(d => d.url).ToList());
+
+            return new RequestApiWeekView()
+            {
+                columns = columns,
+                rows = jsonBuilder.ToString(),
+            };
+        }
+        public static AccessApiDateView AccessApiByDate()
+        {
+            List<RequestInfo> Logs = new List<RequestInfo>();
+            List<ApiDate> apiDates = new List<ApiDate>();
+            try
+            {
+                Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log", "RequestIpInfoLog.log"), Encoding.UTF8) + "]");
+
+                apiDates = (from n in Logs
+                            group n by new { n.Date } into g
+                            where g.Count() >= 2
+                            select new ApiDate
+                            {
+                                date = g.Key.Date,
+                                count = g.Count(),
+                            }).ToList();
+
+                apiDates = apiDates.OrderBy(d => d.count).Take(8).ToList();
+
+            }
+            catch (Exception)
+            {
+            }
+
+            return new AccessApiDateView()
+            {
+                columns = new string[] { "date", "count" },
+                rows = apiDates.OrderBy(d=>d.date).ToList(),
+            };
+        }
     }
 
-    public class LogInfo
-    {
-        public DateTime Datetime { get; set; }
-        public string Content { get; set; }
-        public string IP { get; set; }
-        public string LogColor { get; set; }
-        public int Import { get; set; } = 0;
-    }
+
 }
