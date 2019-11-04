@@ -217,7 +217,7 @@ namespace Blog.Core.Common.LogHelper
                                 count = g.Count(),
                             }).ToList();
 
-                apiWeeks = apiWeeks.OrderByDescending(d => d.count).Take(8).ToList();
+                //apiWeeks = apiWeeks.OrderByDescending(d => d.count).Take(8).ToList();
 
             }
             catch (Exception)
@@ -230,7 +230,7 @@ namespace Blog.Core.Common.LogHelper
             var weeks = apiWeeks.GroupBy(x => new { x.week }).Select(s => s.First()).ToList();
             foreach (var week in weeks)
             {
-                var apiweeksCurrentWeek = apiWeeks.Where(d => d.week == week.week).ToList();
+                var apiweeksCurrentWeek = apiWeeks.Where(d => d.week == week.week).OrderByDescending(d => d.count).Take(8).ToList();
                 jsonBuilder.Append("{");
 
                 jsonBuilder.Append("\"");
@@ -254,7 +254,7 @@ namespace Blog.Core.Common.LogHelper
             jsonBuilder.Remove(jsonBuilder.Length - 1, 1);
             jsonBuilder.Append("]");
 
-            columns.AddRange(apiWeeks.Select(d => d.url).ToList());
+            columns.AddRange(apiWeeks.OrderByDescending(d => d.count).Take(8).Select(d => d.url).ToList());
 
             return new RequestApiWeekView()
             {
