@@ -210,7 +210,6 @@ namespace Blog.Core.Common.LogHelper
 
                 apiWeeks = (from n in Logs
                             group n by new { n.Week, n.Url } into g
-                            where g.Count() >= 2
                             select new ApiWeek
                             {
                                 week = g.Key.Week,
@@ -218,7 +217,7 @@ namespace Blog.Core.Common.LogHelper
                                 count = g.Count(),
                             }).ToList();
 
-                apiWeeks = apiWeeks.OrderBy(d => d.count).Take(8).ToList();
+                apiWeeks = apiWeeks.OrderByDescending(d => d.count).Take(8).ToList();
 
             }
             catch (Exception)
