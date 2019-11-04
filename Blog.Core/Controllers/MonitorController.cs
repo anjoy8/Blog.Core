@@ -68,6 +68,17 @@ namespace Blog.Core.Controllers
             };
         }
 
+        [HttpGet]
+        public MessageModel<AccessApiDateView> GetAccessApiByHour()
+        {
+            return new MessageModel<AccessApiDateView>()
+            {
+                msg = "获取成功",
+                success = true,
+                response = LogLock.AccessApiByHour()
+            };
+        }
+
     }
 
 

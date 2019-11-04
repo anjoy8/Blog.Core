@@ -262,6 +262,7 @@ namespace Blog.Core.Common.LogHelper
                 rows = jsonBuilder.ToString(),
             };
         }
+
         public static AccessApiDateView AccessApiByDate()
         {
             List<RequestInfo> Logs = new List<RequestInfo>();
@@ -272,14 +273,13 @@ namespace Blog.Core.Common.LogHelper
 
                 apiDates = (from n in Logs
                             group n by new { n.Date } into g
-                            where g.Count() >= 2
                             select new ApiDate
                             {
                                 date = g.Key.Date,
                                 count = g.Count(),
                             }).ToList();
 
-                apiDates = apiDates.OrderBy(d => d.count).Take(8).ToList();
+                apiDates = apiDates.OrderBy(d => d.date).Take(7).ToList();
 
             }
             catch (Exception)
@@ -289,7 +289,38 @@ namespace Blog.Core.Common.LogHelper
             return new AccessApiDateView()
             {
                 columns = new string[] { "date", "count" },
-                rows = apiDates.OrderBy(d=>d.date).ToList(),
+                rows = apiDates,
+            };
+        }
+
+        public static AccessApiDateView AccessApiByHour()
+        {
+            List<RequestInfo> Logs = new List<RequestInfo>();
+            List<ApiDate> apiDates = new List<ApiDate>();
+            try
+            {
+                Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log", "RequestIpInfoLog.log"), Encoding.UTF8) + "]");
+
+                apiDates = (from n in Logs
+                            where n.Datetime.ObjToDate() >= DateTime.Today
+                            group n by new { hour = n.Datetime.ObjToDate().Hour } into g
+                            select new ApiDate
+                            {
+                                date = g.Key.hour.ToString("00"),
+                                count = g.Count(),
+                            }).ToList();
+
+                apiDates = apiDates.OrderBy(d => d.date).Take(24).ToList();
+
+            }
+            catch (Exception)
+            {
+            }
+
+            return new AccessApiDateView()
+            {
+                columns = new string[] { "date", "count" },
+                rows = apiDates,
             };
         }
     }
