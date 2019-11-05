@@ -18,7 +18,7 @@
             "bRemark": "string"
         };
         $.ajax({
-            url: "http://localhost:58427/api/Values",
+            url: "http://localhost:8081/api/Values",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(postdata),
@@ -34,7 +34,7 @@
 <body>
     <button id="btn">点击我请求数据</button>
     <div id="requestMsg"></div>
-    <form id="sub1" method="post" action="http://localhost:58427/api/Values">
+    <form id="sub1" method="post" action="http://localhost:8081/api/Values">
         <input name="name" type="text" />
         <input type="submit" value="提交吧" />
     </form>

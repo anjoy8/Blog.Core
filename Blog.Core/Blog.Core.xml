@@ -227,6 +227,11 @@
             <param name="signingCredentials">签名验证实体</param>
             <param name="expiration">过期时间</param>
         </member>
+        <member name="T:Blog.Core.AutoMapper.AutoMapperConfig">
+            <summary>
+            静态全局 AutoMapper 配置文件
+            </summary>
+        </member>
         <member name="M:Blog.Core.AutoMapper.CustomProfile.#ctor">
             <summary>
             配置构造函数，用来创建关系映射
@@ -796,6 +801,56 @@
             Delete方法
             </summary>
             <param name="id"></param>
+        </member>
+        <member name="T:Blog.Core.Extensions.AuthorizationSetup">
+            <summary>
+            Db 启动服务
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.AutoMapperSetup">
+            <summary>
+            Automapper 启动服务
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.CorsSetup">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.DbSetup">
+            <summary>
+            Db 启动服务
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.HttpContextSetup">
+            <summary>
+            Db 启动服务
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.JobSetup">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.MemoryCacheSetup">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.MiniProfilerSetup">
+            <summary>
+            MiniProfiler 启动服务
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.SqlsugarSetup">
+            <summary>
+            SqlSugar 启动服务
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.SwaggerSetup">
+            <summary>
+            Swagger 启动服务
+            </summary>
         </member>
         <member name="T:Blog.Core.Filter.GlobalRouteAuthorizeConvention">
             <summary>

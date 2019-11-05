@@ -3,46 +3,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
-using AutoMapper;
 using Blog.Core.AOP;
-using Blog.Core.AuthHelper;
 using Blog.Core.Common;
-using Blog.Core.Common.AppConfig;
-using Blog.Core.Common.DB;
-using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.LogHelper;
-using Blog.Core.Common.MemoryCache;
 using Blog.Core.Extensions;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
 using Blog.Core.Middlewares;
 using Blog.Core.Model;
-using Blog.Core.Tasks;
 using log4net;
-using log4net.Config;
 using log4net.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Swashbuckle.AspNetCore.Filters;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
 
 namespace Blog.Core
@@ -60,161 +42,33 @@ namespace Blog.Core
         {
             Configuration = configuration;
             Env = env;
-            //log4net
-            #region 这部分代码迁到 program.cs 文件里了
-            //Repository = LogManager.CreateRepository(Configuration["Logging:Log4Net:Name"]);
-            ////指定配置文件，如果这里你遇到问题，应该是使用了InProcess模式，请查看Blog.Core.csproj,并删之
-            //var contentPath = env.ContentRootPath;
-            //var log4Config = Path.Combine(contentPath, "log4net.config");
-            //XmlConfigurator.Configure(Repository, new FileInfo(log4Config)); 
-            #endregion
-
         }
 
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Env { get; }
-        private const string ApiName = "Blog.Core";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            #region 部分工具类服务注入-netcore原生方法
-            // 缓存注入
-            services.AddScoped<ICaching, MemoryCaching>();
-            services.AddSingleton<IMemoryCache>(factory =>
-            {
-                var cache = new MemoryCache(new MemoryCacheOptions());
-                return cache;
-            });
-            // Redis注入
+            // 以下code可能与文章中不一样,对代码做了封装,具体查看右侧 Extensions 文件夹.
             services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
-
             services.AddSingleton(new Appsettings(Env.ContentRootPath));
-
             services.AddSingleton(new LogLock(Env.ContentRootPath));
-            #endregion
 
-            #region ISqlSugarClient
-
-            services.AddScoped<SqlSugar.ISqlSugarClient>(o =>
-            {
-                return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
-                {
-                    ConnectionString = BaseDBConfig.ConnectionString,//必填, 数据库连接字符串
-                    DbType = (SqlSugar.DbType)BaseDBConfig.DbType,//必填, 数据库类型
-                    IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
-                    InitKeyType = SqlSugar.InitKeyType.SystemTable//默认SystemTable, 字段信息读取, 如：该属性是不是主键，标识列等等信息
-                });
-            });
-
-            #endregion
-
-            #region 初始化DB
-            services.AddScoped<Blog.Core.Model.Models.DBSeed>();
-            services.AddScoped<Blog.Core.Model.Models.MyContext>();
-            #endregion
-
-            #region Automapper
-            services.AddAutoMapper(typeof(Startup));
-            #endregion
-
-            #region CORS
-            //跨域第二种方法，声明策略，记得下边app中配置
-            services.AddCors(c =>
-            {
-
-                //一般采用这种方法
-                c.AddPolicy("LimitRequests", policy =>
-                {
-                    // 支持多个域名端口，注意端口号后不要带/斜杆：比如localhost:8000/，是错的
-                    // 注意，http://127.0.0.1:1818 和 http://localhost:1818 是不一样的，尽量写两个
-                    policy
-                    .WithOrigins("http://127.0.0.1:1818", "http://localhost:8080", "http://localhost:8021", "http://localhost:8081", "http://localhost:1818")
-                    .AllowAnyHeader()//Ensures that the policy allows any header.
-                    .AllowAnyMethod();
-                });
-            });
-
-            //跨域第一种办法，注意下边 Configure 中进行配置
-            //services.AddCors();
-            #endregion
-
-            #region MiniProfiler
-
-            services.AddMiniProfiler(options =>
-                {
-                    options.RouteBasePath = "/profiler";
-                    //(options.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromMinutes(10);
-                    options.PopupRenderPosition = StackExchange.Profiling.RenderPosition.Left;
-                    options.PopupShowTimeWithChildren = true;
-
-                    // 可以增加权限
-                    //options.ResultsAuthorize = request => request.HttpContext.User.IsInRole("Admin");
-                    //options.UserIdProvider = request => request.HttpContext.User.Identity.Name;
-                }
-            );
-
-            #endregion
-
-            #region Swagger UI Service
-
-            var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
-            services.AddSwaggerGen(c =>
-            {
-                //遍历出全部的版本，做文档信息展示
-                typeof(ApiVersions).GetEnumNames().ToList().ForEach(version =>
-                {
-                    c.SwaggerDoc(version, new OpenApiInfo
-                    {
-                        // {ApiName} 定义成全局变量，方便修改
-                        Version = version,
-                        Title = $"{ApiName} 接口文档——Netcore 3.0",
-                        Description = $"{ApiName} HTTP API " + version,
-                        Contact = new OpenApiContact { Name = ApiName, Email = "Blog.Core@xxx.com", Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") },
-                        License = new OpenApiLicense { Name = ApiName, Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") }
-                    });
-                    c.OrderActionsBy(o => o.RelativePath);
-                });
+            services.AddMemoryCacheSetup();
+            services.AddSqlsugarSetup();
+            services.AddDbSetup();
+            services.AddAutoMapperSetup();
+            services.AddCorsSetup();
+            services.AddMiniProfilerSetup();
+            services.AddSwaggerSetup();
+            services.AddJobSetup();
+            services.AddHttpContextSetup();
+            services.AddAuthorizationSetup();
 
 
-                try
-                {
-                    //就是这里
-                    var xmlPath = Path.Combine(basePath, "Blog.Core.xml");//这个就是刚刚配置的xml文件名
-                    c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
+            services.AddSignalR().AddNewtonsoftJsonProtocol();
 
-                    var xmlModelPath = Path.Combine(basePath, "Blog.Core.Model.xml");//这个就是Model层的xml文件名
-                    c.IncludeXmlComments(xmlModelPath);
-                }
-                catch (Exception ex)
-                {
-                    log.Error("Blog.Core.xml和Blog.Core.Model.xml 丢失，请检查并拷贝。\n" + ex.Message);
-                }
-
-                c.OperationFilter<AddResponseHeadersFilter>();
-                c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
-
-                c.OperationFilter<SecurityRequirementsOperationFilter>();
-
-
-                #region Token绑定到ConfigureServices
-
-
-                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                {
-                    Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
-                    Name = "Authorization",//jwt默认的参数名称
-                    In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
-                    Type = SecuritySchemeType.ApiKey
-                });
-                #endregion
-            });
-
-            #endregion
-
-            #region MVC + GlobalExceptions
-
-            //注入全局异常捕获
             services.AddControllers(o =>
             {
                 // 全局异常过滤
@@ -234,187 +88,6 @@ namespace Blog.Core
                 //设置时间格式
                 //options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
             });
-
-
-
-
-
-            #endregion
-
-            #region TimedJob
-
-            services.AddHostedService<Job1TimedService>();
-            services.AddHostedService<Job2TimedService>();
-
-            #endregion
-
-            #region Httpcontext
-
-            // Httpcontext 注入
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IUser, AspNetUser>();
-
-            #endregion
-
-            #region SignalR 通讯
-            services.AddSignalR().AddNewtonsoftJsonProtocol();
-            #endregion
-
-            #region Authorize 权限认证三步走
-
-            //Tips：注释中的中括号【xxx】的内容，与下边region中的模块，是一一匹配的
-
-            /*
-             * 如果不想走数据库，仅仅想在代码里配置授权，这里可以按照下边的步骤：
-             * 1步、【1、基于角色的API授权】
-             * 很简单，只需要在指定的接口上，配置特性即可，比如：[Authorize(Roles = "Admin,System,Others")]
-             * 
-             * 但是如果你感觉"Admin,System,Others"，这样的字符串太长的话，可以把这个融合到简单策略里          
-             * 具体的配置，看下文的Region模块【2、基于策略的授权（简单版）】 ，然后在接口上，配置特性：[Authorize(Policy = "A_S_O")]
-             * 
-             * 
-             * 2步、配置Bearer认证服务，具体代码看下文的 region 【第二步：配置认证服务】
-             * 
-             * 3步、开启中间件
-             */
-
-
-
-            /*
-             * 如果想要把权限配置到数据库，步骤如下：
-             * 1步、【3复杂策略授权】
-             * 具体的查看下边 region 内的内容
-             * 
-             * 2步、配置Bearer认证服务，具体代码看下文的 region 【第二步：配置认证服务】
-             * 
-             * 3步、开启中间件
-             */
-
-
-
-            //3、综上所述，设置权限，必须要三步走，授权 + 配置认证服务 + 开启授权中间件，只不过自定义的中间件不能验证过期时间，所以我都是用官方的。
-
-            #region 【第一步：授权】
-
-            #region 1、基于角色的API授权 
-
-            // 1【授权】、这个很简单，其他什么都不用做， 只需要在API层的controller上边，增加特性即可，注意，只能是角色的:
-            // [Authorize(Roles = "Admin,System")]
-
-
-            #endregion
-
-            #region 2、基于策略的授权（简单版）
-
-            // 1【授权】、这个和上边的异曲同工，好处就是不用在controller中，写多个 roles 。
-            // 然后这么写 [Authorize(Policy = "Admin")]
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Client", policy => policy.RequireRole("Client").Build());
-                options.AddPolicy("Admin", policy => policy.RequireRole("Admin").Build());
-                options.AddPolicy("SystemOrAdmin", policy => policy.RequireRole("Admin", "System"));
-                options.AddPolicy("A_S_O", policy => policy.RequireRole("Admin", "System", "Others"));
-            });
-
-
-            #endregion
-
-            #region 【3、复杂策略授权】
-
-            #region 参数
-            //读取配置文件
-            var audienceConfig = Configuration.GetSection("Audience");
-            var symmetricKeyAsBase64 = AppSecretConfig.Audience_Secret_String;
-            var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
-            var signingKey = new SymmetricSecurityKey(keyByteArray);
-
-
-            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-
-            // 如果要数据库动态绑定，这里先留个空，后边处理器里动态赋值
-            var permission = new List<PermissionItem>();
-
-            // 角色与接口的权限要求参数
-            var permissionRequirement = new PermissionRequirement(
-                "/api/denied",// 拒绝授权的跳转地址（目前无用）
-                permission,
-                ClaimTypes.Role,//基于角色的授权
-                audienceConfig["Issuer"],//发行人
-                audienceConfig["Audience"],//听众
-                signingCredentials,//签名凭据
-                expiration: TimeSpan.FromSeconds(60 * 60)//接口的过期时间
-                );
-            #endregion
-
-            //【授权】
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(Permissions.Name,
-                         policy => policy.Requirements.Add(permissionRequirement));
-            });
-
-
-            #endregion
-
-
-            #endregion
-
-
-
-
-
-            #region 【第二步：配置认证服务】
-            // 令牌验证参数
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
-                ValidateIssuer = true,
-                ValidIssuer = audienceConfig["Issuer"],//发行人
-                ValidateAudience = true,
-                ValidAudience = audienceConfig["Audience"],//订阅人
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.FromSeconds(30),
-                RequireExpirationTime = true,
-            };
-
-            //2.1【认证】、core自带官方JWT认证
-            // 开启Bearer认证
-            services.AddAuthentication("Bearer")
-             // 添加JwtBearer服务
-             .AddJwtBearer(o =>
-             {
-                 o.TokenValidationParameters = tokenValidationParameters;
-                 o.Events = new JwtBearerEvents
-                 {
-                     OnAuthenticationFailed = context =>
-                     {
-                         // 如果过期，则把<是否过期>添加到，返回头信息中
-                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                         {
-                             context.Response.Headers.Add("Token-Expired", "true");
-                         }
-                         return Task.CompletedTask;
-                     }
-                 };
-             });
-
-
-            //2.2【认证】、IdentityServer4 认证 (暂时忽略)
-            //services.AddAuthentication("Bearer")
-            //  .AddIdentityServerAuthentication(options =>
-            //  {
-            //      options.Authority = "http://localhost:5002";
-            //      options.RequireHttpsMetadata = false;
-            //      options.ApiName = "blog.core.api";
-            //  });
-            // 注入权限处理器
-
-            services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
-            services.AddSingleton(permissionRequirement);
-            #endregion
-
-            #endregion
 
         }
 
@@ -473,7 +146,7 @@ namespace Blog.Core
                           .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。 
                 #endregion
 
-            #region Repository.dll 注入，有对应接口
+                #region Repository.dll 注入，有对应接口
                 var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
                 var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
                 builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
@@ -486,7 +159,6 @@ namespace Blog.Core
             }
             #endregion
             #endregion
-
 
             #region 没有接口层的服务层注入
 
@@ -504,9 +176,6 @@ namespace Blog.Core
                 .InterceptedBy(typeof(BlogLogAOP));
 
             #endregion
-
-            //使用已进行的组件登记创建新容器
-            //var ApplicationContainer = builder.Build();
 
         }
 
@@ -562,6 +231,7 @@ namespace Blog.Core
             app.UseSwaggerUI(c =>
             {
                 //根据版本名称倒序 遍历展示
+                var ApiName = Appsettings.app(new string[] { "Startup", "ApiName" });
                 typeof(ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(version =>
                 {
                     c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{ApiName} {version}");
@@ -572,22 +242,13 @@ namespace Blog.Core
             });
             #endregion
 
-            #region MiniProfiler
+
+
+            // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
             app.UseMiniProfiler();
-            #endregion
 
-            #region CORS
-            //跨域第二种方法，使用策略，详细策略信息在ConfigureService中
-            app.UseCors("LimitRequests");//将 CORS 中间件添加到 web 应用程序管线中, 以允许跨域请求。
+            app.UseCors("LimitRequests");
 
-
-            #region 跨域第一种版本
-            //跨域第一种版本，请要ConfigureService中配置服务 services.AddCors();
-            //    app.UseCors(options => options.WithOrigins("http://localhost:8021").AllowAnyHeader()
-            //.AllowAnyMethod());  
-            #endregion
-
-            #endregion
 
             // 跳转https
             //app.UseHttpsRedirection();
@@ -597,20 +258,13 @@ namespace Blog.Core
             app.UseCookiePolicy();
             // 返回错误码
             app.UseStatusCodePages();//把错误码返回前台，比如是404
-
-
-
+            // Routing
             app.UseRouting();
-
-            #region 第三步：开启认证中间件
-
-            //此授权认证方法已经放弃，请使用下边的官方验证方法。但是如果你还想传User的全局变量，还是可以继续使用中间件，第二种写法//app.UseMiddleware<JwtTokenAuth>(); 
-            //app.UseJwtTokenAuth();
-
-            //如果你想使用官方认证，必须在上边ConfigureService 中，配置JWT的认证服务 (.AddAuthentication 和 .AddJwtBearer 二者缺一不可)
+            // 这种自定义授权中间件，可以尝试，但不推荐
+            // app.UseJwtTokenAuth();
+            // 先开启认证
             app.UseAuthentication();
-            #endregion
-
+            // 然后是授权中间件
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
