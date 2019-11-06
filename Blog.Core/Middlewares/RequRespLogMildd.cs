@@ -101,7 +101,7 @@ namespace Blog.Core.Middlewares
 
             var requestInfo = JsonConvert.SerializeObject(new RequestInfo()
             {
-                Ip = "",
+                Ip = GetClientIP(context),
                 Url = request.Path.ObjToString().TrimEnd('/').ToLower(),
                 Datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 Date = DateTime.Now.ToString("yyyy-MM-dd"),
@@ -153,6 +153,15 @@ namespace Blog.Core.Middlewares
             return week;
         }
 
+        public static string GetClientIP(HttpContext context)
+        {
+            var ip = context.Request.Headers["X-Forwarded-For"].ObjToString();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = context.Connection.RemoteIpAddress.ObjToString();
+            }
+            return ip;
+        }
 
         private void ResponseDataLog(HttpResponse response, MemoryStream ms)
         {
