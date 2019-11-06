@@ -2,6 +2,7 @@
 using Blog.Core.Common;
 using Blog.Core.Common.AppConfig;
 using Blog.Core.Model.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -132,7 +133,11 @@ namespace Blog.Core.Extensions
 
             //2.1【认证】、core自带官方JWT认证
             // 开启Bearer认证
-            services.AddAuthentication("Bearer")
+            services.AddAuthentication(o=> {
+                o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = nameof(ApiResponseHandler);
+                o.DefaultForbidScheme = nameof(ApiResponseHandler);
+            })
              // 添加JwtBearer服务
              .AddJwtBearer(o =>
              {
@@ -149,7 +154,8 @@ namespace Blog.Core.Extensions
                          return Task.CompletedTask;
                      }
                  };
-             });
+             })
+             .AddScheme<AuthenticationSchemeOptions, ApiResponseHandler>(nameof(ApiResponseHandler), o => { });
 
 
             //2.2【认证】、IdentityServer4 认证 (暂时忽略)
