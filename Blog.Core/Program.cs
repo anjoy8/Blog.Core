@@ -41,7 +41,7 @@ namespace Blog.Core
                     // 从 system.IServicec提供程序获取 T 类型的服务。
                     // 数据库连接字符串是在 Model 层的 Seed 文件夹下的 MyContext.cs 中
                     var configuration = services.GetRequiredService<IConfiguration>();
-                    if (configuration.GetSection("AppSettings")["SeedDBEnabled"].ObjToBool())
+                    if (configuration.GetSection("AppSettings")["SeedDBEnabled"].ObjToBool() || configuration.GetSection("AppSettings")["SeedDBDataEnabled"].ObjToBool())
                     {
                         var myContext = services.GetRequiredService<MyContext>();
                         DBSeed.SeedAsync(myContext).Wait();
