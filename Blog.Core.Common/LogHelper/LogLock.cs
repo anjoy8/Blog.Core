@@ -159,15 +159,32 @@ namespace Blog.Core.Common.LogHelper
             {
             }
 
+            //try
+            //{
+            //    reqresLogs = ReadLog(Path.Combine(_contentRoot, "Log", "RequestResponseLog.log"), Encoding.UTF8)
+            //          .Split("--------------------------------")
+            //          .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
+            //          .Select(d => new LogInfo
+            //          {
+            //              Datetime = d.Split("|")[0].ObjToDate(),
+            //              Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
+            //              LogColor = "ReqRes",
+            //          }).ToList();
+            //}
+            //catch (Exception)
+            //{
+            //}
+
             try
             {
-                reqresLogs = ReadLog(Path.Combine(_contentRoot, "Log", "RequestResponseLog.log"), Encoding.UTF8)
-                      .Split("--------------------------------")
-                      .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
-                      .Select(d => new LogInfo
+                var Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log", "RequestIpInfoLog.log"), Encoding.UTF8) + "]");
+
+                Logs = Logs.Where(d => d.Datetime.ObjToDate() >= DateTime.Today).ToList();
+
+                reqresLogs = Logs.Select(d => new LogInfo
                       {
-                          Datetime = d.Split("|")[0].ObjToDate(),
-                          Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
+                          Datetime = d.Datetime.ObjToDate(),
+                          Content = $"IP:{d.Ip}<br>{d.Url}",
                           LogColor = "ReqRes",
                       }).ToList();
             }
