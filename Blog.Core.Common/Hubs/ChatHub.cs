@@ -69,6 +69,12 @@ namespace Blog.Core.Hubs
             return base.OnDisconnectedAsync(ex);
         }
 
+
+        public async Task SendMessage(string user, string message)
+        {
+            await Clients.All.ReceiveMessage( user, message);
+        }
+
         //定于一个通讯管道，用来管理我们和客户端的连接
         //1、客户端调用 GetLatestCount，就像订阅
         public async Task GetLatestCount(string random)

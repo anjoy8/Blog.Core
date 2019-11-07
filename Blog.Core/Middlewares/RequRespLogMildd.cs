@@ -12,6 +12,7 @@ using StackExchange.Profiling;
 using System.Text.RegularExpressions;
 using Blog.Core.IServices;
 using Newtonsoft.Json;
+using Blog.Core.Common;
 
 namespace Blog.Core.Middlewares
 {
@@ -41,38 +42,45 @@ namespace Blog.Core.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            // 过滤，只有接口
-            if (context.Request.Path.Value.Contains("api"))
+            if (Appsettings.app("Middleware", "RequestResponseLog", "Enabled").ObjToBool())
             {
-                context.Request.EnableBuffering();
-                Stream originalBody = context.Response.Body;
-
-                try
+                // 过滤，只有接口
+                if (context.Request.Path.Value.Contains("api"))
                 {
-                    // 存储请求数据
-                    RequestDataLog(context);
+                    context.Request.EnableBuffering();
+                    Stream originalBody = context.Response.Body;
 
-                    using (var ms = new MemoryStream())
+                    try
                     {
-                        context.Response.Body = ms;
+                        // 存储请求数据
+                        RequestDataLog(context);
 
-                        await _next(context);
+                        using (var ms = new MemoryStream())
+                        {
+                            context.Response.Body = ms;
 
-                        // 存储响应数据
-                        ResponseDataLog(context.Response, ms);
+                            await _next(context);
 
-                        ms.Position = 0;
-                        await ms.CopyToAsync(originalBody);
+                            // 存储响应数据
+                            ResponseDataLog(context.Response, ms);
+
+                            ms.Position = 0;
+                            await ms.CopyToAsync(originalBody);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // 记录异常
+                        //ErrorLogData(context.Response, ex);
+                    }
+                    finally
+                    {
+                        context.Response.Body = originalBody;
                     }
                 }
-                catch (Exception)
+                else
                 {
-                    // 记录异常
-                    //ErrorLogData(context.Response, ex);
-                }
-                finally
-                {
-                    context.Response.Body = originalBody;
+                    await _next(context);
                 }
             }
             else

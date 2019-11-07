@@ -13,5 +13,9 @@ namespace Blog.Core.Middlewares
         {
             return app.UseMiddleware<RequRespLogMildd>();
         }
+        public static IApplicationBuilder UseSignalRSendMildd(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<SignalRSendMildd>();
+        }
     }
 }

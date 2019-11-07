@@ -183,23 +183,12 @@ namespace Blog.Core
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBlogArticleServices _blogArticleServices, ILoggerFactory loggerFactory)
         {
 
-            #region RecordAllLogs
-
-            if (Appsettings.app("AppSettings", "Middleware_RecordAllLogs", "Enabled").ObjToBool())
-            {
-                loggerFactory.AddLog4Net();//记录所有的访问记录
-            }
-
-            #endregion
-
-            #region ReuestResponseLog
-
-            if (Appsettings.app("AppSettings", "Middleware_RequestResponse", "Enabled").ObjToBool())
-            {
-                app.UseReuestResponseLog();//记录请求与返回数据 
-            }
-
-            #endregion
+            //记录所有的访问记录
+            loggerFactory.AddLog4Net();
+            //记录请求与返回数据 
+            app.UseReuestResponseLog();
+            // signalr 
+            app.UseSignalRSendMildd();
 
             #region Environment
             if (env.IsDevelopment())
