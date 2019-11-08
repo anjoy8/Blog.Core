@@ -230,5 +230,40 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+
+        /// <summary>
+        /// 更新博客信息
+        /// </summary>
+        /// <param name="BlogArticle"></param>
+        /// <returns></returns>
+        // PUT: api/User/5
+        [HttpPut]
+        [Route("Update")]
+        public async Task<MessageModel<string>> Put([FromBody] BlogArticle BlogArticle)
+        {
+            var data = new MessageModel<string>();
+            if (BlogArticle != null && BlogArticle.bID > 0)
+            {
+                var model = await _blogArticleServices.QueryById(BlogArticle.bID);
+
+                if (model!=null)
+                {
+                    model.btitle = BlogArticle.btitle;
+                    model.bcategory = BlogArticle.bcategory;
+                    model.bsubmitter = BlogArticle.bsubmitter;
+                    model.bcontent = BlogArticle.bcontent;
+                    data.success = await _blogArticleServices.Update(model);
+                    if (data.success)
+                    {
+                        data.msg = "更新成功";
+                        data.response = BlogArticle?.bID.ObjToString();
+                    }
+                }
+
+            }
+
+            return data;
+        }
+
     }
 }
