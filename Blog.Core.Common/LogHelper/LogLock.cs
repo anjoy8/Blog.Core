@@ -296,7 +296,7 @@ namespace Blog.Core.Common.LogHelper
                                 count = g.Count(),
                             }).ToList();
 
-                apiDates = apiDates.OrderBy(d => d.date).Take(7).ToList();
+                apiDates = apiDates.OrderByDescending(d => d.date).Take(7).ToList();
 
             }
             catch (Exception)
@@ -306,7 +306,7 @@ namespace Blog.Core.Common.LogHelper
             return new AccessApiDateView()
             {
                 columns = new string[] { "date", "count" },
-                rows = apiDates,
+                rows = apiDates.OrderBy(d=>d.date).ToList(),
             };
         }
 
