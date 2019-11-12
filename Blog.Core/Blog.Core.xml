@@ -293,6 +293,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.BlogController.Put(Blog.Core.Model.Models.BlogArticle)">
+            <summary>
+            更新博客信息
+            </summary>
+            <param name="BlogArticle"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.ClaimsController">
             <summary>
             这是一个测试的控制器，主要为了测试基于Claim的验证机制
@@ -773,6 +780,12 @@
             通过 HttpContext 获取用户信息
             </summary>
             <param name="ClaimType">声明类型，默认 jti </param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Destination">
+            <summary>
+            route with name
+            </summary>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Post(Blog.Core.Model.Models.BlogArticle,System.Int32)">

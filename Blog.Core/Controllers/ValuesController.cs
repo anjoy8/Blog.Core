@@ -131,6 +131,28 @@ namespace Blog.Core.Controllers
             };
         }
 
+        /// <summary>
+        /// to redirect by route template name.
+        /// </summary>
+        [HttpGet("/api/custom/go-destination")]
+        [AllowAnonymous]
+        public void Source()
+        {
+            var url = Url.RouteUrl("Destination_Route");
+            Response.Redirect(url);
+        }
+
+        /// <summary>
+        /// route with template name.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/api/custom/destination", Name = "Destination_Route")]
+        [AllowAnonymous]
+        public string Destination()
+        {
+            return "555";
+        }
+
 
         /// <summary>
         /// 测试 post 一个对象 + 独立参数

@@ -108,60 +108,66 @@ namespace Blog.Core.Common.LogHelper
             List<LogInfo> excLogs = new List<LogInfo>();
             List<LogInfo> sqlLogs = new List<LogInfo>();
             List<LogInfo> reqresLogs = new List<LogInfo>();
+
             try
             {
-                aopLogs = ReadLog(Path.Combine(_contentRoot, "Log", "AOPLog.log"), Encoding.UTF8)
-                .Split("--------------------------------")
-                .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
-                .Select(d => new LogInfo
+                var aoplogContent = ReadLog(Path.Combine(_contentRoot, "Log", "AOPLog.log"), Encoding.UTF8);
+
+                if (!string.IsNullOrEmpty(aoplogContent))
                 {
-                    Datetime = d.Split("|")[0].ObjToDate(),
-                    Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
-                    LogColor = "AOP",
-                }).ToList();
-
+                    aopLogs = aoplogContent.Split("--------------------------------")
+                 .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
+                 .Select(d => new LogInfo
+                 {
+                     Datetime = d.Split("|")[0].ObjToDate(),
+                     Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
+                     LogColor = "AOP",
+                 }).ToList();
+                }
             }
-            catch (Exception)
-            {
-            }
-
-            try
-            {
-                excLogs = ReadLog(Path.Combine(_contentRoot, "Log", $"GlobalExcepLogs_{DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8)?
-                      .Split("--------------------------------")
-                      .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
-                      .Select(d => new LogInfo
-                      {
-                          Datetime = (d.Split("|")[0]).Split(',')[0].ObjToDate(),
-                          Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
-                          LogColor = "EXC",
-                          Import = 9,
-                      }).ToList();
-            }
-            catch (Exception)
-            {
-            }
-
+            catch (Exception) { }
 
             try
             {
-                sqlLogs = ReadLog(Path.Combine(_contentRoot, "Log", "SqlLog.log"), Encoding.UTF8)
-                      .Split("--------------------------------")
-                      .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
-                      .Select(d => new LogInfo
-                      {
-                          Datetime = d.Split("|")[0].ObjToDate(),
-                          Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
-                          LogColor = "SQL",
-                      }).ToList();
+                var exclogContent = ReadLog(Path.Combine(_contentRoot, "Log", $"GlobalExcepLogs_{DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8);
+
+                if (!string.IsNullOrEmpty(exclogContent))
+                {
+                    excLogs = exclogContent.Split("--------------------------------")
+                                 .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
+                                 .Select(d => new LogInfo
+                                 {
+                                     Datetime = (d.Split("|")[0]).Split(',')[0].ObjToDate(),
+                                     Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
+                                     LogColor = "EXC",
+                                     Import = 9,
+                                 }).ToList();
+                }
             }
-            catch (Exception)
+            catch (Exception) { }
+
+
+            try
             {
+                var sqllogContent = ReadLog(Path.Combine(_contentRoot, "Log", "SqlLog.log"), Encoding.UTF8);
+
+                if (!string.IsNullOrEmpty(sqllogContent))
+                {
+                    sqlLogs = sqllogContent.Split("--------------------------------")
+                                  .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
+                                  .Select(d => new LogInfo
+                                  {
+                                      Datetime = d.Split("|")[0].ObjToDate(),
+                                      Content = d.Split("|")[1]?.Replace("\r\n", "<br>"),
+                                      LogColor = "SQL",
+                                  }).ToList();
+                }
             }
+            catch (Exception) { }
 
             //try
             //{
-            //    reqresLogs = ReadLog(Path.Combine(_contentRoot, "Log", "RequestResponseLog.log"), Encoding.UTF8)
+            //    reqresLogs = ReadLog(Path.Combine(_contentRoot, "Log", "RequestResponseLog.log"), Encoding.UTF8)?
             //          .Split("--------------------------------")
             //          .Where(d => !string.IsNullOrEmpty(d) && d != "\n" && d != "\r\n")
             //          .Select(d => new LogInfo
@@ -182,11 +188,11 @@ namespace Blog.Core.Common.LogHelper
                 Logs = Logs.Where(d => d.Datetime.ObjToDate() >= DateTime.Today).ToList();
 
                 reqresLogs = Logs.Select(d => new LogInfo
-                      {
-                          Datetime = d.Datetime.ObjToDate(),
-                          Content = $"IP:{d.Ip}<br>{d.Url}",
-                          LogColor = "ReqRes",
-                      }).ToList();
+                {
+                    Datetime = d.Datetime.ObjToDate(),
+                    Content = $"IP:{d.Ip}<br>{d.Url}",
+                    LogColor = "ReqRes",
+                }).ToList();
             }
             catch (Exception)
             {
@@ -306,7 +312,7 @@ namespace Blog.Core.Common.LogHelper
             return new AccessApiDateView()
             {
                 columns = new string[] { "date", "count" },
-                rows = apiDates.OrderBy(d=>d.date).ToList(),
+                rows = apiDates.OrderBy(d => d.date).ToList(),
             };
         }
 
