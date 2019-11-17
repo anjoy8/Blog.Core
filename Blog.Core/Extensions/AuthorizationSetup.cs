@@ -1,15 +1,14 @@
 ﻿using Blog.Core.AuthHelper;
 using Blog.Core.Common;
 using Blog.Core.Common.AppConfig;
-using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
