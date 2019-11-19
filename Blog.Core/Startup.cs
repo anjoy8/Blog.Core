@@ -100,8 +100,6 @@ namespace Blog.Core
             builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
             builder.RegisterType<BlogRedisCacheAOP>();//可以直接替换其他拦截器
             builder.RegisterType<BlogLogAOP>();//这样可以注入第二个
-            builder.RegisterType<BlogRedisCacheAOP>();
-            builder.RegisterType<BlogLogAOP>();
             builder.RegisterType<BlogTranAOP>();
 
             // ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
@@ -146,7 +144,7 @@ namespace Blog.Core
                           .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。 
                 #endregion
 
-                #region Repository.dll 注入，有对应接口
+            #region Repository.dll 注入，有对应接口
                 var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
                 var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
                 builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
@@ -158,6 +156,7 @@ namespace Blog.Core
                 //throw new Exception("※※★※※ 如果你是第一次下载项目，请先对整个解决方案dotnet build（F6编译），然后再对api层 dotnet run（F5执行），\n因为解耦了，如果你是发布的模式，请检查bin文件夹是否存在Repository.dll和service.dll ※※★※※" + ex.Message + "\n" + ex.InnerException);
             }
             #endregion
+
             #endregion
 
             #region 没有接口层的服务层注入
