@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
@@ -64,20 +65,39 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<ResponseEnum>();
 
+            /*
+             *  测试 sql 更新
+             * 
+             * 【SQL参数】：@bID:5
+             *  @bsubmitter:laozhang619
+             *  @IsDeleted:False
+             * 【SQL语句】：UPDATE `BlogArticle`  SET
+             *  `bsubmitter`=@bsubmitter,`IsDeleted`=@IsDeleted  WHERE `bID`=@bID
+             */
+            var updateSql = await _blogArticleServices.Update(new { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", IsDeleted = false, bID = 5 });
+
+
+            // 测试模拟异常，全局异常过滤器拦截
             var i = 0;
             var d = 3 / i;
 
+
+            // 测试 AOP 缓存
             var blogArticles = await _blogArticleServices.GetBlogs();
 
+
+            // 测试多表联查
             var roleModulePermissions = await _roleModulePermissionServices.QueryMuchTable();
 
+
+            // 测试多个异步执行时间
             var roleModuleTask = _roleModulePermissionServices.Query();
             var listTask = _advertisementServices.Query();
-
             var ad = await roleModuleTask;
             var list = await listTask;
 
 
+            // 测试service层返回异常
             _advertisementServices.ReturnExp();
 
             Love love = null;

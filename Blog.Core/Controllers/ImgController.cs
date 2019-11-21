@@ -26,7 +26,7 @@ namespace Blog.Core.Controllers
         /// <param name="environment"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("down")]
+        [Route("/images/Down/Pic")]
         public FileStreamResult DownImg([FromServices]IWebHostEnvironment environment)
         {
             string foldername = "";
@@ -49,7 +49,7 @@ namespace Blog.Core.Controllers
         /// <param name="environment"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("Pic")]
+        [Route("/images/Upload/Pic")]
         public async Task<MessageModel<string>> InsertPicture([FromServices]IWebHostEnvironment environment)
         {
             var data = new MessageModel<string>();
@@ -71,9 +71,9 @@ namespace Blog.Core.Controllers
             var allowType = new string[] { "image/jpg", "image/png", "image/jpeg" };
 
             string folderpath = Path.Combine(environment.WebRootPath, foldername);
-            if (!System.IO.Directory.Exists(folderpath))
+            if (!Directory.Exists(folderpath))
             {
-                System.IO.Directory.CreateDirectory(folderpath);
+                Directory.CreateDirectory(folderpath);
             }
 
             if (files.Any(c => allowType.Contains(c.ContentType)))

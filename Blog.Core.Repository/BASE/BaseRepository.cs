@@ -133,6 +133,11 @@ namespace Blog.Core.Repository.Base
             return await _db.Ado.ExecuteCommandAsync(strSql, parameters) > 0;
         }
 
+        public async Task<bool> Update(object operateAnonymousObjects)
+        {
+            return await _db.Updateable<TEntity>(operateAnonymousObjects).ExecuteCommandAsync() > 0;
+        }
+
         public async Task<bool> Update(
           TEntity entity,
           List<string> lstColumns = null,

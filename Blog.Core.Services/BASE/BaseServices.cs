@@ -64,6 +64,10 @@ namespace Blog.Core.Services.BASE
         {
             return await BaseDal.Update(entity, strWhere);
         }
+        public async Task<bool> Update(object operateAnonymousObjects)
+        {
+            return await BaseDal.Update(operateAnonymousObjects);
+        }
 
         public async Task<bool> Update(
          TEntity entity,

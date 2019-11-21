@@ -782,9 +782,14 @@
             <param name="ClaimType">声明类型，默认 jti </param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Source">
+            <summary>
+            to redirect by route template name.
+            </summary>
+        </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Destination">
             <summary>
-            route with name
+            route with template name.
             </summary>
             <returns></returns>
         </member>
