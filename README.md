@@ -54,7 +54,7 @@ Dev Build::
 |个人博客Vue版本|tBug项目Nuxt版本|VueAdmin管理后台(更新中)|
 |-|-|-|
 |[https://github.com/anjoy8/Blog.Vue](https://github.com/anjoy8/Blog.Vue)|[https://github.com/anjoy8/Nuxt.tBug](https://github.com/anjoy8/Nuxt.tBug)|[https://github.com/anjoy8/Blog.Admin](https://github.com/anjoy8/Blog.Admin)|
-|[http://vueblog.neters.club](http://vueblog.neters.club)|[http://vueblog.neters.club](http://vueblog.neters.club)|[http://vueadmin.neters.club](http://vueadmin.neters.club)|
+|[http://vueblog.neters.club](http://vueblog.neters.club)|[http://tibug.neters.club](http://tibug.neters.club)|[http://vueadmin.neters.club](http://vueadmin.neters.club)|
 
 
 
@@ -116,17 +116,20 @@ QQ群：867095512
 如果你不想处理这个错误，你可以先把项目卸载，不影响整体运行。
 
 
-2【重要】、项目中，有三个AOP的操作类，分别是Redis缓存切面，memory缓存切面、Log日志切面
+2【重要】、项目中，有四个AOP的操作类，分别是Redis缓存切面，memory缓存切面、Log日志切面、Tran事务切面
 你可以在自定义开关，对其进行是否启用，在 appsettings.json 中的：
 
-    "RedisCaching": {
+    "RedisCachingAOP": {
       "Enabled": false,
       "ConnectionString": "127.0.0.1:6319"
     },
     "MemoryCachingAOP": {
       "Enabled": true
     },
-    "LogoAOP": {
+    "LogAOP": {
+      "Enabled": false
+    },
+    "TranAOP": {
       "Enabled": false
     },
 
@@ -144,6 +147,7 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-3-4-0
 5、如果你不想用CodeFirst 和种子数据，可以用数据库表结构Sql文件在数据库里执行，
 在Blog.Core 项目下的 wwwroot 文件夹中Blog.Core.Table.sql（表结构）、Blog.Core.Table&Data.sql（结构和数据）。
 或者来群里，群文件的是最新的。
+（目前不支持 sql 文件了，忙不过来，可以来群里，找群友要一份，建议使用 seeddata ）
 
 
 6、如果想单独查看关于【JWT授权】的相关内容，可以访问 https://github.com/anjoy8/BlogArti/tree/master/Blog.Core_JWT，
@@ -157,30 +161,45 @@ Blog.Core -> 属性 -> Build Events -> Post-build event command ->>>>
 Copy "$(ProjectDir)bin\Debug\netcoreapp2.2\" "$(SolutionDir)Blog.Core\bin\Debug\"
 
 ```
+
 *********************************************************
 ### 修改数据库连接字符串
 
 注意：修改完数据库连接字符串以后，一定要F6重新编译项目或者重启项目。
 
-1、在Blog.Core层 appsettings.json 中，配置自己的字符串
+1、在Blog.Core层 appsettings.json 中，配置自己的字符串，注意优先级是从上往下的，只能设置一个true
+
 ```
+    "Sqlite": {
+      "Enabled": true,
+      "SqliteConnection": "Data Source=WMBlog.db"
+    },
     "SqlServer": {
+      "Enabled": false,
       "SqlServerConnection": "Server=.;Database=WMBlogDB;User ID=sa;Password=123;",
       "ProviderName": "System.Data.SqlClient"
     },
+    "MySql": {
+      "Enabled": false,
+      "MySqlConnection": "Server=localhost; Port=3306;Stmt=; Database=wmblogdb; Uid=root; Pwd=456;"
+    },
+    "Oracle": {
+      "Enabled": false,
+      "OracleConnection": "Provider=OraOLEDB.Oracle; Data Source=WMBlogDB; User Id=sss; Password=789;",
+      "OracleConnection_other1": "User ID=sss;Password=789;Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.8.65)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME = orcl)))"
+    },
 ```
 
-2、文章中有三个地方用到了数据库连接字符串
-```
-A、系统中使用 Blog.Core.Repository -> BaseDBConfig.cs
-B、Seed数据库 Blog.Core.Model -> MyContext.cs
-C、T4 模板 Blog.Core.FrameWork -> DbHelper.ttinclude
+2、文章中有2个地方用到了数据库连接字符串
 
-其实针对AB两个情况，只需要配置 appsettings.json 即可
+```
+A、Blog.Core 层 appsettings.json 中配置
+B、T4 模板 Blog.Core.FrameWork -> DbHelper.ttinclude
 
 ```
 
 3、如果想使用T4模板，在Blog.Core.FrameWork层的DbHelper.ttinclude 中，配置自己的字符串
+
 ```
 public static readonly string ConnectionString = File.Exists(@"D:\my-file\dbCountPsw2.txt") ? 
 File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim(): "server=.;uid=sa;pwd=sa;database=BlogDB";
@@ -234,7 +253,8 @@ File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim(): "server=.;uid=sa;pwd=sa;
 <li><a href="https://www.cnblogs.com/laozhang-is-phi/p/10462316.html">42&nbsp;</a><a id="post_title_link_9767400" href="https://www.cnblogs.com/laozhang-is-phi/p/9767400.html">║</a><a id="post_title_link_10462316" href="https://www.cnblogs.com/laozhang-is-phi/p/10462316.html"> 完美实现 JWT 滑动授权刷新</a></li>
 <li><a id="post_title_link_10718755" href="https://www.cnblogs.com/laozhang-is-phi/p/10718755.html">43 ║ 支持多种数据库 &amp; 快速数据库生成</a></li>
 <li><a id="post_title_link_10836887" href="https://www.cnblogs.com/laozhang-is-phi/p/beautifulPublish-mostBugs.html">43 ║最全的部署方案 &amp; 最丰富的错误分析【再会】</a></li>
-
+<li><a id="post_title_link_11605436" href="https://www.cnblogs.com/laozhang-is-phi/p/11605436.html">45 ║ 终于解决了事务问题</a></li>
+<li><a class="entry" href="https://www.cnblogs.com/laozhang-is-phi/p/11833800.html" target="_blank">46 ║ 授权认证：自定义返回格式</a> </li>
 
 
 
