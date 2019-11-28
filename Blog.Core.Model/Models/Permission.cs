@@ -125,7 +125,8 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsIgnore = true)]
         public string MName { get; set; }
 
-
+        [SugarColumn(IsIgnore = true)]
+        public bool hasChildren { get; set; } = true;
 
         //public virtual ICollection<ModulePermission> ModulePermission { get; set; }
         //public virtual ICollection<RoleModulePermission> RoleModulePermission { get; set; }

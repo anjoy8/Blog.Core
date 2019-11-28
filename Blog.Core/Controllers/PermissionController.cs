@@ -139,6 +139,48 @@ namespace Blog.Core.Controllers
 
         }
 
+        /// <summary>
+        /// 查询树形 Table
+        /// </summary>
+        /// <param name="f">父节点</param>
+        /// <param name="key">关键字</param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<MessageModel<List<Permission>>> GetTreeTable(int f = 0, string key = "")
+        {
+            List<Permission> permissions = new List<Permission>();
+            var apiList= await _moduleServices.Query(d => d.IsDeleted == false);
+            var permissionsList = await _permissionServices.Query(d => d.IsDeleted == false);
+            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+            {
+                key = "";
+            }
+
+            if (key != "")
+            {
+                permissions = permissionsList.Where(a => a.Name.Contains(key)).ToList();
+            }
+            else
+            {
+                permissions = permissionsList.Where(a => a.Pid == f).ToList();
+            }
+
+            foreach (var item in permissions)
+            {
+                item.MName = apiList.FirstOrDefault(d => d.Id == item.Mid)?.LinkUrl;
+                item.hasChildren = permissionsList.Where(d => d.Pid == item.Id).Any();
+            }
+
+
+            return new MessageModel<List<Permission>>()
+            {
+                msg = "获取成功",
+                success = permissions.Count >= 0,
+                response = permissions
+            };
+        }
+
         // GET: api/User/5
         [HttpGet("{id}")]
         public string Get(string id)
@@ -320,9 +362,9 @@ namespace Blog.Core.Controllers
                                                    order = child.OrderSort,
                                                    path = child.Code,
                                                    iconCls = child.Icon,
-                                                   Func=child.Func,
+                                                   Func = child.Func,
                                                    IsHide = child.IsHide.ObjToBool(),
-                                                   IsButton=child.IsButton.ObjToBool(),
+                                                   IsButton = child.IsButton.ObjToBool(),
                                                    meta = new NavigationBarMeta
                                                    {
                                                        requireAuth = true,
