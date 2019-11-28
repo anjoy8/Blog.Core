@@ -168,6 +168,24 @@ namespace Blog.Core.Controllers
 
             foreach (var item in permissions)
             {
+                List<int> pidarr = new List<int>
+                {
+                    item.Pid
+                };
+                if (item.Pid > 0)
+                {
+                    pidarr.Add(0);
+                }
+                var parent = permissionsList.FirstOrDefault(d => d.Id == item.Pid);
+
+                while (parent != null)
+                {
+                    pidarr.Add(parent.Id);
+                    parent = permissionsList.FirstOrDefault(d => d.Id == parent.Pid);
+                }
+
+
+                item.PidArr = pidarr.OrderBy(d => d).Distinct().ToList();
                 item.MName = apiList.FirstOrDefault(d => d.Id == item.Mid)?.LinkUrl;
                 item.hasChildren = permissionsList.Where(d => d.Pid == item.Id).Any();
             }
