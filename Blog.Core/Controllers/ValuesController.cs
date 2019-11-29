@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Blog.Core.Common.HttpContextUser;
+using Blog.Core.Filter;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -113,6 +114,8 @@ namespace Blog.Core.Controllers
         // GET api/values/5
         [HttpGet("{id}")]
         [AllowAnonymous]
+        //[TypeFilter(typeof(DeleteSubscriptionCache),Arguments =new object[] { "1"})]
+        [TypeFilter(typeof(UseServiceDIAttribute), Arguments = new object[] { "laozhang" })]
         public ActionResult<string> Get(int id)
         {
             var loveu = _love.SayLoveU();

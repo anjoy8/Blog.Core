@@ -66,8 +66,9 @@ namespace Blog.Core
             services.AddHttpContextSetup();
             services.AddAuthorizationSetup();
 
-
             services.AddSignalR().AddNewtonsoftJsonProtocol();
+
+            services.AddScoped<UseServiceDIAttribute>();
 
             services.AddControllers(o =>
             {
@@ -144,7 +145,7 @@ namespace Blog.Core
                           .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。 
                 #endregion
 
-            #region Repository.dll 注入，有对应接口
+                #region Repository.dll 注入，有对应接口
                 var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
                 var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
                 builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
