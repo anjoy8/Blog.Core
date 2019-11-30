@@ -9,7 +9,7 @@ namespace Blog.Core.Model.Models
     public class DBSeed
     {
         // 这是我的在线demo数据，比较多，且杂乱
-        // 国内网络不好的，可以使用这个 gitee 上的地址：https://gitee.com/laozhangIsPhi/Blog.Data.Share/tree/master/BlogCore.Data.json/{0}.tsv
+        // 国内网络不好的，可以使用这个 gitee 上的地址：https://gitee.com/laozhangIsPhi/Blog.Data.Share/raw/master/BlogCore.Data.json/{0}.tsv
         private static string GitJsonFileFormat = "https://github.com/anjoy8/Blog.Data.Share/raw/master/BlogCore.Data.json/{0}.tsv";
 
 
