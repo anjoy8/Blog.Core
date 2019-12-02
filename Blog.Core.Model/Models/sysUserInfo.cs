@@ -101,9 +101,9 @@ namespace Blog.Core.Model.Models
 
 
         [SugarColumn(IsIgnore = true)]
-        public int RID { get; set; }
+        public List<int> RIDs { get; set; }
         [SugarColumn(IsIgnore = true)]
-        public string RoleName { get; set; }
+        public List<string> RoleNames { get; set; }
 
     }
 }

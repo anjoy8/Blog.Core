@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.HttpContextUser;
+using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Blog.Core.Controllers
 {
@@ -21,24 +23,30 @@ namespace Blog.Core.Controllers
     [Authorize(Permissions.Name)]
     public class UserController : ControllerBase
     {
+        private readonly IUnitOfWork _unitOfWork;
         readonly ISysUserInfoServices _sysUserInfoServices;
         readonly IUserRoleServices _userRoleServices;
         readonly IRoleServices _roleServices;
         private readonly IUser _user;
+        private readonly ILogger<BlogController> _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
+        /// <param name="unitOfWork"></param>
         /// <param name="sysUserInfoServices"></param>
         /// <param name="userRoleServices"></param>
         /// <param name="roleServices"></param>
         /// <param name="user"></param>
-        public UserController(ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices, IUser user)
+        /// <param name="logger"></param>
+        public UserController(IUnitOfWork unitOfWork, ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices, IUser user, ILogger<BlogController> logger)
         {
+            _unitOfWork = unitOfWork;
             _sysUserInfoServices = sysUserInfoServices;
             _userRoleServices = userRoleServices;
             _roleServices = roleServices;
             _user = user;
+            _logger = logger;
         }
 
         /// <summary>
@@ -49,7 +57,6 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        [ResponseCache(Duration = 60)]
         public async Task<MessageModel<PageModel<sysUserInfo>>> Get(int page = 1, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
@@ -69,11 +76,12 @@ namespace Blog.Core.Controllers
             var sysUserInfos = data.data;
             foreach (var item in sysUserInfos)
             {
-                item.RID = (allUserRoles.FirstOrDefault(d => d.UserId == item.uID)?.RoleId).ObjToInt();
-                item.RoleName = allRoles.FirstOrDefault(d => d.Id == item.RID)?.Name;
+                var currentUserRoles = allUserRoles.Where(d => d.UserId == item.uID)?.Select(d => d.RoleId).ToList();
+                item.RIDs = currentUserRoles;
+                item.RoleNames = allRoles.Where(d => currentUserRoles.Contains(d.Id))?.Select(d => d.Name).ToList();
             }
 
-            data.data = sysUserInfos; 
+            data.data = sysUserInfos;
             #endregion
 
 
@@ -134,7 +142,7 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<string>();
 
-            sysUserInfo.uLoginPWD= MD5Helper.MD5Encrypt32(sysUserInfo.uLoginPWD);
+            sysUserInfo.uLoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.uLoginPWD);
             sysUserInfo.uRemark = _user.Name;
 
             var id = await _sysUserInfoServices.Add(sysUserInfo);
@@ -157,26 +165,47 @@ namespace Blog.Core.Controllers
         [HttpPut]
         public async Task<MessageModel<string>> Put([FromBody] sysUserInfo sysUserInfo)
         {
-            // 这里也要做后期处理，会有用户个人中心的业务
+            // 这里使用事务处理
 
             var data = new MessageModel<string>();
-            if (sysUserInfo != null && sysUserInfo.uID > 0)
+            try
             {
-                if (sysUserInfo.RID > 0)
+                _unitOfWork.BeginTran();
+
+                if (sysUserInfo != null && sysUserInfo.uID > 0)
                 {
-                    var usrerole = await _userRoleServices.Query(d => d.UserId == sysUserInfo.uID && d.RoleId == sysUserInfo.RID);
-                    if (usrerole.Count == 0)
+                    if (sysUserInfo.RIDs.Count > 0)
                     {
-                        await _userRoleServices.Add(new UserRole(sysUserInfo.uID, sysUserInfo.RID));
+                        // 无论 Update Or Add , 先删除当前用户的全部 U_R 关系
+                        var usreroles = (await _userRoleServices.Query(d => d.UserId == sysUserInfo.uID)).Select(d => d.Id.ToString()).ToArray();
+                        if (usreroles.Count() > 0)
+                        {
+                            var isAllDeleted = await _userRoleServices.DeleteByIds(usreroles);
+                        }
+
+                        // 然后再执行添加操作
+                        var userRolsAdd = new List<UserRole>();
+                        sysUserInfo.RIDs.ForEach(async rid =>
+                        {
+                            await _userRoleServices.Add(new UserRole(sysUserInfo.uID, rid));
+                        });
+                    }
+
+                    data.success = await _sysUserInfoServices.Update(sysUserInfo);
+
+                    _unitOfWork.CommitTran();
+
+                    if (data.success)
+                    {
+                        data.msg = "更新成功";
+                        data.response = sysUserInfo?.uID.ObjToString();
                     }
                 }
-
-                data.success = await _sysUserInfoServices.Update(sysUserInfo);
-                if (data.success)
-                {
-                    data.msg = "更新成功";
-                    data.response = sysUserInfo?.uID.ObjToString();
-                }
+            }
+            catch (Exception e)
+            {
+                _unitOfWork.RollbackTran();
+                _logger.LogError(e, e.Message);
             }
 
             return data;

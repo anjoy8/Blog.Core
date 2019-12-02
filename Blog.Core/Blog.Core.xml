@@ -665,14 +665,16 @@
             用户管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser)">
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
             <summary>
             构造函数
             </summary>
+            <param name="unitOfWork"></param>
             <param name="sysUserInfoServices"></param>
             <param name="userRoleServices"></param>
             <param name="roleServices"></param>
             <param name="user"></param>
+            <param name="logger"></param>
         </member>
         <member name="M:Blog.Core.Controllers.UserController.Get(System.Int32,System.String)">
             <summary>
