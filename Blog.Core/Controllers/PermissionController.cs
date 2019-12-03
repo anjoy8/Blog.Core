@@ -150,7 +150,7 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<List<Permission>>> GetTreeTable(int f = 0, string key = "")
         {
             List<Permission> permissions = new List<Permission>();
-            var apiList= await _moduleServices.Query(d => d.IsDeleted == false);
+            var apiList = await _moduleServices.Query(d => d.IsDeleted == false);
             var permissionsList = await _permissionServices.Query(d => d.IsDeleted == false);
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -159,11 +159,11 @@ namespace Blog.Core.Controllers
 
             if (key != "")
             {
-                permissions = permissionsList.Where(a => a.Name.Contains(key)).ToList();
+                permissions = permissionsList.Where(a => a.Name.Contains(key)).OrderBy(a => a.OrderSort).ToList();
             }
             else
             {
-                permissions = permissionsList.Where(a => a.Pid == f).ToList();
+                permissions = permissionsList.Where(a => a.Pid == f).OrderBy(a => a.OrderSort).ToList();
             }
 
             foreach (var item in permissions)
