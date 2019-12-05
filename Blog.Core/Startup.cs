@@ -73,7 +73,7 @@ namespace Blog.Core
             services.AddControllers(o =>
             {
                 // 全局异常过滤
-                //o.Filters.Add(typeof(GlobalExceptionsFilter));
+                o.Filters.Add(typeof(GlobalExceptionsFilter));
                 // 全局路由权限公约
                 //o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
                 // 全局路由前缀，统一修改路由
@@ -256,9 +256,8 @@ namespace Blog.Core
             // 然后是授权中间件
             app.UseAuthorization();
 
-
-            //
-            app.UseExceptionHandlerMidd();
+            // 开启异常中间件，要放到最后
+            //app.UseExceptionHandlerMidd();
 
 
             app.UseEndpoints(endpoints =>
