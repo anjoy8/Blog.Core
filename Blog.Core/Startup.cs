@@ -234,7 +234,6 @@ namespace Blog.Core
 
 
             // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
-            app.UseMiniProfiler();
 
             app.UseCors("LimitRequests");
 
@@ -255,6 +254,8 @@ namespace Blog.Core
             app.UseAuthentication();
             // 然后是授权中间件
             app.UseAuthorization();
+
+            app.UseMiniProfiler();
 
             app.UseEndpoints(endpoints =>
             {
