@@ -36,7 +36,7 @@ namespace Blog.Core.Extensions
                     c.SwaggerDoc(version, new OpenApiInfo
                     {
                         Version = version,
-                        Title = $"{ApiName} 接口文档——Netcore 3.0",
+                        Title = $"{ApiName} 接口文档——Netcore 3.1",
                         Description = $"{ApiName} HTTP API " + version,
                         Contact = new OpenApiContact { Name = ApiName, Email = "Blog.Core@xxx.com", Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") },
                         License = new OpenApiLicense { Name = ApiName, Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") }
