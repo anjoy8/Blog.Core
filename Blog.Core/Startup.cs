@@ -237,7 +237,6 @@ namespace Blog.Core
 
             app.UseCors("LimitRequests");
 
-
             // 跳转https
             //app.UseHttpsRedirection();
             // 使用静态文件
@@ -254,6 +253,9 @@ namespace Blog.Core
             app.UseAuthentication();
             // 然后是授权中间件
             app.UseAuthorization();
+
+            // 开启异常中间件，要放到最后
+            //app.UseExceptionHandlerMidd();
 
             app.UseMiniProfiler();
 

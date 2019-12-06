@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Blog.Core.Common.DB
 {
@@ -26,7 +27,7 @@ namespace Blog.Core.Common.DB
             if (isSqliteEnabled)
             {
                 DbType = DataBaseType.Sqlite;
-                return sqliteConnection;
+                return $"DataSource=" + Path.Combine(Environment.CurrentDirectory, sqliteConnection);
             }
             else if (isSqlServerEnabled)
             {

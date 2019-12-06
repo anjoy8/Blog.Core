@@ -21,13 +21,13 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public bool? IsDeleted { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
         public string plURL { get; set; }
 
-        [SugarColumn(Length = 100, IsNullable = true)]
+        [SugarColumn(Length = 100, IsNullable = true,ColumnDataType ="nvarchar")]
         public string plPWD { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
         public string plAccountName { get; set; }
 
         [SugarColumn( IsNullable = true)]
@@ -36,10 +36,10 @@ namespace Blog.Core.Model.Models
         [SugarColumn( IsNullable = true)]
         public int? plErrorCount { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
         public string plHintPwd { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
         public string plHintquestion { get; set; }
 
         [SugarColumn( IsNullable = true)]
@@ -51,7 +51,7 @@ namespace Blog.Core.Model.Models
         [SugarColumn( IsNullable = true)]
         public DateTime? plLastErrTime { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
         public string test { get; set; }
 
 

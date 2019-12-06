@@ -10,7 +10,7 @@ namespace Blog.Core.AuthHelper.Policys
         public int Status { get; set; } = 404;
         public object Value { get; set; } = "No Found";
 
-        public ApiResponse(StatusCode apiCode)
+        public ApiResponse(StatusCode apiCode, object msg = null)
         {
             switch (apiCode)
             {
@@ -24,6 +24,12 @@ namespace Blog.Core.AuthHelper.Policys
                     {
                         Status = 403;
                         Value = "很抱歉，您的访问权限等级不够，联系管理员!";
+                    }
+                    break;
+                case StatusCode.CODE500:
+                    {
+                        Status = 500;
+                        Value = msg;
                     }
                     break;
             }
