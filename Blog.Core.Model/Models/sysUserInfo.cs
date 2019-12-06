@@ -35,17 +35,17 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 登录账号
         /// </summary>
-        [SugarColumn(Length = 60, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
         public string uLoginName { get; set; }
         /// <summary>
         /// 登录密码
         /// </summary>
-        [SugarColumn(Length = 60, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
         public string uLoginPWD { get; set; }
         /// <summary>
         /// 真实姓名
         /// </summary>
-        [SugarColumn(Length = 60, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
         public string uRealName { get; set; }
         /// <summary>
         /// 状态
@@ -54,7 +54,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 备注
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(Length = int.MaxValue, IsNullable = true,ColumnDataType ="nvarchar")]
         public string uRemark { get; set; }
         /// <summary>
         /// 创建时间
@@ -80,7 +80,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 登录账号
         /// </summary>
-        [SugarColumn(Length = 60, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
         public string name { get; set; }
 
         // 性别
@@ -93,7 +93,7 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public DateTime birth { get; set; } = DateTime.Now;
         // 地址
-        [SugarColumn(Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
         public string addr { get; set; }
 
         [SugarColumn(IsNullable = true)]

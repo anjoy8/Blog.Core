@@ -9,14 +9,16 @@ namespace Blog.Core.Model.Models
     public class DBSeed
     {
         // 这是我的在线demo数据，比较多，且杂乱
-        // 国内网络不好的，可以使用这个 gitee 上的地址：https://gitee.com/laozhangIsPhi/Blog.Data.Share/raw/master/BlogCore.Data.json/{0}.tsv
-        private static string GitJsonFileFormat = "https://github.com/anjoy8/Blog.Data.Share/raw/master/BlogCore.Data.json/{0}.tsv";
+        // gitee 源数据
+        private static string GitJsonFileFormat = "https://gitee.com/laozhangIsPhi/Blog.Data.Share/raw/master/BlogCore.Data.json/{0}.tsv";
 
 
         // 这里我把重要的权限数据提出来的精简版，默认一个Admin_Role + 一个管理员用户，
         // 然后就是菜单+接口+权限分配，注意没有其他博客信息了，下边seeddata 的时候，删掉即可。
-        // 国内网络不好的，可以使用这个 gitee 上的地址：https://gitee.com/laozhangIsPhi/Blog.Data.Share/tree/master/Student.Achieve.json/{0}.tsv
-        private static string GitJsonFileFormat2 = "https://github.com/anjoy8/Blog.Data.Share/raw/master/Student.Achieve.json/{0}.tsv";
+
+        // gitee 源数据
+        private static string GitJsonFileFormat2 = "https://gitee.com/laozhangIsPhi/Blog.Data.Share/tree/master/Student.Achieve.json/{0}.tsv";
+
 
         /// <summary>
         /// 异步添加种子数据
@@ -27,16 +29,8 @@ namespace Blog.Core.Model.Models
         {
             try
             {
-                // 如果生成过了，第二次，就不用再执行一遍了,注释掉该方法即可
-
-                #region 自动创建数据库暂停服务
-                // 自动创建数据库，注意版本是 sugar 5.x 版本的
-
-                // 注意：这里还是有些问题，比如使用mysql的话，如果通过这个方法创建空数据库，字符串不是utf8的，所以还是手动创建空的数据库吧，然后设置数据库为utf-8，我再和作者讨论一下。
-                // 但是使用SqlServer 和 Sqlite 好像没有这个问题。
-                //myContext.Db.DbMaintenance.CreateDatabase(); 
-                #endregion
-
+                // 创建数据库
+                myContext.Db.DbMaintenance.CreateDatabase();
 
                 // 创建表
                 myContext.CreateTableByEntity(false,
@@ -56,9 +50,7 @@ namespace Blog.Core.Model.Models
                     typeof(UserRole));
 
                 // 后期单独处理某些表
-                //myContext.Db.CodeFirst.InitTables(typeof(sysUserInfo));
-                //myContext.Db.CodeFirst.InitTables(typeof(Permission)); 
-                //myContext.Db.CodeFirst.InitTables(typeof(Advertisement));
+                // myContext.Db.CodeFirst.InitTables(typeof(sysUserInfo));
 
                 Console.WriteLine("Database:WMBlog created success!");
                 Console.WriteLine();
@@ -191,7 +183,7 @@ namespace Blog.Core.Model.Models
             }
             catch (Exception ex)
             {
-                throw new Exception("1、注意要先创建空的数据库\n2、" + ex.Message);
+                throw new Exception(ex.Message);
             }
         }
     }
