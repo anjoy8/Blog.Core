@@ -16,7 +16,7 @@ Dev Build::
 ![Logo](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/logocore.png)
 
 
-从零开始搭建自己的前后端分离【 .NET Core3.0 Api + Vue 2.x 】框架。（🔒目前是3.0 版本，因作者开源的项目较多，维护成本过高，所以本项目其他分支会缓慢不定时更新🔒）
+从零开始搭建自己的前后端分离【 .NET Core3.1 Api + Vue 2.x 】框架。 
 
 
 &nbsp;
