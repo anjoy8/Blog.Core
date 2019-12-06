@@ -234,10 +234,8 @@ namespace Blog.Core
 
 
             // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
-            app.UseMiniProfiler();
 
             app.UseCors("LimitRequests");
-
 
             // 跳转https
             //app.UseHttpsRedirection();
@@ -259,6 +257,7 @@ namespace Blog.Core
             // 开启异常中间件，要放到最后
             //app.UseExceptionHandlerMidd();
 
+            app.UseMiniProfiler();
 
             app.UseEndpoints(endpoints =>
             {
