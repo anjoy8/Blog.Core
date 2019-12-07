@@ -348,3 +348,4 @@ healthchecksdb
 .PublishFiles
 !.template.config/*.nupkg
 !Blog.Core.Webapi.Template.*.nupkg
+Blog.Core/WMBlog.db
