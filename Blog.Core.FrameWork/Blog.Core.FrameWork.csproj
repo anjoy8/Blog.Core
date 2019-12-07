@@ -32,11 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Blog.Core.FrameWork.Entity\Blog.Core.FrameWork.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Blog.Core.FrameWork.tt</DependentUpon>
-    </Compile>
     <Compile Update="Blog.Core.FrameWork.IRepository\Blog.Core.FrameWork.IRepository.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

@@ -12,20 +12,18 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.IO" #>
 <#@ include file="$(ProjectDir)DbHelper.ttinclude"  #>
-
 <#@ include file="$(ProjectDir)ModelAuto.ttinclude"	#>
+<# var manager = new Manager(Host, GenerationEnvironment, true); #>
 
 
 <# 
-    var OutputPath1 = Path.GetDirectoryName(Host.TemplateFile)+"\\work";
+	var OutputPath1 =Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Host.TemplateFile+"..")+"..")+"..");
+	OutputPath1=Path.Combine(OutputPath1,"Blog.Core.IRepository","IRepositories_New");
 	if (!Directory.Exists(OutputPath1))
 	{
 	    Directory.CreateDirectory(OutputPath1);
 	}
-	#> 
-<# var manager = new Manager(Host, GenerationEnvironment, true) { OutputPath = OutputPath1 }; #>
-
-
+#>
 
 
 //--------------------------------------------------------------------
@@ -67,7 +65,7 @@ namespace Blog.Core.FrameWork.IRepository
 <# 
     foreach(System.Data.DataRow row in schema.Rows) 
     {  
-		manager.StartBlock("I"+row["TABLE_NAME"].ToString()+"Repository"+".cs");//文件名
+		manager.StartBlock("I"+row["TABLE_NAME"].ToString()+"Repository"+".cs",OutputPath1);//文件名
 	 #>
 	//----------<#=row["TABLE_NAME"].ToString()#>开始----------
     
@@ -92,7 +90,7 @@ namespace Blog.Core.FrameWork.IRepository
 		} 
 
 		{  
-		manager.StartBlock("IBaseRepository.cs");//文件名
+		manager.StartBlock("IBaseRepository.cs",OutputPath1);//文件名
 	 #>
     
 	//----------开始----------

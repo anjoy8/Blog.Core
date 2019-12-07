@@ -1,7 +1,33 @@
 <#+
-class DbHelper
+	public class config
+	{
+        public static readonly string ConnectionString = File.Exists(@"C:\my-file\dbCountPswSolsticeALDDD.txt") ? File.ReadAllText(@"C:\my-file\dbCountPswSolsticeALDDD.txt").Trim(): "server=.;uid=sa;pwd=sa;database=WMBlogDB";
+        public static readonly string DbDatabase = "";
+        public static readonly string TableName = "";
+	}
+#>
+<#+ 
+    public class DbHelper
     {
-        #region 获取数据库表结构
+        #region GetDbTables
+
+		 public static List<string> GetDbTablesNew(string connectionString, string database,string tables = null)
+        { 
+			 if (!string.IsNullOrEmpty(tables))
+            {
+                tables = string.Format(" and obj.name in ('{0}')", tables.Replace(",", "','"));
+            }
+            string sql = string.Format(@"SELECT
+                obj.name tablename
+                from {0}.sys.objects obj 
+                inner join {0}.dbo.sysindexes idx on obj.object_id=idx.id and idx.indid<=1
+                INNER JOIN {0}.sys.schemas schem ON obj.schema_id=schem.schema_id
+                left join {0}.sys.extended_properties g ON (obj.object_id = g.major_id AND g.minor_id = 0 AND g.name= 'MS_Description')
+                where type='U' {1} 
+                order by obj.name", database,tables);
+            DataTable dt = GetDataTable(connectionString, sql);
+            return dt.Rows.Cast<DataRow>().Select(row =>row.Field<string>("tablename")).ToList();
+        }
 
         public static List<DbTable> GetDbTables(string connectionString, string database, string tables = null)
         {
@@ -10,7 +36,7 @@ class DbHelper
             {
                 tables = string.Format(" and obj.name in ('{0}')", tables.Replace(",", "','"));
             }
-            #region 执行sql命令
+            #region SQL
             string sql = string.Format(@"SELECT
 									obj.name tablename,
 									schem.name schemname,
@@ -39,11 +65,11 @@ class DbHelper
         }
         #endregion
 
-        #region 获取表字段信息
+        #region GetDbColumns
 
         public static List<DbColumn> GetDbColumns(string connectionString, string database, string tableName, string schema = "dbo")
         {
-            #region 执行sql命令
+            #region SQL
             string sql = string.Format(@"
                                     WITH indexCTE AS
                                     (
@@ -76,7 +102,7 @@ class DbHelper
                                     prop.value Remark
                                     from {0}.sys.columns colm
                                     inner join {0}.sys.types systype on colm.system_type_id=systype.system_type_id and colm.user_type_id=systype.user_type_id
-                                    left join {0}.sys.extended_properties prop on colm.object_id=prop.major_id and colm.column_id=prop.minor_id and prop.class_desc='OBJECT_OR_COLUMN'
+                                    left join {0}.sys.extended_properties prop on colm.object_id=prop.major_id and colm.column_id=prop.minor_id
                                     LEFT JOIN indexCTE ON colm.column_id=indexCTE.column_id AND colm.object_id=indexCTE.object_id                                        
                                     where colm.object_id=OBJECT_ID(@tableName)
                                     order by colm.column_id", database);
@@ -100,7 +126,7 @@ class DbHelper
 
         #endregion
 
-        #region 获取 DataTable
+        #region GetDataTable
 
         public static DataTable GetDataTable(string connectionString, string commandText, params SqlParameter[] parms)
         {
@@ -120,7 +146,7 @@ class DbHelper
 
         #endregion
 
-	    #region 获取主键
+	    #region GetPrimaryKey
         public static string GetPrimaryKey(List<DbColumn> dbColumns)
         {
             string primaryKey = string.Empty;
@@ -139,7 +165,11 @@ class DbHelper
         #endregion
     }
 
-class DbTable
+    #region DbTable
+    /// <summary>
+    /// 表结构
+    /// </summary>
+    public sealed class DbTable
     {
         /// <summary>
         /// 表名称
@@ -159,8 +189,13 @@ class DbTable
         /// </summary>
         public bool HasPrimaryKey { get; set; }
     }
+    #endregion
 
-class DbColumn
+    #region DbColumn
+    /// <summary>
+    /// 表字段结构
+    /// </summary>
+    public sealed class DbColumn
     {
         /// <summary>
         /// 字段ID
@@ -234,8 +269,11 @@ class DbColumn
         /// </summary>
         public string Remark { get; set; }
     }
+    #endregion
 
-class SqlServerDbTypeMap
+    #region SqlServerDbTypeMap
+
+    public class SqlServerDbTypeMap
     {
         public static string MapCsharpType(string dbtype)
         {
@@ -323,11 +361,6 @@ class SqlServerDbTypeMap
             return commonType;
         }
     }
-class config
-	{
-		
-        //public static readonly string ConnectionString = "Data Source=.;Initial Catalog=WMBlogDB;User ID=sa;Password=666;";
-        public static readonly string ConnectionString = File.Exists(@"D:\my-file\dbCountPsw2.txt") ? File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim(): "server=.;uid=sa;pwd=sa;database=WMBlogDB";
-        public static readonly string DbDatabase = "";
-        public static readonly string TableName = "";
-	}#>
+    #endregion
+ #>
+
