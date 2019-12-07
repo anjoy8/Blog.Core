@@ -1,7 +1,7 @@
 ﻿using SqlSugar;
 using System;
 
-namespace Anson.Model.Models
+namespace Blog.Core.Model.Models
 {
     /// <summary>
     /// 博客文章
