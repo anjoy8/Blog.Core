@@ -1,7 +1,7 @@
 ﻿using SqlSugar;
 using System;
 
-namespace Blog.Core.Model.Models
+namespace Anson.Model.Models
 {
     /// <summary>
     /// 博客文章
@@ -35,7 +35,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 内容
         /// </summary>
-        [SugarColumn(IsNullable = true, ColumnDataType = "text")]
+        [SugarColumn(Length = int.MaxValue, IsNullable = true, ColumnDataType = "nvarchar")]
         public string bcontent { get; set; }
 
         /// <summary>
