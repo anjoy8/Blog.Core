@@ -1152,6 +1152,26 @@
             菜单展示model
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.ViewModels.TestRestSharpGetDto">
+            <summary>
+            用来测试 RestSharp Get 请求
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TestRestSharpGetDto.success">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TestRestSharpGetDto.data">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.TestRestSharpPostDto">
+            <summary>
+            用来测试 RestSharp Post 请求
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.ViewModels.TopgbViewModels">
             <summary>
             留言排名展示类

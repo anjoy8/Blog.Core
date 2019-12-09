@@ -6,10 +6,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Blog.Core.Common.HttpContextUser;
+using Blog.Core.Common.HttpRestSharp;
 using Blog.Core.Filter;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -203,6 +205,26 @@ namespace Blog.Core.Controllers
             return Ok(new { success = true, name = name });
         }
 
+        /// <summary>
+        /// 测试http请求 RestSharp Get
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("RestsharpGet")]
+        [AllowAnonymous]
+        public TestRestSharpGetDto RestsharpGet()
+        {
+            return HttpHelper.GetApi<TestRestSharpGetDto>("http://apk.neters.club/", "api/Blog/DetailNuxtNoPer", "id=1");
+        }
+        /// <summary>
+        /// 测试http请求 RestSharp Post
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("RestsharpPost")]
+        [AllowAnonymous]
+        public TestRestSharpPostDto RestsharpPost()
+        {
+            return HttpHelper.PostApi<TestRestSharpPostDto>("http://apk.neters.club/api/Values/TestPostPara?name=老张", new { age = 18 });
+        }
 
         /// <summary>
         /// Put方法
