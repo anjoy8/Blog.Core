@@ -64,27 +64,33 @@ namespace Blog.Core.Controllers
                 key = "";
             }
 
-            using (MiniProfiler.Current.Step("开始加载数据："))
-            {
-                try
-                {
-                    if (_redisCacheManager.Get<object>("Redis.Blog") != null)
-                    {
-                        MiniProfiler.Current.Step("从Redis服务器中加载数据：");
-                        blogArticleList = _redisCacheManager.Get<List<BlogArticle>>("Redis.Blog");
-                    }
-                    else
-                    {
-                        MiniProfiler.Current.Step("从MSSQL服务器中加载数据：");
-                        blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
-                        _redisCacheManager.Set("Redis.Blog", blogArticleList, TimeSpan.FromHours(2));
-                    }
+            blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
 
-                }
-                catch (Exception e)
+            // 以下代码暂不执行
+            if (false)
+            {
+                using (MiniProfiler.Current.Step("开始加载数据："))
                 {
-                    MiniProfiler.Current.CustomTiming("Errors：", "Redis服务未启用，请开启该服务，并且请注意端口号，本项目使用的的6319，而且我的是没有设置密码。" + e.Message);
-                    blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
+                    try
+                    {
+                        if (_redisCacheManager.Get<object>("Redis.Blog") != null)
+                        {
+                            MiniProfiler.Current.Step("从Redis服务器中加载数据：");
+                            blogArticleList = _redisCacheManager.Get<List<BlogArticle>>("Redis.Blog");
+                        }
+                        else
+                        {
+                            MiniProfiler.Current.Step("从MSSQL服务器中加载数据：");
+                            blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
+                            _redisCacheManager.Set("Redis.Blog", blogArticleList, TimeSpan.FromHours(2));
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        MiniProfiler.Current.CustomTiming("Errors：", "Redis服务未启用，请开启该服务，并且请注意端口号，本项目使用的的6319，而且我的是没有设置密码。" + e.Message);
+                        blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
+                    }
                 }
             }
 
@@ -246,7 +252,7 @@ namespace Blog.Core.Controllers
             {
                 var model = await _blogArticleServices.QueryById(BlogArticle.bID);
 
-                if (model!=null)
+                if (model != null)
                 {
                     model.btitle = BlogArticle.btitle;
                     model.bcategory = BlogArticle.bcategory;
@@ -265,5 +271,21 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        /// <summary>
+        /// apache jemeter 压力测试
+        /// 更新接口
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("ApacheTestUpdate")]
+        [AllowAnonymous]
+        public async Task<object> ApacheTestUpdate()
+        {
+            return Ok(new
+            {
+                success = true,
+                data = await _blogArticleServices.Update(new { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", bID = 1 })
+            });
+        }
     }
 }

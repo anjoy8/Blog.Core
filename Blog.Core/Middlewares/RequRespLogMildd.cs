@@ -106,69 +106,6 @@ namespace Blog.Core.Middlewares
 
                 request.Body.Position = 0;
             }
-
-            var requestInfo = JsonConvert.SerializeObject(new RequestInfo()
-            {
-                Ip = GetClientIP(context),
-                Url = request.Path.ObjToString().TrimEnd('/').ToLower(),
-                Datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                Date = DateTime.Now.ToString("yyyy-MM-dd"),
-                Week = GetWeek(),
-            });
-
-            if (!string.IsNullOrEmpty(requestInfo))
-            {
-                Parallel.For(0, 1, e =>
-                {
-                    LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
-                });
-
-                request.Body.Position = 0;
-            }
-
-
-        }
-        private string GetWeek()
-        {
-            string week = string.Empty;
-            switch (DateTime.Now.DayOfWeek)
-            {
-                case DayOfWeek.Monday:
-                    week = "周一";
-                    break;
-                case DayOfWeek.Tuesday:
-                    week = "周二";
-                    break;
-                case DayOfWeek.Wednesday:
-                    week = "周三";
-                    break;
-                case DayOfWeek.Thursday:
-                    week = "周四";
-                    break;
-                case DayOfWeek.Friday:
-                    week = "周五";
-                    break;
-                case DayOfWeek.Saturday:
-                    week = "周六";
-                    break;
-                case DayOfWeek.Sunday:
-                    week = "周日";
-                    break;
-                default:
-                    week = "N/A";
-                    break;
-            }
-            return week;
-        }
-
-        public static string GetClientIP(HttpContext context)
-        {
-            var ip = context.Request.Headers["X-Forwarded-For"].ObjToString();
-            if (string.IsNullOrEmpty(ip))
-            {
-                ip = context.Connection.RemoteIpAddress.ObjToString();
-            }
-            return ip;
         }
 
         private void ResponseDataLog(HttpResponse response, MemoryStream ms)

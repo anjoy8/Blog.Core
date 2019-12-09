@@ -183,12 +183,14 @@ namespace Blog.Core
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBlogArticleServices _blogArticleServices, ILoggerFactory loggerFactory)
         {
 
-            //记录所有的访问记录
+            // 记录所有的访问记录
             loggerFactory.AddLog4Net();
-            //记录请求与返回数据 
+            // 记录请求与返回数据 
             app.UseReuestResponseLog();
             // signalr 
             app.UseSignalRSendMildd();
+            // 记录ip请求
+            app.UseIPLogMildd();
 
             #region Environment
             if (env.IsDevelopment())

@@ -44,5 +44,15 @@ namespace Blog.Core.Middlewares
         {
             return app.UseMiddleware<ExceptionHandlerMidd>();
         }
+
+        /// <summary>
+        /// IP请求中间件
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseIPLogMildd(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<IPLogMildd>();
+        }
     }
 }
