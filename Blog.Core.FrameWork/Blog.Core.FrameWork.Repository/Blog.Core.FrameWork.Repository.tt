@@ -39,10 +39,11 @@ if(tableName!=""){
     #>  
 
 
-using System;
-using Blog.Core.FrameWork.IRepository;
-using Blog.Core.FrameWork.Entity;
-namespace Blog.Core.FrameWork.Repository
+using Blog.Core.Repository.Base;
+using Blog.Core.Model.Models;
+using Blog.Core.IRepository;
+using Blog.Core.IRepository.UnitOfWork;
+namespace Blog.Core.Repository
 {	
 	/// <summary>
 	/// <#=tableName#>Repository
@@ -73,11 +74,11 @@ namespace Blog.Core.FrameWork.Repository
 	//----------<#=row["TABLE_NAME"].ToString()#>开始----------
     
 
-using System;
-using Blog.Core.FrameWork.IRepository;
-using Blog.Core.FrameWork.Entity;
-
-namespace Blog.Core.FrameWork.Repository
+using Blog.Core.Repository.Base;
+using Blog.Core.Model.Models;
+using Blog.Core.IRepository;
+using Blog.Core.IRepository.UnitOfWork;
+namespace Blog.Core.Repository
 {	
 	/// <summary>
 	/// <#=row["TABLE_NAME"].ToString()#>Repository
@@ -102,10 +103,11 @@ namespace Blog.Core.FrameWork.Repository
     
 	//----------开始----------
 	
-using System;
-using Blog.Core.FrameWork.Entity;
-using Blog.Core.FrameWork.IRepository;
-namespace Blog.Core.FrameWork.Repository
+using Blog.Core.Repository.Base;
+using Blog.Core.Model.Models;
+using Blog.Core.IRepository;
+using Blog.Core.IRepository.UnitOfWork;
+namespace Blog.Core.Repository
 {	
 	/// <summary>
 	/// IBaseRepository

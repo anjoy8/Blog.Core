@@ -37,9 +37,9 @@
 <# 
 if(tableName!=""){
     #>  
-using System;
-using Blog.Core.FrameWork.Entity;
-namespace Blog.Core.FrameWork.IRepository
+using Blog.Core.IRepository.Base;
+using Blog.Core.Model.Models;
+namespace Blog.Core.IRepository
 {	
 	/// <summary>
 	/// I<#=tableName#>Repository
@@ -70,9 +70,9 @@ namespace Blog.Core.FrameWork.IRepository
 	//----------<#=row["TABLE_NAME"].ToString()#>开始----------
     
 	
-using System;
-using Blog.Core.FrameWork.Entity;
-namespace Blog.Core.FrameWork.IRepository
+using Blog.Core.IRepository.Base;
+using Blog.Core.Model.Models;
+namespace Blog.Core.IRepository
 {	
 	/// <summary>
 	/// I<#=row["TABLE_NAME"].ToString()#>Repository
@@ -95,9 +95,9 @@ namespace Blog.Core.FrameWork.IRepository
     
 	//----------开始----------
 	
-using System;
-using Blog.Core.FrameWork.Entity;
-namespace Blog.Core.FrameWork.IRepository
+using Blog.Core.IRepository.Base;
+using Blog.Core.Model.Models;
+namespace Blog.Core.IRepository
 {	
 	/// <summary>
 	/// IBaseRepository

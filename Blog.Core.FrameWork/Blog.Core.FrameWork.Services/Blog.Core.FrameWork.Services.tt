@@ -41,10 +41,14 @@ if(tableName!=""){
 
 
 using System;
-using Blog.Core.FrameWork.IServices;
-using Blog.Core.FrameWork.IRepository;
-using Blog.Core.FrameWork.Entity;
-namespace Blog.Core.FrameWork.Services
+using System.Threading.Tasks;
+using Blog.Core.Common;
+using Blog.Core.IRepository;
+using Blog.Core.IRepository.UnitOfWork;
+using Blog.Core.IServices;
+using Blog.Core.Model.Models;
+using Blog.Core.Services.BASE;
+namespace Blog.Core.Services
 {	
 	/// <summary>
 	/// <#=tableName#>Services
@@ -81,12 +85,16 @@ namespace Blog.Core.FrameWork.Services
 	//----------<#=row["TABLE_NAME"].ToString()#>开始----------
     
 
-using System;
-using Blog.Core.FrameWork.IServices;
-using Blog.Core.FrameWork.IRepository;
-using Blog.Core.FrameWork.Entity;
 
-namespace Blog.Core.FrameWork.Services
+using System;
+using System.Threading.Tasks;
+using Blog.Core.Common;
+using Blog.Core.IRepository;
+using Blog.Core.IRepository.UnitOfWork;
+using Blog.Core.IServices;
+using Blog.Core.Model.Models;
+using Blog.Core.Services.BASE;
+namespace Blog.Core.Services
 {	
 	/// <summary>
 	/// <#=row["TABLE_NAME"].ToString()#>Services
@@ -115,11 +123,16 @@ namespace Blog.Core.FrameWork.Services
     
 	//----------开始----------
 	
+
 using System;
-using Blog.Core.FrameWork.Entity;
-using Blog.Core.FrameWork.IServices;
-using Blog.Core.FrameWork.IRepository;
-namespace Blog.Core.FrameWork.Services
+using System.Threading.Tasks;
+using Blog.Core.Common;
+using Blog.Core.IRepository;
+using Blog.Core.IRepository.UnitOfWork;
+using Blog.Core.IServices;
+using Blog.Core.Model.Models;
+using Blog.Core.Services.BASE;
+namespace Blog.Core.Services
 {	
 	/// <summary>
 	/// IBaseRepository

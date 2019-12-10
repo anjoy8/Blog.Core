@@ -40,9 +40,10 @@ if(tableName!=""){
     #>  
 
 
-using System;
-using Blog.Core.FrameWork.Entity;
-namespace Blog.Core.FrameWork.IServices
+using Blog.Core.IServices.BASE;
+using Blog.Core.Model.Models;
+
+namespace Blog.Core.IServices
 {	
 	/// <summary>
 	/// I<#=tableName#>Services
@@ -73,10 +74,10 @@ namespace Blog.Core.FrameWork.IServices
 	//----------<#=row["TABLE_NAME"].ToString()#>开始----------
     
 
-using System;
-using Blog.Core.FrameWork.Entity;
+using Blog.Core.IServices.BASE;
+using Blog.Core.Model.Models;
 
-namespace Blog.Core.FrameWork.IServices
+namespace Blog.Core.IServices
 {	
 	/// <summary>
 	/// <#=row["TABLE_NAME"].ToString()#>Services
@@ -99,9 +100,10 @@ namespace Blog.Core.FrameWork.IServices
     
 	//----------开始----------
 	
-using System;
-using Blog.Core.FrameWork.Entity;
-namespace Blog.Core.FrameWork.IServices
+using Blog.Core.IServices.BASE;
+using Blog.Core.Model.Models;
+
+namespace Blog.Core.IServices
 {	
 	/// <summary>
 	/// IBaseRepository

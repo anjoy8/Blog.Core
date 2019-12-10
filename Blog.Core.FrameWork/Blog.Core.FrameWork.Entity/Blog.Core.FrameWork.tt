@@ -30,10 +30,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace UZK.EFCore.Entity
+namespace Blog.Core.Model.Models
 {
-	   ///<summary>
-	  ///<#=tableName#>
+	 ///<summary>
+	 ///<#=tableName#>
 	 ///</summary>
 	 [Table("<#=tableName#>")]	
 	 public class <#=tableName#>

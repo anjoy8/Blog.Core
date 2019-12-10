@@ -119,6 +119,7 @@
                 IsNullable = row.Field<bool>("IsNullable"),
                 ByteLength = row.Field<int>("ByteLength"),
                 CharLength = row.Field<int>("CharLength"),
+				Precision=row.Field<int>("Precision"),
                 Scale = row.Field<int>("Scale"),
                 Remark = row["Remark"].ToString()
             }).ToList();
@@ -249,6 +250,8 @@
         /// </summary>
         public int CharLength { get; set; }
 
+		///精度长度
+		public int Precision{get;set;}
         /// <summary>
         /// 小数位
         /// </summary>
@@ -363,4 +366,3 @@
     }
     #endregion
  #>
-
