@@ -5,10 +5,8 @@
 <#@ import namespace="System.Text"#>
 <#@ import namespace="Microsoft.VisualStudio.TextTemplating"#>
 <#+
-//定义管理者 manager 实体类
 class Manager
 {
-	//定义一个 block 块，主要是应用在批量生产中
     public struct Block {
         public int Start, Length;
 		public String Name,OutputPath;
@@ -21,13 +19,11 @@ class Manager
     public ITextTemplatingEngineHost host;
     public ManagementStrategy strategy;
     public StringBuilder template;
-	//构造函数，包含 host主机，模板，输出路径，创建管理策略
     public Manager(ITextTemplatingEngineHost host, StringBuilder template, bool commonHeader) {
         this.host = host;
         this.template = template;
         strategy = ManagementStrategy.Create(host);
     }
-	//开辟一个 block 块
     public void StartBlock(String name,String outputPath) {
         currentBlock = new Block { Name = name, Start = template.Length ,OutputPath=outputPath};
     }
@@ -52,13 +48,11 @@ class Manager
         currentBlock.Length = template.Length - currentBlock.Start;
         blocks.Add(currentBlock);
     }
-	//定义进程，用来将所有的 blocks 块执行出来
     public void Process(bool split) {
         String header = template.ToString(headerBlock.Start, headerBlock.Length);
         String footer = template.ToString(footerBlock.Start, footerBlock.Length);
         blocks.Reverse();
-        foreach(Block block in blocks) {//遍历
-			//输出文件
+        foreach(Block block in blocks) {
             String fileName = Path.Combine(block.OutputPath, block.Name);
             if (split) {
                 String content = header + template.ToString(block.Start, block.Length) + footer;
@@ -70,7 +64,6 @@ class Manager
         }
     }
 }
-//定义管理策略类
 class ManagementStrategy
 {
     internal static ManagementStrategy Create(ITextTemplatingEngineHost host) {
@@ -104,16 +97,13 @@ class VSManagementStrategy : ManagementStrategy
 
         templateProjectItem = dte.Solution.FindProjectItem(host.TemplateFile);
     }
-	//创建文件
     internal override void CreateFile(String fileName, String content) {
         base.CreateFile(fileName, content);
         //((EventHandler)delegate { templateProjectItem.ProjectItems.AddFromFile(fileName); }).BeginInvoke(null, null, null, null);
     }
-	//删除文件
     internal override void DeleteFile(String fileName) {
         ((EventHandler)delegate { FindAndDeleteFile(fileName); }).BeginInvoke(null, null, null, null);
     }
-	//根据文件名删除文件
     private void FindAndDeleteFile(String fileName) {
         foreach(EnvDTE.ProjectItem projectItem in templateProjectItem.ProjectItems) {
             if (projectItem.get_FileNames(0) == fileName) {
