@@ -59,13 +59,15 @@ namespace Blog.Core.Extensions
                     log.Error("Blog.Core.xml和Blog.Core.Model.xml 丢失，请检查并拷贝。\n" + ex.Message);
                 }
 
+                // 开启加权小锁
                 c.OperationFilter<AddResponseHeadersFilter>();
                 c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
 
+                // 在header中添加token，传递到后台
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
 
 
-                // Token绑定到ConfigureServices
+                // 必须是 oauth2
                 c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",

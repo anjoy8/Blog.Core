@@ -92,6 +92,7 @@ namespace Blog.Core
 
         }
 
+        // 注意在CreateDefaultBuilder中，添加Autofac服务工厂
         public void ConfigureContainer(ContainerBuilder builder)
         {
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
