@@ -97,7 +97,7 @@ namespace Blog.Core.Controllers
             blogArticleList = blogArticleList.Where(d => (d.btitle != null && d.btitle.Contains(key)) || (d.bcontent != null && d.bcontent.Contains(key))).ToList();
 
             total = blogArticleList.Count();
-            totalCount = blogArticleList.Count() / intTotalCount;
+            totalCount = (Math.Ceiling(total.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
 
             using (MiniProfiler.Current.Step("获取成功后，开始处理最终数据"))
             {
