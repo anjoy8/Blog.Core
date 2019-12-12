@@ -56,7 +56,7 @@ namespace Blog.Core.AuthHelper
              */
 
             // 将最新的角色和接口列表更新
-            var data = await RoleModulePermissionServices.RoleModuleMaps();
+            var data = await RoleModulePermissionServices.GetRoleModule();
             var list = (from item in data
                         where item.IsDeleted == false
                         orderby item.Id

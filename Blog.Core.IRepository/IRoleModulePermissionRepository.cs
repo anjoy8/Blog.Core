@@ -12,7 +12,5 @@ namespace Blog.Core.IRepository
     {
         Task<List<RoleModulePermission>> WithChildrenModel();
         Task<List<TestMuchTableResult>> QueryMuchTable();
-
-        Task<List<RoleModulePermission>> RoleModuleMaps();
     }
 }
