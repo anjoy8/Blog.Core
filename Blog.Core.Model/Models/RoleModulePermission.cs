@@ -57,7 +57,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 修改者
         /// </summary>
-        [SugarColumn(Length = 50, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 50, IsNullable = true)]
         public string ModifyBy { get; set; }
         /// <summary>
         /// 修改时间

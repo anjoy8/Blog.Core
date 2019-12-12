@@ -42,7 +42,7 @@ namespace Blog.Core.Model.Models
         public DateTime tdUpdatetime { get; set; }
         public int tdTop { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tdAuthor { get; set; }
 
 

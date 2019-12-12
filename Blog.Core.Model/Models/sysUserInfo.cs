@@ -93,7 +93,7 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public DateTime birth { get; set; } = DateTime.Now;
         // 地址
-        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string addr { get; set; }
 
         [SugarColumn(IsNullable = true)]

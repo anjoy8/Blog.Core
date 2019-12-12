@@ -29,7 +29,7 @@ namespace Blog.Core.Model.Models
         [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
         public string tAuthor { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tSectendDetail { get; set; }
 
         public bool tIsDelete { get; set; }

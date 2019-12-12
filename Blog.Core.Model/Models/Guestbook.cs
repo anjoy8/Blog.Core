@@ -43,7 +43,7 @@ namespace Blog.Core.Model.Models
         /// <summary>ip地址
         /// 
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
         public string ip { get; set; }
 
         /// <summary>是否显示在前台,0否1是

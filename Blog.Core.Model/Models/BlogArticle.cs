@@ -60,7 +60,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 备注
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
         public string bRemark { get; set; }
 
         /// <summary>

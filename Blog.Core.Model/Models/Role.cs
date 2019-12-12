@@ -33,17 +33,17 @@ namespace Blog.Core.Model.Models
         /// <summary>
         ///获取或设置是否禁用，逻辑上的删除，非物理删除
         /// </summary>
-        [SugarColumn(IsNullable = true )]
+        [SugarColumn(IsNullable = true)]
         public bool? IsDeleted { get; set; }
         /// <summary>
         /// 角色名
         /// </summary>
-        [SugarColumn(Length = 50, IsNullable = true, ColumnDataType = "nvarchar")]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
         public string Name { get; set; }
         /// <summary>
         ///描述
         /// </summary>
-        [SugarColumn(Length = 100, IsNullable = true, ColumnDataType = "nvarchar")]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 100, IsNullable = true)]
         public string Description { get; set; }
         /// <summary>
         ///排序
@@ -61,7 +61,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 创建者
         /// </summary>
-        [SugarColumn(Length = 50, IsNullable = true, ColumnDataType = "nvarchar")]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
         public string CreateBy { get; set; }
         /// <summary>
         /// 创建时间
@@ -76,7 +76,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 修改者
         /// </summary>
-        [SugarColumn(IsNullable = true, ColumnDataType = "nvarchar")]
+        [SugarColumn(IsNullable = true)]
         public string ModifyBy { get; set; }
         /// <summary>
         /// 修改时间
