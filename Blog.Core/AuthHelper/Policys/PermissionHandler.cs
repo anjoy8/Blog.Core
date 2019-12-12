@@ -22,13 +22,14 @@ namespace Blog.Core.AuthHelper
         /// 验证方案提供对象
         /// </summary>
         public IAuthenticationSchemeProvider Schemes { get; set; }
+
+        private readonly IRoleModulePermissionServices _roleModulePermissionServices;
         private readonly IHttpContextAccessor _accessor;
 
 
         /// <summary>
         /// services 层注入
         /// </summary>
-        public IRoleModulePermissionServices RoleModulePermissionServices { get; set; }
 
         /// <summary>
         /// 构造函数注入
@@ -40,35 +41,13 @@ namespace Blog.Core.AuthHelper
         {
             _accessor = accessor;
             Schemes = schemes;
-            this.RoleModulePermissionServices = roleModulePermissionServices;
+            _roleModulePermissionServices = roleModulePermissionServices;
+            _roleModulePermissionServices = roleModulePermissionServices;
         }
 
         // 重写异步处理程序
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
-            /*
-             * 
-             * 首先必须在 controller 上进行配置 Authorize ，可以策略授权，也可以角色等基本授权
-             * 
-             * 1、开启公约， startup 中的全局授权过滤公约：o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
-             * 
-             * 2、不开启公约，使用 IHttpContextAccessor ，也能实现效果；
-             */
-
-            // 将最新的角色和接口列表更新
-            var data = await RoleModulePermissionServices.GetRoleModule();
-            var list = (from item in data
-                        where item.IsDeleted == false
-                        orderby item.Id
-                        select new PermissionItem
-                        {
-                            Url = item.Module?.LinkUrl,
-                            Role = item.Role?.Name,
-                        }).ToList();
-
-            requirement.Permissions = list;
-
-
             //从AuthorizationHandlerContext转成HttpContext，以便取出表求信息
             var filterContext = (context.Resource as Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext);
             var httpContext = (context.Resource as Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)?.HttpContext;
@@ -100,6 +79,19 @@ namespace Blog.Core.AuthHelper
                     //result?.Principal不为空即登录成功
                     if (result?.Principal != null)
                     {
+                        // 将最新的角色和接口列表更新
+                        var data = await _roleModulePermissionServices.RoleModuleMaps();
+                        var list = (from item in data
+                                    where item.IsDeleted == false
+                                    orderby item.Id
+                                    select new PermissionItem
+                                    {
+                                        Url = item.Module?.LinkUrl,
+                                        Role = item.Role?.Name,
+                                    }).ToList();
+
+                        requirement.Permissions = list;
+
                         httpContext.User = result.Principal;
 
                         //权限中是否存在请求的url
