@@ -17,16 +17,16 @@ namespace Blog.Core.Model.Models
             this.TopicDetail = new List<TopicDetail>();
             this.tUpdatetime = DateTime.Now;
         }
-        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tLogo { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tName { get; set; }
 
-        [SugarColumn(Length = 400, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 400, IsNullable = true)]
         public string tDetail { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tAuthor { get; set; }
 
         [SugarColumn(Length = 200, IsNullable = true)]

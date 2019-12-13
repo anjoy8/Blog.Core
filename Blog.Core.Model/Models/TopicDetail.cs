@@ -19,19 +19,19 @@ namespace Blog.Core.Model.Models
 
         public int TopicId { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tdLogo { get; set; } 
 
-        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tdName { get; set; }
 
-        [SugarColumn(Length = int.MaxValue , IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = int.MaxValue , IsNullable = true)]
         public string tdContent { get; set; }
 
-        [SugarColumn(Length = 400, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 400, IsNullable = true)]
         public string tdDetail { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true,ColumnDataType ="nvarchar")]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tdSectendDetail { get; set; }
 
         public bool tdIsDelete { get; set; } = false;
