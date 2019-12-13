@@ -20,6 +20,7 @@ namespace Blog.Core.Tests
         private readonly IUserRoleServices _userRoleServices;
         private readonly IRoleServices _roleServices;
         private readonly PermissionRequirement _requirement;
+        private readonly IRoleModulePermissionServices _roleModulePermissionServices;
 
         DI_Test dI_Test = new DI_Test();
 
@@ -32,7 +33,8 @@ namespace Blog.Core.Tests
             _userRoleServices = container.Resolve<IUserRoleServices>();
             _roleServices = container.Resolve<IRoleServices>();
             _requirement = container.Resolve<PermissionRequirement>();
-            loginController = new LoginController(_sysUserInfoServices,_userRoleServices,_roleServices,_requirement);
+            _roleModulePermissionServices = container.Resolve<IRoleModulePermissionServices>();
+            loginController = new LoginController(_sysUserInfoServices,_userRoleServices,_roleServices,_requirement, _roleModulePermissionServices);
         }
 
         [Fact]

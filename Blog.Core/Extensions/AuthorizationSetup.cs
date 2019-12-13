@@ -169,7 +169,7 @@ namespace Blog.Core.Extensions
 
 
             // 注入权限处理器
-            services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+            services.AddScoped<IAuthorizationHandler, PermissionHandler>();
             services.AddSingleton(permissionRequirement);
         }
     }

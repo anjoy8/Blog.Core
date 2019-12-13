@@ -138,12 +138,10 @@
             验证方案提供对象
             </summary>
         </member>
-        <member name="P:Blog.Core.AuthHelper.PermissionHandler.RoleModulePermissionServices">
+        <member name="M:Blog.Core.AuthHelper.PermissionHandler.#ctor(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider,Blog.Core.IServices.IRoleModulePermissionServices,Microsoft.AspNetCore.Http.IHttpContextAccessor)">
             <summary>
             services 层注入
             </summary>
-        </member>
-        <member name="M:Blog.Core.AuthHelper.PermissionHandler.#ctor(Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider,Blog.Core.IServices.IRoleModulePermissionServices,Microsoft.AspNetCore.Http.IHttpContextAccessor)">
             <summary>
             构造函数注入
             </summary>
@@ -386,7 +384,7 @@
             登录管理【无权限】
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.LoginController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.AuthHelper.PermissionRequirement)">
+        <member name="M:Blog.Core.Controllers.LoginController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.AuthHelper.PermissionRequirement,Blog.Core.IServices.IRoleModulePermissionServices)">
             <summary>
             构造函数注入
             </summary>
@@ -394,6 +392,7 @@
             <param name="userRoleServices"></param>
             <param name="roleServices"></param>
             <param name="requirement"></param>
+            <param name="roleModulePermissionServices"></param>
         </member>
         <member name="M:Blog.Core.Controllers.LoginController.GetJwtStr(System.String,System.String)">
             <summary>
@@ -666,6 +665,14 @@
             </summary>
             <param name="id"></param>
             <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TransactionController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.BASE.IBaseServices{Blog.Core.Model.Models.PasswordLib},Blog.Core.IServices.IGuestbookServices)">
+            <summary>
+            测试事务操作
+            </summary>
+            <param name="unitOfWork">工作单元</param>
+            <param name="passwordLibServices">基类泛型注入</param>
+            <param name="guestbookServices"></param>
         </member>
         <member name="T:Blog.Core.Controllers.UserController">
             <summary>

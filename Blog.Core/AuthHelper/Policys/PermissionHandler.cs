@@ -22,14 +22,8 @@ namespace Blog.Core.AuthHelper
         /// 验证方案提供对象
         /// </summary>
         public IAuthenticationSchemeProvider Schemes { get; set; }
-
         private readonly IRoleModulePermissionServices _roleModulePermissionServices;
         private readonly IHttpContextAccessor _accessor;
-
-
-        /// <summary>
-        /// services 层注入
-        /// </summary>
 
         /// <summary>
         /// 构造函数注入
@@ -41,7 +35,6 @@ namespace Blog.Core.AuthHelper
         {
             _accessor = accessor;
             Schemes = schemes;
-            _roleModulePermissionServices = roleModulePermissionServices;
             _roleModulePermissionServices = roleModulePermissionServices;
         }
 
@@ -80,17 +73,21 @@ namespace Blog.Core.AuthHelper
                     if (result?.Principal != null)
                     {
                         // 将最新的角色和接口列表更新
-                        var data = await _roleModulePermissionServices.RoleModuleMaps();
-                        var list = (from item in data
-                                    where item.IsDeleted == false
-                                    orderby item.Id
-                                    select new PermissionItem
-                                    {
-                                        Url = item.Module?.LinkUrl,
-                                        Role = item.Role?.Name,
-                                    }).ToList();
 
-                        requirement.Permissions = list;
+                        // 这里暂时把代码移动到了Login获取token的api里,这样就不用每次都请求数据库,造成压力.
+                        // 但是这样有个问题,就是如果修改了某一个角色的菜单权限,不会立刻更新,
+                        // 需要让用户退出重新登录,如果你想实时更新,请把下边的注释打开即可.
+
+                        //var data = await _roleModulePermissionServices.RoleModuleMaps();
+                        //var list = (from item in data
+                        //            where item.IsDeleted == false
+                        //            orderby item.Id
+                        //            select new PermissionItem
+                        //            {
+                        //                Url = item.Module?.LinkUrl,
+                        //                Role = item.Role?.Name,
+                        //            }).ToList();
+                        //requirement.Permissions = list;
 
                         httpContext.User = result.Principal;
 
