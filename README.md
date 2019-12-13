@@ -144,14 +144,13 @@ https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-3-4-0
 具体文章请看：《[支持多种数据库 & 快速数据库生成](https://www.cnblogs.com/laozhang-is-phi/p/10718755.html)》。
 
 
-5、如果你不想用CodeFirst 和种子数据，可以用数据库表结构Sql文件在数据库里执行，
-在Blog.Core 项目下的 wwwroot 文件夹中Blog.Core.Table.sql（表结构）、Blog.Core.Table&Data.sql（结构和数据）。
-或者来群里，群文件的是最新的。
-（目前不支持 sql 文件了，忙不过来，可以来群里，找群友要一份，建议使用 seeddata ）
+5、不支持sql文件了，只支持CodeFirst方式，具体上的Seed Data动图已经说明。
 
 
-6、如果想单独查看关于【JWT授权】的相关内容，可以访问 https://github.com/anjoy8/BlogArti/tree/master/Blog.Core_JWT，
-   我单拎出来的一个demo。
+6、想要各个知识点的，可以查看：
+
+ a、直播教学的配套代码：https://github.com/anjoy8/Blog.Live
+ b、博客园文章的拆分代码：https://github.com/anjoy8/BlogArti
 
 
 7、项目后期发布的时候可以有两个办法，一种是dotnet的kestrel部署，另一种是 IIS 发布部署，但是在发布的时候，
@@ -370,11 +369,11 @@ File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim(): "server=.;uid=sa;pwd=sa;
 
  系统环境
 
-    windows 10、SQL server 2012、Visual Studio 2017、Windows Server 2008 R2
+    windows 10、SQL Server 08+、Visual Studio 2019、Windows Server 2008 R2
 
     后端技术：
 
-      * .Net Core 2.0 API（因为想单纯搭建前后端分离，因此就选用的API，如果想了解.Net Core MVC，也可以交流）
+      * .Net Core 3.1 API（因为想单纯搭建前后端分离，因此就选用的API，如果想了解.Net Core MVC，也可以交流）
       
       * Swagger 前后端文档说明，基于RESTful风格编写接口
 
