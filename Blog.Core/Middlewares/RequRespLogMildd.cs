@@ -26,16 +26,13 @@ namespace Blog.Core.Middlewares
         /// 
         /// </summary>
         private readonly RequestDelegate _next;
-        private readonly IBlogArticleServices _blogArticleServices;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="next"></param>
-        /// <param name="blogArticleServices"></param>
-        public RequRespLogMildd(RequestDelegate next, IBlogArticleServices blogArticleServices)
+        public RequRespLogMildd(RequestDelegate next)
         {
             _next = next;
-            _blogArticleServices = blogArticleServices;
         }
 
 
@@ -53,7 +50,7 @@ namespace Blog.Core.Middlewares
                     try
                     {
                         // 存储请求数据
-                        RequestDataLog(context);
+                        await RequestDataLog(context);
 
                         using (var ms = new MemoryStream())
                         {
@@ -89,12 +86,12 @@ namespace Blog.Core.Middlewares
             }
         }
 
-        private void RequestDataLog(HttpContext context)
+        private async Task RequestDataLog(HttpContext context)
         {
             var request = context.Request;
             var sr = new StreamReader(request.Body);
 
-            var content = $" QueryData:{request.Path + request.QueryString}\r\n BodyData:{sr.ReadToEndAsync()}";
+            var content = $" QueryData:{request.Path + request.QueryString}\r\n BodyData:{await sr.ReadToEndAsync()}";
 
             if (!string.IsNullOrEmpty(content))
             {
