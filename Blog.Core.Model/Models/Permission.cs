@@ -21,12 +21,12 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 菜单执行Action名
         /// </summary>
-        [SugarColumn(Length = 50, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
         public string Code { get; set; }
         /// <summary>
         /// 菜单显示名（如用户页、编辑(按钮)、删除(按钮)）
         /// </summary>
-        [SugarColumn(Length = 50, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
         public string Name { get; set; }
         /// <summary>
         /// 是否是按钮
@@ -42,7 +42,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 按钮事件
         /// </summary>
-        [SugarColumn(IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 100, IsNullable = true)]
         public string Func { get; set; }
 
 
@@ -65,12 +65,12 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 菜单图标
         /// </summary>
-        [SugarColumn(Length = 100, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 100, IsNullable = true)]
         public string Icon { get; set; }
         /// <summary>
         /// 菜单描述    
         /// </summary>
-        [SugarColumn(Length = 100, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 100, IsNullable = true)]
         public string Description { get; set; }
         /// <summary>
         /// 激活状态
@@ -84,7 +84,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 创建者
         /// </summary>
-        [SugarColumn(Length = 50, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
         public string CreateBy { get; set; }
         /// <summary>
         /// 创建时间
@@ -99,7 +99,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 修改者
         /// </summary>
-        [SugarColumn(Length = 50, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
         public string ModifyBy { get; set; }
         /// <summary>
         /// 修改时间
