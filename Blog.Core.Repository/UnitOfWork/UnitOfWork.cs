@@ -14,14 +14,16 @@ namespace Blog.Core.Repository.UnitOfWork
     {
 
         private readonly ISqlSugarClient _sqlSugarClient;
+        private readonly List<ISqlSugarClient> _sqlSugarClients;
 
-        public UnitOfWork(ISqlSugarClient sqlSugarClient)
+        public UnitOfWork(List<ISqlSugarClient> sqlSugarClients)
         {
-            _sqlSugarClient = sqlSugarClient;
+            // 每次取最上边的db，这个顺序已经在注册服务的时候，切换好了
+            _sqlSugarClient = sqlSugarClients[0];
            
             if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
             {
-                sqlSugarClient.Aop.OnLogExecuting = (sql, pars) => //SQL执行中事件
+                _sqlSugarClient.Aop.OnLogExecuting = (sql, pars) => //SQL执行中事件
                 {
                     Parallel.For(0, 1, e =>
                     {
