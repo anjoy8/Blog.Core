@@ -1,6 +1,9 @@
-﻿using Blog.Core.Common.DB;
+﻿using Blog.Core.Common;
+using Blog.Core.Common.DB;
 using Microsoft.Extensions.DependencyInjection;
+using SqlSugar;
 using System;
+using System.Collections.Generic;
 
 namespace Blog.Core.Extensions
 {
@@ -13,16 +16,25 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddScoped<SqlSugar.ISqlSugarClient>(o =>
+            services.AddSingleton(new MainDb(Appsettings.app(new string[] { "MainDB" }).ObjToInt()));
+
+            services.AddScoped<ISqlSugarClient>(o =>
             {
-                return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
+                List<ConnectionConfig> connectionConfigs = new List<ConnectionConfig>();
+                BaseDBConfig.MutiConnectionString.ForEach(m =>
                 {
-                    ConnectionString = BaseDBConfig.ConnectionString,//必填, 数据库连接字符串
-                    DbType = (SqlSugar.DbType)BaseDBConfig.DbType,//必填, 数据库类型
-                    IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
-                    InitKeyType = SqlSugar.InitKeyType.SystemTable//默认SystemTable, 字段信息读取, 如：该属性是不是主键，标识列等等信息
+                    connectionConfigs.Add(new ConnectionConfig()
+                    {
+                        ConfigId = m.ConnId,
+                        ConnectionString = m.Conn,
+                        DbType = (DbType)m.DbType,
+                        IsAutoCloseConnection = true,
+                        //InitKeyType = InitKeyType.SystemTable
+                    });
                 });
+                return new SqlSugarClient(connectionConfigs);
             });
+
         }
     }
 }
