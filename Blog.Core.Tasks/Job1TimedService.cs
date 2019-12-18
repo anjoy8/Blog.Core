@@ -33,8 +33,8 @@ namespace Blog.Core.Tasks
         {
             try
             {
-                var model = await _blogArticleServices.GetBlogDetails(5);
-                Console.WriteLine($"BlogArticle:{model.bCreateTime}");
+                var model = await _blogArticleServices.GetBlogDetails(1);
+                Console.WriteLine($"BlogArticle:{model?.bCreateTime}");
             }
             catch (Exception)
             {

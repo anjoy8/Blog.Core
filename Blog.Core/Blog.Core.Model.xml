@@ -715,11 +715,12 @@
             修改时间
             </summary>
         </member>
-        <member name="M:Blog.Core.Model.Models.DBSeed.SeedAsync(Blog.Core.Model.Models.MyContext)">
+        <member name="M:Blog.Core.Model.Models.DBSeed.SeedAsync(Blog.Core.Model.Models.MyContext,System.String)">
             <summary>
             异步添加种子数据
             </summary>
             <param name="myContext"></param>
+            <param name="WebRootPath"></param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Model.Models.FrameSeed.CreateModels(Blog.Core.Model.Models.MyContext)">
