@@ -164,7 +164,7 @@ namespace Blog.Core.Tests
             var blogservice = ApplicationContainer.Resolve<IBlogArticleServices>();
             var myContext = ApplicationContainer.Resolve<MyContext>();
 
-            DBSeed.SeedAsync(myContext).Wait();
+            DBSeed.SeedAsync(myContext, basePath).Wait();
 
 
             return ApplicationContainer;
