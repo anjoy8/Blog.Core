@@ -19,7 +19,7 @@ namespace Blog.Core.Extensions
             MainDb.CurrentDbConnId = Appsettings.app(new string[] { "MainDB" });
 
             // 把多个连接对象注入服务，这里可以采用Transient瞬态，也可以Scope
-            services.AddTransient(o =>
+            services.AddScoped(o =>
             {
                 List<ISqlSugarClient> sqlSugarClients = new List<ISqlSugarClient>();
 
