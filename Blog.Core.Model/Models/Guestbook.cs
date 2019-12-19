@@ -21,29 +21,29 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public DateTime createdate { get; set; }
 
-        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
         public string username { get; set; }
 
         /// <summary>手机
         /// 
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
         public string phone { get; set; }
         /// <summary>qq
         /// 
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
         public string QQ { get; set; }
 
         /// <summary>留言内容
         /// 
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
         public string body { get; set; }
         /// <summary>ip地址
         /// 
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
         public string ip { get; set; }
 
         /// <summary>是否显示在前台,0否1是

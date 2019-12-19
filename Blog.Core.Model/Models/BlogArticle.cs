@@ -17,25 +17,25 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 创建人
         /// </summary>
-        [SugarColumn(Length = 60, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 60, IsNullable = true)]
         public string bsubmitter { get; set; }
 
         /// <summary>
         /// 标题blog
         /// </summary>
-        [SugarColumn(Length = 256, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 256, IsNullable = true)]
         public string btitle { get; set; }
 
         /// <summary>
         /// 类别
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
         public string bcategory { get; set; }
 
         /// <summary>
         /// 内容
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true, ColumnDataType = "nvarchar")]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
         public string bcontent { get; set; }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 备注
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
         public string bRemark { get; set; }
 
         /// <summary>

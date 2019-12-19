@@ -9,8 +9,9 @@ namespace Blog.Core.Model.Models
     public class MyContext
     {
 
-        private static string _connectionString = BaseDBConfig.ConnectionString;
-        private static DbType _dbType = (DbType)BaseDBConfig.DbType;
+        private static MutiDBOperate connectObject = BaseDBConfig.MutiConnectionString.Find(x => x.ConnId == MainDb.CurrentDbConnId);
+        private static string _connectionString = connectObject.Conn;
+        private static DbType _dbType = (DbType)connectObject.DbType;
         private SqlSugarClient _db;
 
         /// <summary>

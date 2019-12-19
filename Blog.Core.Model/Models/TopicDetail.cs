@@ -19,19 +19,19 @@ namespace Blog.Core.Model.Models
 
         public int TopicId { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true)]
+        [SugarColumn(ColumnDataType ="nvarchar",Length = 200, IsNullable = true)]
         public string tdLogo { get; set; } 
 
-        [SugarColumn(Length = 200, IsNullable = true)]
+        [SugarColumn(ColumnDataType ="nvarchar",Length = 200, IsNullable = true)]
         public string tdName { get; set; }
 
-        [SugarColumn(Length = int.MaxValue , IsNullable = true)]
+        [SugarColumn(ColumnDataType ="nvarchar",Length = int.MaxValue , IsNullable = true)]
         public string tdContent { get; set; }
 
-        [SugarColumn(Length = 400, IsNullable = true)]
+        [SugarColumn(ColumnDataType ="nvarchar",Length = 400, IsNullable = true)]
         public string tdDetail { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true)]
+        [SugarColumn(ColumnDataType ="nvarchar",Length = 200, IsNullable = true)]
         public string tdSectendDetail { get; set; }
 
         public bool tdIsDelete { get; set; } = false;
@@ -42,7 +42,7 @@ namespace Blog.Core.Model.Models
         public DateTime tdUpdatetime { get; set; }
         public int tdTop { get; set; }
 
-        [SugarColumn(Length = 200, IsNullable = true)]
+        [SugarColumn(ColumnDataType ="nvarchar",Length = 200, IsNullable = true)]
         public string tdAuthor { get; set; }
 
 

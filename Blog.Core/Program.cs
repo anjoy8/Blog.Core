@@ -44,7 +44,8 @@ namespace Blog.Core
                     if (configuration.GetSection("AppSettings")["SeedDBEnabled"].ObjToBool() || configuration.GetSection("AppSettings")["SeedDBDataEnabled"].ObjToBool())
                     {
                         var myContext = services.GetRequiredService<MyContext>();
-                        DBSeed.SeedAsync(myContext).Wait();
+                        var Env = services.GetRequiredService<IWebHostEnvironment>();
+                        DBSeed.SeedAsync(myContext, Env.WebRootPath).Wait();
                     }
                 }
                 catch (Exception e)

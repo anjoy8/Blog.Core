@@ -1,6 +1,9 @@
-﻿using Blog.Core.Common.DB;
+﻿using Blog.Core.Common;
+using Blog.Core.Common.DB;
 using Microsoft.Extensions.DependencyInjection;
+using SqlSugar;
 using System;
+using System.Collections.Generic;
 
 namespace Blog.Core.Extensions
 {
@@ -13,15 +16,37 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddScoped<SqlSugar.ISqlSugarClient>(o =>
+            MainDb.CurrentDbConnId = Appsettings.app(new string[] { "MainDB" });
+
+            // 把多个连接对象注入服务，这里可以采用Transient瞬态，也可以Scope
+            services.AddScoped(o =>
             {
-                return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
+                List<ISqlSugarClient> sqlSugarClients = new List<ISqlSugarClient>();
+
+                var beforeDbConnect = BaseDBConfig.MutiConnectionString;
+                var index = beforeDbConnect.FindIndex(x => x.ConnId == MainDb.CurrentDbConnId);
+                if (index > 0)
                 {
-                    ConnectionString = BaseDBConfig.ConnectionString,//必填, 数据库连接字符串
-                    DbType = (SqlSugar.DbType)BaseDBConfig.DbType,//必填, 数据库类型
-                    IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
-                    InitKeyType = SqlSugar.InitKeyType.SystemTable//默认SystemTable, 字段信息读取, 如：该属性是不是主键，标识列等等信息
+                    // 做一个交换，切换主db连接放到第一位
+                    var firstDb = beforeDbConnect[0];
+                    var changeDb = beforeDbConnect[index];
+                    beforeDbConnect[index] = firstDb;
+                    beforeDbConnect[0] = changeDb;
+                }
+
+                beforeDbConnect.ForEach(m =>
+                {
+                    sqlSugarClients.Add(new SqlSugarClient(new ConnectionConfig()
+                    {
+                        ConfigId = m.ConnId,
+                        ConnectionString = m.Conn,
+                        DbType = (DbType)m.DbType,
+                        IsAutoCloseConnection = true,
+                        //InitKeyType = InitKeyType.SystemTable
+                    })
+                   );
                 });
+                return sqlSugarClients;
             });
         }
     }
