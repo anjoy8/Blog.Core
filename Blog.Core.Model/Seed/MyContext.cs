@@ -9,11 +9,32 @@ namespace Blog.Core.Model.Models
     public class MyContext
     {
 
-        private static MutiDBOperate connectObject = BaseDBConfig.MutiConnectionString.Find(x => x.ConnId == MainDb.CurrentDbConnId);
+        private static MutiDBOperate connectObject => GetMainConnectionDb();
         private static string _connectionString = connectObject.Conn;
         private static DbType _dbType = (DbType)connectObject.DbType;
         private SqlSugarClient _db;
 
+        /// <summary>
+        /// 连接字符串 
+        /// Blog.Core
+        /// </summary>
+        public static MutiDBOperate GetMainConnectionDb()
+        {
+            var mainConnetctDb = BaseDBConfig.MutiConnectionString.Find(x => x.ConnId == MainDb.CurrentDbConnId);
+            if (BaseDBConfig.MutiConnectionString.Count > 0)
+            {
+                if (mainConnetctDb == null)
+                {
+                    mainConnetctDb = BaseDBConfig.MutiConnectionString[0];
+                }
+            }
+            else
+            {
+                throw new Exception("请确保appsettigns.json中配置连接字符串,并设置Enabled为true;");
+            }
+
+            return mainConnetctDb;
+        }
         /// <summary>
         /// 连接字符串 
         /// Blog.Core
@@ -111,7 +132,7 @@ namespace Blog.Core.Model.Models
                 .SettingClassTemplate(p => p = @"
 {using}
 
-namespace "+ strNameSpace + @"
+namespace " + strNameSpace + @"
 {
     {ClassDescription}{SugarTable}" + (blnSerializable ? "[Serializable]" : "") + @"
     public class {ClassName}" + (string.IsNullOrEmpty(strInterface) ? "" : (" : " + strInterface)) + @"
@@ -166,7 +187,7 @@ namespace "+ strNameSpace + @"
 using Blog.Core.IRepository.Base;
 using Blog.Core.Model.Models;
 
-namespace "+ strNameSpace + @"
+namespace " + strNameSpace + @"
 {
 	/// <summary>
 	/// I{ClassName}Repository
@@ -210,7 +231,7 @@ namespace "+ strNameSpace + @"
 using Blog.Core.IServices.BASE;
 using Blog.Core.Model.Models;
 
-namespace "+ strNameSpace + @"
+namespace " + strNameSpace + @"
 {	
 	/// <summary>
 	/// I{ClassName}Services
@@ -259,7 +280,7 @@ using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.Model.Models;
 using Blog.Core.Repository.Base;
 
-namespace "+ strNameSpace + @"
+namespace " + strNameSpace + @"
 {
 	/// <summary>
 	/// {ClassName}Repository
@@ -308,7 +329,7 @@ using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Services.BASE;
 
-namespace "+ strNameSpace + @"
+namespace " + strNameSpace + @"
 {
     public partial class {ClassName}Services : BaseServices<{ClassName}>, I{ClassName}Services" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
     {
