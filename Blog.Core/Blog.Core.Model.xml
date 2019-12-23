@@ -758,6 +758,12 @@
             <param name="myContext"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Model.Models.MyContext.GetMainConnectionDb">
+            <summary>
+            连接字符串 
+            Blog.Core
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.MyContext.ConnectionString">
             <summary>
             连接字符串 
