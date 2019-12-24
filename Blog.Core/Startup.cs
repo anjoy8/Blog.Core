@@ -99,41 +99,40 @@ namespace Blog.Core
 
             //注册要通过反射创建的组件
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
-            builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
-            builder.RegisterType<BlogRedisCacheAOP>();//可以直接替换其他拦截器
-            builder.RegisterType<BlogLogAOP>();//这样可以注入第二个
-            builder.RegisterType<BlogTranAOP>();
 
             // ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
 
             #region 带有接口层的服务注入
 
             #region Service.dll 注入，有对应接口
+
             //获取项目绝对路径，请注意，这个是实现类的dll文件，不是接口 IService.dll ，注入容器当然是Activatore
             try
             {
+                //直接采用加载文件的方法  ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
                 var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
-                var assemblysServices = Assembly.LoadFrom(servicesDllFile);//直接采用加载文件的方法  ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
-
-                //builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
-
+                var assemblysServices = Assembly.LoadFrom(servicesDllFile);
 
                 // AOP 开关，如果想要打开指定的功能，只需要在 appsettigns.json 对应对应 true 就行。
                 var cacheType = new List<Type>();
                 if (Appsettings.app(new string[] { "AppSettings", "RedisCachingAOP", "Enabled" }).ObjToBool())
                 {
+                    builder.RegisterType<BlogRedisCacheAOP>();
                     cacheType.Add(typeof(BlogRedisCacheAOP));
                 }
                 if (Appsettings.app(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool())
                 {
+                    builder.RegisterType<BlogCacheAOP>();
                     cacheType.Add(typeof(BlogCacheAOP));
                 }
                 if (Appsettings.app(new string[] { "AppSettings", "TranAOP", "Enabled" }).ObjToBool())
                 {
+                    builder.RegisterType<BlogTranAOP>();
                     cacheType.Add(typeof(BlogTranAOP));
                 }
                 if (Appsettings.app(new string[] { "AppSettings", "LogAOP", "Enabled" }).ObjToBool())
                 {
+                    builder.RegisterType<BlogLogAOP>();
                     cacheType.Add(typeof(BlogLogAOP));
                 }
 
@@ -141,10 +140,11 @@ namespace Blog.Core
                           .AsImplementedInterfaces()
                           .InstancePerDependency()
                           .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
-                          .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。 
+                          .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。
+                
                 #endregion
 
-                #region Repository.dll 注入，有对应接口
+            #region Repository.dll 注入，有对应接口
                 var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
                 var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
                 builder.RegisterAssemblyTypes(assemblysRepository)
