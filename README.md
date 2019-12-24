@@ -18,8 +18,35 @@ Dev Build::
 
 从零开始搭建自己的前后端分离【 .NET Core3.1 Api + Vue 2.x 】框架。 
 
+&nbsp;
+
+### 功能与进度
+
+- [x] 采用仓储+服务+接口的形式封装框架；
+- [x] 使用Swagger做api文档；
+- [x] 使用MiniProfiler做接口性能分析；
+- [x] 使用Automapper做Dto处理；
+- [x] 接入SqlSugar ORM，封装数据库操作；
+- [x] 项目启动，自动生成seed种子数据；
+- [x] 支持自由切换多种数据库，Sqlite/SqlServer/MySql/PostgreSQL/Oracle；
+- [x] 异步async/await开发；
+- [x] 支持事务；
+- [x] AutoFac接入做依赖注入；
+- [x] 支持AOP切面编程；
+- [x] 支持CORS跨域；
+- [x] 支持T4代码模板，自动生成每层代码；
+- [x] 支持一键创建自己项目；
+- [x] 封装 JWT 自定义策略授权；
+- [x] 使用Log4Net日志框架+自定义日志输出；
+- [x] 使用SingleR推送日志信息到管理后台；
+- [x] 搭配前端Blog项目，vue开发；
+- [x] 搭配一个Admin管理后台，用vue+ele开发；
+- [ ] IdentityServer4 认证（更新中...);
+- [ ] 等等其他功能，未完待续;
+
 
 &nbsp;
+
 ### 系统架构图
 
 
