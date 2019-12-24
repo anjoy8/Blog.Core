@@ -28,7 +28,7 @@ namespace Blog.Core.Model.Models
         /// <param name="myContext"></param>
         /// <param name="WebRootPath"></param>
         /// <returns></returns>
-        public static async Task SeedAsync(MyContext myContext,string WebRootPath)
+        public static async Task SeedAsync(MyContext myContext, string WebRootPath)
         {
             try
             {
@@ -37,8 +37,12 @@ namespace Blog.Core.Model.Models
                     throw new Exception("获取wwwroot路径时，异常！");
                 }
 
-                SeedDataFolder = Path.Combine(WebRootPath,SeedDataFolder);
+                SeedDataFolder = Path.Combine(WebRootPath, SeedDataFolder);
                 SeedDataFolderMini = Path.Combine(WebRootPath, SeedDataFolderMini);
+
+                Console.WriteLine("Config data init...");
+                Console.WriteLine("DB Type: " + MyContext.DbType);
+                Console.WriteLine("DB ConnectString: " + MyContext.ConnectionString);
 
                 // 创建数据库
                 myContext.Db.DbMaintenance.CreateDatabase();
