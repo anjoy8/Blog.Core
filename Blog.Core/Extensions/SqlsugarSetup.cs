@@ -33,6 +33,13 @@ namespace Blog.Core.Extensions
                         DbType = (DbType)m.DbType,
                         IsAutoCloseConnection = true,
                         IsShardSameThread = false,
+                        AopEvents = new AopEvents
+                        {
+                            OnLogExecuting = (sql, p) =>
+                            {
+                                // 多库操作的话，此处暂时无效果，在另一个地方有效，具体请查看BaseRepository.cs
+                            }
+                        },
                         MoreSettings = new ConnMoreSettings()
                         {
                             IsAutoRemoveDataCache = true
