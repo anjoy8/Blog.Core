@@ -31,7 +31,7 @@ namespace Blog.Core.Repository.Base
                  */
                 if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {
-                    if (typeof(TEntity).GetTypeInfo().GetCustomAttributes(typeof(SugarTable), true).FirstOrDefault((x => x.GetType() == typeof(SugarTable))) is SugarTable sugarTable)
+                    if (typeof(TEntity).GetTypeInfo().GetCustomAttributes(typeof(SugarTable), true).FirstOrDefault((x => x.GetType() == typeof(SugarTable))) is SugarTable sugarTable && !string.IsNullOrEmpty(sugarTable.TableDescription))
                     {
                         _dbBase.ChangeDatabase(sugarTable.TableDescription.ToLower());
                     }

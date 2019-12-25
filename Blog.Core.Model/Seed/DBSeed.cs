@@ -1,8 +1,10 @@
 ﻿using Blog.Core.Common;
+using Blog.Core.Common.DB;
 using Blog.Core.Common.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,12 +43,34 @@ namespace Blog.Core.Model.Models
                 SeedDataFolderMini = Path.Combine(WebRootPath, SeedDataFolderMini);
 
                 Console.WriteLine("Config data init...");
-                Console.WriteLine("DB Type: " + MyContext.DbType);
-                Console.WriteLine("DB ConnectString: " + MyContext.ConnectionString);
+                Console.WriteLine($"Is multi-DataBase: {Appsettings.app(new string[] { "MutiDBEnabled" })}");
+                if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                {
+                    Console.WriteLine($"Master DB Type: {MyContext.DbType}");
+                    Console.WriteLine($"Master DB ConnectString: {MyContext.ConnectionString}");
+                    Console.WriteLine();
 
+                    var slaveIndex = 0;
+                    BaseDBConfig.MutiConnectionString.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
+                    {
+                        slaveIndex++;
+                        Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
+                        Console.WriteLine($"Slave{slaveIndex} DB Type: {m.DbType}");
+                        Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Conn}");
+                    });
+
+                }
+                else
+                {
+                    Console.WriteLine("DB Type: " + MyContext.DbType);
+                    Console.WriteLine("DB ConnectString: " + MyContext.ConnectionString);
+                }
+
+                Console.WriteLine("Create Database...");
                 // 创建数据库
                 myContext.Db.DbMaintenance.CreateDatabase();
 
+                Console.WriteLine("Create Tables...");
                 // 创建表
                 myContext.CreateTableByEntity(false,
                     typeof(Advertisement),
@@ -67,7 +91,7 @@ namespace Blog.Core.Model.Models
                 // 后期单独处理某些表
                 // myContext.Db.CodeFirst.InitTables(typeof(sysUserInfo));
 
-                Console.WriteLine("Database:WMBlog created success!");
+                Console.WriteLine("Database is  created success!");
                 Console.WriteLine();
 
                 if (Appsettings.app(new string[] { "AppSettings", "SeedDBDataEnabled" }).ObjToBool())
