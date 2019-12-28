@@ -42,7 +42,12 @@ Dev Build::
 - [x] 搭配前端Blog项目，vue开发；
 - [x] 搭配一个Admin管理后台，用vue+ele开发；
 - [ ] IdentityServer4 认证（更新中...);
-- [ ] 等等其他功能，未完待续;
+- [ ] API 限速;
+- [ ] Redis 队列;
+- [ ] 作业调度 Quartz.net;
+- [ ] Sqlsugar 读写分离;
+- [ ] 支付;
+- [ ] 数据部门权限;
 
 
 &nbsp;
