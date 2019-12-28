@@ -70,15 +70,17 @@ namespace Blog.Core.Controllers
 
 
             #region MyRegion
+
+            // 这里可以封装到多表查询，此处简单处理
             var allUserRoles = await _userRoleServices.Query(d => d.IsDeleted == false);
             var allRoles = await _roleServices.Query(d => d.IsDeleted == false);
 
             var sysUserInfos = data.data;
             foreach (var item in sysUserInfos)
             {
-                var currentUserRoles = allUserRoles.Where(d => d.UserId == item.uID)?.Select(d => d.RoleId).ToList();
+                var currentUserRoles = allUserRoles.Where(d => d.UserId == item.uID).Select(d => d.RoleId).ToList();
                 item.RIDs = currentUserRoles;
-                item.RoleNames = allRoles.Where(d => currentUserRoles.Contains(d.Id))?.Select(d => d.Name).ToList();
+                item.RoleNames = allRoles.Where(d => currentUserRoles.Contains(d.Id)).Select(d => d.Name).ToList();
             }
 
             data.data = sysUserInfos;
