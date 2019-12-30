@@ -1,69 +1,13 @@
 # 介绍
 
-从零开始搭建自己的前后端分离【 .NET Core3.1 Api + Vue 2.x 】框架。
-ASP.NET Core 2.2/3.1 教程，前后端分离的后端接口，vue教程的姊妹篇。
+最新的前后端完全分离框架【 ASP.NET Core 3.1 Api + Vue 2.x + ele】。  
+ASP.NET Core 3.1 教程，前后端分离的后端接口，vue教程的姊妹篇。  
 
+## 你能得到什么？
+1、从 0 到 1 快速入门 ASP.NET Core 框架。  
+2、掌握开发中的常用知识点，为跨平台、微服务打好基础。  
+3、下载即用，简单高效开发属于自己公司项目，配置简单，功能完善。
 
-## 它是如何工作的？
-
-这是一个基于 netcore 2.x 的 webapi 项目，配合搭建前后端分离工程。
-
-**************************************************************
-系统环境
-
-windows 10、SQL server 2012、Visual Studio 2017、Windows Server 2008 R2
-
-后端技术：
-
-  * .Net Core 2.0 API（因为想单纯搭建前后端分离，因此就选用的API，如果想了解.Net Core MVC，也可以交流）
-  
-  * Swagger 前后端文档说明，基于RESTful风格编写接口
-
-  * Repository + Service 仓储模式编程
-
-  * Async和Await 异步编程
-
-  * Cors 简单的跨域解决方案
-
-  * AOP基于切面编程技术
-
-  * Autofac 轻量级IoC和DI依赖注入
-
-  * Vue 本地代理跨域方案，Nginx跨域代理
-
-  * JWT权限验证
-
-
-
-数据库技术
-
-  * SqlSugar 轻量级ORM框架，CodeFirst
-
-  * T4 模板生成
-
-  * AutoMapper 自动对象映射
-
-
-
-分布式缓存技术
-
-  * Redis 轻量级分布式缓存
-
-
-
-前端技术
-
-  * Vue 2.0 框架全家桶 Vue2 + VueRouter2 + Webpack + Axios + vue-cli + vuex
-
-  * ElementUI 基于Vue 2.0的组件库
-
-  * Nuxt.js服务端渲染SSR
-
-
-## 它能做什么？
-
-它能帮助您快速搭建基于asp.net core的api项目，无缝对接微服务。
-提供丰富的文档和视频讲解，快速入门。
 
 
 ## 功能与进度
@@ -94,4 +38,50 @@ windows 10、SQL server 2012、Visual Studio 2017、Windows Server 2008 R2
 - [ ] Sqlsugar 读写分离;
 - [ ] 支付;
 - [ ] 数据部门权限;
+
+
+
+## 它是如何工作的？
+
+这是一个基于 ASP.NET Core 3.1 的 api 项目，配合搭建 VUE 实现前后端分离工程。
+
+**************************************************************
+系统环境
+
+> windows 10、SQL server 2012、Visual Studio 2017、Windows Server 2008 R2
+
+后端技术：
+
+> 1、ASP.NET Core 3.1 API 
+ 2、Swagger 前后端文档说明，基于RESTful风格编写接口  
+ 3、Repository + Service 仓储模式编程  
+ 4、Async和Await 异步编程  
+ 5、CORS 简单的跨域解决方案  
+ 6、AOP基于切面编程技术  
+ 7、Autofac 轻量级IoC和DI依赖注入  
+ 8、Vue 本地代理跨域方案，Nginx跨域代理  
+ 9、JWT权限验证  
+10、Filter 过滤器  
+11、Middleware 中间件  
+12、AutoMapper 自动对象映射
+13、Redis  
+
+
+数据库技术
+
+> SqlSugar 轻量级ORM框架，CodeFirst  
+ T4 模板生成框架结构  
+ 支持SqlServer、Mysql、Sqlite、Oracle、Pgql数据库  
+ 支持多库操作
+
+
+
+
+前端技术
+
+> Vue 2.x 框架全家桶 Vue2 + VueRouter2 + Webpack + Axios + vue-cli + vuex  
+ElementUI 基于Vue 2.0的组件库  
+Nuxt.js服务端渲染SSR  
+
+
 

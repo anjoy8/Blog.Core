@@ -1,6 +1,6 @@
 module.exports = {
     title: 'Blog.Core',
-    description: 'Hello, 欢迎使用BCVP（Blog.Core）框架!',
+    description: 'Hello, 欢迎使用前后端分离之 ASP.NET Core 后端全家桶框架!',
     base : '/.doc/',
     head: [
         ['link', {

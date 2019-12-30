@@ -1,55 +1,76 @@
 # 快速上手
 注意
 
-请确保你的 Node.js 版本 >= 8。
+请确保你的 `Visual Studio 2019` 版本 >= `16.4`。
 
-#全局安装
-如果你只是想尝试一下 VuePress，你可以全局安装它：
 
-## 安装
-yarn global add vuepress # 或者：npm install -g vuepress
+## 下载
+Github（国际） 下载 [https://github.com/anjoy8/Blog.Core](https://github.com/anjoy8/Blog.Core)  
+    
+Gitee（国内） 下载 [https://gitee.com/laozhangIsPhi/Blog.Core](https://gitee.com/laozhangIsPhi/Blog.Core)  
 
-## 创建项目目录
-mkdir vuepress-starter && cd vuepress-starter
 
-## 新建一个 markdown 文件
-echo '# Hello VuePress!' > README.md
+## 编译与运行
+1、拿到项目后，双击 `Blog.Core.sln` 解决方案；  
+2、首先 `F6` 编译，看是否有错误；  
+3、然后 `F5` 运行，调起 `8081` 端口，浏览器查看效果；
 
-## 开始写作
-vuepress dev .
 
-## 构建静态文件
-vuepress build .
-#现有项目
-如果你想在一个现有项目中使用 VuePress，同时想要在该项目中管理文档，则应该将 VuePress 安装为本地依赖。作为本地依赖安装让你可以使用持续集成工具，或者一些其他服务（比如 Netlify）来帮助你在每次提交代码时自动部署。
+## 如何配置数据库连接字符串
+1、打开 `Blog.Core` 项目下的 `appsettings.json` 文件；  
+2、修改 `DBS` 字节内容，配置对应的连接字符串，注意`DBType`对应不同的数据库类型；  
+3、单库操作只需要把你想要运行的数据库 `Enabled` 为 `true` 即可，其他都要设置 `false`；  
+4、举例来说，比如你想使用`Sqlserver`数据库，连接字符串为 `Server=.;Database=WMBlogDB;User ID=sa;Password=123; `你可以这么配置:  
 
-## 将 VuePress 作为一个本地依赖安装
-yarn add -D vuepress # 或者：npm install -D vuepress
+```
+  "DBS": [
+    {
+      "ConnId": "WMBLOG_SQLITE",
+      "DBType": 2,// sqlite数据库
+      "Enabled": false,// 设置为false，不启用
+      "Connection": "WMBlog.db" //只写数据库名就行
+    },
+    {
+      "ConnId": "WMBLOG_MSSQL",
+      "DBType": 1,// sqlserver数据库
+      "Enabled": true,// 设置为true，启用
+      "Connection": "Server=.;Database=WMBlogDB;User ID=sa;Password=123;",
+      "ProviderName": "System.Data.SqlClient"
+    },
+    {
+      "ConnId": "WMBLOG_MYSQL",
+      "DBType": 0,// mysql
+      "Enabled": false,// false 不启用
+      "Connection": "Server=localhost; Port=3306;Stmt=; Database=wmblogdb; Uid=root; Pwd=456;"
+    },
+    {
+      "ConnId": "WMBLOG_ORACLE",
+      "DBType": 3,// Oracle 
+      "Enabled": false,// 不启用
+      "Connection": "Provider=OraOLEDB.Oracle; Data Source=WMBlogDB; User Id=sss; Password=789;"
+    }
+  ],
+```
 
-## 新建一个 docs 文件夹
-mkdir docs
+5、如果你想多库操作，需要配置
+```
+1：MainDB 设置为主库的 ConnId；
+2：MutiDBEnabled设置为true，
+3：把下边想要连接的多个连接字符串都设置为true
+```
 
-## 新建一个 markdown 文件
-echo '# Hello VuePress!' > docs/README.md
+## 如何配置项目端口号
+1、在 `Blog.Core` 层下的 `Program.cs` 文件中，将
+` .UseUrls("http://localhost:8081") `  中的`8081`端口，修改为自己想要的端口号；  
+2、或者直接删掉上边的配置，在 `launchSettings.json` 中设置；
 
-## 开始写作
-npx vuepress dev docs
-注意
+## 如何项目重命名
+1、双击项目根目录下的 `CreateYourProject.bat` 批处理文件；  
+2、根据提示，输入自己想要的项目名称即可；  
+3、在根目录会有一个 `.1YourProject` 文件夹，里边即你的项目；
 
-如果你的现有项目依赖了 webpack 3.x，推荐使用 Yarn 而不是 npm 来安装 VuePress。因为在这种情形下，npm 会生成错误的依赖树。
 
-接着，在 package.json 里加一些脚本:
+## 发布与部署
+1、双击项目根目录下的 `Blog.Core.Publish.bat`批处理文件；  
+2、执行完成后，根目录会有一个`.PublishFiles` 文件夹，就是发布后的项目；
 
-{
-  "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
-  }
-}
-然后就可以开始写作了:
-
-yarn docs:dev # 或者：npm run docs:dev
-要生成静态的 HTML 文件，运行：
-
-yarn docs:build # 或者：npm run docs:build
-默认情况下，文件将会被生成在 .vuepress/dist，当然，你也可以通过 .vuepress/config.js 中的 dest 字段来修改，生成的文件可以部署到任意的静态文件服务器上，参考 部署 来了解更多。
