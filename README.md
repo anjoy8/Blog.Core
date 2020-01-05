@@ -41,8 +41,8 @@ Dev Build::
 - [x] 使用SingleR推送日志信息到管理后台；
 - [x] 搭配前端Blog项目，vue开发；
 - [x] 搭配一个Admin管理后台，用vue+ele开发；
-- [ ] IdentityServer4 认证（更新中...);
-- [ ] API 限速;
+- [x] IdentityServer4 认证;
+- [x] API 限速;
 - [ ] Redis 队列;
 - [ ] 作业调度 Quartz.net;
 - [ ] Sqlsugar 读写分离;
