@@ -154,7 +154,7 @@ BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET C
 打赏的时候，备注自己的微信号，我拉你进群，两天内没回应，QQ私聊我（3143422472）；
 
  
-<img src="https://github.com/anjoy8/Blog.Core/raw/master/Blog.Core/wwwroot/laozhangisphigood.jpg" alt="赞赏码" width="300" >
+<img src="http://apk.neters.club/laozhangisphigood.jpg" alt="赞赏码" width="300" >
 
 
 
