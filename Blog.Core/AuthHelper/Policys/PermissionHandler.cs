@@ -41,7 +41,22 @@ namespace Blog.Core.AuthHelper
         // 重写异步处理程序
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
+
             var httpContext = _accessor.HttpContext;
+
+            if (!requirement.Permissions.Any())
+            {
+                var data = await _roleModulePermissionServices.RoleModuleMaps();
+                var list = (from item in data
+                            where item.IsDeleted == false
+                            orderby item.Id
+                            select new PermissionItem
+                            {
+                                Url = item.Module?.LinkUrl,
+                                Role = item.Role?.Id.ObjToString(),
+                            }).ToList();
+                requirement.Permissions = list;
+            }
 
             //请求Url
             if (httpContext != null)
