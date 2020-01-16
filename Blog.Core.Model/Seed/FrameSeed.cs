@@ -99,7 +99,7 @@ namespace Blog.Core.Model.Models
 
 
         /// <summary>
-        /// 生成 Repository 层
+        /// 生成 Service 层
         /// </summary>
         /// <param name="myContext"></param>
         /// <returns></returns>
@@ -108,7 +108,7 @@ namespace Blog.Core.Model.Models
 
             try
             {
-                myContext.Create_Repository_ClassFileByDBTalbe($@"C:\my-file\Blog.Core.Services", "Blog.Core.Services", new string[] { "Module" }, "");
+                myContext.Create_Services_ClassFileByDBTalbe($@"C:\my-file\Blog.Core.Services", "Blog.Core.Services", new string[] { "Module" }, "");
                 return true;
             }
             catch (Exception)
