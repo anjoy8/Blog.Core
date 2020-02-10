@@ -315,6 +315,7 @@
     "ModifyId": null,
     "ModifyBy": null,
     "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "Func": "getRoles",
     "IsDeleted": "0",
     "Id": 16,
     "IsHide": "0"
@@ -335,6 +336,7 @@
     "ModifyId": null,
     "ModifyBy": null,
     "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "Func": "handleAdd",
     "IsDeleted": "0",
     "Id": 17,
     "IsHide": "0"
@@ -355,6 +357,7 @@
     "ModifyId": null,
     "ModifyBy": null,
     "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "Func": "handleEdit",
     "IsDeleted": "0",
     "Id": 18,
     "IsHide": "0"
@@ -375,6 +378,7 @@
     "ModifyId": null,
     "ModifyBy": null,
     "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "Func": "handleDel",
     "IsDeleted": "0",
     "Id": 19,
     "IsHide": "0"
