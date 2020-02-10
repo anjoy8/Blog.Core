@@ -366,7 +366,7 @@ namespace Blog.Core.Controllers
                     var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && roleIds.Contains(d.RoleId))).Select(d => d.PermissionId.ObjToInt()).Distinct();
                     if (pids.Any())
                     {
-                        var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
+                        var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id))).OrderBy(c => c.OrderSort);
                         var permissionTrees = (from child in rolePermissionMoudles
                                                where child.IsDeleted == false
                                                orderby child.Id
