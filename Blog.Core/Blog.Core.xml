@@ -243,6 +243,7 @@
             </summary>
             <param name="blogArticleServices"></param>
             <param name="redisCacheManager"></param>
+            <param name="logger"></param>
         </member>
         <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32,System.String,System.String)">
             <summary>

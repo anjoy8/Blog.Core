@@ -33,6 +33,7 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <param name="blogArticleServices"></param>
         /// <param name="redisCacheManager"></param>
+        /// <param name="logger"></param>
         public BlogController(IBlogArticleServices blogArticleServices, IRedisCacheManager redisCacheManager, ILogger<BlogController> logger)
         {
             _blogArticleServices = blogArticleServices;
@@ -65,34 +66,6 @@ namespace Blog.Core.Controllers
             }
 
             blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
-
-            // 以下代码暂不执行
-            if (false)
-            {
-                using (MiniProfiler.Current.Step("开始加载数据："))
-                {
-                    try
-                    {
-                        if (_redisCacheManager.Get<object>("Redis.Blog") != null)
-                        {
-                            MiniProfiler.Current.Step("从Redis服务器中加载数据：");
-                            blogArticleList = _redisCacheManager.Get<List<BlogArticle>>("Redis.Blog");
-                        }
-                        else
-                        {
-                            MiniProfiler.Current.Step("从MSSQL服务器中加载数据：");
-                            blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
-                            _redisCacheManager.Set("Redis.Blog", blogArticleList, TimeSpan.FromHours(2));
-                        }
-
-                    }
-                    catch (Exception e)
-                    {
-                        MiniProfiler.Current.CustomTiming("Errors：", "Redis服务未启用，请开启该服务，并且请注意端口号，本项目使用的的6319，而且我的是没有设置密码。" + e.Message);
-                        blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
-                    }
-                }
-            }
 
             blogArticleList = blogArticleList.Where(d => (d.btitle != null && d.btitle.Contains(key)) || (d.bcontent != null && d.bcontent.Contains(key))).ToList();
 

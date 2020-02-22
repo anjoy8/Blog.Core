@@ -753,7 +753,7 @@
         </member>
         <member name="M:Blog.Core.Model.Models.FrameSeed.CreateServices(Blog.Core.Model.Models.MyContext)">
             <summary>
-            生成 Repository 层
+            生成 Service 层
             </summary>
             <param name="myContext"></param>
             <returns></returns>

@@ -61,7 +61,6 @@ namespace Blog.Core.AOP
                     {
                         invocation.ReturnValue = InternalAsyncHelper.AwaitTaskWithPostActionAndFinally(
                             (Task)invocation.ReturnValue,
-                            async () => await TestActionAsync(invocation),
                             ex =>
                             {
                                 LogEx(ex, ref dataIntercept);
@@ -72,7 +71,6 @@ namespace Blog.Core.AOP
                         invocation.ReturnValue = InternalAsyncHelper.CallAwaitTaskWithPostActionAndFinallyAndGetResult(
                          invocation.Method.ReturnType.GenericTypeArguments[0],
                          invocation.ReturnValue,
-                         async () => await TestActionAsync(invocation),
                          ex =>
                          {
                              LogEx(ex, ref dataIntercept);
@@ -115,13 +113,6 @@ namespace Blog.Core.AOP
 
         }
 
-        private async Task TestActionAsync(IInvocation invocation)
-        {
-            //Console.WriteLine("Waiting after method execution for " + invocation.MethodInvocationTarget.Name);
-            await Task.Delay(20); // 仅作测试
-            //Console.WriteLine("Waited after method execution for " + invocation.MethodInvocationTarget.Name);
-        }
-
         private void LogEx(Exception ex, ref string dataIntercept)
         {
             if (ex != null)
@@ -147,14 +138,13 @@ namespace Blog.Core.AOP
 
     internal static class InternalAsyncHelper
     {
-        public static async Task AwaitTaskWithPostActionAndFinally(Task actualReturnValue, Func<Task> postAction, Action<Exception> finalAction)
+        public static async Task AwaitTaskWithPostActionAndFinally(Task actualReturnValue, Action<Exception> finalAction)
         {
             Exception exception = null;
 
             try
             {
                 await actualReturnValue;
-                await postAction();
             }
             catch (Exception ex)
             {
@@ -187,12 +177,12 @@ namespace Blog.Core.AOP
             }
         }
 
-        public static object CallAwaitTaskWithPostActionAndFinallyAndGetResult(Type taskReturnType, object actualReturnValue, Func<Task> action, Action<Exception> finalAction)
+        public static object CallAwaitTaskWithPostActionAndFinallyAndGetResult(Type taskReturnType, object actualReturnValue,  Action<Exception> finalAction)
         {
             return typeof(InternalAsyncHelper)
                 .GetMethod("AwaitTaskWithPostActionAndFinallyAndGetResult", BindingFlags.Public | BindingFlags.Static)
                 .MakeGenericMethod(taskReturnType)
-                .Invoke(null, new object[] { actualReturnValue, action, finalAction });
+                .Invoke(null, new object[] { actualReturnValue, finalAction });
         }
     }
 
