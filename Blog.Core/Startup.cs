@@ -162,7 +162,7 @@ namespace Blog.Core
 
             #region 没有接口的单独类 class 注入
 
-            //只能注入该类中的虚方法
+            //只能注入该类中的虚方法，且必须是public
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Love)))
                 .EnableClassInterceptors()
                 .InterceptedBy(cacheType.ToArray());

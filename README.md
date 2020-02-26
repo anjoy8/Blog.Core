@@ -1,4 +1,4 @@
-Dev Build:: 
+﻿Dev Build:: 
 
   [![Front](https://img.shields.io/badge/Front-VUE-d.svg)](#) [![sdk](https://img.shields.io/badge/sdk-3.1-d.svg)](#)  [![Build status](https://github.com/anjoy8/blog.core/workflows/.NET%20Core/badge.svg)](https://github.com/anjoy8/Blog.Core/actions) [![codecov](https://codecov.io/gh/anjoy8/Blog.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/anjoy8/Blog.Core)  [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/anjoy8/Blog.Core/blob/master/LICENSE) [![Language](https://img.shields.io/badge/language-csharp-d.svg)](#) 
 [![star this repo](http://githubbadges.com/star.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges) 
@@ -23,8 +23,9 @@ BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET C
 - [x] 使用Swagger做api文档；
 - [x] 使用MiniProfiler做接口性能分析；
 - [x] 使用Automapper做Dto处理；
-- [x] 接入SqlSugar ORM，封装数据库操作；
-- [x] 项目启动，自动生成seed种子数据；
+- [x] 接入SqlSugar ORM，封装数据库操作； 
+- [x] 项目启动，自动生成seed种子数据； 
+- [x] 五种日志记录，审计/异常/请求响应/服务操作/Sql记录等；  
 - [x] 支持自由切换多种数据库，Sqlite/SqlServer/MySql/PostgreSQL/Oracle；
 - [x] 异步async/await开发；
 - [x] 支持事务；
