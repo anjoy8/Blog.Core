@@ -187,10 +187,13 @@ namespace Blog.Core.Controllers
 
                         // 然后再执行添加操作
                         var userRolsAdd = new List<UserRole>();
-                        sysUserInfo.RIDs.ForEach(async rid =>
-                        {
-                            await _userRoleServices.Add(new UserRole(sysUserInfo.uID, rid));
-                        });
+                        sysUserInfo.RIDs.ForEach(rid =>
+                       {
+                           userRolsAdd.Add(new UserRole(sysUserInfo.uID, rid));
+                       });
+
+                        await _userRoleServices.Add(userRolsAdd);
+
                     }
 
                     data.success = await _sysUserInfoServices.Update(sysUserInfo);

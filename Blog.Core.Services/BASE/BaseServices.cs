@@ -52,6 +52,16 @@ namespace Blog.Core.Services.BASE
         }
 
         /// <summary>
+        /// 批量插入实体(速度快)
+        /// </summary>
+        /// <param name="listEntity">实体集合</param>
+        /// <returns>影响行数</returns>
+        public async Task<int> Add(List<TEntity> listEntity)
+        {
+            return await BaseDal.Add(listEntity);
+        }
+
+        /// <summary>
         /// 更新实体数据
         /// </summary>
         /// <param name="entity">博文实体类</param>
