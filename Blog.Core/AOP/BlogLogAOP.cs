@@ -24,7 +24,7 @@ namespace Blog.Core.AOP
         private readonly IHubContext<ChatHub> _hubContext;
         private readonly IHttpContextAccessor _accessor;
 
-        public BlogLogAOP(IHubContext<ChatHub> hubContext,IHttpContextAccessor accessor)
+        public BlogLogAOP(IHubContext<ChatHub> hubContext, IHttpContextAccessor accessor)
         {
             _hubContext = hubContext;
             _accessor = accessor;
@@ -61,9 +61,10 @@ namespace Blog.Core.AOP
                     {
                         invocation.ReturnValue = InternalAsyncHelper.AwaitTaskWithPostActionAndFinally(
                             (Task)invocation.ReturnValue,
+                             async () => await SuccessAction(invocation, dataIntercept),/*成功时执行*/
                             ex =>
                             {
-                                LogEx(ex, ref dataIntercept);
+                                LogEx(ex, dataIntercept);
                             });
                     }
                     else //Task<TResult>
@@ -71,9 +72,10 @@ namespace Blog.Core.AOP
                         invocation.ReturnValue = InternalAsyncHelper.CallAwaitTaskWithPostActionAndFinallyAndGetResult(
                          invocation.Method.ReturnType.GenericTypeArguments[0],
                          invocation.ReturnValue,
+                          async () => await SuccessAction(invocation, dataIntercept),/*成功时执行*/
                          ex =>
                          {
-                             LogEx(ex, ref dataIntercept);
+                             LogEx(ex, dataIntercept);
                          });
 
                     }
@@ -87,9 +89,15 @@ namespace Blog.Core.AOP
             }
             catch (Exception ex)// 同步2
             {
-                LogEx(ex, ref dataIntercept);
+                LogEx(ex, dataIntercept);
 
             }
+
+            _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
+        }
+
+        private async Task SuccessAction(IInvocation invocation, string dataIntercept)
+        {
 
             var type = invocation.Method.ReturnType;
             if (typeof(Task).IsAssignableFrom(type))
@@ -107,20 +115,22 @@ namespace Blog.Core.AOP
             {
                 LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
             });
-
-            _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
-
-
         }
 
-        private void LogEx(Exception ex, ref string dataIntercept)
+        private void LogEx(Exception ex, string dataIntercept)
         {
             if (ex != null)
             {
                 //执行的 service 中，收录异常
                 MiniProfiler.Current.CustomTiming("Errors：", ex.Message);
                 //执行的 service 中，捕获异常
-                dataIntercept += ($"方法执行中出现异常：{ex.Message + ex.InnerException}\r\n");
+                dataIntercept += ($"【执行完成结果】：方法中出现异常：{ex.Message + ex.InnerException}\r\n");
+
+                // 异常日志里有详细的堆栈信息
+                Parallel.For(0, 1, e =>
+                {
+                    LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
+                });
             }
         }
 
@@ -138,13 +148,14 @@ namespace Blog.Core.AOP
 
     internal static class InternalAsyncHelper
     {
-        public static async Task AwaitTaskWithPostActionAndFinally(Task actualReturnValue, Action<Exception> finalAction)
+        public static async Task AwaitTaskWithPostActionAndFinally(Task actualReturnValue, Func<Task> postAction, Action<Exception> finalAction)
         {
             Exception exception = null;
 
             try
             {
                 await actualReturnValue;
+                await postAction();
             }
             catch (Exception ex)
             {
@@ -177,12 +188,12 @@ namespace Blog.Core.AOP
             }
         }
 
-        public static object CallAwaitTaskWithPostActionAndFinallyAndGetResult(Type taskReturnType, object actualReturnValue,  Action<Exception> finalAction)
+        public static object CallAwaitTaskWithPostActionAndFinallyAndGetResult(Type taskReturnType, object actualReturnValue, Func<Task> action, Action<Exception> finalAction)
         {
             return typeof(InternalAsyncHelper)
                 .GetMethod("AwaitTaskWithPostActionAndFinallyAndGetResult", BindingFlags.Public | BindingFlags.Static)
                 .MakeGenericMethod(taskReturnType)
-                .Invoke(null, new object[] { actualReturnValue, finalAction });
+                .Invoke(null, new object[] { actualReturnValue, action, finalAction });
         }
     }
 
