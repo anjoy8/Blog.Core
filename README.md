@@ -41,8 +41,8 @@ BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET C
 - [x] 搭配一个Admin管理后台，用vue+ele开发；
 - [x] IdentityServer4 认证;
 - [x] API 限速;
+- [x] 作业调度 Quartz.net;
 - [ ] Redis 队列;
-- [ ] 作业调度 Quartz.net;
 - [ ] Sqlsugar 读写分离;
 - [ ] 支付;
 - [ ] 数据部门权限;
