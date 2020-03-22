@@ -53,8 +53,9 @@ namespace Blog.Core.AuthHelper
                             select new PermissionItem
                             {
                                 Url = item.Module?.LinkUrl,
-                                Role = item.Role?.Id.ObjToString(),
+                                Role = item.Role?.Name,
                             }).ToList();
+
                 requirement.Permissions = list;
             }
 

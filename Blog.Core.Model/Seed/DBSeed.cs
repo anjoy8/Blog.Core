@@ -86,6 +86,7 @@ namespace Blog.Core.Model.Models
                     typeof(sysUserInfo),
                     typeof(Topic),
                     typeof(TopicDetail),
+                    typeof(TasksQz),
                     typeof(UserRole));
 
                 // 后期单独处理某些表
@@ -211,6 +212,19 @@ namespace Blog.Core.Model.Models
                     else
                     {
                         Console.WriteLine("Table:sysUserInfo already exists...");
+                    }
+                    #endregion
+
+
+                    #region TasksQz
+                    if (!await myContext.Db.Queryable<TasksQz>().AnyAsync())
+                    {
+                        myContext.GetEntityDB<TasksQz>().InsertRange(JsonHelper.ParseFormByJson<List<TasksQz>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "TasksQz"), Encoding.UTF8)));
+                        Console.WriteLine("Table:TasksQz created success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Table:TasksQz already exists...");
                     }
                     #endregion
 
