@@ -19,6 +19,7 @@ namespace Blog.Core.AOP
         }
 
         //Intercept方法是拦截的关键所在，也是IInterceptor接口中的唯一定义
+        //代码已经合并 ，学习pr流程
         public override void Intercept(IInvocation invocation)
         {
             var method = invocation.MethodInvocationTarget ?? invocation.Method;
