@@ -153,7 +153,7 @@ namespace Blog.Core.Controllers
 
             pass = MD5Helper.MD5Encrypt32(pass);
 
-            var user = await _sysUserInfoServices.Query(d => d.uLoginName == name && d.uLoginPWD == pass);
+            var user = await _sysUserInfoServices.Query(d => d.uLoginName == name && d.uLoginPWD == pass && d.tdIsDelete == false);
             if (user.Count > 0)
             {
                 var userRoles = await _sysUserInfoServices.GetUserRoleNameStr(name, pass);
