@@ -39,8 +39,8 @@ namespace Blog.Core.Tests
             {
                 return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
                 {
-                    ConnectionString = BaseDBConfig.ConnectionString,//必填, 数据库连接字符串
-                    DbType = (SqlSugar.DbType)BaseDBConfig.DbType,//必填, 数据库类型
+                    ConnectionString = GetMainConnectionDb().Conn,//必填, 数据库连接字符串
+                    DbType = (SqlSugar.DbType)GetMainConnectionDb().DbType,//必填, 数据库类型
                     IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
                     IsShardSameThread = true,//共享线程
                     InitKeyType = SqlSugar.InitKeyType.SystemTable//默认SystemTable, 字段信息读取, 如：该属性是不是主键，标识列等等信息
@@ -82,6 +82,28 @@ namespace Blog.Core.Tests
             Assert.True(ApplicationContainer.ComponentRegistry.Registrations.Count() > 0);
         }
 
+
+        /// <summary>
+        /// 连接字符串 
+        /// Blog.Core
+        /// </summary>
+        public static MutiDBOperate GetMainConnectionDb()
+        {
+            var mainConnetctDb = BaseDBConfig.MutiConnectionString.Find(x => x.ConnId == MainDb.CurrentDbConnId);
+            if (BaseDBConfig.MutiConnectionString.Count > 0)
+            {
+                if (mainConnetctDb == null)
+                {
+                    mainConnetctDb = BaseDBConfig.MutiConnectionString[0];
+                }
+            }
+            else
+            {
+                throw new Exception("请确保appsettigns.json中配置连接字符串,并设置Enabled为true;");
+            }
+
+            return mainConnetctDb;
+        }
 
         public IContainer DICollections()
         {
@@ -130,8 +152,8 @@ namespace Blog.Core.Tests
             {
                 return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
                 {
-                    ConnectionString = BaseDBConfig.ConnectionString,//必填, 数据库连接字符串
-                    DbType = (SqlSugar.DbType)BaseDBConfig.DbType,//必填, 数据库类型
+                    ConnectionString = GetMainConnectionDb().Conn,//必填, 数据库连接字符串
+                    DbType = (SqlSugar.DbType)GetMainConnectionDb().DbType,//必填, 数据库类型
                     IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
                     IsShardSameThread = true,//共享线程
                     InitKeyType = SqlSugar.InitKeyType.SystemTable//默认SystemTable, 字段信息读取, 如：该属性是不是主键，标识列等等信息

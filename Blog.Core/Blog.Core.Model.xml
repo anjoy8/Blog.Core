@@ -655,6 +655,81 @@
             登录账号
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Models.TasksQz">
+            <summary>
+            任务计划表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.Name">
+            <summary>
+            任务名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.JobGroup">
+            <summary>
+            任务分组
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.Cron">
+            <summary>
+            任务运行时间表达式
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.AssemblyName">
+            <summary>
+            任务所在DLL对应的程序集名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.ClassName">
+            <summary>
+            任务所在类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.Remark">
+            <summary>
+            任务描述
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.RunTimes">
+            <summary>
+            执行次数
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.BeginTime">
+            <summary>
+            开始时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.EndTime">
+            <summary>
+            结束时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.TriggerType">
+            <summary>
+            触发器类型（0、simple 1、cron）
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.IntervalSecond">
+            <summary>
+            执行间隔时间, 秒为单位
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.IsStart">
+            <summary>
+            是否启动
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.JobParams">
+            <summary>
+            执行传参
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.Models.Topic">
             <summary>
             Tibug 类别
@@ -753,10 +828,16 @@
         </member>
         <member name="M:Blog.Core.Model.Models.FrameSeed.CreateServices(Blog.Core.Model.Models.MyContext)">
             <summary>
-            生成 Repository 层
+            生成 Service 层
             </summary>
             <param name="myContext"></param>
             <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Models.MyContext.GetMainConnectionDb">
+            <summary>
+            连接字符串 
+            Blog.Core
+            </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.MyContext.ConnectionString">
             <summary>

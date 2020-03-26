@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Quartz" Version="3.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Blog.Core.IServices\Blog.Core.IServices.csproj" />
   </ItemGroup>
 

@@ -17,11 +17,17 @@ namespace Blog.Core.AOP
         {
             _cache = cache;
         }
-        
+
         //Intercept方法是拦截的关键所在，也是IInterceptor接口中的唯一定义
+        //代码已经合并 ，学习pr流程
         public override void Intercept(IInvocation invocation)
         {
             var method = invocation.MethodInvocationTarget ?? invocation.Method;
+            if (method.ReturnType == typeof(void) || method.ReturnType == typeof(Task))
+            {
+                invocation.Proceed();
+                return;
+            }
             //对当前方法的特性验证
             var qCachingAttribute = method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingAttribute)) as CachingAttribute;
 
@@ -34,39 +40,18 @@ namespace Blog.Core.AOP
                 if (cacheValue != null)
                 {
                     //将当前获取到的缓存值，赋值给当前执行方法
-                    var type = invocation.Method.ReturnType;
-                    var resultTypes = type.GenericTypeArguments;
-                    if (type.FullName == "System.Void")
+                    Type returnType;
+                    if (typeof(Task).IsAssignableFrom(method.ReturnType))
                     {
-                        return;
-                    }
-                    object response;
-                    if (typeof(Task).IsAssignableFrom(type))
-                    {
-                        //返回Task<T>
-                        if (resultTypes.Any())
-                        {
-                            var resultType = resultTypes.FirstOrDefault();
-                            // 核心1，直接获取 dynamic 类型
-                            dynamic temp = Newtonsoft.Json.JsonConvert.DeserializeObject(cacheValue, resultType);
-                            //dynamic temp = System.Convert.ChangeType(cacheValue, resultType);
-                            // System.Convert.ChangeType(Task.FromResult(temp), type);
-                            response = Task.FromResult(temp);
-
-                        }
-                        else
-                        {
-                            //Task 无返回方法 指定时间内不允许重新运行
-                            response = Task.Yield();
-                        }
+                        returnType = method.ReturnType.GenericTypeArguments.FirstOrDefault();
                     }
                     else
                     {
-                        // 核心2，要进行 ChangeType
-                        response = Convert.ChangeType(_cache.Get<object>(cacheKey), type);
+                        returnType = method.ReturnType;
                     }
 
-                    invocation.ReturnValue = response;
+                    dynamic _result = Newtonsoft.Json.JsonConvert.DeserializeObject(cacheValue, returnType);
+                    invocation.ReturnValue = (typeof(Task).IsAssignableFrom(method.ReturnType)) ? Task.FromResult(_result) : _result;
                     return;
                 }
                 //去执行当前的方法

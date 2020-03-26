@@ -95,87 +95,77 @@ namespace Blog.Core
         // 注意在CreateDefaultBuilder中，添加Autofac服务工厂
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
-
-            //注册要通过反射创建的组件
+            var basePath = AppContext.BaseDirectory;
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
-            builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
-            builder.RegisterType<BlogRedisCacheAOP>();//可以直接替换其他拦截器
-            builder.RegisterType<BlogLogAOP>();//这样可以注入第二个
-            builder.RegisterType<BlogTranAOP>();
 
-            // ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
 
             #region 带有接口层的服务注入
 
-            #region Service.dll 注入，有对应接口
-            //获取项目绝对路径，请注意，这个是实现类的dll文件，不是接口 IService.dll ，注入容器当然是Activatore
-            try
+
+            var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
+            var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
+
+            if (!(File.Exists(servicesDllFile) && File.Exists(repositoryDllFile)))
             {
-                var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
-                var assemblysServices = Assembly.LoadFrom(servicesDllFile);//直接采用加载文件的方法  ※※★※※ 如果你是第一次下载项目，请先F6编译，然后再F5执行，※※★※※
-
-                //builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
-
-
-                // AOP 开关，如果想要打开指定的功能，只需要在 appsettigns.json 对应对应 true 就行。
-                var cacheType = new List<Type>();
-                if (Appsettings.app(new string[] { "AppSettings", "RedisCachingAOP", "Enabled" }).ObjToBool())
-                {
-                    cacheType.Add(typeof(BlogRedisCacheAOP));
-                }
-                if (Appsettings.app(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool())
-                {
-                    cacheType.Add(typeof(BlogCacheAOP));
-                }
-                if (Appsettings.app(new string[] { "AppSettings", "TranAOP", "Enabled" }).ObjToBool())
-                {
-                    cacheType.Add(typeof(BlogTranAOP));
-                }
-                if (Appsettings.app(new string[] { "AppSettings", "LogAOP", "Enabled" }).ObjToBool())
-                {
-                    cacheType.Add(typeof(BlogLogAOP));
-                }
-
-                builder.RegisterAssemblyTypes(assemblysServices)
-                          .AsImplementedInterfaces()
-                          .InstancePerDependency()
-                          .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
-                          .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。 
-                #endregion
-
-                #region Repository.dll 注入，有对应接口
-                var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
-                var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
-                builder.RegisterAssemblyTypes(assemblysRepository)
-                       .AsImplementedInterfaces()
-                       .InstancePerDependency()
-                    ;
+                throw new Exception("Repository.dll和service.dll 丢失，因为项目解耦了，所以需要先F6编译，再F5运行，请检查 bin 文件夹，并拷贝。");
             }
-            catch (Exception ex)
+
+
+
+            // AOP 开关，如果想要打开指定的功能，只需要在 appsettigns.json 对应对应 true 就行。
+            var cacheType = new List<Type>();
+            if (Appsettings.app(new string[] { "AppSettings", "RedisCachingAOP", "Enabled" }).ObjToBool())
             {
-                log.Error("Repository.dll和service.dll 丢失，因为项目解耦了，所以需要先F6编译，再F5运行，请检查并拷贝。\n" + ex.Message);
-
-                //throw new Exception("※※★※※ 如果你是第一次下载项目，请先对整个解决方案dotnet build（F6编译），然后再对api层 dotnet run（F5执行），\n因为解耦了，如果你是发布的模式，请检查bin文件夹是否存在Repository.dll和service.dll ※※★※※" + ex.Message + "\n" + ex.InnerException);
+                builder.RegisterType<BlogRedisCacheAOP>();
+                cacheType.Add(typeof(BlogRedisCacheAOP));
             }
-            #endregion
+            if (Appsettings.app(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool())
+            {
+                builder.RegisterType<BlogCacheAOP>();
+                cacheType.Add(typeof(BlogCacheAOP));
+            }
+            if (Appsettings.app(new string[] { "AppSettings", "TranAOP", "Enabled" }).ObjToBool())
+            {
+                builder.RegisterType<BlogTranAOP>();
+                cacheType.Add(typeof(BlogTranAOP));
+            }
+            if (Appsettings.app(new string[] { "AppSettings", "LogAOP", "Enabled" }).ObjToBool())
+            {
+                builder.RegisterType<BlogLogAOP>();
+                cacheType.Add(typeof(BlogLogAOP));
+            }
+
+            // 获取 Service.dll 程序集服务，并注册
+            var assemblysServices = Assembly.LoadFrom(servicesDllFile);
+            builder.RegisterAssemblyTypes(assemblysServices)
+                      .AsImplementedInterfaces()
+                      .InstancePerDependency()
+                      .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
+                      .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。
+
+            // 获取 Repository.dll 程序集服务，并注册
+            var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
+            builder.RegisterAssemblyTypes(assemblysRepository)
+                   .AsImplementedInterfaces()
+                   .InstancePerDependency();
 
             #endregion
 
             #region 没有接口层的服务层注入
 
-            ////因为没有接口层，所以不能实现解耦，只能用 Load 方法。
-            ////注意如果使用没有接口的服务，并想对其使用 AOP 拦截，就必须设置为虚方法
-            ////var assemblysServicesNoInterfaces = Assembly.Load("Blog.Core.Services");
-            ////builder.RegisterAssemblyTypes(assemblysServicesNoInterfaces);
+            //因为没有接口层，所以不能实现解耦，只能用 Load 方法。
+            //注意如果使用没有接口的服务，并想对其使用 AOP 拦截，就必须设置为虚方法
+            //var assemblysServicesNoInterfaces = Assembly.Load("Blog.Core.Services");
+            //builder.RegisterAssemblyTypes(assemblysServicesNoInterfaces);
 
             #endregion
 
             #region 没有接口的单独类 class 注入
-            ////只能注入该类中的虚方法
+
+            //只能注入该类中的虚方法，且必须是public
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Love)))
                 .EnableClassInterceptors()
-                .InterceptedBy(typeof(BlogLogAOP));
+                .InterceptedBy(cacheType.ToArray());
 
             #endregion
 
@@ -229,7 +219,7 @@ namespace Blog.Core
                 {
                     c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{ApiName} {version}");
                 });
-                // 将swagger首页，设置成我们自定义的页面，记得这个字符串的写法：解决方案名.index.html
+                // 将swagger首页，设置成我们自定义的页面，记得这个字符串的写法：解决方案名.index.html，并且是右键属性，嵌入的资源
                 c.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html");//这里是配合MiniProfiler进行性能监控的，《文章：完美基于AOP的接口性能分析》，如果你不需要，可以暂时先注释掉，不影响大局。
                 c.RoutePrefix = ""; //路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件,注意localhost:8001/swagger是访问不到的，去launchSettings.json把launchUrl去掉，如果你想换一个路径，直接写名字即可，比如直接写c.RoutePrefix = "doc";
             });

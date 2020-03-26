@@ -1,25 +1,73 @@
-Dev Build:: 
+﻿Dev Build:: 
 
-[![Gitter](https://badges.gitter.im/Blog_core/community.svg)](https://gitter.im/Blog_core/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)  [![sdk](https://img.shields.io/badge/sdk-3.1-d.svg)](#)  [![Build status](https://github.com/anjoy8/blog.core/workflows/.NET%20Core/badge.svg)](https://github.com/anjoy8/Blog.Core/actions) [![codecov](https://codecov.io/gh/anjoy8/Blog.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/anjoy8/Blog.Core)  [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/anjoy8/Blog.Core/blob/master/LICENSE) [![Language](https://img.shields.io/badge/language-csharp-d.svg)](#) 
+  [![Front](https://img.shields.io/badge/Front-VUE-d.svg)](#) [![sdk](https://img.shields.io/badge/sdk-3.1-d.svg)](#)  [![Build status](https://github.com/anjoy8/blog.core/workflows/.NET%20Core/badge.svg)](https://github.com/anjoy8/Blog.Core/actions) [![codecov](https://codecov.io/gh/anjoy8/Blog.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/anjoy8/Blog.Core)  [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/anjoy8/Blog.Core/blob/master/LICENSE) [![Language](https://img.shields.io/badge/language-csharp-d.svg)](#) 
 [![star this repo](http://githubbadges.com/star.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges) 
 [![fork this repo](http://githubbadges.com/fork.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges/fork) 
 [![博客园](https://img.shields.io/badge/博客园-老张的哲学-brightgreen.svg)](https://www.cnblogs.com/laozhang-is-phi/)
 
 
-
-
 &nbsp;
 &nbsp;
 
-[ENGLISH](https://github.com/anjoy8/Blog.Core/blob/master/README-en.md) | [中文版](https://github.com/anjoy8/Blog.Core/blob/master/README.md)
 
 ![Logo](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/logocore.png)
 
 
-从零开始搭建自己的前后端分离【 .NET Core3.1 Api + Vue 2.x 】框架。 
+BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET Core3.1 Api + Vue 2.x + RBAC】权限框架。 
+
+&nbsp;
+
+### 功能与进度
+
+- [x] 采用仓储+服务+接口的形式封装框架；
+- [x] 使用Swagger做api文档；
+- [x] 使用MiniProfiler做接口性能分析；
+- [x] 使用Automapper做Dto处理；
+- [x] 接入SqlSugar ORM，封装数据库操作； 
+- [x] 项目启动，自动生成seed种子数据； 
+- [x] 五种日志记录，审计/异常/请求响应/服务操作/Sql记录等；  
+- [x] 支持自由切换多种数据库，Sqlite/SqlServer/MySql/PostgreSQL/Oracle；
+- [x] 异步async/await开发；
+- [x] 支持事务；
+- [x] AutoFac接入做依赖注入；
+- [x] 支持AOP切面编程；
+- [x] 支持CORS跨域；
+- [x] 支持T4代码模板，自动生成每层代码；
+- [x] 支持一键创建自己项目；
+- [x] 封装 JWT 自定义策略授权；
+- [x] 使用Log4Net日志框架+自定义日志输出；
+- [x] 使用SingleR推送日志信息到管理后台；
+- [x] 搭配前端Blog项目，vue开发；
+- [x] 搭配一个Admin管理后台，用vue+ele开发；
+- [x] IdentityServer4 认证;
+- [x] API 限速;
+- [x] 作业调度 Quartz.net;
+- [x] Sqlsugar 读写分离;
+- [ ] 支付;
+- [ ] Redis/RBMQ 队列;
+- [ ] 数据部门权限;
 
 
 &nbsp;
+
+## 给个星星! ⭐️
+如果你喜欢这个项目或者它帮助你, 请给 Star~（辛苦星咯）
+
+
+
+&nbsp;
+
+## 官方文档 📕
+
+还在陆续整理中，不过基本操作都在,包括如何新手入门，配置数据，连接DB等等    
+
+[官方文档](http://apk.neters.club/.doc/)  
+
+
+
+
+&nbsp;
+
 ### 系统架构图
 
 
@@ -37,12 +85,7 @@ Dev Build::
 
 
 
-![系统压测结果报告](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/JMeterTest.png)
-
-&nbsp;
-
-如果你感觉看着这整个项目比较费劲，我单抽出来了几个子Demo，方便学习，项目地址 ：[https://github.com/anjoy8/BlogArti](https://github.com/anjoy8/BlogArti)
-
+<div align=center><img width="500" src="https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/JMeterTest.png" /></div>
 
 这只是 .netCore 后端部分，前端部分请看我的另三个Vue工程项目
  
@@ -51,7 +94,7 @@ Dev Build::
 &nbsp;
 &nbsp;
 
-|个人博客Vue版本|tBug项目Nuxt版本|VueAdmin管理后台(更新中)|
+|个人博客Vue版本|tBug项目Nuxt版本|VueAdmin权限管理后台|
 |-|-|-|
 |[https://github.com/anjoy8/Blog.Vue](https://github.com/anjoy8/Blog.Vue)|[https://github.com/anjoy8/Nuxt.tBug](https://github.com/anjoy8/Nuxt.tBug)|[https://github.com/anjoy8/Blog.Admin](https://github.com/anjoy8/Blog.Admin)|
 |[http://vueblog.neters.club](http://vueblog.neters.club)|[http://tibug.neters.club](http://tibug.neters.club)|[http://vueadmin.neters.club](http://vueadmin.neters.club)|
@@ -62,7 +105,7 @@ Dev Build::
 
 ### 初始项目
 
-#### 不要再使用 .sql 文件了，不更新了，用下边动图的方法，直接 seed data.
+#### 不要再使用 .sql 文件了，用下边动图的方法，直接 seed data.
 
 数据查看：[Blog.Core.Data.json](https://github.com/anjoy8/Blog.Data.Share/tree/master/Blog.Core.Data.json)
 
@@ -101,123 +144,40 @@ Dev Build::
 
 
 &nbsp;
+
+
+
 &nbsp;
 
-## 给个星星! ⭐️
-如果你喜欢这个项目或者它帮助你, 请给 Star~（辛苦星咯）
+## 售后服务与支持  
 
-*********************************************************
+打赏支持，入微信群，随时随地解答我框架中（NetCore、Vue、DDD、IdentityServer4等）的疑难杂症。  
+打赏的时候，备注自己的微信号，我拉你进群，两天内没回应，QQ私聊我（3143422472）；  
 
-## Tips：
-```
+[赞赏列表](http://apk.neters.club/.doc/Contribution/)  
 
-1【重要】、Blog.Core.FrameWork 项目是用T4模板生成文件的简单实现。如果有错误，可以联系我，
-QQ群：867095512
-如果你不想处理这个错误，你可以先把项目卸载，不影响整体运行。
+ 
+<img src="http://apk.neters.club/laozhangisphigood.jpg" alt="赞赏码" width="300" >
 
-
-2【重要】、项目中，有四个AOP的操作类，分别是Redis缓存切面，memory缓存切面、Log日志切面、Tran事务切面
-你可以在自定义开关，对其进行是否启用，在 appsettings.json 中的：
-
-    "RedisCachingAOP": {
-      "Enabled": false,
-      "ConnectionString": "127.0.0.1:6319"
-    },
-    "MemoryCachingAOP": {
-      "Enabled": true
-    },
-    "LogAOP": {
-      "Enabled": false
-    },
-    "TranAOP": {
-      "Enabled": false
-    },
-
-
-3【重要】、如何你使用Redis，需要安装Redis服务端，安装和使用说明地址：
-https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-3-4-0
-端口是 6319 ，注意！
-
-
-4【重要+】、系统新增自动化生成数据库，和生成种子数据的功能，
-在Blog.Core层中的 appsettings.json 中开启 SeedDBEnabled：true 即可。
-具体文章请看：《[支持多种数据库 & 快速数据库生成](https://www.cnblogs.com/laozhang-is-phi/p/10718755.html)》。
-
-
-5、不支持sql文件了，只支持CodeFirst方式，具体上的Seed Data动图已经说明。
-
-
-6、想要各个知识点的，可以查看：
-
- a、直播教学的配套代码：https://github.com/anjoy8/Blog.Live
- b、博客园文章的拆分代码：https://github.com/anjoy8/BlogArti
-
-
-7、项目后期发布的时候可以有两个办法，一种是dotnet的kestrel部署，另一种是 IIS 发布部署，但是在发布的时候，
-因为解耦了，所以会导致无法把 service.dll & repository.dll 拷贝到生成目录下，大家可以采用：
-Blog.Core -> 属性 -> Build Events -> Post-build event command ->>>>
-
-Copy "$(ProjectDir)bin\Debug\netcoreapp2.2\" "$(SolutionDir)Blog.Core\bin\Debug\"
-
-```
-
-*********************************************************
-### 修改数据库连接字符串
-
-注意：修改完数据库连接字符串以后，一定要F6重新编译项目或者重启项目。
-
-1、在Blog.Core层 appsettings.json 中，配置自己的字符串，注意优先级是从上往下的，只能设置一个true
-
-```
-    "Sqlite": {
-      "Enabled": true,
-      "SqliteConnection": "Data Source=WMBlog.db"
-    },
-    "SqlServer": {
-      "Enabled": false,
-      "SqlServerConnection": "Server=.;Database=WMBlogDB;User ID=sa;Password=123;",
-      "ProviderName": "System.Data.SqlClient"
-    },
-    "MySql": {
-      "Enabled": false,
-      "MySqlConnection": "Server=localhost; Port=3306;Stmt=; Database=wmblogdb; Uid=root; Pwd=456;"
-    },
-    "Oracle": {
-      "Enabled": false,
-      "OracleConnection": "Provider=OraOLEDB.Oracle; Data Source=WMBlogDB; User Id=sss; Password=789;",
-      "OracleConnection_other1": "User ID=sss;Password=789;Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.8.65)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME = orcl)))"
-    },
-```
-
-2、文章中有2个地方用到了数据库连接字符串
-
-```
-A、Blog.Core 层 appsettings.json 中配置
-B、T4 模板 Blog.Core.FrameWork -> DbHelper.ttinclude
-
-```
-
-3、如果想使用T4模板，在Blog.Core.FrameWork层的DbHelper.ttinclude 中，配置自己的字符串
-
-```
-public static readonly string ConnectionString = File.Exists(@"D:\my-file\dbCountPsw2.txt") ? 
-File.ReadAllText(@"D:\my-file\dbCountPsw2.txt").Trim(): "server=.;uid=sa;pwd=sa;database=BlogDB";
-```
 
 
 *****************************************************
-### 三大平台同步直播
-
-简  书：https://www.jianshu.com/notebooks/28621653
+### 文章+视频+直播
 
 博客园：https://www.cnblogs.com/laozhang-is-phi/
 
- CSDN：https://blog.csdn.net/baidu_35726140
+ Bilibili：https://space.bilibili.com/387802716  
  
- 码云：https://gitee.com/laozhangIsPhi/Blog.Core
+ 直播间：https://live.bilibili.com/21507364
 
 ```
 ```
+
+
+&nbsp;
+
+如果你感觉看着这整个项目比较费劲，我单抽出来了几个子Demo，方便学习，项目地址 ：[https://github.com/anjoy8/BlogArti](https://github.com/anjoy8/BlogArti)
+
 
 
 <div class="allindex">

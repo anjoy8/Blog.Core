@@ -13,68 +13,44 @@ namespace Blog.Core.Repository.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-
         private readonly ISqlSugarClient _sqlSugarClient;
-        private readonly List<ISqlSugarClient> _sqlSugarClients;
 
-        public UnitOfWork(List<ISqlSugarClient> sqlSugarClients)
+        public UnitOfWork(ISqlSugarClient sqlSugarClient)
         {
-            // 每次取最上边的db，这个顺序已经在注册服务的时候，切换好了
-            _sqlSugarClient = sqlSugarClients[0];
-
-            if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
-            {
-                _sqlSugarClient.Aop.OnLogExecuting = (sql, pars) => //SQL执行中事件
-                {
-                    Parallel.For(0, 1, e =>
-                    {
-                        MiniProfiler.Current.CustomTiming("SQL：", GetParas(pars) + "【SQL语句】：" + sql);
-                        LogLock.OutSql2Log("SqlLog", new string[] { GetParas(pars), "【SQL语句】：" + sql });
-
-                    });
-                };
-            }
-            _sqlSugarClients = sqlSugarClients;
+            _sqlSugarClient = sqlSugarClient;
         }
 
-        private string GetParas(SugarParameter[] pars)
+        /// <summary>
+        /// 获取DB，保证唯一性
+        /// </summary>
+        /// <returns></returns>
+        public SqlSugarClient GetDbClient()
         {
-            string key = "【SQL参数】：";
-            foreach (var param in pars)
-            {
-                key += $"{param.ParameterName}:{param.Value}\n";
-            }
-
-            return key;
-        }
-
-
-        public ISqlSugarClient GetDbClient()
-        {
-            return _sqlSugarClients[0];
+            // 必须要as，后边会用到切换数据库操作
+            return _sqlSugarClient as SqlSugarClient;
         }
 
         public void BeginTran()
         {
-            GetDbClient().Ado.BeginTran();
+            GetDbClient().BeginTran();
         }
 
         public void CommitTran()
         {
             try
             {
-                GetDbClient().Ado.CommitTran(); //
+                GetDbClient().CommitTran(); //
             }
             catch (Exception ex)
             {
-                GetDbClient().Ado.RollbackTran();
+                GetDbClient().RollbackTran();
                 throw ex;
             }
         }
 
         public void RollbackTran()
         {
-            GetDbClient().Ado.RollbackTran();
+            GetDbClient().RollbackTran();
         }
 
     }

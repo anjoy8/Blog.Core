@@ -34,6 +34,7 @@ namespace Blog.Core.Controllers
         private readonly Love _love;
         private readonly IRoleModulePermissionServices _roleModulePermissionServices;
         private readonly IUser _user;
+        private readonly IPasswordLibServices _passwordLibServices;
         readonly IBlogArticleServices _blogArticleServices;
 
         /// <summary>
@@ -45,7 +46,8 @@ namespace Blog.Core.Controllers
         /// <param name="love"></param>
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="user"></param>
-        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user)
+        /// <param name="passwordLibServices"></param>
+        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
@@ -54,6 +56,8 @@ namespace Blog.Core.Controllers
             _roleModulePermissionServices = roleModulePermissionServices;
             // 测试 Httpcontext
             _user = user;
+            // 测试多库
+            _passwordLibServices = passwordLibServices;
             // 测试AOP加载顺序，配合 return
             _blogArticleServices = blogArticleServices;
         }
@@ -224,6 +228,27 @@ namespace Blog.Core.Controllers
         public TestRestSharpPostDto RestsharpPost()
         {
             return HttpHelper.PostApi<TestRestSharpPostDto>("http://apk.neters.club/api/Values/TestPostPara?name=老张", new { age = 18 });
+        }
+
+        /// <summary>
+        /// 测试多库连接
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("TestMutiDBAPI")]
+        [AllowAnonymous]
+        public async Task<object> TestMutiDBAPI()
+        {
+            // 从主库（Sqlite）中，操作blogs
+            var blogs = await _blogArticleServices.Query(d => d.bID == 1);
+
+            // 从从库（Sqlserver）中，获取pwds
+            var pwds = await _passwordLibServices.Query(d => d.PLID > 0);
+
+            return new
+            {
+                blogs,
+                pwds
+            };
         }
 
         /// <summary>

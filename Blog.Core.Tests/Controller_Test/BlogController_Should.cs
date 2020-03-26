@@ -20,7 +20,6 @@ namespace Blog.Core.Tests
 
         private IBlogArticleServices blogArticleServices;
         private IRedisCacheManager _redisCacheManager;
-        private readonly ILogger<BlogController> _logger;
         DI_Test dI_Test = new DI_Test();
 
 

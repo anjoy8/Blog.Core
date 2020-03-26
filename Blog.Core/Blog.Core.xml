@@ -243,6 +243,7 @@
             </summary>
             <param name="blogArticleServices"></param>
             <param name="redisCacheManager"></param>
+            <param name="logger"></param>
         </member>
         <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32,System.String,System.String)">
             <summary>
@@ -596,6 +597,49 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.Get(System.Int32,System.String)">
+            <summary>
+            分页获取
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.Post(Blog.Core.Model.Models.TasksQz)">
+            <summary>
+            添加计划任务
+            </summary>
+            <param name="tasksQz"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.Put(Blog.Core.Model.Models.TasksQz)">
+            <summary>
+            修改计划任务
+            </summary>
+            <param name="tasksQz"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.StartJob(System.Int32)">
+            <summary>
+            启动计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.StopJob(System.Int32)">
+            <summary>
+            停止一个计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>        
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.ReCovery(System.Guid)">
+            <summary>
+            重启一个计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.TopicController">
             <summary>
             类别管理【无权限】
@@ -757,7 +801,7 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser)">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices)">
             <summary>
             ValuesController
             </summary>
@@ -767,6 +811,7 @@
             <param name="love"></param>
             <param name="roleModulePermissionServices"></param>
             <param name="user"></param>
+            <param name="passwordLibServices"></param>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get">
             <summary>
@@ -829,6 +874,12 @@
         <member name="M:Blog.Core.Controllers.ValuesController.RestsharpPost">
             <summary>
             测试http请求 RestSharp Post
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.TestMutiDBAPI">
+            <summary>
+            测试多库连接
             </summary>
             <returns></returns>
         </member>

@@ -1,11 +1,15 @@
-﻿using Blog.Core.Common.DB;
+﻿using Blog.Core.Common;
+using Blog.Core.Common.DB;
+using Blog.Core.Common.LogHelper;
 using Blog.Core.IRepository.Base;
 using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using SqlSugar;
+using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +18,56 @@ namespace Blog.Core.Repository.Base
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
     {
-        private readonly ISqlSugarClient _db;
         private readonly IUnitOfWork _unitOfWork;
+        private SqlSugarClient _dbBase;
 
+        private ISqlSugarClient _db
+        {
+            get
+            {
+                /* 如果要开启多库支持，
+                 * 1、在appsettings.json 中开启MutiDBEnabled节点为true，必填
+                 * 2、设置一个主连接的数据库ID，节点MainDB，对应的连接字符串的Enabled也必须true，必填
+                 */
+                if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                {
+                    if (typeof(TEntity).GetTypeInfo().GetCustomAttributes(typeof(SugarTable), true).FirstOrDefault((x => x.GetType() == typeof(SugarTable))) is SugarTable sugarTable && !string.IsNullOrEmpty(sugarTable.TableDescription))
+                    {
+                        _dbBase.ChangeDatabase(sugarTable.TableDescription.ToLower());
+                    }
+                    else
+                    {
+                        _dbBase.ChangeDatabase(MainDb.CurrentDbConnId.ToLower());
+                    }
+                }
+
+                if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
+                {
+                    _dbBase.Aop.OnLogExecuting = (sql, pars) => //SQL执行中事件
+                    {
+                        Parallel.For(0, 1, e =>
+                        {
+                            MiniProfiler.Current.CustomTiming("SQL：", GetParas(pars) + "【SQL语句】：" + sql);
+                            LogLock.OutSql2Log("SqlLog", new string[] { GetParas(pars), "【SQL语句】：" + sql });
+
+                        });
+                    };
+                }
+
+                return _dbBase;
+            }
+        }
+
+        private string GetParas(SugarParameter[] pars)
+        {
+            string key = "【SQL参数】：";
+            foreach (var param in pars)
+            {
+                key += $"{param.ParameterName}:{param.Value}\n";
+            }
+
+            return key;
+        }
 
         internal ISqlSugarClient Db
         {
@@ -26,8 +77,7 @@ namespace Blog.Core.Repository.Base
         public BaseRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _db = unitOfWork.GetDbClient();
-            //DbContext.Init(BaseDBConfig.ConnectionString, (DbType)BaseDBConfig.DbType);
+            _dbBase = unitOfWork.GetDbClient();
         }
 
 

@@ -16,37 +16,39 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
+            // 默认添加主数据库连接
             MainDb.CurrentDbConnId = Appsettings.app(new string[] { "MainDB" });
 
-            // 把多个连接对象注入服务，这里可以采用Transient瞬态，也可以Scope
-            services.AddScoped(o =>
+            // 把多个连接对象注入服务，这里必须采用Scope，因为有事务操作
+            services.AddScoped<ISqlSugarClient>(o =>
             {
-                List<ISqlSugarClient> sqlSugarClients = new List<ISqlSugarClient>();
+                var listConfig = new List<ConnectionConfig>();
 
-                var beforeDbConnect = BaseDBConfig.MutiConnectionString;
-                var index = beforeDbConnect.FindIndex(x => x.ConnId == MainDb.CurrentDbConnId);
-                if (index > 0)
+                BaseDBConfig.MutiConnectionString.ForEach(m =>
                 {
-                    // 做一个交换，切换主db连接放到第一位
-                    var firstDb = beforeDbConnect[0];
-                    var changeDb = beforeDbConnect[index];
-                    beforeDbConnect[index] = firstDb;
-                    beforeDbConnect[0] = changeDb;
-                }
-
-                beforeDbConnect.ForEach(m =>
-                {
-                    sqlSugarClients.Add(new SqlSugarClient(new ConnectionConfig()
+                    listConfig.Add(new ConnectionConfig()
                     {
-                        ConfigId = m.ConnId,
+                        ConfigId = m.ConnId.ObjToString().ToLower(),
                         ConnectionString = m.Conn,
                         DbType = (DbType)m.DbType,
                         IsAutoCloseConnection = true,
+                        IsShardSameThread = false,
+                        AopEvents = new AopEvents
+                        {
+                            OnLogExecuting = (sql, p) =>
+                            {
+                                // 多库操作的话，此处暂时无效果，在另一个地方有效，具体请查看BaseRepository.cs
+                            }
+                        },
+                        MoreSettings = new ConnMoreSettings()
+                        {
+                            IsAutoRemoveDataCache = true
+                        }
                         //InitKeyType = InitKeyType.SystemTable
-                    })
+                    }
                    );
                 });
-                return sqlSugarClients;
+                return new SqlSugarClient(listConfig);
             });
         }
     }

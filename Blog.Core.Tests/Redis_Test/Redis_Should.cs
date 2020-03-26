@@ -12,7 +12,6 @@ namespace Blog.Core.Tests
 {
     public class Redis_Should
     {
-        private IRedisCacheManager _redisCacheManager;
         DI_Test dI_Test = new DI_Test();
 
         public Redis_Should()

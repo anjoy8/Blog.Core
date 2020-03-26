@@ -1,8 +1,10 @@
 ﻿using Blog.Core.Common;
+using Blog.Core.Common.DB;
 using Blog.Core.Common.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,7 +30,7 @@ namespace Blog.Core.Model.Models
         /// <param name="myContext"></param>
         /// <param name="WebRootPath"></param>
         /// <returns></returns>
-        public static async Task SeedAsync(MyContext myContext,string WebRootPath)
+        public static async Task SeedAsync(MyContext myContext, string WebRootPath)
         {
             try
             {
@@ -37,12 +39,38 @@ namespace Blog.Core.Model.Models
                     throw new Exception("获取wwwroot路径时，异常！");
                 }
 
-                SeedDataFolder = Path.Combine(WebRootPath,SeedDataFolder);
+                SeedDataFolder = Path.Combine(WebRootPath, SeedDataFolder);
                 SeedDataFolderMini = Path.Combine(WebRootPath, SeedDataFolderMini);
 
+                Console.WriteLine("Config data init...");
+                Console.WriteLine($"Is multi-DataBase: {Appsettings.app(new string[] { "MutiDBEnabled" })}");
+                if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                {
+                    Console.WriteLine($"Master DB Type: {MyContext.DbType}");
+                    Console.WriteLine($"Master DB ConnectString: {MyContext.ConnectionString}");
+                    Console.WriteLine();
+
+                    var slaveIndex = 0;
+                    BaseDBConfig.MutiConnectionString.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
+                    {
+                        slaveIndex++;
+                        Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
+                        Console.WriteLine($"Slave{slaveIndex} DB Type: {m.DbType}");
+                        Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Conn}");
+                    });
+
+                }
+                else
+                {
+                    Console.WriteLine("DB Type: " + MyContext.DbType);
+                    Console.WriteLine("DB ConnectString: " + MyContext.ConnectionString);
+                }
+
+                Console.WriteLine("Create Database...");
                 // 创建数据库
                 myContext.Db.DbMaintenance.CreateDatabase();
 
+                Console.WriteLine("Create Tables...");
                 // 创建表
                 myContext.CreateTableByEntity(false,
                     typeof(Advertisement),
@@ -58,12 +86,13 @@ namespace Blog.Core.Model.Models
                     typeof(sysUserInfo),
                     typeof(Topic),
                     typeof(TopicDetail),
+                    typeof(TasksQz),
                     typeof(UserRole));
 
                 // 后期单独处理某些表
                 // myContext.Db.CodeFirst.InitTables(typeof(sysUserInfo));
 
-                Console.WriteLine("Database:WMBlog created success!");
+                Console.WriteLine("Database is  created success!");
                 Console.WriteLine();
 
                 if (Appsettings.app(new string[] { "AppSettings", "SeedDBDataEnabled" }).ObjToBool())
@@ -183,6 +212,19 @@ namespace Blog.Core.Model.Models
                     else
                     {
                         Console.WriteLine("Table:sysUserInfo already exists...");
+                    }
+                    #endregion
+
+
+                    #region TasksQz
+                    if (!await myContext.Db.Queryable<TasksQz>().AnyAsync())
+                    {
+                        myContext.GetEntityDB<TasksQz>().InsertRange(JsonHelper.ParseFormByJson<List<TasksQz>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "TasksQz"), Encoding.UTF8)));
+                        Console.WriteLine("Table:TasksQz created success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Table:TasksQz already exists...");
                     }
                     #endregion
 

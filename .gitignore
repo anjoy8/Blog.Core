@@ -349,3 +349,4 @@ healthchecksdb
 !.template.config/*.nupkg
 !Blog.Core.Webapi.Template.*.nupkg
 Blog.Core/WMBlog.db
+.docs/contents/.vuepress/dist/*

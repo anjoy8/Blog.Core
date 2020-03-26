@@ -30,6 +30,7 @@ namespace Blog.Core.Services
         /// <returns></returns>
         public async Task<BlogViewModels> GetBlogDetails(int id)
         {
+            // 此处想获取上一条下一条数据，因此将全部数据list出来，有好的想法请提出
             var bloglist = await base.Query(a => a.IsDeleted==false, a => a.bID);
             var blogArticle = (await base.Query(a => a.bID == id)).FirstOrDefault();
 
@@ -72,7 +73,7 @@ namespace Blog.Core.Services
 
 
                 blogArticle.btraffic += 1;
-                //await base.Update(blogArticle, new List<string> { "btraffic" });
+                await base.Update(blogArticle, new List<string> { "btraffic" });
             }
 
             return models;
