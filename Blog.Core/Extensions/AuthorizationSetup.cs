@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -143,8 +145,27 @@ namespace Blog.Core.Extensions
                  o.TokenValidationParameters = tokenValidationParameters;
                  o.Events = new JwtBearerEvents
                  {
+                     OnChallenge = context =>
+                     {
+                         context.Response.Headers.Add("Token-Error", context.ErrorDescription);
+                         return Task.CompletedTask;
+                     },
                      OnAuthenticationFailed = context =>
                      {
+                         var token= context.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "");
+                         var jwtToken = (new JwtSecurityTokenHandler()).ReadJwtToken(token);
+
+                         if (jwtToken.Issuer != Issuer)
+                         {
+                             context.Response.Headers.Add("Token-Error-Iss", "issuer is wrong!");
+                         }
+
+                         if (jwtToken.Audiences.FirstOrDefault() != Audience)
+                         {
+                             context.Response.Headers.Add("Token-Error-Aud", "Audience is wrong!");
+                         }
+
+
                          // 如果过期，则把<是否过期>添加到，返回头信息中
                          if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                          {
