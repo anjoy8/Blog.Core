@@ -168,14 +168,7 @@ namespace Blog.Core.Controllers
 
             foreach (var item in permissions)
             {
-                List<int> pidarr = new List<int>
-                {
-                    item.Pid
-                };
-                if (item.Pid > 0)
-                {
-                    pidarr.Add(0);
-                }
+                List<int> pidarr = new List<int> { };
                 var parent = permissionsList.FirstOrDefault(d => d.Id == item.Pid);
 
                 while (parent != null)
@@ -184,8 +177,12 @@ namespace Blog.Core.Controllers
                     parent = permissionsList.FirstOrDefault(d => d.Id == parent.Pid);
                 }
 
+                //item.PidArr = pidarr.OrderBy(d => d).Distinct().ToList();
 
-                item.PidArr = pidarr.OrderBy(d => d).Distinct().ToList();
+                pidarr.Reverse();
+                pidarr.Insert(0, 0);
+                item.PidArr = pidarr;
+
                 item.MName = apiList.FirstOrDefault(d => d.Id == item.Mid)?.LinkUrl;
                 item.hasChildren = permissionsList.Where(d => d.Pid == item.Id).Any();
             }
