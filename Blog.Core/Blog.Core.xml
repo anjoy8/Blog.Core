@@ -303,18 +303,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Blog.Core.Controllers.ClaimsController">
-            <summary>
-            这是一个测试的控制器，主要为了测试基于Claim的验证机制
-            </summary>
-        </member>
-        <member name="M:Blog.Core.Controllers.ClaimsController.BatchDelete(System.String)">
-            <summary>
-            测试批量删除，如果是axios，记得要把数组格式化成 stringQuery
-            </summary>
-            <param name="ids"></param>
-            <returns></returns>
-        </member>
         <member name="M:Blog.Core.Controllers.DbFirstController.#ctor(Blog.Core.Model.Models.MyContext)">
             <summary>
             构造函数

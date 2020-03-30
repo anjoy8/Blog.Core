@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blog.Core.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,9 +9,10 @@ namespace Blog.Core.AuthHelper.Policys
     public class ApiResponse
     {
         public int Status { get; set; } = 404;
-        public object Value { get; set; } = "No Found";
+        public string Value { get; set; } = "No Found";
+        public MessageModel<string> MessageModel = new MessageModel<string>() { };
 
-        public ApiResponse(StatusCode apiCode, object msg = null)
+        public ApiResponse(StatusCode apiCode, string msg = "")
         {
             switch (apiCode)
             {
@@ -33,6 +35,13 @@ namespace Blog.Core.AuthHelper.Policys
                     }
                     break;
             }
+
+            MessageModel = new MessageModel<string>()
+            {
+                status = Status,
+                msg = Value,
+                success = false
+            };
         }
     }
 

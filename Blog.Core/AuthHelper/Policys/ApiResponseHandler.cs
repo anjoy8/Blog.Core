@@ -24,14 +24,14 @@ namespace Blog.Core.AuthHelper
         {
             Response.ContentType = "application/json";
             Response.StatusCode = StatusCodes.Status401Unauthorized;
-            await Response.WriteAsync(JsonConvert.SerializeObject(new ApiResponse(StatusCode.CODE401)));
+            await Response.WriteAsync(JsonConvert.SerializeObject((new ApiResponse(StatusCode.CODE401)).MessageModel));
         }
 
         protected override async Task HandleForbiddenAsync(AuthenticationProperties properties)
         {
             Response.ContentType = "application/json";
             Response.StatusCode = StatusCodes.Status403Forbidden;
-            await Response.WriteAsync(JsonConvert.SerializeObject(new ApiResponse(StatusCode.CODE403)));
+            await Response.WriteAsync(JsonConvert.SerializeObject((new ApiResponse(StatusCode.CODE403)).MessageModel));
         }
 
     }

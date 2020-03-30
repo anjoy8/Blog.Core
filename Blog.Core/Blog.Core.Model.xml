@@ -29,6 +29,11 @@
             通用返回信息类
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.MessageModel`1.status">
+            <summary>
+            状态码
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.MessageModel`1.success">
             <summary>
             操作是否成功
@@ -798,39 +803,44 @@
             <param name="WebRootPath"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateModels(Blog.Core.Model.Models.MyContext)">
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateModels(Blog.Core.Model.Models.MyContext,System.String[])">
             <summary>
             生成Model层
             </summary>
-            <param name="myContext"></param>
+            <param name="myContext">上下文</param>
+            <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateIRepositorys(Blog.Core.Model.Models.MyContext)">
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateIRepositorys(Blog.Core.Model.Models.MyContext,System.String[])">
             <summary>
             生成IRepository层
             </summary>
-            <param name="myContext"></param>
+            <param name="myContext">上下文</param>
+            <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateIServices(Blog.Core.Model.Models.MyContext)">
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateIServices(Blog.Core.Model.Models.MyContext,System.String[])">
             <summary>
             生成 IService 层
             </summary>
-            <param name="myContext"></param>
+            <param name="myContext">上下文</param>
+            <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateRepository(Blog.Core.Model.Models.MyContext)">
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateRepository(Blog.Core.Model.Models.MyContext,System.String[])">
             <summary>
             生成 Repository 层
             </summary>
-            <param name="myContext"></param>
+            <param name="myContext">上下文</param>
+            <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateServices(Blog.Core.Model.Models.MyContext)">
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateServices(Blog.Core.Model.Models.MyContext,System.String[])">
             <summary>
             生成 Service 层
             </summary>
-            <param name="myContext"></param>
+            <param name="myContext">上下文</param>
+            <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Model.Models.MyContext.GetMainConnectionDb">

@@ -7,6 +7,7 @@ using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.ViewModels;
 using Blog.Core.SwaggerHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +55,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         //[ResponseCache(Duration = 600)]
-        public async Task<object> Get(int id, int page = 1, string bcategory = "技术博文", string key = "")
+        public async Task<MessageModel<PageModel<BlogArticle>>> Get(int id, int page = 1, string bcategory = "技术博文", string key = "")
         {
             int intTotalCount = 6;
             int total;
@@ -90,14 +91,18 @@ namespace Blog.Core.Controllers
                 }
             }
 
-            return Ok(new
+            return new MessageModel<PageModel<BlogArticle>>()
             {
                 success = true,
-                page,
-                total,
-                pageCount = totalCount,
-                data = blogArticleList
-            });
+                msg = "获取成功",
+                response = new PageModel<BlogArticle>()
+                {
+                    page = page,
+                    dataCount = total,
+                    data = blogArticleList,
+                    pageCount = totalCount,
+                }
+            };
         }
 
 
@@ -108,14 +113,14 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<object> Get(int id)
+        public async Task<MessageModel<BlogViewModels>> Get(int id)
         {
-            var model = await _blogArticleServices.GetBlogDetails(id);
-            return Ok(new
+            return new MessageModel<BlogViewModels>()
             {
+                msg = "获取成功",
                 success = true,
-                data = model
-            });
+                response = await _blogArticleServices.GetBlogDetails(id)
+            };
         }
 
 
@@ -127,15 +132,15 @@ namespace Blog.Core.Controllers
         [HttpGet]
         [Route("DetailNuxtNoPer")]
         [AllowAnonymous]
-        public async Task<object> DetailNuxtNoPer(int id)
+        public async Task<MessageModel<BlogViewModels>> DetailNuxtNoPer(int id)
         {
             _logger.LogInformation("xxxxxxxxxxxxxxxxxxx");
-            var model = await _blogArticleServices.GetBlogDetails(id);
-            return Ok(new
+            return new MessageModel<BlogViewModels>()
             {
+                msg = "获取成功",
                 success = true,
-                data = model
-            });
+                response = await _blogArticleServices.GetBlogDetails(id)
+            };
         }
 
 
@@ -152,9 +157,14 @@ namespace Blog.Core.Controllers
 
         [CustomRoute(ApiVersions.V2, "Blogtest")]
         [AllowAnonymous]
-        public object V2_Blogtest()
+        public MessageModel<string> V2_Blogtest()
         {
-            return Ok(new { status = 220, data = "我是第二版的博客信息" });
+            return new MessageModel<string>()
+            {
+                msg = "获取成功",
+                success = true,
+                response = "我是第二版的博客信息"
+            };
         }
 
         /// <summary>
@@ -252,13 +262,14 @@ namespace Blog.Core.Controllers
         [HttpGet]
         [Route("ApacheTestUpdate")]
         [AllowAnonymous]
-        public async Task<object> ApacheTestUpdate()
+        public async Task<MessageModel<bool>> ApacheTestUpdate()
         {
-            return Ok(new
+            return new MessageModel<bool>()
             {
                 success = true,
-                data = await _blogArticleServices.Update(new { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", bID = 1 })
-            });
+                msg = "更新成功",
+                response = await _blogArticleServices.Update(new { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", bID = 1 })
+            };
         }
     }
 }

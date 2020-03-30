@@ -8,6 +8,8 @@ using Blog.Core.AuthHelper;
 using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
+using Blog.Core.Model;
+using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -58,7 +60,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Token")]
-        public async Task<object> GetJwtStr(string name, string pass)
+        public async Task<MessageModel<string>> GetJwtStr(string name, string pass)
         {
             string jwtStr = string.Empty;
             bool suc = false;
@@ -78,11 +80,12 @@ namespace Blog.Core.Controllers
                 jwtStr = "login fail!!!";
             }
 
-            return Ok(new
+            return new MessageModel<string>()
             {
                 success = suc,
-                token = jwtStr
-            });
+                msg = suc ? "获取成功" : "获取失败",
+                response = jwtStr
+            };
         }
 
 
@@ -94,7 +97,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetTokenNuxt")]
-        public object GetJwtStrForNuxt(string name, string pass)
+        public MessageModel<string> GetJwtStrForNuxt(string name, string pass)
         {
             string jwtStr = string.Empty;
             bool suc = false;
@@ -120,11 +123,12 @@ namespace Blog.Core.Controllers
                 data = new { success = suc, token = jwtStr }
             };
 
-            return Ok(new
+            return new MessageModel<string>()
             {
                 success = suc,
-                data = new { success = suc, token = jwtStr }
-            });
+                msg = suc ? "获取成功" : "获取失败",
+                response = jwtStr
+            };
         }
         #endregion
 
@@ -138,17 +142,17 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("JWTToken3.0")]
-        public async Task<object> GetJwtToken3(string name = "", string pass = "")
+        public async Task<MessageModel<TokenInfoViewModel>> GetJwtToken3(string name = "", string pass = "")
         {
             string jwtStr = string.Empty;
 
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(pass))
             {
-                return new JsonResult(new
+                return new MessageModel<TokenInfoViewModel>()
                 {
-                    Status = false,
-                    message = "用户名或密码不能为空"
-                });
+                    success = false,
+                    msg = "用户名或密码不能为空",
+                };
             }
 
             pass = MD5Helper.MD5Encrypt32(pass);
@@ -182,19 +186,21 @@ namespace Blog.Core.Controllers
                 identity.AddClaims(claims);
 
                 var token = JwtToken.BuildJwtToken(claims.ToArray(), _requirement);
-                return new JsonResult(token);
+                return new MessageModel<TokenInfoViewModel>()
+                {
+                    success = true,
+                    msg = "获取成功",
+                    response = token
+                };
             }
             else
             {
-                return new JsonResult(new
+                return new MessageModel<TokenInfoViewModel>()
                 {
                     success = false,
-                    message = "认证失败"
-                });
+                    msg = "认证失败",
+                };
             }
-
-
-
         }
 
         /// <summary>
@@ -204,17 +210,17 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("RefreshToken")]
-        public async Task<object> RefreshToken(string token = "")
+        public async Task<MessageModel<TokenInfoViewModel>> RefreshToken(string token = "")
         {
             string jwtStr = string.Empty;
 
             if (string.IsNullOrEmpty(token))
             {
-                return new JsonResult(new
+                return new MessageModel<TokenInfoViewModel>()
                 {
-                    Status = false,
-                    message = "token无效，请重新登录！"
-                });
+                    success = false,
+                    msg = "token无效，请重新登录！",
+                };
             }
             var tokenModel = JwtHelper.SerializeJwt(token);
             if (tokenModel != null && tokenModel.Uid > 0)
@@ -235,15 +241,20 @@ namespace Blog.Core.Controllers
                     identity.AddClaims(claims);
 
                     var refreshToken = JwtToken.BuildJwtToken(claims.ToArray(), _requirement);
-                    return new JsonResult(refreshToken);
+                    return new MessageModel<TokenInfoViewModel>()
+                    {
+                        success = true,
+                        msg = "获取成功",
+                        response = refreshToken
+                    };
                 }
             }
 
-            return new JsonResult(new
+            return new MessageModel<TokenInfoViewModel>()
             {
                 success = false,
-                message = "认证失败"
-            });
+                msg = "认证失败！",
+            };
         }
 
         /// <summary>

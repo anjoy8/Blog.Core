@@ -49,7 +49,7 @@ namespace Blog.Core.Middlewares
 
             context.Response.ContentType = "application/json";
 
-            await context.Response.WriteAsync(JsonConvert.SerializeObject(new ApiResponse(StatusCode.CODE500,e.Message))).ConfigureAwait(false);
+            await context.Response.WriteAsync(JsonConvert.SerializeObject((new ApiResponse(StatusCode.CODE500,e.Message)).MessageModel)).ConfigureAwait(false);
         }
     }
 }

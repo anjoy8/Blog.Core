@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
+using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace Blog.Core.Controllers
 
         // GET: api/Transaction
         [HttpGet]
-        public async Task<IEnumerable<string>> Get()
+        public async Task<MessageModel<IEnumerable<string>>> Get()
         {
             List<string> returnMsg = new List<string>() { };
             try
@@ -36,7 +37,7 @@ namespace Blog.Core.Controllers
                 returnMsg.Add($"Begin Transaction");
 
                 _unitOfWork.BeginTran();
-                var passwords = await _passwordLibServices.Query(d=>d.IsDeleted==false);
+                var passwords = await _passwordLibServices.Query(d => d.IsDeleted == false);
                 returnMsg.Add($"first time : the count of passwords is :{passwords.Count}");
 
 
@@ -87,7 +88,12 @@ namespace Blog.Core.Controllers
                 returnMsg.Add($"third time : the count of guestbooks is :{guestbooks.Count}");
             }
 
-            return returnMsg;
+            return new MessageModel<IEnumerable<string>>()
+            {
+                success = true,
+                msg = "操作完成",
+                response = returnMsg
+            };
         }
 
         // GET: api/Transaction/5
