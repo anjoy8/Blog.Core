@@ -89,12 +89,12 @@ namespace Blog.Core.Tests
         /// </summary>
         public static MutiDBOperate GetMainConnectionDb()
         {
-            var mainConnetctDb = BaseDBConfig.MutiConnectionString.Find(x => x.ConnId == MainDb.CurrentDbConnId);
-            if (BaseDBConfig.MutiConnectionString.Count > 0)
+            var mainConnetctDb = BaseDBConfig.MutiConnectionString.Item1.Find(x => x.ConnId == MainDb.CurrentDbConnId);
+            if (BaseDBConfig.MutiConnectionString.Item1.Count > 0)
             {
                 if (mainConnetctDb == null)
                 {
-                    mainConnetctDb = BaseDBConfig.MutiConnectionString[0];
+                    mainConnetctDb = BaseDBConfig.MutiConnectionString.Item1[0];
                 }
             }
             else

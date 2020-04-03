@@ -22,9 +22,20 @@ namespace Blog.Core.Extensions
             // 把多个连接对象注入服务，这里必须采用Scope，因为有事务操作
             services.AddScoped<ISqlSugarClient>(o =>
             {
+                // 连接字符串
                 var listConfig = new List<ConnectionConfig>();
+                // 从库
+                var listConfig_Slave = new List<SlaveConnectionConfig>();
+                BaseDBConfig.MutiConnectionString.Item2.ForEach(s =>
+                {
+                    listConfig_Slave.Add(new SlaveConnectionConfig()
+                    {
+                        HitRate = s.HitRate,
+                        ConnectionString = s.Conn
+                    });
+                });
 
-                BaseDBConfig.MutiConnectionString.ForEach(m =>
+                BaseDBConfig.MutiConnectionString.Item1.ForEach(m =>
                 {
                     listConfig.Add(new ConnectionConfig()
                     {
@@ -37,13 +48,15 @@ namespace Blog.Core.Extensions
                         {
                             OnLogExecuting = (sql, p) =>
                             {
-                                // 多库操作的话，此处暂时无效果，在另一个地方有效，具体请查看BaseRepository.cs
+                                // 多库操作的话，此处记录aop日志无效，在BaseRepository.cs配置有效
                             }
                         },
                         MoreSettings = new ConnMoreSettings()
                         {
                             IsAutoRemoveDataCache = true
-                        }
+                        },
+                        // 从库
+                        SlaveConnectionConfigs = listConfig_Slave,
                         //InitKeyType = InitKeyType.SystemTable
                     }
                    );

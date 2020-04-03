@@ -34,11 +34,11 @@ namespace Blog.Core.Tasks
             try
             {
                 var model = await _blogArticleServices.GetBlogDetails(1);
-                Console.WriteLine($"BlogArticle:{model?.bCreateTime}");
+                Console.WriteLine($"BlogArticle:{model?.btitle}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //Console.WriteLine($"Error:{ex.Message}");
+                Console.WriteLine($"Error:{ex.Message}");
             }
 
             ConsoleHelper.WriteSuccessLine($"Job 1： {DateTime.Now}");

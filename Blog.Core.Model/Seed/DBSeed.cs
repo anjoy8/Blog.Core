@@ -44,6 +44,8 @@ namespace Blog.Core.Model.Models
 
                 Console.WriteLine("Config data init...");
                 Console.WriteLine($"Is multi-DataBase: {Appsettings.app(new string[] { "MutiDBEnabled" })}");
+                Console.WriteLine($"Is CQRS: {Appsettings.app(new string[] { "CQRSEnabled" })}");
+                Console.WriteLine();
                 if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {
                     Console.WriteLine($"Master DB Type: {MyContext.DbType}");
@@ -51,7 +53,23 @@ namespace Blog.Core.Model.Models
                     Console.WriteLine();
 
                     var slaveIndex = 0;
-                    BaseDBConfig.MutiConnectionString.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
+                    BaseDBConfig.MutiConnectionString.Item1.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
+                    {
+                        slaveIndex++;
+                        Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
+                        Console.WriteLine($"Slave{slaveIndex} DB Type: {m.DbType}");
+                        Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Conn}");
+                    });
+
+                }
+                else if (Appsettings.app(new string[] { "CQRSEnabled" }).ObjToBool())
+                {
+                    Console.WriteLine($"Master DB Type: {MyContext.DbType}");
+                    Console.WriteLine($"Master DB ConnectString: {MyContext.ConnectionString}");
+                    Console.WriteLine();
+
+                    var slaveIndex = 0;
+                    BaseDBConfig.MutiConnectionString.Item2.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
                     {
                         slaveIndex++;
                         Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
@@ -66,6 +84,7 @@ namespace Blog.Core.Model.Models
                     Console.WriteLine("DB ConnectString: " + MyContext.ConnectionString);
                 }
 
+                Console.WriteLine();
                 Console.WriteLine("Create Database...");
                 // 创建数据库
                 myContext.Db.DbMaintenance.CreateDatabase();
