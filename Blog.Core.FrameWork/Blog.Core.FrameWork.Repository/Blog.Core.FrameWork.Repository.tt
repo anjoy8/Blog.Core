@@ -50,7 +50,9 @@ namespace Blog.Core.Repository
 	/// </summary>	
 	public class <#=tableName#>Repository : BaseRepository<<#=tableName#>>, I<#=tableName#>Repository
     {
-
+	    public <#=tableName#>Repository(IUnitOfWork unitOfWork) : base(unitOfWork)
+        {
+        }
        
     }
 }
