@@ -59,10 +59,14 @@ namespace Blog.Core.Middlewares
 
                         if (!string.IsNullOrEmpty(requestInfo))
                         {
+                            // 自定义log输出
                             Parallel.For(0, 1, e =>
                             {
                                 LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
                             });
+
+                            // 这种方案也行，用的是Serilog
+                            SerilogServer.WriteLog("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
 
                             request.Body.Position = 0;
                         }
