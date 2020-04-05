@@ -89,7 +89,10 @@ namespace Blog.Core.AOP
 
         private async Task SuccessAction(IInvocation invocation)
         {
-
+            await Task.Run(() =>
+            {
+                //...
+            });
         }
 
         public static bool IsAsyncMethod(MethodInfo method)

@@ -37,7 +37,7 @@ namespace Blog.Core.AOP
         /// <param name="invocation">包含被拦截方法的信息</param>
         public void Intercept(IInvocation invocation)
         {
-            string UserName = _accessor.HttpContext.User.Identity.Name;
+            string UserName = _accessor.HttpContext?.User?.Identity?.Name;
 
             //记录被拦截方法信息的日志信息
             var dataIntercept = "" +
@@ -110,10 +110,12 @@ namespace Blog.Core.AOP
                 dataIntercept += ($"【执行完成结果】：{invocation.ReturnValue}");
             }
 
-
-            Parallel.For(0, 1, e =>
+            await Task.Run(() =>
             {
-                LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
+                Parallel.For(0, 1, e =>
+                {
+                    LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
+                });
             });
         }
 
