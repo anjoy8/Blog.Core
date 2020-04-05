@@ -160,13 +160,21 @@ namespace Blog.Core
 
             #endregion
 
-            #region 没有接口的单独类 class 注入
+            #region 没有接口的单独类，启用class代理拦截
 
             //只能注入该类中的虚方法，且必须是public
             builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Love)))
                 .EnableClassInterceptors()
                 .InterceptedBy(cacheType.ToArray());
+            #endregion
 
+            #region 单独注册一个含有接口的类，启用interface代理拦截
+
+            //不用虚方法
+            //builder.RegisterType<AopService>().As<IAopService>()
+            //   .AsImplementedInterfaces()
+            //   .EnableInterfaceInterceptors()
+            //   .InterceptedBy(typeof(BlogCacheAOP));
             #endregion
 
         }
