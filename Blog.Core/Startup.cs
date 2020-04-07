@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using AspNetCoreRateLimit;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Blog.Core.AOP;
@@ -65,6 +66,7 @@ namespace Blog.Core
             services.AddJobSetup();
             services.AddHttpContextSetup();
             services.AddAuthorizationSetup();
+            services.AddIpPolicyRateLimitSetup(Configuration);
 
             services.AddSignalR().AddNewtonsoftJsonProtocol();
 
@@ -183,6 +185,8 @@ namespace Blog.Core
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBlogArticleServices _blogArticleServices, ILoggerFactory loggerFactory)
         {
 
+            // Ip限流,尽量放管道外层
+            app.UseIpRateLimiting();
             // 记录所有的访问记录
             loggerFactory.AddLog4Net();
             // 记录请求与返回数据 

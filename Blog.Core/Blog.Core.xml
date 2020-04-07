@@ -909,6 +909,11 @@
             Db 启动服务
             </summary>
         </member>
+        <member name="T:Blog.Core.Extensions.IpPolicyRateLimitSetup">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
         <member name="T:Blog.Core.Extensions.JobSetup">
             <summary>
             Cors 启动服务
