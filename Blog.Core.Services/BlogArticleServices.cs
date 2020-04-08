@@ -42,13 +42,13 @@ namespace Blog.Core.Services
 
                 //要取下一篇和上一篇，以当前id开始，按id排序后top(2)，而不用取出所有记录
                 //这样在记录很多的时候也不会有多大影响
-                var nextBlogs = await base.Query($"bId>={id}", 2, "bID");
+                var nextBlogs = await base.Query(a => a.bID >= id && a.IsDeleted == false, 2, "bID");
                 if (nextBlogs.Count == 2)
                 {
                     models.next = nextBlogs[1].btitle;
                     models.nextID = nextBlogs[1].bID;
                 }
-                var prevBlogs = await base.Query($"bId<={id}", 2, "bID desc");
+                 var prevBlogs = await base.Query(a => a.bID >= id && a.IsDeleted == false, 2, "bID desc");
                 if (prevBlogs.Count == 2)
                 {
                     models.previous = prevBlogs[1].btitle;
