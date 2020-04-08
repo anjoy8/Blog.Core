@@ -48,7 +48,7 @@ namespace Blog.Core.Services
                     models.next = nextBlogs[1].btitle;
                     models.nextID = nextBlogs[1].bID;
                 }
-                 var prevBlogs = await base.Query(a => a.bID >= id && a.IsDeleted == false, 2, "bID desc");
+                 var prevBlogs = await base.Query(a => a.bID <= id && a.IsDeleted == false, 2, "bID desc");
                 if (prevBlogs.Count == 2)
                 {
                     models.previous = prevBlogs[1].btitle;
