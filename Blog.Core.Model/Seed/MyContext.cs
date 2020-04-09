@@ -2,6 +2,7 @@
 using Blog.Core.Common.DB;
 using SqlSugar;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Blog.Core.Model.Models
@@ -127,9 +128,9 @@ namespace Blog.Core.Model.Models
             {
                 IDbFirst = IDbFirst.Where(lstTableNames);
             }
-            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
+            var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
-                .SettingClassTemplate(p => p = @"
+                  .SettingClassTemplate(p => p = @"
 {using}
 
 namespace " + strNameSpace + @"
@@ -145,16 +146,17 @@ namespace " + strNameSpace + @"
 }
                     ")
 
-                .SettingPropertyTemplate(p => p = @"
+                  .SettingPropertyTemplate(p => p = @"
         {SugarColumn}
         public {PropertyType} {PropertyName} { get; set; }
 
             ")
 
-                 //.SettingPropertyDescriptionTemplate(p => p = "          private {PropertyType} _{PropertyName};\r\n" + p)
-                 //.SettingConstructorTemplate(p => p = "              this._{PropertyName} ={DefaultValue};")
+                   //.SettingPropertyDescriptionTemplate(p => p = "          private {PropertyType} _{PropertyName};\r\n" + p)
+                   //.SettingConstructorTemplate(p => p = "              this._{PropertyName} ={DefaultValue};")
 
-                 .CreateClassFile(strPath, strNameSpace);
+                   .ToClassStringList(strNameSpace);
+            CreateFilesByClassStringList(ls, strPath, "{0}");
 
         }
         #endregion
@@ -181,9 +183,9 @@ namespace " + strNameSpace + @"
             {
                 IDbFirst = IDbFirst.Where(lstTableNames);
             }
-            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
+            var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
-                .SettingClassTemplate(p => p = @"
+                 .SettingClassTemplate(p => p = @"
 using Blog.Core.IRepository.Base;
 using Blog.Core.Model.Models;
 
@@ -198,8 +200,8 @@ namespace " + strNameSpace + @"
 }
                     ")
 
-                 .CreateClassFile(strPath, strNameSpace);
-
+                  .ToClassStringList(strNameSpace);
+            CreateFilesByClassStringList(ls, strPath, "I{0}Repository");
         }
         #endregion
 
@@ -225,9 +227,9 @@ namespace " + strNameSpace + @"
             {
                 IDbFirst = IDbFirst.Where(lstTableNames);
             }
-            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
+            var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
-                .SettingClassTemplate(p => p = @"
+                  .SettingClassTemplate(p => p = @"
 using Blog.Core.IServices.BASE;
 using Blog.Core.Model.Models;
 
@@ -244,7 +246,8 @@ namespace " + strNameSpace + @"
 }
                     ")
 
-                 .CreateClassFile(strPath, strNameSpace);
+                   .ToClassStringList(strNameSpace);
+            CreateFilesByClassStringList(ls, strPath, "I{0}Services");
 
         }
         #endregion
@@ -272,9 +275,9 @@ namespace " + strNameSpace + @"
             {
                 IDbFirst = IDbFirst.Where(lstTableNames);
             }
-            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
+            var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
-                .SettingClassTemplate(p => p = @"
+                  .SettingClassTemplate(p => p = @"
 using Blog.Core.IRepository;
 using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.Model.Models;
@@ -294,8 +297,10 @@ namespace " + strNameSpace + @"
 }
                     ")
 
-                 .CreateClassFile(strPath, strNameSpace);
+                   .ToClassStringList(strNameSpace);
 
+
+            CreateFilesByClassStringList(ls, strPath, "{0}Repository");
         }
         #endregion
 
@@ -321,9 +326,9 @@ namespace " + strNameSpace + @"
             {
                 IDbFirst = IDbFirst.Where(lstTableNames);
             }
-            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
+            var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
-                .SettingClassTemplate(p => p = @"
+                  .SettingClassTemplate(p => p = @"
 using Blog.Core.IRepository;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
@@ -344,11 +349,35 @@ namespace " + strNameSpace + @"
 }
                     ")
 
-                 .CreateClassFile(strPath, strNameSpace);
+                   .ToClassStringList(strNameSpace);
 
+            CreateFilesByClassStringList(ls, strPath, "{0}Services");
         }
         #endregion
 
+
+        #region 根据模板内容批量生成文件
+        /// <summary>
+        /// 根据模板内容批量生成文件
+        /// </summary>
+        /// <param name="ls">类文件字符串list</param>
+        /// <param name="strPath">生成路径</param>
+        /// <param name="fileNameTp">文件名格式模板</param>
+        public void CreateFilesByClassStringList(Dictionary<string, string> ls, string strPath, string fileNameTp)
+        {
+
+            foreach (var item in ls)
+            {
+                var fileName = $"{string.Format(fileNameTp, item.Key)}.cs";
+                var fileFullPath = Path.Combine(strPath, fileName);
+                if (!Directory.Exists(strPath))
+                {
+                    Directory.CreateDirectory(strPath);
+                }
+                File.WriteAllText(fileFullPath, item.Value);
+            }
+        }
+        #endregion
 
 
 
