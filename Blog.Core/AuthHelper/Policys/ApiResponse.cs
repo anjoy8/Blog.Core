@@ -12,7 +12,7 @@ namespace Blog.Core.AuthHelper.Policys
         public string Value { get; set; } = "No Found";
         public MessageModel<string> MessageModel = new MessageModel<string>() { };
 
-        public ApiResponse(StatusCode apiCode, string msg = "")
+        public ApiResponse(StatusCode apiCode, string msg = null)
         {
             switch (apiCode)
             {

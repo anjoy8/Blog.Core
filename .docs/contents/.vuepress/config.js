@@ -18,6 +18,7 @@ module.exports = {
             { text: '参与贡献', link: '/Contribution/' },
             { text: '更新日志', link: '/Update/' },
             { text: '社区', link: '/QQ/' },
+            { text: '在线Demo', link: 'http://apk.neters.club' },
             { text: 'Github', link: 'https://github.com/anjoy8/Blog.Core' },
         ],
         sidebarDepth: 2,
@@ -35,6 +36,7 @@ function getGuideSidebar (groupA) {
         children: [
           '',
           'getting-started',
+          'function-sheet',
           'cheat-sheet'
         ]
       }

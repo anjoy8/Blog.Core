@@ -20,6 +20,7 @@ using log4net.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +38,8 @@ namespace Blog.Core
         /// log4net 仓储库
         /// </summary>
         public static ILoggerRepository Repository { get; set; }
+        private IServiceCollection _services;
+        private List<Type> tsDIAutofac = new List<Type>();
         private static readonly ILog log =
         LogManager.GetLogger(typeof(GlobalExceptionsFilter));
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
@@ -56,6 +59,8 @@ namespace Blog.Core
             services.AddSingleton(new Appsettings(Env.ContentRootPath));
             services.AddSingleton(new LogLock(Env.ContentRootPath));
 
+            Permissions.IsUseIds4 = Appsettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
+
             services.AddMemoryCacheSetup();
             services.AddSqlsugarSetup();
             services.AddDbSetup();
@@ -65,12 +70,21 @@ namespace Blog.Core
             services.AddSwaggerSetup();
             services.AddJobSetup();
             services.AddHttpContextSetup();
-            services.AddAuthorizationSetup();
+            if (Permissions.IsUseIds4)
+            {
+                services.AddAuthorization_Ids4Setup();
+            }
+            else{
+                services.AddAuthorizationSetup();
+            }
             services.AddIpPolicyRateLimitSetup(Configuration);
 
             services.AddSignalR().AddNewtonsoftJsonProtocol();
 
             services.AddScoped<UseServiceDIAttribute>();
+
+            services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
+                    .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
 
             services.AddControllers(o =>
             {
@@ -92,6 +106,7 @@ namespace Blog.Core
                 //options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
             });
 
+            _services = services;
         }
 
         // 注意在CreateDefaultBuilder中，添加Autofac服务工厂
@@ -179,12 +194,15 @@ namespace Blog.Core
             //   .InterceptedBy(typeof(BlogCacheAOP));
             #endregion
 
+
+            // 这里和注入没关系，只是获取注册列表，请忽略
+            tsDIAutofac.AddRange(assemblysServices.GetTypes().ToList());
+            tsDIAutofac.AddRange(assemblysRepository.GetTypes().ToList());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBlogArticleServices _blogArticleServices, ILoggerFactory loggerFactory)
         {
-
             // Ip限流,尽量放管道外层
             app.UseIpRateLimiting();
             // 记录所有的访问记录
@@ -195,6 +213,8 @@ namespace Blog.Core
             app.UseSignalRSendMildd();
             // 记录ip请求
             app.UseIPLogMildd();
+            // 查看注入的所有服务
+            app.UseAllServicesMildd(_services, tsDIAutofac);
 
             #region Environment
             if (env.IsDevelopment())
@@ -231,9 +251,13 @@ namespace Blog.Core
                 {
                     c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{ApiName} {version}");
                 });
-                // 将swagger首页，设置成我们自定义的页面，记得这个字符串的写法：解决方案名.index.html，并且是右键属性，嵌入的资源
-                c.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html");//这里是配合MiniProfiler进行性能监控的，《文章：完美基于AOP的接口性能分析》，如果你不需要，可以暂时先注释掉，不影响大局。
-                c.RoutePrefix = ""; //路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件,注意localhost:8001/swagger是访问不到的，去launchSettings.json把launchUrl去掉，如果你想换一个路径，直接写名字即可，比如直接写c.RoutePrefix = "doc";
+
+                // 将swagger首页，设置成我们自定义的页面，记得这个字符串的写法：解决方案名.index.html
+                // index.html的属性，必须是设置为嵌入的资源
+                c.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html");
+
+                // 路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件,注意localhost:8001/swagger是访问不到的，去launchSettings.json把launchUrl去掉，如果你想换一个路径，直接写名字即可，比如直接写c.RoutePrefix = "doc";
+                c.RoutePrefix = "";
             });
             #endregion
 

@@ -11,12 +11,12 @@ namespace Blog.Core.Middlewares
     public class ExceptionHandlerMidd
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionHandlerMidd> _logger;
+        private static readonly log4net.ILog log =
+        log4net.LogManager.GetLogger(typeof(ExceptionHandlerMidd));
 
-        public ExceptionHandlerMidd(RequestDelegate next, ILogger<ExceptionHandlerMidd> logger)
+        public ExceptionHandlerMidd(RequestDelegate next)
         {
             _next = next;
-            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -35,7 +35,7 @@ namespace Blog.Core.Middlewares
         {
             if (e == null) return;
 
-            _logger.LogError(e, e.GetBaseException().ToString());
+            log.Error(e.GetBaseException().ToString());
 
             await WriteExceptionAsync(context, e).ConfigureAwait(false);
         }
@@ -49,7 +49,7 @@ namespace Blog.Core.Middlewares
 
             context.Response.ContentType = "application/json";
 
-            await context.Response.WriteAsync(JsonConvert.SerializeObject((new ApiResponse(StatusCode.CODE500,e.Message)).MessageModel)).ConfigureAwait(false);
+            await context.Response.WriteAsync(JsonConvert.SerializeObject((new ApiResponse(StatusCode.CODE500, e.Message)).MessageModel)).ConfigureAwait(false);
         }
     }
 }

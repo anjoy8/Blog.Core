@@ -169,17 +169,22 @@ namespace Blog.Core.Controllers
                 claims.AddRange(userRoles.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));
 
 
-                var data = await _roleModulePermissionServices.RoleModuleMaps();
-                var list = (from item in data
-                            where item.IsDeleted == false
-                            orderby item.Id
-                            select new PermissionItem
-                            {
-                                Url = item.Module?.LinkUrl,
-                                Role = item.Role?.Name,
-                            }).ToList();
+                // ids4和jwt切换
+                // jwt
+                if (!Permissions.IsUseIds4)
+                {
+                    var data = await _roleModulePermissionServices.RoleModuleMaps();
+                    var list = (from item in data
+                                where item.IsDeleted == false
+                                orderby item.Id
+                                select new PermissionItem
+                                {
+                                    Url = item.Module?.LinkUrl,
+                                    Role = item.Role?.Name.ObjToString(),
+                                }).ToList();
 
-                _requirement.Permissions = list;
+                    _requirement.Permissions = list;
+                }
 
                 //用户标识
                 var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);

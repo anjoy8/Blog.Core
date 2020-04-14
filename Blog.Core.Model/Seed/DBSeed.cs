@@ -42,6 +42,10 @@ namespace Blog.Core.Model.Models
                 SeedDataFolder = Path.Combine(WebRootPath, SeedDataFolder);
                 SeedDataFolderMini = Path.Combine(WebRootPath, SeedDataFolderMini);
 
+                Console.WriteLine("************ Blog.Core *****************");
+                Console.WriteLine($"Current authorization scheme: " + (Permissions.IsUseIds4 ? "Ids4" : "JWT"));
+                Console.WriteLine();
+
                 Console.WriteLine("Config data init...");
                 Console.WriteLine($"Is multi-DataBase: {Appsettings.app(new string[] { "MutiDBEnabled" })}");
                 Console.WriteLine($"Is CQRS: {Appsettings.app(new string[] { "CQRSEnabled" })}");

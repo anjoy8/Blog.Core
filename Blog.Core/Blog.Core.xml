@@ -36,6 +36,11 @@
             </summary>
             <param name="invocation">包含被拦截方法的信息</param>
         </member>
+        <member name="T:Blog.Core.AOP.BlogUserAuditAOP">
+            <summary>
+            面向切面的缓存使用
+            </summary>
+        </member>
         <member name="M:Blog.Core.AOP.CacheAOPbase.Intercept(Castle.DynamicProxy.IInvocation)">
             <summary>
             AOP的拦截方法
@@ -889,6 +894,11 @@
             Db 启动服务
             </summary>
         </member>
+        <member name="T:Blog.Core.Extensions.Authorization_Ids4Setup">
+            <summary>
+            权限 启动服务
+            </summary>
+        </member>
         <member name="T:Blog.Core.Extensions.AutoMapperSetup">
             <summary>
             Automapper 启动服务
@@ -937,6 +947,11 @@
         <member name="T:Blog.Core.Extensions.SwaggerSetup">
             <summary>
             Swagger 启动服务
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.AllServicesMildd">
+            <summary>
+            Cors 启动服务
             </summary>
         </member>
         <member name="T:Blog.Core.Filter.GlobalRouteAuthorizeConvention">

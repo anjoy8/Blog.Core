@@ -46,7 +46,16 @@ namespace Blog.Core.Common
                 }
                 try
                 {
-                    this.redisConnection = ConnectionMultiplexer.Connect(redisConnenctionString);
+                    var config = new ConfigurationOptions
+                    {
+                        AbortOnConnectFail = false,
+                        AllowAdmin = true,
+                        ConnectTimeout = 15000,//改成15s
+                        SyncTimeout = 5000,
+                        //Password = "Pwd",//Redis数据库密码
+                        EndPoints = { redisConnenctionString }// connectionString 为IP:Port 如”192.168.2.110:6379”
+                    };
+                    this.redisConnection = ConnectionMultiplexer.Connect(config);
                 }
                 catch (Exception)
                 {

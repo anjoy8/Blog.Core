@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -178,17 +179,8 @@ namespace Blog.Core.Extensions
              .AddScheme<AuthenticationSchemeOptions, ApiResponseHandler>(nameof(ApiResponseHandler), o => { });
 
 
-            //2.2【认证】、IdentityServer4 认证 (暂时忽略)
-            //services.AddAuthentication("Bearer")
-            //  .AddIdentityServerAuthentication(options =>
-            //  {
-            //      options.Authority = "http://localhost:5002";
-            //      options.RequireHttpsMetadata = false;
-            //      options.ApiName = "blog.core.api";
-            //  });
-
-
-
+            // 这里冗余写了一次,因为很多人看不到
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // 注入权限处理器
             services.AddScoped<IAuthorizationHandler, PermissionHandler>();
             services.AddSingleton(permissionRequirement);

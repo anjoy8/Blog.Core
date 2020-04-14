@@ -77,14 +77,17 @@ namespace Blog.Core.AOP
                          {
                              LogEx(ex, dataIntercept);
                          });
-
                     }
 
                 }
                 else
                 {// 同步1
 
-
+                    dataIntercept += ($"【执行完成结果】：{invocation.ReturnValue}");
+                    Parallel.For(0, 1, e =>
+                    {
+                        LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
+                    });
                 }
             }
             catch (Exception ex)// 同步2

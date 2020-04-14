@@ -1,7 +1,8 @@
-# 介绍
+﻿# J  介绍
 
 最新的前后端完全分离框架【 ASP.NET Core 3.1 Api + Vue 2.x + ele】。  
-ASP.NET Core 3.1 教程，前后端分离的后端接口，vue教程的姊妹篇。  
+ASP.NET Core 3.1 教程，前后端分离的后端接口，vue教程的姊妹篇。   
+BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET Core3.1 Api + Vue 2.x + RBAC】权限框架。  
 
 ## 你能得到什么？
 1、从 0 到 1 快速入门 ASP.NET Core 框架。  
@@ -18,6 +19,7 @@ ASP.NET Core 3.1 教程，前后端分离的后端接口，vue教程的姊妹篇
 - [√] 使用Automapper做Dto处理；
 - [√] 接入SqlSugar ORM，封装数据库操作；
 - [√] 项目启动，自动生成seed种子数据；
+- [√] 提供五种日志输出；
 - [√] 支持自由切换多种数据库，Sqlite/SqlServer/MySql/PostgreSQL/Oracle；
 - [√] 异步async/await开发；
 - [√] 支持事务；
@@ -31,11 +33,11 @@ ASP.NET Core 3.1 教程，前后端分离的后端接口，vue教程的姊妹篇
 - [√] 使用SingleR推送日志信息到管理后台；
 - [√] 搭配前端Blog项目，vue开发；
 - [√] 搭配一个Admin管理后台，用vue+ele开发；
-- [ ] IdentityServer4 认证（更新中...);
-- [ ] API 限速;
+- [√] IdentityServer4 认证;
+- [√] API 限速;
+- [√] 作业调度 Quartz.net;
+- [√] Sqlsugar 读写分离;
 - [ ] Redis 队列;
-- [ ] 作业调度 Quartz.net;
-- [ ] Sqlsugar 读写分离;
 - [ ] 支付;
 - [ ] 数据部门权限;
 

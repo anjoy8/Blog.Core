@@ -930,6 +930,14 @@
             <param name="lstTableNames">生产指定的表</param>
             <param name="strInterface">实现接口</param>
         </member>
+        <member name="M:Blog.Core.Model.Models.MyContext.CreateFilesByClassStringList(System.Collections.Generic.Dictionary{System.String,System.String},System.String,System.String)">
+            <summary>
+            根据模板内容批量生成文件
+            </summary>
+            <param name="ls">类文件字符串list</param>
+            <param name="strPath">生成路径</param>
+            <param name="fileNameTp">文件名格式模板</param>
+        </member>
         <member name="M:Blog.Core.Model.Models.MyContext.GetEntityDB``1">
             <summary>
             功能描述:获取数据库处理对象

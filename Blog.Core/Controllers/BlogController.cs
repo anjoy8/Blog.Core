@@ -112,7 +112,7 @@ namespace Blog.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<MessageModel<BlogViewModels>> Get(int id)
         {
             return new MessageModel<BlogViewModels>()
