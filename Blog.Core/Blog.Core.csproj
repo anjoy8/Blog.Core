@@ -81,4 +81,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="WMBlog.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

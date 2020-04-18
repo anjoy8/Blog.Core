@@ -12,6 +12,7 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
+            // 3.x使用MiniProfiler，必须要注册MemoryCache服务
             services.AddMiniProfiler(options =>
             {
                 options.RouteBasePath = "/profiler";
