@@ -41,32 +41,8 @@ namespace Blog.Core.Repository.Base
                     }
                 }
 
-                if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
-                {
-                    _dbBase.Aop.OnLogExecuting = (sql, pars) => //SQL执行中事件
-                    {
-                        Parallel.For(0, 1, e =>
-                        {
-                            MiniProfiler.Current.CustomTiming("SQL：", GetParas(pars) + "【SQL语句】：" + sql);
-                            LogLock.OutSql2Log("SqlLog", new string[] { GetParas(pars), "【SQL语句】：" + sql });
-
-                        });
-                    };
-                }
-
                 return _dbBase;
             }
-        }
-
-        private string GetParas(SugarParameter[] pars)
-        {
-            string key = "【SQL参数】：";
-            foreach (var param in pars)
-            {
-                key += $"{param.ParameterName}:{param.Value}\n";
-            }
-
-            return key;
         }
 
         internal ISqlSugarClient Db

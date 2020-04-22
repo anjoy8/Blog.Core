@@ -1,9 +1,12 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.DB;
+using Blog.Core.Common.LogHelper;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
+using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Extensions
 {
@@ -48,7 +51,15 @@ namespace Blog.Core.Extensions
                         {
                             OnLogExecuting = (sql, p) =>
                             {
-                                // 多库操作的话，此处记录aop日志无效，在BaseRepository.cs配置有效
+                                if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
+                                {
+                                    Parallel.For(0, 1, e =>
+                                    {
+                                        MiniProfiler.Current.CustomTiming("SQL：", GetParas(p) + "【SQL语句】：" + sql);
+                                        LogLock.OutSql2Log("SqlLog", new string[] { GetParas(p), "【SQL语句】：" + sql });
+
+                                    });
+                                }
                             }
                         },
                         MoreSettings = new ConnMoreSettings()
@@ -63,6 +74,17 @@ namespace Blog.Core.Extensions
                 });
                 return new SqlSugarClient(listConfig);
             });
+        }
+
+        private static string GetParas(SugarParameter[] pars)
+        {
+            string key = "【SQL参数】：";
+            foreach (var param in pars)
+            {
+                key += $"{param.ParameterName}:{param.Value}\n";
+            }
+
+            return key;
         }
     }
 }

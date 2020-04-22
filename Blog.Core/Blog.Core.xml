@@ -889,6 +889,11 @@
             </summary>
             <param name="id"></param>
         </member>
+        <member name="T:Blog.Core.Extensions.AppConfigSetup">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
         <member name="T:Blog.Core.Extensions.AuthorizationSetup">
             <summary>
             Db 启动服务

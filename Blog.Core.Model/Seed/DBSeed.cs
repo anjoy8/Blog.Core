@@ -42,11 +42,7 @@ namespace Blog.Core.Model.Models
                 SeedDataFolder = Path.Combine(WebRootPath, SeedDataFolder);
                 SeedDataFolderMini = Path.Combine(WebRootPath, SeedDataFolderMini);
 
-                Console.WriteLine("************ Blog.Core *****************");
-                Console.WriteLine($"Current authorization scheme: " + (Permissions.IsUseIds4 ? "Ids4" : "JWT"));
-                Console.WriteLine();
-
-                Console.WriteLine("Config data init...");
+                Console.WriteLine("Database config data init...");
                 Console.WriteLine($"Is multi-DataBase: {Appsettings.app(new string[] { "MutiDBEnabled" })}");
                 Console.WriteLine($"Is CQRS: {Appsettings.app(new string[] { "CQRSEnabled" })}");
                 Console.WriteLine();
@@ -93,6 +89,8 @@ namespace Blog.Core.Model.Models
                 // 创建数据库
                 myContext.Db.DbMaintenance.CreateDatabase();
 
+                ConsoleHelper.WriteSuccessLine($"Database created successfully!");
+
                 Console.WriteLine("Create Tables...");
                 // 创建表
                 myContext.CreateTableByEntity(false,
@@ -115,12 +113,12 @@ namespace Blog.Core.Model.Models
                 // 后期单独处理某些表
                 // myContext.Db.CodeFirst.InitTables(typeof(sysUserInfo));
 
-                Console.WriteLine("Database is  created success!");
+                ConsoleHelper.WriteSuccessLine($"Tables created successfully!");
                 Console.WriteLine();
 
                 if (Appsettings.app(new string[] { "AppSettings", "SeedDBDataEnabled" }).ObjToBool())
                 {
-                    Console.WriteLine("Seeding database...");
+                    Console.WriteLine("Seeding database data...");
 
                     #region BlogArticle
                     if (!await myContext.Db.Queryable<BlogArticle>().AnyAsync())
@@ -251,7 +249,7 @@ namespace Blog.Core.Model.Models
                     }
                     #endregion
 
-                    Console.WriteLine("Done seeding database.");
+                    ConsoleHelper.WriteSuccessLine($"Done seeding database!");
                 }
 
                 Console.WriteLine();

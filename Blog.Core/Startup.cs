@@ -70,6 +70,7 @@ namespace Blog.Core
             services.AddSwaggerSetup();
             services.AddJobSetup();
             services.AddHttpContextSetup();
+            services.AddAppConfigSetup();
             if (Permissions.IsUseIds4)
             {
                 services.AddAuthorization_Ids4Setup();
