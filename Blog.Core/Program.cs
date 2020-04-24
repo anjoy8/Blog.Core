@@ -70,7 +70,6 @@ namespace Blog.Core
             {
                 webBuilder
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:8081")
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.ClearProviders();

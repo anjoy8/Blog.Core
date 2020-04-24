@@ -56,7 +56,7 @@ namespace Blog.Core
         {
             // 以下code可能与文章中不一样,对代码做了封装,具体查看右侧 Extensions 文件夹.
             services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
-            services.AddSingleton(new Appsettings(Env.ContentRootPath));
+            services.AddSingleton(new Appsettings(Configuration));
             services.AddSingleton(new LogLock(Env.ContentRootPath));
 
             Permissions.IsUseIds4 = Appsettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
