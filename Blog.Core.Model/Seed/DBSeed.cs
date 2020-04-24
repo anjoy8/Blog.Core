@@ -58,7 +58,7 @@ namespace Blog.Core.Model.Models
                         slaveIndex++;
                         Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
                         Console.WriteLine($"Slave{slaveIndex} DB Type: {m.DbType}");
-                        Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Conn}");
+                        Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Connection}");
                     });
 
                 }
@@ -74,7 +74,7 @@ namespace Blog.Core.Model.Models
                         slaveIndex++;
                         Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
                         Console.WriteLine($"Slave{slaveIndex} DB Type: {m.DbType}");
-                        Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Conn}");
+                        Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Connection}");
                     });
 
                 }

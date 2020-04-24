@@ -6,7 +6,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Blog.Core.Common.HttpContextUser;
-using Blog.Core.Common.HttpRestSharp;
 using Blog.Core.Filter;
 using Blog.Core.IServices;
 using Blog.Core.Model;
@@ -36,6 +35,8 @@ namespace Blog.Core.Controllers
         private readonly IUser _user;
         private readonly IPasswordLibServices _passwordLibServices;
         readonly IBlogArticleServices _blogArticleServices;
+        private readonly Common.WebApiClients.IBlogApi _blogApi;
+        private readonly Common.WebApiClients.IValuesApi _valuesApi;
 
         /// <summary>
         /// ValuesController
@@ -47,7 +48,13 @@ namespace Blog.Core.Controllers
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="user"></param>
         /// <param name="passwordLibServices"></param>
-        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices)
+        /// <param name="blogApi"></param>
+        /// <param name="valuesApi"></param>
+        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper
+            , IAdvertisementServices advertisementServices, Love love
+            , IRoleModulePermissionServices roleModulePermissionServices, IUser user
+            , IPasswordLibServices passwordLibServices, Common.WebApiClients.IBlogApi blogApi
+            , Common.WebApiClients.IValuesApi valuesApi)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
@@ -60,6 +67,8 @@ namespace Blog.Core.Controllers
             _passwordLibServices = passwordLibServices;
             // 测试AOP加载顺序，配合 return
             _blogArticleServices = blogArticleServices;
+            _blogApi = blogApi;
+            _valuesApi = valuesApi;
         }
         /// <summary>
         /// Get方法
@@ -209,25 +218,49 @@ namespace Blog.Core.Controllers
             return Ok(new { success = true, name = name });
         }
 
+        ///// <summary>
+        ///// 测试http请求 RestSharp Get
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpGet("RestsharpGet")]
+        //[AllowAnonymous]
+        //public TestRestSharpGetDto RestsharpGet()
+        //{
+        //    return HttpHelper.GetApi<TestRestSharpGetDto>("http://apk.neters.club/", "api/Blog/DetailNuxtNoPer", "id=1");
+        //}
+        ///// <summary>
+        ///// 测试http请求 RestSharp Post
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpGet("RestsharpPost")]
+        //[AllowAnonymous]
+        //public TestRestSharpPostDto RestsharpPost()
+        //{
+        //    return HttpHelper.PostApi<TestRestSharpPostDto>("http://apk.neters.club/api/Values/TestPostPara?name=老张", new { age = 18 });
+        //}
+
         /// <summary>
-        /// 测试http请求 RestSharp Get
+        /// 测试http请求 WebApiClient Get
         /// </summary>
         /// <returns></returns>
-        [HttpGet("RestsharpGet")]
+        [HttpGet("WebApiClientGetAsync")]
         [AllowAnonymous]
-        public TestRestSharpGetDto RestsharpGet()
+        public async Task<object> WebApiClientGetAsync()
         {
-            return HttpHelper.GetApi<TestRestSharpGetDto>("http://apk.neters.club/", "api/Blog/DetailNuxtNoPer", "id=1");
+            int id = 1;
+            return await _blogApi.DetailNuxtNoPerAsync(id);
         }
+
         /// <summary>
-        /// 测试http请求 RestSharp Post
+        /// 测试http请求 WebApiClient Post
         /// </summary>
         /// <returns></returns>
-        [HttpGet("RestsharpPost")]
+        [HttpGet("WebApiClientPostAsync")]
         [AllowAnonymous]
-        public TestRestSharpPostDto RestsharpPost()
+        public async Task<object> WebApiClientPostAsync()
         {
-            return HttpHelper.PostApi<TestRestSharpPostDto>("http://apk.neters.club/api/Values/TestPostPara?name=老张", new { age = 18 });
+            string name = "老张";
+            return (await _valuesApi.TestPostParaAsync(name)).Content.ReadAsStringAsync();
         }
 
         /// <summary>

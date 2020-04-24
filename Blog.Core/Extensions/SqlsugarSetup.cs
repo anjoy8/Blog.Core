@@ -34,7 +34,7 @@ namespace Blog.Core.Extensions
                     listConfig_Slave.Add(new SlaveConnectionConfig()
                     {
                         HitRate = s.HitRate,
-                        ConnectionString = s.Conn
+                        ConnectionString = s.Connection
                     });
                 });
 
@@ -43,7 +43,7 @@ namespace Blog.Core.Extensions
                     listConfig.Add(new ConnectionConfig()
                     {
                         ConfigId = m.ConnId.ObjToString().ToLower(),
-                        ConnectionString = m.Conn,
+                        ConnectionString = m.Connection,
                         DbType = (DbType)m.DbType,
                         IsAutoCloseConnection = true,
                         IsShardSameThread = false,

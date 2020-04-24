@@ -28,8 +28,11 @@ namespace Blog.Core.Common
                .SetBasePath(contentPath)
                .Add(new JsonConfigurationSource { Path = Path, Optional = false, ReloadOnChange = true })//这样的话，可以直接读目录里的json文件，而不是 bin 文件夹下的，所以不用修改复制属性
                .Build();
+        }
 
-
+        public Appsettings(IConfiguration configuration)
+        {
+            Configuration = configuration;
         }
 
         /// <summary>
@@ -50,6 +53,19 @@ namespace Blog.Core.Common
             catch (Exception) { }
 
             return "";
+        }
+
+        /// <summary>
+        /// 递归获取配置信息数组
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sections"></param>
+        /// <returns></returns>
+        public static List<T> app<T>(params string[] sections)
+        {
+            List<T> list = new List<T>();
+            Configuration.Bind(string.Join(":", sections), list);
+            return list;
         }
     }
 }

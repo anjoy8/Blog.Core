@@ -11,7 +11,7 @@ namespace Blog.Core.Model.Models
     {
 
         private static MutiDBOperate connectObject => GetMainConnectionDb();
-        private static string _connectionString = connectObject.Conn;
+        private static string _connectionString = connectObject.Connection;
         private static DbType _dbType = (DbType)connectObject.DbType;
         private SqlSugarClient _db;
 
