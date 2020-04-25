@@ -71,6 +71,7 @@ namespace Blog.Core
             services.AddJobSetup();
             services.AddHttpContextSetup();
             services.AddAppConfigSetup();
+            services.AddHttpApi();
             if (Permissions.IsUseIds4)
             {
                 services.AddAuthorization_Ids4Setup();

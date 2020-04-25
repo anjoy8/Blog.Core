@@ -794,7 +794,7 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices)">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi)">
             <summary>
             ValuesController
             </summary>
@@ -805,6 +805,7 @@
             <param name="roleModulePermissionServices"></param>
             <param name="user"></param>
             <param name="passwordLibServices"></param>
+            <param name="blogApi"></param>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get">
             <summary>
@@ -873,6 +874,12 @@
         <member name="M:Blog.Core.Controllers.ValuesController.TestMutiDBAPI">
             <summary>
             测试多库连接
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.WebApiClientGetAsync">
+            <summary>
+            测试http请求 WebApiClient Get
             </summary>
             <returns></returns>
         </member>
@@ -953,6 +960,17 @@
             <summary>
             Swagger 启动服务
             </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.WebApiClientSetup">
+            <summary>
+            WebApiClientSetup 启动服务
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Extensions.WebApiClientSetup.AddHttpApi(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            注册WebApiClient接口
+            </summary>
+            <param name="services"></param>
         </member>
         <member name="T:Blog.Core.Extensions.AllServicesMildd">
             <summary>
