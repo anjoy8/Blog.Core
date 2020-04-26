@@ -183,12 +183,6 @@ namespace Blog.Core.Tests
             //使用已进行的组件登记创建新容器
             var ApplicationContainer = builder.Build();
 
-            var blogservice = ApplicationContainer.Resolve<IBlogArticleServices>();
-            var myContext = ApplicationContainer.Resolve<MyContext>();
-
-            DBSeed.SeedAsync(myContext, basePath).Wait();
-
-
             return ApplicationContainer;
         }
     }
