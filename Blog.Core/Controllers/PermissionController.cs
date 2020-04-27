@@ -393,7 +393,8 @@ namespace Blog.Core.Controllers
                                                    {
                                                        requireAuth = true,
                                                        title = child.Name,
-                                                       NoTabPage = child.IsHide.ObjToBool()
+                                                       NoTabPage = child.IsHide.ObjToBool(),
+                                                       keepAlive = child.IskeepAlive.ObjToBool()
                                                    }
                                                }).ToList();
 

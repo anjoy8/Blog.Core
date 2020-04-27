@@ -410,6 +410,11 @@
             是否是隐藏菜单
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.Permission.IskeepAlive">
+            <summary>
+            是否keepAlive
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Permission.Func">
             <summary>
             按钮事件
