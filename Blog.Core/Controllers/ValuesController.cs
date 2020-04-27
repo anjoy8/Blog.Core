@@ -78,6 +78,12 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<ResponseEnum>();
 
             /*
+             *  测试 sql 查询
+             */
+            var queryBySql = await _blogArticleServices.QuerySql("SELECT bsubmitter,btitle,bcontent,bCreateTime FROM BlogArticle WHERE bID>5");
+
+
+            /*
              *  测试 sql 更新
              * 
              * 【SQL参数】：@bID:5

@@ -26,19 +26,16 @@ namespace Blog.Core.Controllers
     public class BlogController : Controller
     {
         readonly IBlogArticleServices _blogArticleServices;
-        readonly IRedisCacheManager _redisCacheManager;
         private readonly ILogger<BlogController> _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="blogArticleServices"></param>
-        /// <param name="redisCacheManager"></param>
         /// <param name="logger"></param>
-        public BlogController(IBlogArticleServices blogArticleServices, IRedisCacheManager redisCacheManager, ILogger<BlogController> logger)
+        public BlogController(IBlogArticleServices blogArticleServices, ILogger<BlogController> logger)
         {
             _blogArticleServices = blogArticleServices;
-            _redisCacheManager = redisCacheManager;
             _logger = logger;
         }
 

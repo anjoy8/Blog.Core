@@ -242,12 +242,11 @@
             博客管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IBlogArticleServices,Blog.Core.Common.IRedisCacheManager,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
+        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IBlogArticleServices,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
             <summary>
             构造函数
             </summary>
             <param name="blogArticleServices"></param>
-            <param name="redisCacheManager"></param>
             <param name="logger"></param>
         </member>
         <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32,System.String,System.String)">
@@ -626,7 +625,7 @@
             <param name="jobId"></param>
             <returns></returns>        
         </member>
-        <member name="M:Blog.Core.Controllers.TasksQzController.ReCovery(System.Guid)">
+        <member name="M:Blog.Core.Controllers.TasksQzController.ReCovery(System.Int32)">
             <summary>
             重启一个计划任务
             </summary>
