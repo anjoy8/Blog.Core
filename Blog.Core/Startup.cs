@@ -126,7 +126,9 @@ namespace Blog.Core
 
             if (!(File.Exists(servicesDllFile) && File.Exists(repositoryDllFile)))
             {
-                throw new Exception("Repository.dll和service.dll 丢失，因为项目解耦了，所以需要先F6编译，再F5运行，请检查 bin 文件夹，并拷贝。");
+                var msg = "Repository.dll和service.dll 丢失，因为项目解耦了，所以需要先F6编译，再F5运行，请检查 bin 文件夹，并拷贝。";
+                log.Error(msg);
+                throw new Exception(msg);
             }
 
 
@@ -255,8 +257,14 @@ namespace Blog.Core
                 });
 
                 // 将swagger首页，设置成我们自定义的页面，记得这个字符串的写法：解决方案名.index.html
-                // index.html的属性，必须是设置为嵌入的资源
                 c.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html");
+
+                if (GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html")==null)
+                {
+                    var msg = "index.html的属性，必须设置为嵌入的资源";
+                    log.Error(msg);
+                    throw new Exception(msg);
+                }
 
                 // 路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件,注意localhost:8001/swagger是访问不到的，去launchSettings.json把launchUrl去掉，如果你想换一个路径，直接写名字即可，比如直接写c.RoutePrefix = "doc";
                 c.RoutePrefix = "";
