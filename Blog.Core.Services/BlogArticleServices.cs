@@ -32,7 +32,7 @@ namespace Blog.Core.Services
         {
             // 此处想获取上一条下一条数据，因此将全部数据list出来，有好的想法请提出
             //var bloglist = await base.Query(a => a.IsDeleted==false, a => a.bID);
-            var blogArticle = (await base.Query(a => a.bID == id)).FirstOrDefault();
+            var blogArticle = (await base.Query(a => a.bID == id && a.bcategory == "技术博文")).FirstOrDefault();
 
             BlogViewModels models = null;
 
@@ -48,7 +48,7 @@ namespace Blog.Core.Services
                     models.next = nextBlogs[1].btitle;
                     models.nextID = nextBlogs[1].bID;
                 }
-                 var prevBlogs = await base.Query(a => a.bID <= id && a.IsDeleted == false, 2, "bID desc");
+                var prevBlogs = await base.Query(a => a.bID <= id && a.IsDeleted == false, 2, "bID desc");
                 if (prevBlogs.Count == 2)
                 {
                     models.previous = prevBlogs[1].btitle;
