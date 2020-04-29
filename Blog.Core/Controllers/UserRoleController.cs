@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Blog.Core.IServices;
+using Blog.Core.Model;
+using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,14 +42,14 @@ namespace Blog.Core.Controllers
         /// <param name="loginPwd"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<object> AddUser(string loginName, string loginPwd)
+        public async Task<MessageModel<sysUserInfo>> AddUser(string loginName, string loginPwd)
         {
-            var model = await _sysUserInfoServices.SaveUserInfo(loginName, loginPwd);
-            return Ok(new
+            return new MessageModel<sysUserInfo>()
             {
                 success = true,
-                data = model
-            });
+                msg = "添加成功",
+                response = await _sysUserInfoServices.SaveUserInfo(loginName, loginPwd)
+            };
         }
 
         /// <summary>
@@ -56,14 +58,14 @@ namespace Blog.Core.Controllers
         /// <param name="roleName"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<object> AddRole(string roleName)
+        public async Task<MessageModel<Role>> AddRole(string roleName)
         {
-            var model = await _roleServices.SaveRole(roleName);
-            return Ok(new
+            return new MessageModel<Role>()
             {
                 success = true,
-                data = model
-            });
+                msg = "添加成功",
+                response = await _roleServices.SaveRole(roleName)
+            };
         }
 
         /// <summary>
@@ -73,14 +75,14 @@ namespace Blog.Core.Controllers
         /// <param name="rid"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<object> AddUserRole(int uid, int rid)
+        public async Task<MessageModel<UserRole>> AddUserRole(int uid, int rid)
         {
-            var model = await _userRoleServices.SaveUserRole(uid, rid);
-            return Ok(new
+            return new MessageModel<UserRole>()
             {
                 success = true,
-                data = model
-            });
+                msg = "添加成功",
+                response = await _userRoleServices.SaveUserRole(uid, rid)
+            };
         }
 
 

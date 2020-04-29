@@ -10,7 +10,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 密码库表
     /// </summary>
-    [SugarTable("PasswordLib", "WMBLOG_MSSQL")]
+    [SugarTable("PasswordLib", "WMBLOG_MSSQL_2")]
     public class PasswordLib
     {
         [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]

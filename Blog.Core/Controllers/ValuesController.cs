@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.HttpRestSharp;
+using Blog.Core.Common.WebApiClients.HttpApis;
 using Blog.Core.Filter;
 using Blog.Core.IServices;
 using Blog.Core.Model;
@@ -35,6 +36,7 @@ namespace Blog.Core.Controllers
         private readonly IRoleModulePermissionServices _roleModulePermissionServices;
         private readonly IUser _user;
         private readonly IPasswordLibServices _passwordLibServices;
+        private readonly IBlogApi _blogApi;
         readonly IBlogArticleServices _blogArticleServices;
 
         /// <summary>
@@ -47,7 +49,8 @@ namespace Blog.Core.Controllers
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="user"></param>
         /// <param name="passwordLibServices"></param>
-        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices)
+        /// <param name="blogApi"></param>
+        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices, IBlogApi blogApi)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
@@ -58,6 +61,8 @@ namespace Blog.Core.Controllers
             _user = user;
             // 测试多库
             _passwordLibServices = passwordLibServices;
+            // 测试http请求
+            _blogApi = blogApi;
             // 测试AOP加载顺序，配合 return
             _blogArticleServices = blogArticleServices;
         }
@@ -71,6 +76,12 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<ResponseEnum>> Get()
         {
             var data = new MessageModel<ResponseEnum>();
+
+            /*
+             *  测试 sql 查询
+             */
+            var queryBySql = await _blogArticleServices.QuerySql("SELECT bsubmitter,btitle,bcontent,bCreateTime FROM BlogArticle WHERE bID>5");
+
 
             /*
              *  测试 sql 更新
@@ -249,6 +260,18 @@ namespace Blog.Core.Controllers
                 blogs,
                 pwds
             };
+        }
+
+        /// <summary>
+        /// 测试http请求 WebApiClient Get
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("WebApiClientGetAsync")]
+        [AllowAnonymous]
+        public async Task<object> WebApiClientGetAsync()
+        {
+            int id = 1;
+            return await _blogApi.DetailNuxtNoPerAsync(id);
         }
 
         /// <summary>

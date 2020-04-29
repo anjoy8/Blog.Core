@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.ViewModels;
 using Blog.Core.SwaggerHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,19 +27,16 @@ namespace Blog.Core.Controllers
     public class BlogController : Controller
     {
         readonly IBlogArticleServices _blogArticleServices;
-        readonly IRedisCacheManager _redisCacheManager;
         private readonly ILogger<BlogController> _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="blogArticleServices"></param>
-        /// <param name="redisCacheManager"></param>
         /// <param name="logger"></param>
-        public BlogController(IBlogArticleServices blogArticleServices, IRedisCacheManager redisCacheManager, ILogger<BlogController> logger)
+        public BlogController(IBlogArticleServices blogArticleServices, ILogger<BlogController> logger)
         {
             _blogArticleServices = blogArticleServices;
-            _redisCacheManager = redisCacheManager;
             _logger = logger;
         }
 
@@ -54,29 +53,21 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         //[ResponseCache(Duration = 600)]
-        public async Task<object> Get(int id, int page = 1, string bcategory = "技术博文", string key = "")
+        public async Task<MessageModel<PageModel<BlogArticle>>> Get(int id, int page = 1, string bcategory = "技术博文", string key = "")
         {
-            int intTotalCount = 6;
-            int total;
-            int totalCount = 1;
-            List<BlogArticle> blogArticleList = new List<BlogArticle>();
+            int intPageSize = 6;
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
                 key = "";
             }
 
-            blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
+            Expression<Func<BlogArticle, bool>> whereExpression = a =>(a.bcategory == bcategory && a.IsDeleted == false) && ((a.btitle != null && a.btitle.Contains(key)) || (a.bcontent != null && a.bcontent.Contains(key)));
 
-            blogArticleList = blogArticleList.Where(d => (d.btitle != null && d.btitle.Contains(key)) || (d.bcontent != null && d.bcontent.Contains(key))).ToList();
-
-            total = blogArticleList.Count();
-            totalCount = (Math.Ceiling(total.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
+            var pageModelBlog = await _blogArticleServices.QueryPage(whereExpression, page, intPageSize, " bID desc ");
 
             using (MiniProfiler.Current.Step("获取成功后，开始处理最终数据"))
             {
-                blogArticleList = blogArticleList.OrderByDescending(d => d.bID).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
-
-                foreach (var item in blogArticleList)
+                foreach (var item in pageModelBlog.data)
                 {
                     if (!string.IsNullOrEmpty(item.bcontent))
                     {
@@ -90,14 +81,18 @@ namespace Blog.Core.Controllers
                 }
             }
 
-            return Ok(new
+            return new MessageModel<PageModel<BlogArticle>>()
             {
                 success = true,
-                page,
-                total,
-                pageCount = totalCount,
-                data = blogArticleList
-            });
+                msg = "获取成功",
+                response = new PageModel<BlogArticle>()
+                {
+                    page = page,
+                    dataCount = pageModelBlog.dataCount,
+                    data = pageModelBlog.data,
+                    pageCount = pageModelBlog.pageCount,
+                }
+            };
         }
 
 
@@ -107,15 +102,15 @@ namespace Blog.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<object> Get(int id)
+        [Authorize]
+        public async Task<MessageModel<BlogViewModels>> Get(int id)
         {
-            var model = await _blogArticleServices.GetBlogDetails(id);
-            return Ok(new
+            return new MessageModel<BlogViewModels>()
             {
+                msg = "获取成功",
                 success = true,
-                data = model
-            });
+                response = await _blogArticleServices.GetBlogDetails(id)
+            };
         }
 
 
@@ -127,15 +122,15 @@ namespace Blog.Core.Controllers
         [HttpGet]
         [Route("DetailNuxtNoPer")]
         [AllowAnonymous]
-        public async Task<object> DetailNuxtNoPer(int id)
+        public async Task<MessageModel<BlogViewModels>> DetailNuxtNoPer(int id)
         {
             _logger.LogInformation("xxxxxxxxxxxxxxxxxxx");
-            var model = await _blogArticleServices.GetBlogDetails(id);
-            return Ok(new
+            return new MessageModel<BlogViewModels>()
             {
+                msg = "获取成功",
                 success = true,
-                data = model
-            });
+                response = await _blogArticleServices.GetBlogDetails(id)
+            };
         }
 
 
@@ -152,9 +147,14 @@ namespace Blog.Core.Controllers
 
         [CustomRoute(ApiVersions.V2, "Blogtest")]
         [AllowAnonymous]
-        public object V2_Blogtest()
+        public MessageModel<string> V2_Blogtest()
         {
-            return Ok(new { status = 220, data = "我是第二版的博客信息" });
+            return new MessageModel<string>()
+            {
+                msg = "获取成功",
+                success = true,
+                response = "我是第二版的博客信息"
+            };
         }
 
         /// <summary>
@@ -252,13 +252,14 @@ namespace Blog.Core.Controllers
         [HttpGet]
         [Route("ApacheTestUpdate")]
         [AllowAnonymous]
-        public async Task<object> ApacheTestUpdate()
+        public async Task<MessageModel<bool>> ApacheTestUpdate()
         {
-            return Ok(new
+            return new MessageModel<bool>()
             {
                 success = true,
-                data = await _blogArticleServices.Update(new { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", bID = 1 })
-            });
+                msg = "更新成功",
+                response = await _blogArticleServices.Update(new { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", bID = 1 })
+            };
         }
     }
 }

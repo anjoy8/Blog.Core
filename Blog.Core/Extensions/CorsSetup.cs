@@ -24,6 +24,13 @@ namespace Blog.Core.Extensions
                     .AllowAnyHeader()//Ensures that the policy allows any header.
                     .AllowAnyMethod();
                 });
+
+                // 允许任意跨域请求，也要配置中间件
+                //c.AddPolicy("AllRequests",policy=> {
+                //    policy.AllowAnyOrigin();
+                //    policy.AllowAnyMethod();
+                //    policy.AllowAnyHeader();
+                //});
             });
         }
     }

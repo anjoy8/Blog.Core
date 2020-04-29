@@ -168,14 +168,7 @@ namespace Blog.Core.Controllers
 
             foreach (var item in permissions)
             {
-                List<int> pidarr = new List<int>
-                {
-                    item.Pid
-                };
-                if (item.Pid > 0)
-                {
-                    pidarr.Add(0);
-                }
+                List<int> pidarr = new List<int> { };
                 var parent = permissionsList.FirstOrDefault(d => d.Id == item.Pid);
 
                 while (parent != null)
@@ -184,8 +177,12 @@ namespace Blog.Core.Controllers
                     parent = permissionsList.FirstOrDefault(d => d.Id == parent.Pid);
                 }
 
+                //item.PidArr = pidarr.OrderBy(d => d).Distinct().ToList();
 
-                item.PidArr = pidarr.OrderBy(d => d).Distinct().ToList();
+                pidarr.Reverse();
+                pidarr.Insert(0, 0);
+                item.PidArr = pidarr;
+
                 item.MName = apiList.FirstOrDefault(d => d.Id == item.Mid)?.LinkUrl;
                 item.hasChildren = permissionsList.Where(d => d.Pid == item.Id).Any();
             }
@@ -349,18 +346,29 @@ namespace Blog.Core.Controllers
 
             var data = new MessageModel<NavigationBar>();
 
-            // 三种方式获取 uid
-            var uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
-                                     where item.Type == "jti"
-                                     select item.Value).FirstOrDefault().ObjToInt();
-
-            var uidInHttpcontext = (JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid;
-
-            var uName = _user.Name;
-
-            if (uid > 0 && uid == uidInHttpcontext)
+            var uidInHttpcontext1 = 0;
+            var roleIds = new List<int>();
+            // ids4和jwt切换
+            if (Permissions.IsUseIds4)
             {
-                var roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToInt()).Distinct();
+                // ids4
+                uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
+                                     where item.Type == "sub"
+                                     select item.Value).FirstOrDefault().ObjToInt();
+                roleIds = (from item in _httpContext.HttpContext.User.Claims
+                           where item.Type == "role"
+                           select item.Value.ObjToInt()).ToList();
+            }
+            else
+            {
+                // jwt
+                uidInHttpcontext1 = ((JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid).ObjToInt();
+                roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToInt()).Distinct().ToList();
+            }
+
+
+            if (uid > 0 && uid == uidInHttpcontext1)
+            {
                 if (roleIds.Any())
                 {
                     var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && roleIds.Contains(d.RoleId))).Select(d => d.PermissionId.ObjToInt()).Distinct();
@@ -385,7 +393,8 @@ namespace Blog.Core.Controllers
                                                    {
                                                        requireAuth = true,
                                                        title = child.Name,
-                                                       NoTabPage = child.IsHide.ObjToBool()
+                                                       NoTabPage = child.IsHide.ObjToBool(),
+                                                       keepAlive = child.IskeepAlive.ObjToBool()
                                                    }
                                                }).ToList();
 

@@ -45,31 +45,11 @@ namespace Blog.Core.AOP
                     // 异步获取异常，先执行
                     if (IsAsyncMethod(invocation.Method))
                     {
-                        if (invocation.Method.ReturnType == typeof(Task))
+                        var result = invocation.ReturnValue;
+                        if (result is Task)
                         {
-                            invocation.ReturnValue = InternalAsyncHelper.AwaitTaskWithPostActionAndFinally(
-                                (Task)invocation.ReturnValue,
-                             async () => await SuccessAction(invocation),/*成功时执行*/
-                                ex =>
-                                {
-                                    _unitOfWork.RollbackTran();
-
-                                });
+                            Task.WaitAll(result as Task);
                         }
-                        else //Task<TResult>
-                        {
-                            invocation.ReturnValue = InternalAsyncHelper.CallAwaitTaskWithPostActionAndFinallyAndGetResult(
-                             invocation.Method.ReturnType.GenericTypeArguments[0],
-                             invocation.ReturnValue,
-                             async () => await SuccessAction(invocation),/*成功时执行*/
-                             ex =>
-                             {
-                                 _unitOfWork.RollbackTran();
-
-                             });
-
-                        }
-
                     }
                     _unitOfWork.CommitTran();
 
@@ -89,7 +69,10 @@ namespace Blog.Core.AOP
 
         private async Task SuccessAction(IInvocation invocation)
         {
-
+            await Task.Run(() =>
+            {
+                //...
+            });
         }
 
         public static bool IsAsyncMethod(MethodInfo method)

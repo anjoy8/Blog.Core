@@ -9,6 +9,7 @@ using SqlSugar;
 using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -41,32 +42,8 @@ namespace Blog.Core.Repository.Base
                     }
                 }
 
-                if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
-                {
-                    _dbBase.Aop.OnLogExecuting = (sql, pars) => //SQL执行中事件
-                    {
-                        Parallel.For(0, 1, e =>
-                        {
-                            MiniProfiler.Current.CustomTiming("SQL：", GetParas(pars) + "【SQL语句】：" + sql);
-                            LogLock.OutSql2Log("SqlLog", new string[] { GetParas(pars), "【SQL语句】：" + sql });
-
-                        });
-                    };
-                }
-
                 return _dbBase;
             }
-        }
-
-        private string GetParas(SugarParameter[] pars)
-        {
-            string key = "【SQL参数】：";
-            foreach (var param in pars)
-            {
-                key += $"{param.ParameterName}:{param.Value}\n";
-            }
-
-            return key;
         }
 
         internal ISqlSugarClient Db
@@ -370,7 +347,27 @@ namespace Blog.Core.Repository.Base
             return await _db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds).WhereIF(!string.IsNullOrEmpty(strWhere), strWhere).Take(intTop).ToListAsync();
         }
 
+        /// <summary>
+        /// 根据sql语句查询
+        /// </summary>
+        /// <param name="strSql">完整的sql语句</param>
+        /// <param name="parameters">参数</param>
+        /// <returns>泛型集合</returns>
+        public async Task<List<TEntity>> QuerySql(string strSql, SugarParameter[] parameters = null)
+        {
+            return await _db.Ado.SqlQueryAsync<TEntity>(strSql, parameters);
+        }
 
+        /// <summary>
+        /// 根据sql语句查询
+        /// </summary>
+        /// <param name="strSql">完整的sql语句</param>
+        /// <param name="parameters">参数</param>
+        /// <returns>DataTable</returns>
+        public async Task<DataTable> QueryTable(string strSql, SugarParameter[] parameters = null)
+        {
+            return await _db.Ado.GetDataTableAsync(strSql, parameters);
+        }
 
         /// <summary>
         /// 功能描述:分页查询

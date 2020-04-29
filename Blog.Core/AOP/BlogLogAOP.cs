@@ -37,7 +37,7 @@ namespace Blog.Core.AOP
         /// <param name="invocation">包含被拦截方法的信息</param>
         public void Intercept(IInvocation invocation)
         {
-            string UserName = _accessor.HttpContext.User.Identity.Name;
+            string UserName = _accessor.HttpContext?.User?.Identity?.Name;
 
             //记录被拦截方法信息的日志信息
             var dataIntercept = "" +
@@ -56,6 +56,7 @@ namespace Blog.Core.AOP
                 if (IsAsyncMethod(invocation.Method))
                 {
 
+                    #region 方案一
                     //Wait task execution and modify return value
                     if (invocation.Method.ReturnType == typeof(Task))
                     {
@@ -77,14 +78,33 @@ namespace Blog.Core.AOP
                          {
                              LogEx(ex, dataIntercept);
                          });
-
                     }
+                    #endregion
 
+
+                    // 如果方案一不行，试试这个方案
+                    #region 方案二
+                    //invocation.ReturnValue = invocation.Method.Invoke(invocation.InvocationTarget,invocation.Arguments) as Task;
+
+                    //var type = invocation.Method.ReturnType;
+                    //var resultProperty = type.GetProperty("Result");
+                    //dataIntercept += ($"【执行完成结果】：{JsonConvert.SerializeObject(resultProperty.GetValue(invocation.ReturnValue))}");
+
+
+                    //Parallel.For(0, 1, e =>
+                    //{
+                    //    LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
+                    //});
+                    #endregion
                 }
                 else
                 {// 同步1
 
-
+                    dataIntercept += ($"【执行完成结果】：{invocation.ReturnValue}");
+                    Parallel.For(0, 1, e =>
+                    {
+                        LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
+                    });
                 }
             }
             catch (Exception ex)// 同步2
@@ -110,10 +130,12 @@ namespace Blog.Core.AOP
                 dataIntercept += ($"【执行完成结果】：{invocation.ReturnValue}");
             }
 
-
-            Parallel.For(0, 1, e =>
+            await Task.Run(() =>
             {
-                LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
+                Parallel.For(0, 1, e =>
+                {
+                    LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
+                });
             });
         }
 

@@ -11,6 +11,7 @@
 
 
 ![Logo](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/logocore.png)
+![MVP](https://raw.githubusercontent.com/anjoy8/Blog.Core/master/Blog.Core/wwwroot/MVP_Logo_Horizontal_Preferred_Cyan300_CMYK_72ppi.png)
 
 
 BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET Core3.1 Api + Vue 2.x + RBAC】权限框架。 

@@ -1,9 +1,12 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.DB;
+using Blog.Core.Common.LogHelper;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
+using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Extensions
 {
@@ -22,14 +25,25 @@ namespace Blog.Core.Extensions
             // 把多个连接对象注入服务，这里必须采用Scope，因为有事务操作
             services.AddScoped<ISqlSugarClient>(o =>
             {
+                // 连接字符串
                 var listConfig = new List<ConnectionConfig>();
+                // 从库
+                var listConfig_Slave = new List<SlaveConnectionConfig>();
+                BaseDBConfig.MutiConnectionString.Item2.ForEach(s =>
+                {
+                    listConfig_Slave.Add(new SlaveConnectionConfig()
+                    {
+                        HitRate = s.HitRate,
+                        ConnectionString = s.Connection
+                    });
+                });
 
-                BaseDBConfig.MutiConnectionString.ForEach(m =>
+                BaseDBConfig.MutiConnectionString.Item1.ForEach(m =>
                 {
                     listConfig.Add(new ConnectionConfig()
                     {
                         ConfigId = m.ConnId.ObjToString().ToLower(),
-                        ConnectionString = m.Conn,
+                        ConnectionString = m.Connection,
                         DbType = (DbType)m.DbType,
                         IsAutoCloseConnection = true,
                         IsShardSameThread = false,
@@ -37,19 +51,40 @@ namespace Blog.Core.Extensions
                         {
                             OnLogExecuting = (sql, p) =>
                             {
-                                // 多库操作的话，此处暂时无效果，在另一个地方有效，具体请查看BaseRepository.cs
+                                if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
+                                {
+                                    Parallel.For(0, 1, e =>
+                                    {
+                                        MiniProfiler.Current.CustomTiming("SQL：", GetParas(p) + "【SQL语句】：" + sql);
+                                        LogLock.OutSql2Log("SqlLog", new string[] { GetParas(p), "【SQL语句】：" + sql });
+
+                                    });
+                                }
                             }
                         },
                         MoreSettings = new ConnMoreSettings()
                         {
                             IsAutoRemoveDataCache = true
-                        }
+                        },
+                        // 从库
+                        SlaveConnectionConfigs = listConfig_Slave,
                         //InitKeyType = InitKeyType.SystemTable
                     }
                    );
                 });
                 return new SqlSugarClient(listConfig);
             });
+        }
+
+        private static string GetParas(SugarParameter[] pars)
+        {
+            string key = "【SQL参数】：";
+            foreach (var param in pars)
+            {
+                key += $"{param.ParameterName}:{param.Value}\n";
+            }
+
+            return key;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Blog.Core.IServices;
+﻿using Blog.Core.Common.Helper;
+using Blog.Core.IServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
@@ -41,21 +43,37 @@ namespace Blog.Core.AuthHelper
         // 重写异步处理程序
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
-
             var httpContext = _accessor.HttpContext;
 
             if (!requirement.Permissions.Any())
             {
                 var data = await _roleModulePermissionServices.RoleModuleMaps();
-                var list = (from item in data
+                var list = new List<PermissionItem>();
+                // ids4和jwt切换
+                // ids4
+                if (Permissions.IsUseIds4)
+                {
+                    list = (from item in data
                             where item.IsDeleted == false
                             orderby item.Id
                             select new PermissionItem
                             {
                                 Url = item.Module?.LinkUrl,
-                                Role = item.Role?.Name,
+                                Role = item.Role?.Id.ObjToString(),
                             }).ToList();
-
+                }
+                // jwt
+                else
+                {
+                    list = (from item in data
+                            where item.IsDeleted == false
+                            orderby item.Id
+                            select new PermissionItem
+                            {
+                                Url = item.Module?.LinkUrl,
+                                Role = item.Role?.Name.ObjToString(),
+                            }).ToList();
+                }
                 requirement.Permissions = list;
             }
 
@@ -106,9 +124,23 @@ namespace Blog.Core.AuthHelper
                         if (true)
                         {
                             // 获取当前用户的角色信息
-                            var currentUserRoles = (from item in httpContext.User.Claims
+
+                            var currentUserRoles = new List<string>();
+                            // ids4和jwt切换
+                            // ids4
+                            if (Permissions.IsUseIds4)
+                            {
+                                currentUserRoles = (from item in httpContext.User.Claims
+                                                    where item.Type == "role"
+                                                    select item.Value).ToList();
+                            }
+                            else
+                            {
+                                // jwt
+                                currentUserRoles = (from item in httpContext.User.Claims
                                                     where item.Type == requirement.ClaimType
                                                     select item.Value).ToList();
+                            }
 
                             var isMatchRole = false;
                             var permisssionRoles = requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role));
@@ -137,8 +169,19 @@ namespace Blog.Core.AuthHelper
                             }
                         }
 
-                        //判断过期时间（这里仅仅是最坏验证原则，你可以不要这个if else的判断，因为我们使用的官方验证，Token过期后上边的result?.Principal 就为 null 了，进不到这里了，因此这里其实可以不用验证过期时间，只是做最后严谨判断）
-                        if ((httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value) != null && DateTime.Parse(httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value) >= DateTime.Now)
+                        var isExp = false;
+                        // ids4和jwt切换
+                        // ids4
+                        if (Permissions.IsUseIds4)
+                        {
+                            isExp = (httpContext.User.Claims.SingleOrDefault(s => s.Type == "exp")?.Value) != null && DateHelper.StampToDateTime(httpContext.User.Claims.SingleOrDefault(s => s.Type == "exp")?.Value) >= DateTime.Now;
+                        }
+                        else
+                        {
+                            // jwt
+                            isExp = (httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value) != null && DateTime.Parse(httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value) >= DateTime.Now;
+                        }
+                        if (isExp)
                         {
                             context.Succeed(requirement);
                         }

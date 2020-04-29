@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blog.Core.Model.ViewModels;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -15,7 +16,7 @@ namespace Blog.Core.AuthHelper
         /// <param name="claims">需要在登陆的时候配置</param>
         /// <param name="permissionRequirement">在startup中定义的参数</param>
         /// <returns></returns>
-        public static dynamic BuildJwtToken(Claim[] claims, PermissionRequirement permissionRequirement)
+        public static TokenInfoViewModel BuildJwtToken(Claim[] claims, PermissionRequirement permissionRequirement)
         {
             var now = DateTime.Now;
             // 实例化JwtSecurityToken
@@ -31,7 +32,7 @@ namespace Blog.Core.AuthHelper
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             //打包返回前台
-            var responseJson = new
+            var responseJson = new TokenInfoViewModel
             {
                 success = true,
                 token = encodedJwt,

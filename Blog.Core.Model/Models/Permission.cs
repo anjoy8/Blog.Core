@@ -37,6 +37,11 @@ namespace Blog.Core.Model.Models
         /// </summary>
         [SugarColumn(IsNullable = true)]
         public bool? IsHide { get; set; } = false;
+        /// <summary>
+        /// 是否keepAlive
+        /// </summary>
+        [SugarColumn(IsNullable = true)]
+        public bool? IskeepAlive { get; set; } = false;
 
 
         /// <summary>
