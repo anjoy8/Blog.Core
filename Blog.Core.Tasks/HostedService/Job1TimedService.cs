@@ -24,7 +24,7 @@ namespace Blog.Core.Tasks
             Console.WriteLine("Job 1 is starting.");
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromSeconds(60*60));//一个小时
+                TimeSpan.FromSeconds(60 * 60));//一个小时
 
             return Task.CompletedTask;
         }
@@ -34,7 +34,7 @@ namespace Blog.Core.Tasks
             try
             {
                 var model = await _blogArticleServices.GetBlogDetails(1);
-                Console.WriteLine($"BlogArticle:{model?.btitle}");
+                Console.WriteLine($"Job 1 启动成功，获取id=1的博客title为:{model?.btitle}");
             }
             catch (Exception ex)
             {
