@@ -4,6 +4,7 @@ using Blog.Core.IServices;
 using Blog.Core.IRepository;
 using System.Threading.Tasks;
 using System.Linq;
+using Blog.Core.IRepository.Base;
 
 namespace Blog.Core.FrameWork.Services
 {
@@ -12,16 +13,18 @@ namespace Blog.Core.FrameWork.Services
     /// </summary>	
     public class SysUserInfoServices : BaseServices<sysUserInfo>, ISysUserInfoServices
     {
+        private readonly IBaseRepository<sysUserInfo> _dal;
+        private readonly IBaseRepository<UserRole> _userRoleServices;
+        private readonly IBaseRepository<Role> _roleRepository;
 
-        IsysUserInfoRepository _dal;
-        IUserRoleServices _userRoleServices;
-        IRoleRepository _roleRepository;
-        public SysUserInfoServices(IsysUserInfoRepository dal, IUserRoleServices userRoleServices, IRoleRepository roleRepository)
+        public SysUserInfoServices(IBaseRepository<sysUserInfo> dal, IBaseRepository<UserRole> userRoleServices, IBaseRepository<Role> roleRepository)
         {
-            this._dal = dal;
+            _dal = dal;
             this._userRoleServices = userRoleServices;
+            _roleRepository = roleRepository;
             this._roleRepository = roleRepository;
             base.BaseDal = dal;
+            _userRoleServices = userRoleServices;
         }
         /// <summary>
         /// 

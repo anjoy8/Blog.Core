@@ -5,6 +5,7 @@ using Blog.Core.Model.Models;
 using System.Threading.Tasks;
 using System.Linq;
 using Blog.Core.Common;
+using Blog.Core.IRepository.Base;
 
 namespace Blog.Core.Services
 {	
@@ -13,12 +14,12 @@ namespace Blog.Core.Services
 	/// </summary>	
 	public class RoleServices : BaseServices<Role>, IRoleServices
     {
-	
-        IRoleRepository _dal;
-        public RoleServices(IRoleRepository dal)
+        private readonly IBaseRepository<Role> _dal;
+
+        public RoleServices(IBaseRepository<Role> dal)
         {
-            this._dal = dal;
             base.BaseDal = dal;
+            _dal = dal;
         }
        /// <summary>
        /// 

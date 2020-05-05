@@ -14,8 +14,8 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddHostedService<Job1TimedService>();
-            services.AddHostedService<Job2TimedService>();
+            //services.AddHostedService<Job1TimedService>();
+            //services.AddHostedService<Job2TimedService>();
 
             services.AddSingleton<IJobFactory, JobFactory>();
             services.AddTransient<Job_Blogs_Quartz>();//Job使用瞬时依赖注入

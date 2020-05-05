@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Blog.Core.Common;
 using System.Linq;
+using Blog.Core.IRepository.Base;
 
 namespace Blog.Core.Services
 {
@@ -14,12 +15,12 @@ namespace Blog.Core.Services
     /// </summary>	
     public class RoleModulePermissionServices : BaseServices<RoleModulePermission>, IRoleModulePermissionServices
     {
-        readonly IRoleModulePermissionRepository _dal;
-        readonly IModuleRepository _moduleRepository;
-        readonly IRoleRepository _roleRepository;
+        private readonly IRoleModulePermissionRepository _dal;
+        private readonly IBaseRepository<Module> _moduleRepository;
+        private readonly IBaseRepository<Role> _roleRepository;
 
         // 将多个仓储接口注入
-        public RoleModulePermissionServices(IRoleModulePermissionRepository dal, IModuleRepository moduleRepository, IRoleRepository roleRepository)
+        public RoleModulePermissionServices(IRoleModulePermissionRepository dal, IBaseRepository<Module> moduleRepository, IBaseRepository<Role> roleRepository)
         {
             this._dal = dal;
             this._moduleRepository = moduleRepository;

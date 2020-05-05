@@ -2,6 +2,7 @@ using Blog.Core.Services.BASE;
 using Blog.Core.Model.Models;
 using Blog.Core.IRepository;
 using Blog.Core.IServices;
+using Blog.Core.IRepository.Base;
 
 namespace Blog.Core.Services
 {	
@@ -10,12 +11,12 @@ namespace Blog.Core.Services
 	/// </summary>	
 	public class ModulePermissionServices : BaseServices<ModulePermission>, IModulePermissionServices
     {
-	
-        IModulePermissionRepository _dal;
-        public ModulePermissionServices(IModulePermissionRepository dal)
+        private readonly IBaseRepository<ModulePermission> _dal;
+
+        public ModulePermissionServices(IBaseRepository<ModulePermission> dal)
         {
-            this._dal = dal;
             base.BaseDal = dal;
+            _dal = dal;
         }
        
     }

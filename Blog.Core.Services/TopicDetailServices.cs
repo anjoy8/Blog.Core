@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blog.Core.Common;
 using Blog.Core.IRepository;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Services.BASE;
@@ -13,11 +14,12 @@ namespace Blog.Core.Services
 {
     public class TopicDetailServices : BaseServices<TopicDetail>, ITopicDetailServices
     {
-        ITopicDetailRepository _dal;
-        public TopicDetailServices(ITopicDetailRepository dal)
+        private readonly IBaseRepository<TopicDetail> _dal;
+
+        public TopicDetailServices(IBaseRepository<TopicDetail> dal)
         {
-            this._dal = dal;
             base.BaseDal = dal;
+            _dal = dal;
         }
 
         /// <summary>
