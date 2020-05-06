@@ -1,6 +1,10 @@
 ﻿
 ## 更新日志
 
+###  2020-05-06  
+> 重大内容更新：优化Log4Net使用方案，集成，完美配合 `NetCore` 官方的 `ILogger<T>`， [ecaffb6](https://github.com/anjoy8/Blog.Core/commit/ecaffb66bdf10a90c087d01e6e817e54f23a97d4)  
+
+
 ###  2020-04-25  
 增加功能：Http api接口调用，满足微服务需求  
 
