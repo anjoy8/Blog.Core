@@ -48,32 +48,4 @@
     【SQL语句】：SELECT `bID`,`bsubmitter`,`btitle`,`bcategory`,`bcontent`,`btraffic`,`bcommentNum`,`bUpdateTime`,`bCreateTime`,`bRemark`,`IsDeleted` FROM `BlogArticle`  WHERE ( `bID` = @bID0 ) 
 
 
-     
-6、控制器使用 ILogger< blogcontroller >    
-    
-    注意：这种方式并不太友好，除了会加载很多不必要的启动信息以为，目前只能生成到异常日志里，这里我建议使用Log4Net自己的方案：  
-    private static readonly log4net.ILog log =
-        log4net.LogManager.GetLogger(typeof(GlobalExceptionsFilter));    
-    或者我自己写的日志方法:  
-     LogLock.OutSql2Log("RequestResponseLog", new string[] { "Request Data:", content });  
-
-      
-    开启方式：appsettings.json -> Middleware -> RecordAllLogs 节点为true。  
-    文件路径：web目录下，Log/GlobalExcepLogs_{日期}.log。  
-    功能描述：记录项目中的所有日志打印，除非在手动控制日志的输出，否则会打印很多日志。
-    举例来说：  
-    --------------------------------
-   
-    2020-02-17 11:15:07,049| 
-    Request finished in 564.826ms 200 application/json;charset=utf-8
-    --------------------------------
-    2020-02-17 11:16:19,512| 
-    Request starting HTTP/1.1 GET http://localhost:8081/api/Blog/DetailNuxtNoPer?id=1  
-    --------------------------------
-    2020-02-17 11:16:19,882| 
-    AuthenticationScheme: Bearer was not authenticated.
-    --------------------------------
-    2020-02-17 11:16:28,835| 
-    xxxxxxxxxxxxxxxxxxx
-    --------------------------------
-
+  

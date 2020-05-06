@@ -478,7 +478,7 @@
             菜单管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,Microsoft.AspNetCore.Http.IHttpContextAccessor,Blog.Core.Common.HttpContextUser.IUser)">
+        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,Microsoft.AspNetCore.Http.IHttpContextAccessor,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.AuthHelper.PermissionRequirement)">
             <summary>
             构造函数
             </summary>
@@ -488,6 +488,7 @@
             <param name="userRoleServices"></param>
             <param name="httpContext"></param>
             <param name="user"></param>
+            <param name="requirement"></param>
         </member>
         <member name="M:Blog.Core.Controllers.PermissionController.Get(System.Int32,System.String)">
             <summary>
@@ -704,7 +705,7 @@
             用户管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
             <summary>
             构造函数
             </summary>

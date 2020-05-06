@@ -396,9 +396,32 @@ models = _mapper.Map<BlogViewModels>(blogArticle);
 
 ## Log4 
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+通过集成，完美配合 `NetCore` 官方的 `ILogger<T>` 接口:
+Program.cs
+```
+  webBuilder
+  .UseStartup<Startup>()
+  .ConfigureLogging((hostingContext, builder) =>
+  {
+      //该方法需要引入Microsoft.Extensions.Logging名称空间
+      builder.AddFilter("System", LogLevel.Error); //过滤掉系统默认的一些日志
+      builder.AddFilter("Microsoft", LogLevel.Error);//过滤掉系统默认的一些日志
+
+      //添加Log4Net
+      //var path = Directory.GetCurrentDirectory() + "\\log4net.config"; 
+      //不带参数：表示log4net.config的配置文件就在应用程序根目录下，也可以指定配置文件的路径
+      //需要添加nuget包：Microsoft.Extensions.Logging.Log4Net.AspNetCore
+      builder.AddLog4Net();
+  });
+
+```
+
+然后直接在需要的地方注入使用，比如在控制器中
+` public UserController(ILogger<UserController> logger)`
+
+然后就可以使用了。  
+
+
 ## MemoryCache
 
 精力有限，还是更新中...   

@@ -20,9 +20,6 @@ namespace Blog.Core.Filter
         private readonly IWebHostEnvironment _env;
         private readonly IHubContext<ChatHub> _hubContext;
         private readonly ILogger<GlobalExceptionsFilter> _loggerHelper;
-        private static readonly log4net.ILog log =
-        log4net.LogManager.GetLogger(typeof(GlobalExceptionsFilter));
-
 
         public GlobalExceptionsFilter(IWebHostEnvironment env, ILogger<GlobalExceptionsFilter> loggerHelper, IHubContext<ChatHub> hubContext)
         {
@@ -51,7 +48,7 @@ namespace Blog.Core.Filter
 
 
             //采用log4net 进行错误日志记录
-            log.Error(json.Message + WriteLog(json.Message, context.Exception));
+            _loggerHelper.LogError(json.Message + WriteLog(json.Message, context.Exception));
 
             _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
 

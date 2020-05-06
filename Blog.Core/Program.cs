@@ -18,14 +18,6 @@ namespace Blog.Core
         private static readonly ILog log = LogManager.GetLogger(typeof(Program));
         public static void Main(string[] args)
         {
-            XmlDocument log4netConfig = new XmlDocument();
-            log4netConfig.Load(File.OpenRead("Log4net.config"));
-
-            var repo = log4net.LogManager.CreateRepository(
-                Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
-
-            log4net.Config.XmlConfigurator.Configure(repo, log4netConfig["log4net"]);
-
             // 生成承载 web 应用程序的 Microsoft.AspNetCore.Hosting.IWebHost。Build是WebHostBuilder最终的目的，将返回一个构造的WebHost，最终生成宿主。
             var host = CreateHostBuilder(args).Build();
 
@@ -72,11 +64,15 @@ namespace Blog.Core
                 .UseStartup<Startup>()
                 .ConfigureLogging((hostingContext, builder) =>
                 {
-                    builder.ClearProviders();
-                    builder.SetMinimumLevel(LogLevel.Trace);
-                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    builder.AddConsole();
-                    builder.AddDebug();
+                    //该方法需要引入Microsoft.Extensions.Logging名称空间
+                    builder.AddFilter("System", LogLevel.Error); //过滤掉系统默认的一些日志
+                    builder.AddFilter("Microsoft", LogLevel.Error);//过滤掉系统默认的一些日志
+
+                    //添加Log4Net
+                    //var path = Directory.GetCurrentDirectory() + "\\log4net.config"; 
+                    //不带参数：表示log4net.config的配置文件就在应用程序根目录下，也可以指定配置文件的路径
+                    //需要添加nuget包：Microsoft.Extensions.Logging.Log4Net.AspNetCore
+                    builder.AddLog4Net();
                 });
             });
     }

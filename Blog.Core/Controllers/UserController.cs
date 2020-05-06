@@ -28,7 +28,7 @@ namespace Blog.Core.Controllers
         readonly IUserRoleServices _userRoleServices;
         readonly IRoleServices _roleServices;
         private readonly IUser _user;
-        private readonly ILogger<BlogController> _logger;
+        private readonly ILogger<UserController> _logger;
 
         /// <summary>
         /// 构造函数
@@ -39,7 +39,7 @@ namespace Blog.Core.Controllers
         /// <param name="roleServices"></param>
         /// <param name="user"></param>
         /// <param name="logger"></param>
-        public UserController(IUnitOfWork unitOfWork, ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices, IUser user, ILogger<BlogController> logger)
+        public UserController(IUnitOfWork unitOfWork, ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices, IUser user, ILogger<UserController> logger)
         {
             _unitOfWork = unitOfWork;
             _sysUserInfoServices = sysUserInfoServices;
@@ -98,8 +98,10 @@ namespace Blog.Core.Controllers
 
         // GET: api/User/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public string Get(string id)
         {
+            _logger.LogError("test wrong");
             return "value";
         }
 

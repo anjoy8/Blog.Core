@@ -16,7 +16,6 @@ using Blog.Core.IServices;
 using Blog.Core.Middlewares;
 using Blog.Core.Model;
 using log4net;
-using log4net.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -34,14 +33,10 @@ namespace Blog.Core
     public class Startup
     {
 
-        /// <summary>
-        /// log4net 仓储库
-        /// </summary>
-        public static ILoggerRepository Repository { get; set; }
         private IServiceCollection _services;
         private List<Type> tsDIAutofac = new List<Type>();
-        private static readonly ILog log =
-        LogManager.GetLogger(typeof(GlobalExceptionsFilter));
+        private static readonly ILog log = LogManager.GetLogger(typeof(Startup));
+
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
@@ -76,7 +71,8 @@ namespace Blog.Core
             {
                 services.AddAuthorization_Ids4Setup();
             }
-            else{
+            else
+            {
                 services.AddAuthorizationSetup();
             }
             services.AddIpPolicyRateLimitSetup(Configuration);
@@ -209,8 +205,6 @@ namespace Blog.Core
         {
             // Ip限流,尽量放管道外层
             app.UseIpRateLimiting();
-            // 记录所有的访问记录
-            loggerFactory.AddLog4Net();
             // 记录请求与返回数据 
             app.UseReuestResponseLog();
             // signalr 
@@ -259,7 +253,7 @@ namespace Blog.Core
                 // 将swagger首页，设置成我们自定义的页面，记得这个字符串的写法：解决方案名.index.html
                 c.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html");
 
-                if (GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html")==null)
+                if (GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html") == null)
                 {
                     var msg = "index.html的属性，必须设置为嵌入的资源";
                     log.Error(msg);
