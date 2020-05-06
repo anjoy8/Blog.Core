@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Core.AuthHelper;
 using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.HttpContextUser;
@@ -28,6 +29,7 @@ namespace Blog.Core.Controllers
         readonly IUserRoleServices _userRoleServices;
         readonly IHttpContextAccessor _httpContext;
         readonly IUser _user;
+        private readonly PermissionRequirement _requirement;
 
         /// <summary>
         /// 构造函数
@@ -38,7 +40,8 @@ namespace Blog.Core.Controllers
         /// <param name="userRoleServices"></param>
         /// <param name="httpContext"></param>
         /// <param name="user"></param>
-        public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices, IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices, IHttpContextAccessor httpContext, IUser user)
+        /// <param name="requirement"></param>
+        public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices, IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices, IHttpContextAccessor httpContext, IUser user, PermissionRequirement requirement)
         {
             _permissionServices = permissionServices;
             _moduleServices = moduleServices;
@@ -46,7 +49,7 @@ namespace Blog.Core.Controllers
             _userRoleServices = userRoleServices;
             _httpContext = httpContext;
             _user = user;
-
+            _requirement = requirement;
         }
 
         /// <summary>
@@ -242,13 +245,12 @@ namespace Blog.Core.Controllers
             {
                 if (assignView.rid > 0)
                 {
-
                     data.success = true;
 
                     var roleModulePermissions = await _roleModulePermissionServices.Query(d => d.RoleId == assignView.rid);
 
                     var remove = roleModulePermissions.Where(d => !assignView.pids.Contains(d.PermissionId.ObjToInt())).Select(c => (object)c.Id);
-                    data.success |= await _roleModulePermissionServices.DeleteByIds(remove.ToArray());
+                    data.success &= remove.Any() ? await _roleModulePermissionServices.DeleteByIds(remove.ToArray()) : true;
 
                     foreach (var item in assignView.pids)
                     {
@@ -268,13 +270,14 @@ namespace Blog.Core.Controllers
                             roleModulePermission.CreateId = _user.ID;
                             roleModulePermission.CreateBy = _user.Name;
 
-                            data.success |= (await _roleModulePermissionServices.Add(roleModulePermission)) > 0;
+                            data.success &= (await _roleModulePermissionServices.Add(roleModulePermission)) > 0;
 
                         }
                     }
 
                     if (data.success)
                     {
+                        _requirement.Permissions.Clear();
                         data.response = "";
                         data.msg = "保存成功";
                     }
