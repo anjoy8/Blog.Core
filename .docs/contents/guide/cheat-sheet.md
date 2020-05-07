@@ -108,26 +108,34 @@ services.AddIpPolicyRateLimitSetup(Configuration);
 
 ## Authorization-Ids4
 
-本系统 v1.0 版本（目前的 is4 分支，如果没有该分支，表示已经迁移到主分支）已经实现了对 `IdentityServer4` 的迁移，已经支持了统一授权认证，和 `blog` 项目、`Admin` 项目、`DDD` 项目等一起，使用一个统一的认证中心。  
+本系统 v2.0 版本（目前的系统已经集成 `ids4` 和 `jwt`，并且可以自由切换），已经支持了统一授权认证，和 `blog` 项目、`Admin` 项目、`DDD` 项目等一起，使用一个统一的认证中心。  
   
-具体的代码参考：`Blog.Core\Blog.Core\Extensions` 文件夹下的 `AuthorizationSetup.cs` 中 `Ids4` 认证的部分，注意需要引用指定的 `nuget` 包：   
+具体的代码参考：`.\Blog.Core\Extensions` 文件夹下的 `Authorization_Ids4Setup.cs` ，注意需要引用指定的 `nuget` 包，核心代码如下：   
 
 ```
+    //【认证】
+  services.AddAuthentication(o =>
+  {
+      o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+      o.DefaultChallengeScheme = nameof(ApiResponseHandler);
+      o.DefaultForbidScheme = nameof(ApiResponseHandler);
+  })
   // 2.添加Identityserver4认证
   .AddIdentityServerAuthentication(options =>
   {
-      options.Authority = "https://ids.neters.club";
+      options.Authority = Appsettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" });
       options.RequireHttpsMetadata = false;
-      options.ApiName = "blog.core.api";
+      options.ApiName = Appsettings.app(new string[] { "Startup", "IdentityServer4", "ApiName" });
       options.SupportedTokens = IdentityServer4.AccessTokenValidation.SupportedTokens.Jwt;
       options.ApiSecret = "api_secret";
 
   })
 
+
 ```
   
-### 如何在Swagger中配置？
-很简单，直接在 `Swagger` 中直接接入 `oauth、Implicit` 即可：  
+### 如何在Swagger中配置Ids4？
+很简单，直接在 `SwaggerSetup.cs` 中直接接入 `oauth、Implicit` 即可：  
 
 ```
  //接入identityserver4
@@ -138,19 +146,19 @@ services.AddIpPolicyRateLimitSetup(Configuration);
      {
          Implicit = new OpenApiOAuthFlow
          {
-             AuthorizationUrl = new Uri($"http://localhost:5004/connect/authorize"),
+             AuthorizationUrl = new Uri($"{Appsettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" })}/connect/authorize"),
              Scopes = new Dictionary<string, string> {
-                 {
-                     "blog.core.api","ApiResource id" // 资源服务 id
-                 }
+             {
+                 "blog.core.api","ApiResource id"
              }
+         }
          }
      }
  });
 
 ```
   
-然后在 `IdentityServer4`  项目中，做指定的修改：  
+然后在 `IdentityServer4`  项目中，做指定的修改，配置 `8081` 的回调地址：  
 
 ```
  new Client {
@@ -178,6 +186,9 @@ services.AddIpPolicyRateLimitSetup(Configuration);
 
 ```
 
+然后再 `Swagger` 中，配置登录授权：  
+
+<img src="http://apk.neters.club/images/20200507213830.png" alt="swagger" width="600" >
 
 
 ## Authorization-JWT 
@@ -485,20 +496,59 @@ Program.cs
 我会在后边的贡献者页面里，列出你的名字和项目地址做推广
 ## T4
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+项目集成 `T4` 模板 `.\Blog.Core.FrameWork` 层，目的是可以一键生成项目模板代码。  
+1、需要在 `DbHelper.ttinclude` 中配置连接数据库连接字符串；  
+2、针对每一层的代码，就去指定的 `.tt` 模板，直接 `CTRL+S` 保存即可；  
+
+> 注意，目前的代码是 `SqlServer` 版本的，其他数据库版本的，可以去群文件查看。
+
+
 ## Test-xUnit
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+项目简单使用了单元测试，通过 `xUnit` 组件，具体的可以查看 `Blog.Core.Tests` 层相关代码。  
+目前单元测试用例还比较少，大家可以自行添加。  
+
+
 ## Temple-Nuget 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+
+本项目封装了 `Nuget` 自定义模板，你可以根据这个模板，一键创建自己的项目名，具体的操作，可以双击项目根目录下的 `CreateYourProject.bat` ，可以参考 [#如何项目重命名](http://apk.neters.club/.doc/guide/getting-started.html#%E5%A6%82%E4%BD%95%E9%A1%B9%E7%9B%AE%E9%87%8D%E5%91%BD%E5%90%8D)  
+
+同时，你也可以再 `Nuget` 管理器中，搜索到：
+<img src="http://apk.neters.club/images/20200507223058.png" alt="nuget" width="600" >
+
+
+
 ## UserInfo 
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+项目中封装了获取用户信息的方法，在 `.\Blog.Core.Common\HttpContextUser` 文件夹下 `AspNetUser.cs` 实现类和 `IUser.cs` 接口。  
+如果使用，首先需要注入相应的服务，参见：`.\Blog.Core\Extensions` 文件夹下的 `HttpContextSetup.cs`；    
+然后，就直接在控制器中，注入服务使用 `IUser.cs` 即可；  
+
+> 注意：如果要想获取指定的服务，必须要 `Header` 中传递 `Token` ，这是肯定的。  
+> 此外，不一定需要添加 `[Authorize]` 特性，我的 `AspNetUser.cs` 方法中，有一个直接从 `Header` 中解析的方法 `List<string> GetUserInfoFromToken(string ClaimType);`：
+
+```
+ public string GetToken()
+ {
+     return _accessor.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "");
+ }
+
+ public List<string> GetUserInfoFromToken(string ClaimType)
+ {
+
+     var jwtHandler = new JwtSecurityTokenHandler();
+     if (!string.IsNullOrEmpty(GetToken()))
+     {
+         JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(GetToken());
+
+         return (from item in jwtToken.Claims
+                 where item.Type == ClaimType
+                 select item.Value).ToList();
+     }
+     else
+     {
+         return new List<string>() { };
+     }
+ }
+
+```
