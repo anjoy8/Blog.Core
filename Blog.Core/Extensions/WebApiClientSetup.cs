@@ -1,7 +1,7 @@
-﻿using Blog.Core.Common.WebApiClients.HttpApis;
-using WebApiClient.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using Microsoft.Extensions.DependencyInjection;
+using WebApiClient.Extensions.DependencyInjection;
+using Blog.Core.Common.WebApiClients.HttpApis;
 
 namespace Blog.Core.Extensions
 {
@@ -19,6 +19,11 @@ namespace Blog.Core.Extensions
             services.AddHttpApi<IBlogApi>().ConfigureHttpApiConfig(c =>
             {
                 c.HttpHost = new Uri("http://apk.neters.club/");
+                c.FormatOptions.DateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+            });
+            services.AddHttpApi<IDoubanApi>().ConfigureHttpApiConfig(c =>
+            {
+                c.HttpHost = new Uri("http://api.xiaomafeixiang.com/");
                 c.FormatOptions.DateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
             });
         }

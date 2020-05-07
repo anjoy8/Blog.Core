@@ -794,7 +794,7 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi)">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi,Blog.Core.Common.WebApiClients.HttpApis.IDoubanApi)">
             <summary>
             ValuesController
             </summary>
@@ -806,6 +806,7 @@
             <param name="user"></param>
             <param name="passwordLibServices"></param>
             <param name="blogApi"></param>
+            <param name="doubanApi"></param>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get">
             <summary>
@@ -1104,11 +1105,6 @@
             </summary>
             <param name="next"></param>
             <param name="hubContext"></param>
-        </member>
-        <member name="P:Blog.Core.Startup.Repository">
-            <summary>
-            log4net 仓储库
-            </summary>
         </member>
         <member name="T:Blog.Core.SwaggerHelper.CustomApiVersion">
             <summary>

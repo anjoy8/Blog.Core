@@ -37,6 +37,7 @@ namespace Blog.Core.Controllers
         private readonly IUser _user;
         private readonly IPasswordLibServices _passwordLibServices;
         private readonly IBlogApi _blogApi;
+        private readonly IDoubanApi _doubanApi;
         readonly IBlogArticleServices _blogArticleServices;
 
         /// <summary>
@@ -50,7 +51,8 @@ namespace Blog.Core.Controllers
         /// <param name="user"></param>
         /// <param name="passwordLibServices"></param>
         /// <param name="blogApi"></param>
-        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices, IBlogApi blogApi)
+        /// <param name="doubanApi"></param>
+        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices, IBlogApi blogApi, IDoubanApi doubanApi)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
@@ -63,6 +65,7 @@ namespace Blog.Core.Controllers
             _passwordLibServices = passwordLibServices;
             // 测试http请求
             _blogApi = blogApi;
+            _doubanApi = doubanApi;
             // 测试AOP加载顺序，配合 return
             _blogArticleServices = blogArticleServices;
         }
@@ -271,6 +274,8 @@ namespace Blog.Core.Controllers
         public async Task<object> WebApiClientGetAsync()
         {
             int id = 1;
+            string isbn = "9787544270878";
+            var doubanVideoDetail = await _doubanApi.VideoDetailAsync(isbn);
             return await _blogApi.DetailNuxtNoPerAsync(id);
         }
 
