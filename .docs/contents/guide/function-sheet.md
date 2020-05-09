@@ -1,4 +1,4 @@
-# G  功能一览表
+# H  核心功能一览表
 
 
 
@@ -48,4 +48,6 @@
     【SQL语句】：SELECT `bID`,`bsubmitter`,`btitle`,`bcategory`,`bcontent`,`btraffic`,`bcommentNum`,`bUpdateTime`,`bCreateTime`,`bRemark`,`IsDeleted` FROM `BlogArticle`  WHERE ( `bID` = @bID0 ) 
 
 
-  
+  ## 二、控制台信息展示
+
+  <img src="http://apk.neters.club/images/2020-05-09_182758.png" alt="配置" width="800" >

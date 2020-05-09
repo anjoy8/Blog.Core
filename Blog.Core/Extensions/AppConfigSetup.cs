@@ -97,6 +97,26 @@ namespace Blog.Core.Extensions
                     ConsoleHelper.WriteSuccessLine($"IpRateLimiting: True");
                 }
 
+                // 多库
+                if (!Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                {
+                    Console.WriteLine($"Is multi-DataBase: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"Is multi-DataBase: True");
+                }
+
+                // 读写分离
+                if (!Appsettings.app(new string[] { "CQRSEnabled" }).ObjToBool())
+                {
+                    Console.WriteLine($"Is CQRS: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"Is CQRS: True");
+                }
+
                 Console.WriteLine();
             }
 

@@ -42,16 +42,16 @@ namespace Blog.Core.Model.Models
                 SeedDataFolder = Path.Combine(WebRootPath, SeedDataFolder);
                 SeedDataFolderMini = Path.Combine(WebRootPath, SeedDataFolderMini);
 
-                Console.WriteLine("Database config data init...");
+                Console.WriteLine("************ Blog.Core DataBase Set *****************");
                 Console.WriteLine($"Is multi-DataBase: {Appsettings.app(new string[] { "MutiDBEnabled" })}");
                 Console.WriteLine($"Is CQRS: {Appsettings.app(new string[] { "CQRSEnabled" })}");
                 Console.WriteLine();
+                Console.WriteLine($"Master DB ConId: {MyContext.ConnId}");
+                Console.WriteLine($"Master DB Type: {MyContext.DbType}");
+                Console.WriteLine($"Master DB ConnectString: {MyContext.ConnectionString}");
+                Console.WriteLine();
                 if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {
-                    Console.WriteLine($"Master DB Type: {MyContext.DbType}");
-                    Console.WriteLine($"Master DB ConnectString: {MyContext.ConnectionString}");
-                    Console.WriteLine();
-
                     var slaveIndex = 0;
                     BaseDBConfig.MutiConnectionString.Item1.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
                     {
@@ -59,15 +59,11 @@ namespace Blog.Core.Model.Models
                         Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
                         Console.WriteLine($"Slave{slaveIndex} DB Type: {m.DbType}");
                         Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Connection}");
+                        Console.WriteLine($"--------------------------------------");
                     });
-
                 }
                 else if (Appsettings.app(new string[] { "CQRSEnabled" }).ObjToBool())
                 {
-                    Console.WriteLine($"Master DB Type: {MyContext.DbType}");
-                    Console.WriteLine($"Master DB ConnectString: {MyContext.ConnectionString}");
-                    Console.WriteLine();
-
                     var slaveIndex = 0;
                     BaseDBConfig.MutiConnectionString.Item2.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
                     {
@@ -75,17 +71,15 @@ namespace Blog.Core.Model.Models
                         Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
                         Console.WriteLine($"Slave{slaveIndex} DB Type: {m.DbType}");
                         Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Connection}");
+                        Console.WriteLine($"--------------------------------------");
                     });
-
                 }
                 else
                 {
-                    Console.WriteLine("DB Type: " + MyContext.DbType);
-                    Console.WriteLine("DB ConnectString: " + MyContext.ConnectionString);
                 }
 
                 Console.WriteLine();
-                Console.WriteLine("Create Database...");
+                Console.WriteLine($"Create Database(The Db Id:{MyContext.ConnId})...");
                 // 创建数据库
                 myContext.Db.DbMaintenance.CreateDatabase();
 
@@ -118,7 +112,7 @@ namespace Blog.Core.Model.Models
 
                 if (Appsettings.app(new string[] { "AppSettings", "SeedDBDataEnabled" }).ObjToBool())
                 {
-                    Console.WriteLine("Seeding database data...");
+                    Console.WriteLine($"Seeding database data (The Db Id:{MyContext.ConnId})...");
 
                     #region BlogArticle
                     if (!await myContext.Db.Queryable<BlogArticle>().AnyAsync())
