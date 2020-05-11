@@ -1519,5 +1519,44 @@
     "ModifyBy": null,
     "ModifyTime": "\/Date(1546272000000+0800)\/",
     "Id": 154
+  },
+  {
+    "IsDeleted": "0",
+    "RoleId": 4,
+    "ModuleId": 32,
+    "PermissionId": 73,
+    "CreateId": null,
+    "CreateBy": null,
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "Id": 155
+  },
+  {
+    "IsDeleted": "0",
+    "RoleId": 6,
+    "ModuleId": 32,
+    "PermissionId": 73,
+    "CreateId": null,
+    "CreateBy": null,
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "Id": 156
+  },
+  {
+    "IsDeleted": "0",
+    "RoleId": 4,
+    "ModuleId": 27,
+    "PermissionId": 74,
+    "CreateId": null,
+    "CreateBy": null,
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "Id": 157
   }
 ]
