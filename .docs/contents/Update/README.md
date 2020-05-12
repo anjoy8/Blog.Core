@@ -1,6 +1,11 @@
 ﻿
 ## 更新日志
 
+### 2020-05-12
+修复：支持多库模式下，生成项目模板代码 `DbFirstController`  [102c6d6](https://github.com/anjoy8/Blog.Core/commit/102c6d6bfcafd06bf5241844759dea5e7a6815da) 
+> 注意：`T4` 模板不能此功能，一次只能一个数据库，且只能 `SqlServer`
+
+
 ### 2020-05-07
 > 重大内容更新：更新项目模板 `Update Blog.Core.Webapi.Template.2.1.0.nupkg`  [7f64fde](https://github.com/anjoy8/Blog.Core/commit/7f64fde5507f7a8572372dcadb6af5110bd37d68) 
 

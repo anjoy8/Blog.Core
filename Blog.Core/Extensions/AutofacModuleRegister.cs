@@ -85,9 +85,9 @@ namespace Blog.Core.Extensions
 
             //只能注入该类中的虚方法，且必须是public
             //这里仅仅是一个单独类无接口测试，不用过多追问
-            //builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Love)))
-            //    .EnableClassInterceptors()
-            //    .InterceptedBy(cacheType.ToArray());
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(Love)))
+                .EnableClassInterceptors()
+                .InterceptedBy(cacheType.ToArray());
             #endregion
 
             #region 单独注册一个含有接口的类，启用interface代理拦截
