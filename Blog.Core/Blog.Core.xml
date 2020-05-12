@@ -978,6 +978,11 @@
             Cors 启动服务
             </summary>
         </member>
+        <member name="T:Blog.Core.Extensions.SwaggerMildd">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
         <member name="T:Blog.Core.Filter.GlobalRouteAuthorizeConvention">
             <summary>
             Summary:全局路由权限公约

@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace Blog.Core.Extensions
 {
@@ -12,9 +14,13 @@ namespace Blog.Core.Extensions
     /// </summary>
     public static class AllServicesMildd
     {
-        public static void UseAllServicesMildd(this IApplicationBuilder app, IServiceCollection _services, List<Type> tsDIAutofac)
+        public static void UseAllServicesMildd(this IApplicationBuilder app, IServiceCollection _services)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
+
+            List<Type> tsDIAutofac = new List<Type>();
+            tsDIAutofac.AddRange(Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "Blog.Core.Services.dll")).GetTypes().ToList());
+            tsDIAutofac.AddRange(Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "Blog.Core.Repository.dll")).GetTypes().ToList());
 
             app.Map("/allservices", builder => builder.Run(async context =>
             {
