@@ -520,12 +520,17 @@ Program.cs
 
 ## UserInfo 
 
-项目中封装了获取用户信息的方法，在 `.\Blog.Core.Common\HttpContextUser` 文件夹下 `AspNetUser.cs` 实现类和 `IUser.cs` 接口。  
-如果使用，首先需要注入相应的服务，参见：`.\Blog.Core\Extensions` 文件夹下的 `HttpContextSetup.cs`；    
-然后，就直接在控制器中，注入服务使用 `IUser.cs` 即可；  
 
-> 注意：如果要想获取指定的服务，必须要 `Header` 中传递 `Token` ，这是肯定的。  
-> 此外，不一定需要添加 `[Authorize]` 特性，我的 `AspNetUser.cs` 方法中，有一个直接从 `Header` 中解析的方法 `List<string> GetUserInfoFromToken(string ClaimType);`：
+项目中封装了获取用户信息的代码：  
+在 `.\Blog.Core.Common\HttpContextUser` 文件夹下 `AspNetUser.cs` 实现类和 `IUser.cs` 接口。  
+
+如果使用，首先需要注册相应的服务，参见：`.\Blog.Core\Extensions` 文件夹下的 `HttpContextSetup.cs`；    
+然后，就直接在控制器构造函数中，注入接口 `IUser` 即可；  
+
+> `注意`：  
+> 1、如果要想获取指定的服务，必须登录，也就是必须要在 `Header` 中传递有效 `Token` ，这是肯定的。    
+> 2、如果要获取用户信息，一定要在中间件 `app.UseAuthentication()` 之后（不要问为什么），控制器肯定在它之后，所以能获取到；  
+> 3、`【并不是】`一定需要添加 `[Authorize]` 特性，如果你加了这个特性，可以直接获取，但是如果不加，可以从我的 `AspNetUser.cs` 方法中，有一个直接从 `Header` 中解析的方法 `List<string> GetUserInfoFromToken(string ClaimType);`：
 
 ```
  public string GetToken()
