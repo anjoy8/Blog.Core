@@ -1,23 +1,26 @@
-﻿using Blog.Core.Model.Models;
+﻿using Blog.Core.Common.DB;
+using Blog.Core.Model;
+using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
+using System.Linq;
 
 namespace Blog.Core.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Permissions.Name)]
+    //[Authorize(Permissions.Name)]
     public class DbFirstController : ControllerBase
     {
-        private readonly MyContext myContext;
+        private readonly SqlSugarClient _sqlSugarClient;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="myContext"></param>
-        public DbFirstController(MyContext myContext)
+        public DbFirstController(ISqlSugarClient sqlSugarClient)
         {
-            this.myContext = myContext;
+            _sqlSugarClient = sqlSugarClient as SqlSugarClient;
         }
 
         /// <summary>
@@ -25,66 +28,23 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public bool GetFrameFiles()
+        public MessageModel<string> GetFrameFiles()
         {
-            return FrameSeed.CreateModels(myContext)
-                && FrameSeed.CreateIRepositorys(myContext)
-                && FrameSeed.CreateIServices(myContext)
-                && FrameSeed.CreateRepository(myContext)
-                && FrameSeed.CreateServices(myContext)
-                ;
+            var data = new MessageModel<string>() { success = true, msg = "" };
+            BaseDBConfig.MutiConnectionString.Item1.ToList().ForEach(m =>
+            {
+                _sqlSugarClient.ChangeDatabase(m.ConnId.ToLower());
+                data.response += $"库{m.ConnId}-Model层生成：{FrameSeed.CreateModels(_sqlSugarClient)} || ";
+                data.response += $"库{m.ConnId}-IRepositorys层生成：{FrameSeed.CreateIRepositorys(_sqlSugarClient)} || ";
+                data.response += $"库{m.ConnId}-IServices层生成：{FrameSeed.CreateIServices(_sqlSugarClient)} || ";
+                data.response += $"库{m.ConnId}-Repository层生成：{FrameSeed.CreateRepository(_sqlSugarClient)} || ";
+                data.response += $"库{m.ConnId}-Services层生成：{FrameSeed.CreateServices(_sqlSugarClient)} || ";
+            });
+
+            // 切回主库
+            _sqlSugarClient.ChangeDatabase(MainDb.CurrentDbConnId.ToLower());
+
+            return data;
         }
-
-
-        /// <summary>
-        /// 获取 Model 层文件
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public bool GetModelFiles()
-        {
-            return FrameSeed.CreateModels(myContext);
-        }
-
-        /// <summary>
-        /// 获取 IRepository 层文件
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public bool GetIRepositoryFiles()
-        {
-            return FrameSeed.CreateIRepositorys(myContext);
-        }
-
-        /// <summary>
-        /// 获取 IService 层文件
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public bool GetIServiceFiles()
-        {
-            return FrameSeed.CreateIServices(myContext);
-        }
-
-        /// <summary>
-        /// 获取 Repository 层文件
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public bool GetRepositoryFiles()
-        {
-            return FrameSeed.CreateRepository(myContext);
-        }
-
-        /// <summary>
-        /// 获取 Services 层文件
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public bool GetServicesFiles()
-        {
-            return FrameSeed.CreateServices(myContext);
-        }
-
     }
 }

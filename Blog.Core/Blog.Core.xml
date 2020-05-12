@@ -307,45 +307,14 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.#ctor(Blog.Core.Model.Models.MyContext)">
+        <member name="M:Blog.Core.Controllers.DbFirstController.#ctor(SqlSugar.ISqlSugarClient)">
             <summary>
             构造函数
             </summary>
-            <param name="myContext"></param>
         </member>
         <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFiles">
             <summary>
             获取 整体框架 文件
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.GetModelFiles">
-            <summary>
-            获取 Model 层文件
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.GetIRepositoryFiles">
-            <summary>
-            获取 IRepository 层文件
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.GetIServiceFiles">
-            <summary>
-            获取 IService 层文件
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.GetRepositoryFiles">
-            <summary>
-            获取 Repository 层文件
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.GetServicesFiles">
-            <summary>
-            获取 Services 层文件
             </summary>
             <returns></returns>
         </member>
