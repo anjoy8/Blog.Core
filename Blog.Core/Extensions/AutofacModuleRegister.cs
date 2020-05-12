@@ -2,6 +2,7 @@
 using Autofac.Extras.DynamicProxy;
 using Blog.Core.AOP;
 using Blog.Core.Common;
+using Blog.Core.Model;
 using log4net;
 using System;
 using System.Collections.Generic;
