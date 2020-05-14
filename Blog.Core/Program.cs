@@ -69,10 +69,10 @@ namespace Blog.Core
                     builder.AddFilter("Microsoft", LogLevel.Error);//过滤掉系统默认的一些日志
 
                     //添加Log4Net
-                    //var path = Directory.GetCurrentDirectory() + "\\log4net.config"; 
+                    var path = Directory.GetCurrentDirectory() + "\\Log4net.config";
                     //不带参数：表示log4net.config的配置文件就在应用程序根目录下，也可以指定配置文件的路径
                     //需要添加nuget包：Microsoft.Extensions.Logging.Log4Net.AspNetCore
-                    builder.AddLog4Net();
+                    builder.AddLog4Net(path);
                 });
             });
     }
