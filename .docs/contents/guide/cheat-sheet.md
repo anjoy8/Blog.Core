@@ -250,18 +250,16 @@ models = _mapper.Map<BlogViewModels>(blogArticle);
 
 ## CORS
 
-本项目使用的是 `nginx` 跨域代理，但是同时也是支持 `CORS` 代理的，  
-具体的代码可以查看：  
-`Blog.Core\Blog.Core\Extensions` 文件夹下的 `CorsSetup.cs` 扩展类，  
-通过在 `appsettings.json` 文件中配置指定的前端项目 `ip:端口` ，来实现跨域：  
+在线项目使用的是 `nginx` 跨域代理，但是同时也是支持 `CORS` 代理：    
+1、注入服务 `services.AddCorsSetup();` 具体代码 `Blog.Core\Blog.Core\Extensions` 文件夹下的 `CorsSetup.cs` 扩展类；  
+2、配置中间件 `app.UseCors("LimitRequests");` ,要注意中间件顺序；  
+3、配置自己项目的前端端口，通过在 `appsettings.json` 文件中配置自己的前端项目 `ip:端口` ，来实现跨域：  
 
 ```
-
   "Startup": {
     "Cors": {
       "IPs": "http://127.0.0.1:2364,http://localhost:2364,http://localhost:8080,http://localhost:8021,http://localhost:1818"
-    },
-    "ApiName": "Blog.Core"
+    }
   },
 
 ```
@@ -385,25 +383,43 @@ models = _mapper.Map<BlogViewModels>(blogArticle);
 
 
 ## Filter
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+
+项目中一共有四个过滤器
+```
+1、GlobalAuthorizeFilter.cs —— 全局授权配置，添加后，就可以不用在每一个控制器上添加 [Authorize] 特性，但是3.1版本好像有些问题，【暂时放弃使用】；
+2、GlobalExceptionFilter.cs —— 全局异常处理，实现 actionContext 级别的异常日志收集；
+3、GlobalRoutePrefixFilter.cs —— 全局路由前缀公约，统计在路由上加上前缀；
+4、UseServiceDIAttribute.cs —— 测试注入，【暂时无用】；
+```
+文件地址在 `.\Blog.Core\Filter` 文件夹下，其中核心的是 `2` 个，重点使用的是 `1` 个 —— 全局异常错误日志 `GlobalExceptionsFilter`:
+通过注册在 `MVC` 服务 `services.AddControllers()` 中，实现全局异常过滤：
+```
+ services.AddControllers(o =>
+ {
+     // 全局异常过滤
+     o.Filters.Add(typeof(GlobalExceptionsFilter));
+     // 全局路由权限公约
+     //o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
+     // 全局路由前缀，统一修改路由
+     o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
+ })
+```
+
+
 
 ## Framework 
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
-## GlobalExceptionsFilter
+项目采用 `服务+仓储+接口` 的多层结构，使用依赖注入，并且通过解耦项目，较完整的实现了 `DIP` 原则：  
+高层模块不应该依赖于底层模块，二者都应该依赖于抽象。  
+抽象不应该依赖于细节，细节应该依赖于抽象。  
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
-## HttpContext
+同时项目也封装了:  
+`CodeFirst` 初始化数据库以及数据；  
+`DbFirst` 根据数据库（支持多库），生成多层代码，算是简单代码生成器；  
+其他功能，[核心功能与进度](http://apk.neters.club/.doc/guide/#%E5%8A%9F%E8%83%BD%E4%B8%8E%E8%BF%9B%E5%BA%A6)
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+
+ 
 
 ## Log4 
 
@@ -438,6 +454,7 @@ Program.cs
 精力有限，还是更新中...   
 如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
 我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+
 ## Middleware
 
 精力有限，还是更新中...   
