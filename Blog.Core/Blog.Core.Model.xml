@@ -410,6 +410,11 @@
             是否是隐藏菜单
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.Permission.IskeepAlive">
+            <summary>
+            是否keepAlive
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Permission.Func">
             <summary>
             按钮事件
@@ -803,45 +808,109 @@
             <param name="WebRootPath"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateModels(Blog.Core.Model.Models.MyContext,System.String[])">
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateModels(SqlSugar.SqlSugarClient,System.String[])">
             <summary>
             生成Model层
             </summary>
-            <param name="myContext">上下文</param>
+            <param name="sqlSugarClient">sqlsugar实例</param>
             <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateIRepositorys(Blog.Core.Model.Models.MyContext,System.String[])">
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateIRepositorys(SqlSugar.SqlSugarClient,System.String[])">
             <summary>
             生成IRepository层
             </summary>
-            <param name="myContext">上下文</param>
+            <param name="sqlSugarClient">sqlsugar实例</param>
             <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateIServices(Blog.Core.Model.Models.MyContext,System.String[])">
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateIServices(SqlSugar.SqlSugarClient,System.String[])">
             <summary>
             生成 IService 层
             </summary>
-            <param name="myContext">上下文</param>
+            <param name="sqlSugarClient">sqlsugar实例</param>
             <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateRepository(Blog.Core.Model.Models.MyContext,System.String[])">
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateRepository(SqlSugar.SqlSugarClient,System.String[])">
             <summary>
             生成 Repository 层
             </summary>
-            <param name="myContext">上下文</param>
+            <param name="sqlSugarClient">sqlsugar实例</param>
             <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateServices(Blog.Core.Model.Models.MyContext,System.String[])">
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateServices(SqlSugar.SqlSugarClient,System.String[])">
             <summary>
             生成 Service 层
             </summary>
-            <param name="myContext">上下文</param>
+            <param name="sqlSugarClient">sqlsugar实例</param>
             <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
             <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Models.FrameSeed.Create_Model_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String[],System.String,System.Boolean)">
+            <summary>
+            功能描述:根据数据库表生产Model层
+            作　　者:Blog.Core
+            </summary>
+            <param name="sqlSugarClient"></param>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+            <param name="blnSerializable">是否序列化</param>
+        </member>
+        <member name="M:Blog.Core.Model.Models.FrameSeed.Create_IRepository_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String[],System.String)">
+            <summary>
+            功能描述:根据数据库表生产IRepository层
+            作　　者:Blog.Core
+            </summary>
+            <param name="sqlSugarClient"></param>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+        </member>
+        <member name="M:Blog.Core.Model.Models.FrameSeed.Create_IServices_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String[],System.String)">
+            <summary>
+            功能描述:根据数据库表生产IServices层
+            作　　者:Blog.Core
+            </summary>
+            <param name="sqlSugarClient"></param>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+        </member>
+        <member name="M:Blog.Core.Model.Models.FrameSeed.Create_Repository_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String[],System.String)">
+            <summary>
+            功能描述:根据数据库表生产 Repository 层
+            作　　者:Blog.Core
+            </summary>
+            <param name="sqlSugarClient"></param>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+        </member>
+        <member name="M:Blog.Core.Model.Models.FrameSeed.Create_Services_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String[],System.String)">
+            <summary>
+            功能描述:根据数据库表生产 Services 层
+            作　　者:Blog.Core
+            </summary>
+            <param name="sqlSugarClient"></param>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+        </member>
+        <member name="M:Blog.Core.Model.Models.FrameSeed.CreateFilesByClassStringList(System.Collections.Generic.Dictionary{System.String,System.String},System.String,System.String)">
+            <summary>
+            根据模板内容批量生成文件
+            </summary>
+            <param name="ls">类文件字符串list</param>
+            <param name="strPath">生成路径</param>
+            <param name="fileNameTp">文件名格式模板</param>
         </member>
         <member name="M:Blog.Core.Model.Models.MyContext.GetMainConnectionDb">
             <summary>
@@ -878,65 +947,6 @@
             功能描述:构造函数
             作　　者:Blog.Core
             </summary>
-        </member>
-        <member name="M:Blog.Core.Model.Models.MyContext.Create_Model_ClassFileByDBTalbe(System.String,System.String,System.String[],System.String,System.Boolean)">
-            <summary>
-            功能描述:根据数据库表生产Model层
-            作　　者:Blog.Core
-            </summary>
-            <param name="strPath">实体类存放路径</param>
-            <param name="strNameSpace">命名空间</param>
-            <param name="lstTableNames">生产指定的表</param>
-            <param name="strInterface">实现接口</param>
-            <param name="blnSerializable">是否序列化</param>
-        </member>
-        <member name="M:Blog.Core.Model.Models.MyContext.Create_IRepository_ClassFileByDBTalbe(System.String,System.String,System.String[],System.String)">
-            <summary>
-            功能描述:根据数据库表生产IRepository层
-            作　　者:Blog.Core
-            </summary>
-            <param name="strPath">实体类存放路径</param>
-            <param name="strNameSpace">命名空间</param>
-            <param name="lstTableNames">生产指定的表</param>
-            <param name="strInterface">实现接口</param>
-        </member>
-        <member name="M:Blog.Core.Model.Models.MyContext.Create_IServices_ClassFileByDBTalbe(System.String,System.String,System.String[],System.String)">
-            <summary>
-            功能描述:根据数据库表生产IServices层
-            作　　者:Blog.Core
-            </summary>
-            <param name="strPath">实体类存放路径</param>
-            <param name="strNameSpace">命名空间</param>
-            <param name="lstTableNames">生产指定的表</param>
-            <param name="strInterface">实现接口</param>
-        </member>
-        <member name="M:Blog.Core.Model.Models.MyContext.Create_Repository_ClassFileByDBTalbe(System.String,System.String,System.String[],System.String)">
-            <summary>
-            功能描述:根据数据库表生产 Repository 层
-            作　　者:Blog.Core
-            </summary>
-            <param name="strPath">实体类存放路径</param>
-            <param name="strNameSpace">命名空间</param>
-            <param name="lstTableNames">生产指定的表</param>
-            <param name="strInterface">实现接口</param>
-        </member>
-        <member name="M:Blog.Core.Model.Models.MyContext.Create_Services_ClassFileByDBTalbe(System.String,System.String,System.String[],System.String)">
-            <summary>
-            功能描述:根据数据库表生产 Services 层
-            作　　者:Blog.Core
-            </summary>
-            <param name="strPath">实体类存放路径</param>
-            <param name="strNameSpace">命名空间</param>
-            <param name="lstTableNames">生产指定的表</param>
-            <param name="strInterface">实现接口</param>
-        </member>
-        <member name="M:Blog.Core.Model.Models.MyContext.CreateFilesByClassStringList(System.Collections.Generic.Dictionary{System.String,System.String},System.String,System.String)">
-            <summary>
-            根据模板内容批量生成文件
-            </summary>
-            <param name="ls">类文件字符串list</param>
-            <param name="strPath">生成路径</param>
-            <param name="fileNameTp">文件名格式模板</param>
         </member>
         <member name="M:Blog.Core.Model.Models.MyContext.GetEntityDB``1">
             <summary>

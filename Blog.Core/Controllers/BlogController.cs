@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Blog.Core.Common;
 using Blog.Core.Common.Helper;
@@ -26,19 +27,16 @@ namespace Blog.Core.Controllers
     public class BlogController : Controller
     {
         readonly IBlogArticleServices _blogArticleServices;
-        readonly IRedisCacheManager _redisCacheManager;
         private readonly ILogger<BlogController> _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="blogArticleServices"></param>
-        /// <param name="redisCacheManager"></param>
         /// <param name="logger"></param>
-        public BlogController(IBlogArticleServices blogArticleServices, IRedisCacheManager redisCacheManager, ILogger<BlogController> logger)
+        public BlogController(IBlogArticleServices blogArticleServices, ILogger<BlogController> logger)
         {
             _blogArticleServices = blogArticleServices;
-            _redisCacheManager = redisCacheManager;
             _logger = logger;
         }
 
@@ -57,27 +55,19 @@ namespace Blog.Core.Controllers
         //[ResponseCache(Duration = 600)]
         public async Task<MessageModel<PageModel<BlogArticle>>> Get(int id, int page = 1, string bcategory = "技术博文", string key = "")
         {
-            int intTotalCount = 6;
-            int total;
-            int totalCount = 1;
-            List<BlogArticle> blogArticleList = new List<BlogArticle>();
+            int intPageSize = 6;
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
                 key = "";
             }
 
-            blogArticleList = await _blogArticleServices.Query(a => a.bcategory == bcategory && a.IsDeleted == false);
+            Expression<Func<BlogArticle, bool>> whereExpression = a =>(a.bcategory == bcategory && a.IsDeleted == false) && ((a.btitle != null && a.btitle.Contains(key)) || (a.bcontent != null && a.bcontent.Contains(key)));
 
-            blogArticleList = blogArticleList.Where(d => (d.btitle != null && d.btitle.Contains(key)) || (d.bcontent != null && d.bcontent.Contains(key))).ToList();
-
-            total = blogArticleList.Count();
-            totalCount = (Math.Ceiling(total.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
+            var pageModelBlog = await _blogArticleServices.QueryPage(whereExpression, page, intPageSize, " bID desc ");
 
             using (MiniProfiler.Current.Step("获取成功后，开始处理最终数据"))
             {
-                blogArticleList = blogArticleList.OrderByDescending(d => d.bID).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList();
-
-                foreach (var item in blogArticleList)
+                foreach (var item in pageModelBlog.data)
                 {
                     if (!string.IsNullOrEmpty(item.bcontent))
                     {
@@ -98,9 +88,9 @@ namespace Blog.Core.Controllers
                 response = new PageModel<BlogArticle>()
                 {
                     page = page,
-                    dataCount = total,
-                    data = blogArticleList,
-                    pageCount = totalCount,
+                    dataCount = pageModelBlog.dataCount,
+                    data = pageModelBlog.data,
+                    pageCount = pageModelBlog.pageCount,
                 }
             };
         }

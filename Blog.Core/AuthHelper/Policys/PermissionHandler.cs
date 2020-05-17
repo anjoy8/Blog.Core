@@ -99,74 +99,50 @@ namespace Blog.Core.AuthHelper
                     //result?.Principal不为空即登录成功
                     if (result?.Principal != null)
                     {
-                        // 将最新的角色和接口列表更新
-
-                        // 这里暂时把代码移动到了Login获取token的api里,这样就不用每次都请求数据库,造成压力.
-                        // 但是这样有个问题,就是如果修改了某一个角色的菜单权限,不会立刻更新,
-                        // 需要让用户退出重新登录,如果你想实时更新,请把下边的注释打开即可.
-
-                        //var data = await _roleModulePermissionServices.RoleModuleMaps();
-                        //var list = (from item in data
-                        //            where item.IsDeleted == false
-                        //            orderby item.Id
-                        //            select new PermissionItem
-                        //            {
-                        //                Url = item.Module?.LinkUrl,
-                        //                Role = item.Role?.Name,
-                        //            }).ToList();
-                        //requirement.Permissions = list;
 
                         httpContext.User = result.Principal;
 
-                        //权限中是否存在请求的url
-                        //if (requirement.Permissions.GroupBy(g => g.Url).Where(w => w.Key?.ToLower() == questUrl).Count() > 0)
-                        //if (isMatchUrl)
-                        if (true)
+                        // 获取当前用户的角色信息
+                        var currentUserRoles = new List<string>();
+                        // ids4和jwt切换
+                        // ids4
+                        if (Permissions.IsUseIds4)
                         {
-                            // 获取当前用户的角色信息
+                            currentUserRoles = (from item in httpContext.User.Claims
+                                                where item.Type == "role"
+                                                select item.Value).ToList();
+                        }
+                        else
+                        {
+                            // jwt
+                            currentUserRoles = (from item in httpContext.User.Claims
+                                                where item.Type == requirement.ClaimType
+                                                select item.Value).ToList();
+                        }
 
-                            var currentUserRoles = new List<string>();
-                            // ids4和jwt切换
-                            // ids4
-                            if (Permissions.IsUseIds4)
+                        var isMatchRole = false;
+                        var permisssionRoles = requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role));
+                        foreach (var item in permisssionRoles)
+                        {
+                            try
                             {
-                                currentUserRoles = (from item in httpContext.User.Claims
-                                                    where item.Type == "role"
-                                                    select item.Value).ToList();
-                            }
-                            else
-                            {
-                                // jwt
-                                currentUserRoles = (from item in httpContext.User.Claims
-                                                    where item.Type == requirement.ClaimType
-                                                    select item.Value).ToList();
-                            }
-
-                            var isMatchRole = false;
-                            var permisssionRoles = requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role));
-                            foreach (var item in permisssionRoles)
-                            {
-                                try
+                                if (Regex.Match(questUrl, item.Url?.ObjToString().ToLower())?.Value == questUrl)
                                 {
-                                    if (Regex.Match(questUrl, item.Url?.ObjToString().ToLower())?.Value == questUrl)
-                                    {
-                                        isMatchRole = true;
-                                        break;
-                                    }
-                                }
-                                catch (Exception)
-                                {
-                                    // ignored
+                                    isMatchRole = true;
+                                    break;
                                 }
                             }
-
-                            //验证权限
-                            //if (currentUserRoles.Count <= 0 || requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role) && w.Url.ToLower() == questUrl).Count() <= 0)
-                            if (currentUserRoles.Count <= 0 || !isMatchRole)
+                            catch (Exception)
                             {
-                                context.Fail();
-                                return;
+                                // ignored
                             }
+                        }
+
+                        //验证权限
+                        if (currentUserRoles.Count <= 0 || !isMatchRole)
+                        {
+                            context.Fail();
+                            return;
                         }
 
                         var isExp = false;

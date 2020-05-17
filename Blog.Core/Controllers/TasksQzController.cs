@@ -151,7 +151,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<string>> ReCovery(Guid jobId)
+        public async Task<MessageModel<string>> ReCovery(int jobId)
         {
             var data = new MessageModel<string>();
 

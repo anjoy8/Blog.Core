@@ -39,7 +39,7 @@ namespace Blog.Core.Common.AppConfig
                 catch (System.Exception) { }
             }
 
-            return conn[conn.Length - 1];
+            return "";
         }
 
     }

@@ -242,12 +242,11 @@
             博客管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IBlogArticleServices,Blog.Core.Common.IRedisCacheManager,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
+        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IBlogArticleServices,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
             <summary>
             构造函数
             </summary>
             <param name="blogArticleServices"></param>
-            <param name="redisCacheManager"></param>
             <param name="logger"></param>
         </member>
         <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32,System.String,System.String)">
@@ -308,45 +307,14 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.#ctor(Blog.Core.Model.Models.MyContext)">
+        <member name="M:Blog.Core.Controllers.DbFirstController.#ctor(SqlSugar.ISqlSugarClient)">
             <summary>
             构造函数
             </summary>
-            <param name="myContext"></param>
         </member>
         <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFiles">
             <summary>
             获取 整体框架 文件
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.GetModelFiles">
-            <summary>
-            获取 Model 层文件
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.GetIRepositoryFiles">
-            <summary>
-            获取 IRepository 层文件
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.GetIServiceFiles">
-            <summary>
-            获取 IService 层文件
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.GetRepositoryFiles">
-            <summary>
-            获取 Repository 层文件
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.DbFirstController.GetServicesFiles">
-            <summary>
-            获取 Services 层文件
             </summary>
             <returns></returns>
         </member>
@@ -479,7 +447,7 @@
             菜单管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,Microsoft.AspNetCore.Http.IHttpContextAccessor,Blog.Core.Common.HttpContextUser.IUser)">
+        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,Microsoft.AspNetCore.Http.IHttpContextAccessor,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.AuthHelper.PermissionRequirement)">
             <summary>
             构造函数
             </summary>
@@ -489,6 +457,7 @@
             <param name="userRoleServices"></param>
             <param name="httpContext"></param>
             <param name="user"></param>
+            <param name="requirement"></param>
         </member>
         <member name="M:Blog.Core.Controllers.PermissionController.Get(System.Int32,System.String)">
             <summary>
@@ -626,7 +595,7 @@
             <param name="jobId"></param>
             <returns></returns>        
         </member>
-        <member name="M:Blog.Core.Controllers.TasksQzController.ReCovery(System.Guid)">
+        <member name="M:Blog.Core.Controllers.TasksQzController.ReCovery(System.Int32)">
             <summary>
             重启一个计划任务
             </summary>
@@ -705,7 +674,7 @@
             用户管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
             <summary>
             构造函数
             </summary>
@@ -794,7 +763,7 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices)">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi,Blog.Core.Common.WebApiClients.HttpApis.IDoubanApi)">
             <summary>
             ValuesController
             </summary>
@@ -805,6 +774,8 @@
             <param name="roleModulePermissionServices"></param>
             <param name="user"></param>
             <param name="passwordLibServices"></param>
+            <param name="blogApi"></param>
+            <param name="doubanApi"></param>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get">
             <summary>
@@ -873,6 +844,12 @@
         <member name="M:Blog.Core.Controllers.ValuesController.TestMutiDBAPI">
             <summary>
             测试多库连接
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.WebApiClientGetAsync">
+            <summary>
+            测试http请求 WebApiClient Get
             </summary>
             <returns></returns>
         </member>
@@ -954,7 +931,23 @@
             Swagger 启动服务
             </summary>
         </member>
+        <member name="T:Blog.Core.Extensions.WebApiClientSetup">
+            <summary>
+            WebApiClientSetup 启动服务
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Extensions.WebApiClientSetup.AddHttpApi(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            注册WebApiClient接口
+            </summary>
+            <param name="services"></param>
+        </member>
         <member name="T:Blog.Core.Extensions.AllServicesMildd">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Extensions.SwaggerMildd">
             <summary>
             Cors 启动服务
             </summary>
@@ -1086,11 +1079,6 @@
             </summary>
             <param name="next"></param>
             <param name="hubContext"></param>
-        </member>
-        <member name="P:Blog.Core.Startup.Repository">
-            <summary>
-            log4net 仓储库
-            </summary>
         </member>
         <member name="T:Blog.Core.SwaggerHelper.CustomApiVersion">
             <summary>

@@ -108,26 +108,34 @@ services.AddIpPolicyRateLimitSetup(Configuration);
 
 ## Authorization-Ids4
 
-本系统 v1.0 版本（目前的 is4 分支，如果没有该分支，表示已经迁移到主分支）已经实现了对 `IdentityServer4` 的迁移，已经支持了统一授权认证，和 `blog` 项目、`Admin` 项目、`DDD` 项目等一起，使用一个统一的认证中心。  
+本系统 v2.0 版本（目前的系统已经集成 `ids4` 和 `jwt`，并且可以自由切换），已经支持了统一授权认证，和 `blog` 项目、`Admin` 项目、`DDD` 项目等一起，使用一个统一的认证中心。  
   
-具体的代码参考：`Blog.Core\Blog.Core\Extensions` 文件夹下的 `AuthorizationSetup.cs` 中 `Ids4` 认证的部分，注意需要引用指定的 `nuget` 包：   
+具体的代码参考：`.\Blog.Core\Extensions` 文件夹下的 `Authorization_Ids4Setup.cs` ，注意需要引用指定的 `nuget` 包，核心代码如下：   
 
 ```
+    //【认证】
+  services.AddAuthentication(o =>
+  {
+      o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+      o.DefaultChallengeScheme = nameof(ApiResponseHandler);
+      o.DefaultForbidScheme = nameof(ApiResponseHandler);
+  })
   // 2.添加Identityserver4认证
   .AddIdentityServerAuthentication(options =>
   {
-      options.Authority = "https://ids.neters.club";
+      options.Authority = Appsettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" });
       options.RequireHttpsMetadata = false;
-      options.ApiName = "blog.core.api";
+      options.ApiName = Appsettings.app(new string[] { "Startup", "IdentityServer4", "ApiName" });
       options.SupportedTokens = IdentityServer4.AccessTokenValidation.SupportedTokens.Jwt;
       options.ApiSecret = "api_secret";
 
   })
 
+
 ```
   
-### 如何在Swagger中配置？
-很简单，直接在 `Swagger` 中直接接入 `oauth、Implicit` 即可：  
+### 如何在Swagger中配置Ids4？
+很简单，直接在 `SwaggerSetup.cs` 中直接接入 `oauth、Implicit` 即可：  
 
 ```
  //接入identityserver4
@@ -138,19 +146,19 @@ services.AddIpPolicyRateLimitSetup(Configuration);
      {
          Implicit = new OpenApiOAuthFlow
          {
-             AuthorizationUrl = new Uri($"http://localhost:5004/connect/authorize"),
+             AuthorizationUrl = new Uri($"{Appsettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" })}/connect/authorize"),
              Scopes = new Dictionary<string, string> {
-                 {
-                     "blog.core.api","ApiResource id" // 资源服务 id
-                 }
+             {
+                 "blog.core.api","ApiResource id"
              }
+         }
          }
      }
  });
 
 ```
   
-然后在 `IdentityServer4`  项目中，做指定的修改：  
+然后在 `IdentityServer4`  项目中，做指定的修改，配置 `8081` 的回调地址：  
 
 ```
  new Client {
@@ -178,6 +186,9 @@ services.AddIpPolicyRateLimitSetup(Configuration);
 
 ```
 
+然后再 `Swagger` 中，配置登录授权：  
+
+<img src="http://apk.neters.club/images/20200507213830.png" alt="swagger" width="600" >
 
 
 ## Authorization-JWT 
@@ -239,18 +250,16 @@ models = _mapper.Map<BlogViewModels>(blogArticle);
 
 ## CORS
 
-本项目使用的是 `nginx` 跨域代理，但是同时也是支持 `CORS` 代理的，  
-具体的代码可以查看：  
-`Blog.Core\Blog.Core\Extensions` 文件夹下的 `CorsSetup.cs` 扩展类，  
-通过在 `appsettings.json` 文件中配置指定的前端项目 `ip:端口` ，来实现跨域：  
+在线项目使用的是 `nginx` 跨域代理，但是同时也是支持 `CORS` 代理：    
+1、注入服务 `services.AddCorsSetup();` 具体代码 `Blog.Core\Blog.Core\Extensions` 文件夹下的 `CorsSetup.cs` 扩展类；  
+2、配置中间件 `app.UseCors("LimitRequests");` ,要注意中间件顺序；  
+3、配置自己项目的前端端口，通过在 `appsettings.json` 文件中配置自己的前端项目 `ip:端口` ，来实现跨域：  
 
 ```
-
   "Startup": {
     "Cors": {
       "IPs": "http://127.0.0.1:2364,http://localhost:2364,http://localhost:8080,http://localhost:8021,http://localhost:1818"
-    },
-    "ApiName": "Blog.Core"
+    }
   },
 
 ```
@@ -374,36 +383,78 @@ models = _mapper.Map<BlogViewModels>(blogArticle);
 
 
 ## Filter
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+
+项目中一共有四个过滤器
+```
+1、GlobalAuthorizeFilter.cs —— 全局授权配置，添加后，就可以不用在每一个控制器上添加 [Authorize] 特性，但是3.1版本好像有些问题，【暂时放弃使用】；
+2、GlobalExceptionFilter.cs —— 全局异常处理，实现 actionContext 级别的异常日志收集；
+3、GlobalRoutePrefixFilter.cs —— 全局路由前缀公约，统计在路由上加上前缀；
+4、UseServiceDIAttribute.cs —— 测试注入，【暂时无用】；
+```
+文件地址在 `.\Blog.Core\Filter` 文件夹下，其中核心的是 `2` 个，重点使用的是 `1` 个 —— 全局异常错误日志 `GlobalExceptionsFilter`:
+通过注册在 `MVC` 服务 `services.AddControllers()` 中，实现全局异常过滤：
+```
+ services.AddControllers(o =>
+ {
+     // 全局异常过滤
+     o.Filters.Add(typeof(GlobalExceptionsFilter));
+     // 全局路由权限公约
+     //o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
+     // 全局路由前缀，统一修改路由
+     o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
+ })
+```
+
+
 
 ## Framework 
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
-## GlobalExceptionsFilter
+项目采用 `服务+仓储+接口` 的多层结构，使用依赖注入，并且通过解耦项目，较完整的实现了 `DIP` 原则：  
+高层模块不应该依赖于底层模块，二者都应该依赖于抽象。  
+抽象不应该依赖于细节，细节应该依赖于抽象。  
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
-## HttpContext
+同时项目也封装了:  
+`CodeFirst` 初始化数据库以及数据；  
+`DbFirst` 根据数据库（支持多库），生成多层代码，算是简单代码生成器；  
+其他功能，[核心功能与进度](http://apk.neters.club/.doc/guide/#%E5%8A%9F%E8%83%BD%E4%B8%8E%E8%BF%9B%E5%BA%A6)
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+
+ 
 
 ## Log4 
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+通过集成，完美配合 `NetCore` 官方的 `ILogger<T>` 接口:
+Program.cs
+```
+  webBuilder
+  .UseStartup<Startup>()
+  .ConfigureLogging((hostingContext, builder) =>
+  {
+      //该方法需要引入Microsoft.Extensions.Logging名称空间
+      builder.AddFilter("System", LogLevel.Error); //过滤掉系统默认的一些日志
+      builder.AddFilter("Microsoft", LogLevel.Error);//过滤掉系统默认的一些日志
+
+      //添加Log4Net
+      //var path = Directory.GetCurrentDirectory() + "\\log4net.config"; 
+      //不带参数：表示log4net.config的配置文件就在应用程序根目录下，也可以指定配置文件的路径
+      //需要添加nuget包：Microsoft.Extensions.Logging.Log4Net.AspNetCore
+      builder.AddLog4Net();
+  });
+
+```
+
+然后直接在需要的地方注入使用，比如在控制器中
+` public UserController(ILogger<UserController> logger)`
+
+然后就可以使用了。  
+
+
 ## MemoryCache
 
 精力有限，还是更新中...   
 如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
 我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+
 ## Middleware
 
 精力有限，还是更新中...   
@@ -462,20 +513,64 @@ models = _mapper.Map<BlogViewModels>(blogArticle);
 我会在后边的贡献者页面里，列出你的名字和项目地址做推广
 ## T4
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+项目集成 `T4` 模板 `.\Blog.Core.FrameWork` 层，目的是可以一键生成项目模板代码。  
+1、需要在 `DbHelper.ttinclude` 中配置连接数据库连接字符串；  
+2、针对每一层的代码，就去指定的 `.tt` 模板，直接 `CTRL+S` 保存即可；  
+
+> 注意，目前的代码是 `SqlServer` 版本的，其他数据库版本的，可以去群文件查看。
+
+
 ## Test-xUnit
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+项目简单使用了单元测试，通过 `xUnit` 组件，具体的可以查看 `Blog.Core.Tests` 层相关代码。  
+目前单元测试用例还比较少，大家可以自行添加。  
+
+
 ## Temple-Nuget 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+
+本项目封装了 `Nuget` 自定义模板，你可以根据这个模板，一键创建自己的项目名，具体的操作，可以双击项目根目录下的 `CreateYourProject.bat` ，可以参考 [#如何项目重命名](http://apk.neters.club/.doc/guide/getting-started.html#%E5%A6%82%E4%BD%95%E9%A1%B9%E7%9B%AE%E9%87%8D%E5%91%BD%E5%90%8D)  
+
+同时，你也可以再 `Nuget` 管理器中，搜索到：
+<img src="http://apk.neters.club/images/20200507223058.png" alt="nuget" width="600" >
+
+
+
 ## UserInfo 
 
-精力有限，还是更新中...   
-如果你愿意帮忙，可以直接在GitHub中，提交pull request，   
-我会在后边的贡献者页面里，列出你的名字和项目地址做推广
+
+项目中封装了获取用户信息的代码：  
+在 `.\Blog.Core.Common\HttpContextUser` 文件夹下 `AspNetUser.cs` 实现类和 `IUser.cs` 接口。  
+
+如果使用，首先需要注册相应的服务，参见：`.\Blog.Core\Extensions` 文件夹下的 `HttpContextSetup.cs`；    
+然后，就直接在控制器构造函数中，注入接口 `IUser` 即可；  
+
+> `注意`：  
+> 1、如果要想获取指定的服务，必须登录，也就是必须要在 `Header` 中传递有效 `Token` ，这是肯定的。    
+> 2、如果要获取用户信息，一定要在中间件 `app.UseAuthentication()` 之后（不要问为什么），控制器肯定在它之后，所以能获取到；  
+> 3、`【并不是】`一定需要添加 `[Authorize]` 特性，如果你加了这个特性，可以直接获取，但是如果不加，可以从我的 `AspNetUser.cs` 方法中，有一个直接从 `Header` 中解析的方法 `List<string> GetUserInfoFromToken(string ClaimType);`：
+
+```
+ public string GetToken()
+ {
+     return _accessor.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "");
+ }
+
+ public List<string> GetUserInfoFromToken(string ClaimType)
+ {
+
+     var jwtHandler = new JwtSecurityTokenHandler();
+     if (!string.IsNullOrEmpty(GetToken()))
+     {
+         JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(GetToken());
+
+         return (from item in jwtToken.Claims
+                 where item.Type == ClaimType
+                 select item.Value).ToList();
+     }
+     else
+     {
+         return new List<string>() { };
+     }
+ }
+
+```

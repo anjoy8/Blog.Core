@@ -39,7 +39,7 @@ namespace Blog.Core.Tests
             {
                 return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
                 {
-                    ConnectionString = GetMainConnectionDb().Conn,//必填, 数据库连接字符串
+                    ConnectionString = GetMainConnectionDb().Connection,//必填, 数据库连接字符串
                     DbType = (SqlSugar.DbType)GetMainConnectionDb().DbType,//必填, 数据库类型
                     IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
                     IsShardSameThread = true,//共享线程
@@ -152,7 +152,7 @@ namespace Blog.Core.Tests
             {
                 return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
                 {
-                    ConnectionString = GetMainConnectionDb().Conn,//必填, 数据库连接字符串
+                    ConnectionString = GetMainConnectionDb().Connection,//必填, 数据库连接字符串
                     DbType = (SqlSugar.DbType)GetMainConnectionDb().DbType,//必填, 数据库类型
                     IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
                     IsShardSameThread = true,//共享线程
@@ -182,12 +182,6 @@ namespace Blog.Core.Tests
 
             //使用已进行的组件登记创建新容器
             var ApplicationContainer = builder.Build();
-
-            var blogservice = ApplicationContainer.Resolve<IBlogArticleServices>();
-            var myContext = ApplicationContainer.Resolve<MyContext>();
-
-            DBSeed.SeedAsync(myContext, basePath).Wait();
-
 
             return ApplicationContainer;
         }
