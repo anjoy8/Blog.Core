@@ -30,7 +30,7 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public int ModuleId { get; set; }
         /// <summary>
-        /// 按钮ID
+        /// api ID
         /// </summary>
         [SugarColumn(IsNullable = true)]
         public int? PermissionId { get; set; }

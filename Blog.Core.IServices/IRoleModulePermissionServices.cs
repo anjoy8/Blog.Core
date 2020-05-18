@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Blog.Core.IServices
-{	
-	/// <summary>
-	/// RoleModulePermissionServices
-	/// </summary>	
+{
+    /// <summary>
+    /// RoleModulePermissionServices
+    /// </summary>	
     public interface IRoleModulePermissionServices :IBaseServices<RoleModulePermission>
 	{
 
@@ -15,5 +15,6 @@ namespace Blog.Core.IServices
         Task<List<RoleModulePermission>> TestModelWithChildren();
         Task<List<TestMuchTableResult>> QueryMuchTable();
         Task<List<RoleModulePermission>> RoleModuleMaps();
+        Task<List<RoleModulePermission>> GetRMPMaps();
     }
 }

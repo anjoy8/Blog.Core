@@ -98,7 +98,7 @@ namespace Blog.Core.Controllers
 
         // GET: api/Transaction/5
         [HttpGet("{id}")]
-        public async Task<bool> Get(int id)
+        public async Task<MessageModel<string>> Get(int id)
         {
             return await _guestbookServices.TestTranInRepository();
         }
