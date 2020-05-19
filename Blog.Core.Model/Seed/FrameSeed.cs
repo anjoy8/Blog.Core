@@ -16,14 +16,15 @@ namespace Blog.Core.Model.Models
         /// 生成Model层
         /// </summary>
         /// <param name="sqlSugarClient">sqlsugar实例</param>
+        /// <param name="ConnId">数据库链接ID</param>
         /// <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
         /// <returns></returns>
-        public static bool CreateModels(SqlSugarClient sqlSugarClient, string[] tableNames = null)
+        public static bool CreateModels(SqlSugarClient sqlSugarClient, string ConnId, string[] tableNames = null)
         {
 
             try
             {
-                Create_Model_ClassFileByDBTalbe(sqlSugarClient, $@"C:\my-file\Blog.Core.Model", "Blog.Core.Model.Models", tableNames, "");
+                Create_Model_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Model", "Blog.Core.Model.Models", tableNames, "");
                 return true;
             }
             catch (Exception)
@@ -37,14 +38,15 @@ namespace Blog.Core.Model.Models
         /// 生成IRepository层
         /// </summary>
         /// <param name="sqlSugarClient">sqlsugar实例</param>
+        /// <param name="ConnId">数据库链接ID</param>
         /// <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
         /// <returns></returns>
-        public static bool CreateIRepositorys(SqlSugarClient sqlSugarClient, string[] tableNames = null)
+        public static bool CreateIRepositorys(SqlSugarClient sqlSugarClient, string ConnId, string[] tableNames = null)
         {
 
             try
             {
-                Create_IRepository_ClassFileByDBTalbe(sqlSugarClient, $@"C:\my-file\Blog.Core.IRepository", "Blog.Core.IRepository", tableNames, "");
+                Create_IRepository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IRepository", "Blog.Core.IRepository", tableNames, "");
                 return true;
             }
             catch (Exception)
@@ -60,14 +62,15 @@ namespace Blog.Core.Model.Models
         /// 生成 IService 层
         /// </summary>
         /// <param name="sqlSugarClient">sqlsugar实例</param>
+        /// <param name="ConnId">数据库链接ID</param>
         /// <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
         /// <returns></returns>
-        public static bool CreateIServices(SqlSugarClient sqlSugarClient, string[] tableNames = null)
+        public static bool CreateIServices(SqlSugarClient sqlSugarClient, string ConnId, string[] tableNames = null)
         {
 
             try
             {
-                Create_IServices_ClassFileByDBTalbe(sqlSugarClient, $@"C:\my-file\Blog.Core.IServices", "Blog.Core.IServices", tableNames, "");
+                Create_IServices_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IServices", "Blog.Core.IServices", tableNames, "");
                 return true;
             }
             catch (Exception)
@@ -83,14 +86,15 @@ namespace Blog.Core.Model.Models
         /// 生成 Repository 层
         /// </summary>
         /// <param name="sqlSugarClient">sqlsugar实例</param>
+        /// <param name="ConnId">数据库链接ID</param>
         /// <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
         /// <returns></returns>
-        public static bool CreateRepository(SqlSugarClient sqlSugarClient, string[] tableNames = null)
+        public static bool CreateRepository(SqlSugarClient sqlSugarClient, string ConnId, string[] tableNames = null)
         {
 
             try
             {
-                Create_Repository_ClassFileByDBTalbe(sqlSugarClient, $@"C:\my-file\Blog.Core.Repository", "Blog.Core.Repository", tableNames, "");
+                Create_Repository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Repository", "Blog.Core.Repository", tableNames, "");
                 return true;
             }
             catch (Exception)
@@ -106,14 +110,15 @@ namespace Blog.Core.Model.Models
         /// 生成 Service 层
         /// </summary>
         /// <param name="sqlSugarClient">sqlsugar实例</param>
+        /// <param name="ConnId">数据库链接ID</param>
         /// <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
         /// <returns></returns>
-        public static bool CreateServices(SqlSugarClient sqlSugarClient, string[] tableNames = null)
+        public static bool CreateServices(SqlSugarClient sqlSugarClient, string ConnId, string[] tableNames = null)
         {
 
             try
             {
-                Create_Services_ClassFileByDBTalbe(sqlSugarClient, $@"C:\my-file\Blog.Core.Services", "Blog.Core.Services", tableNames, "");
+                Create_Services_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Services", "Blog.Core.Services", tableNames, "");
                 return true;
             }
             catch (Exception)
@@ -134,6 +139,7 @@ namespace Blog.Core.Model.Models
         /// 作　　者:Blog.Core
         /// </summary>
         /// <param name="sqlSugarClient"></param>
+        /// <param name="ConnId">数据库链接ID</param>
         /// <param name="strPath">实体类存放路径</param>
         /// <param name="strNameSpace">命名空间</param>
         /// <param name="lstTableNames">生产指定的表</param>
@@ -141,12 +147,17 @@ namespace Blog.Core.Model.Models
         /// <param name="blnSerializable">是否序列化</param>
         private static void Create_Model_ClassFileByDBTalbe(
           SqlSugarClient sqlSugarClient,
+          string ConnId,
           string strPath,
           string strNameSpace,
           string[] lstTableNames,
           string strInterface,
           bool blnSerializable = false)
         {
+            //多库文件分离
+            strPath = strPath + @"\Models\" + ConnId;
+            strNameSpace = strNameSpace + "." + ConnId;
+
             var IDbFirst = sqlSugarClient.DbFirst;
             if (lstTableNames != null && lstTableNames.Length > 0)
             {
@@ -154,12 +165,13 @@ namespace Blog.Core.Model.Models
             }
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
-                  .SettingClassTemplate(p => p = @"
-{using}
+                  .SettingClassTemplate(p => p =
+@"{using}
 
 namespace " + strNameSpace + @"
 {
-    {ClassDescription}{SugarTable}" + (blnSerializable ? "[Serializable]" : "") + @"
+{ClassDescription}
+    [SugarTable( ""{ClassName}"", """ + ConnId + @""")]" + (blnSerializable ? "\n    [Serializable]" : "") + @"
     public class {ClassName}" + (string.IsNullOrEmpty(strInterface) ? "" : (" : " + strInterface)) + @"
     {
         public {ClassName}()
@@ -167,21 +179,16 @@ namespace " + strNameSpace + @"
         }
         {PropertyName}
     }
-}
-                    ")
+}")
+                  .SettingPropertyDescriptionTemplate(p => p = string.Empty)
+                  .SettingPropertyTemplate(p => p =
+@"{SugarColumn}
+           public {PropertyType} {PropertyName} { get; set; }")
 
-                  .SettingPropertyTemplate(p => p = @"
-        {SugarColumn}
-        public {PropertyType} {PropertyName} { get; set; }
-
-            ")
-
-                   //.SettingPropertyDescriptionTemplate(p => p = "          private {PropertyType} _{PropertyName};\r\n" + p)
                    //.SettingConstructorTemplate(p => p = "              this._{PropertyName} ={DefaultValue};")
 
                    .ToClassStringList(strNameSpace);
             CreateFilesByClassStringList(ls, strPath, "{0}");
-
         }
         #endregion
 
@@ -193,17 +200,23 @@ namespace " + strNameSpace + @"
         /// 作　　者:Blog.Core
         /// </summary>
         /// <param name="sqlSugarClient"></param>
+        /// <param name="ConnId">数据库链接ID</param>
         /// <param name="strPath">实体类存放路径</param>
         /// <param name="strNameSpace">命名空间</param>
         /// <param name="lstTableNames">生产指定的表</param>
         /// <param name="strInterface">实现接口</param>
         private static void Create_IRepository_ClassFileByDBTalbe(
-          SqlSugarClient sqlSugarClient,
+          SqlSugarClient sqlSugarClient, 
+          string ConnId,
           string strPath,
           string strNameSpace,
           string[] lstTableNames,
           string strInterface)
         {
+            //多库文件分离
+            strPath = strPath + @"\" + ConnId;
+            strNameSpace = strNameSpace + "." + ConnId;
+
             var IDbFirst = sqlSugarClient.DbFirst;
             if (lstTableNames != null && lstTableNames.Length > 0)
             {
@@ -211,9 +224,9 @@ namespace " + strNameSpace + @"
             }
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
-                 .SettingClassTemplate(p => p = @"
-using Blog.Core.IRepository.Base;
-using Blog.Core.Model.Models;
+                 .SettingClassTemplate(p => p =
+@"using ShanYing.Sunrise.IRepository.Base;
+using ShanYing.Sunrise.Model.Models." + ConnId + @";
 
 namespace " + strNameSpace + @"
 {
@@ -223,8 +236,7 @@ namespace " + strNameSpace + @"
     public interface I{ClassName}Repository : IBaseRepository<{ClassName}>" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
     {
     }
-}
-                    ")
+}")
 
                   .ToClassStringList(strNameSpace);
             CreateFilesByClassStringList(ls, strPath, "I{0}Repository");
@@ -239,17 +251,23 @@ namespace " + strNameSpace + @"
         /// 作　　者:Blog.Core
         /// </summary>
         /// <param name="sqlSugarClient"></param>
+        /// <param name="ConnId">数据库链接ID</param>
         /// <param name="strPath">实体类存放路径</param>
         /// <param name="strNameSpace">命名空间</param>
         /// <param name="lstTableNames">生产指定的表</param>
         /// <param name="strInterface">实现接口</param>
         private static void Create_IServices_ClassFileByDBTalbe(
-          SqlSugarClient sqlSugarClient,
+          SqlSugarClient sqlSugarClient, 
+          string ConnId,
           string strPath,
           string strNameSpace,
           string[] lstTableNames,
           string strInterface)
         {
+            //多库文件分离
+            strPath = strPath + @"\" + ConnId;
+            strNameSpace = strNameSpace + "." + ConnId;
+
             var IDbFirst = sqlSugarClient.DbFirst;
             if (lstTableNames != null && lstTableNames.Length > 0)
             {
@@ -257,9 +275,9 @@ namespace " + strNameSpace + @"
             }
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
-                  .SettingClassTemplate(p => p = @"
-using Blog.Core.IServices.BASE;
-using Blog.Core.Model.Models;
+                  .SettingClassTemplate(p => p =
+@"using ShanYing.Sunrise.IServices.BASE;
+using ShanYing.Sunrise.Model.Models." + ConnId + @";
 
 namespace " + strNameSpace + @"
 {	
@@ -268,15 +286,11 @@ namespace " + strNameSpace + @"
 	/// </summary>	
     public interface I{ClassName}Services :IBaseServices<{ClassName}>" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
 	{
-
-       
     }
-}
-                    ")
+}")
 
                    .ToClassStringList(strNameSpace);
             CreateFilesByClassStringList(ls, strPath, "I{0}Services");
-
         }
         #endregion
 
@@ -289,17 +303,23 @@ namespace " + strNameSpace + @"
         /// 作　　者:Blog.Core
         /// </summary>
         /// <param name="sqlSugarClient"></param>
+        /// <param name="ConnId">数据库链接ID</param>
         /// <param name="strPath">实体类存放路径</param>
         /// <param name="strNameSpace">命名空间</param>
         /// <param name="lstTableNames">生产指定的表</param>
         /// <param name="strInterface">实现接口</param>
         private static void Create_Repository_ClassFileByDBTalbe(
-          SqlSugarClient sqlSugarClient,
+          SqlSugarClient sqlSugarClient, 
+          string ConnId,
           string strPath,
           string strNameSpace,
           string[] lstTableNames,
           string strInterface)
         {
+            //多库文件分离
+            strPath = strPath + @"\" + ConnId;
+            strNameSpace = strNameSpace + "." + ConnId;
+
             var IDbFirst = sqlSugarClient.DbFirst;
             if (lstTableNames != null && lstTableNames.Length > 0)
             {
@@ -307,11 +327,11 @@ namespace " + strNameSpace + @"
             }
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
-                  .SettingClassTemplate(p => p = @"
-using Blog.Core.IRepository;
-using Blog.Core.IRepository.UnitOfWork;
-using Blog.Core.Model.Models;
-using Blog.Core.Repository.Base;
+                  .SettingClassTemplate(p => p =
+@"using ShanYing.Sunrise.IRepository." + ConnId + @";
+using ShanYing.Sunrise.IRepository.UnitOfWork;
+using ShanYing.Sunrise.Model.Models." + ConnId + @";
+using ShanYing.Sunrise.Repository.Base;
 
 namespace " + strNameSpace + @"
 {
@@ -324,10 +344,8 @@ namespace " + strNameSpace + @"
         {
         }
     }
-}
-                    ")
-
-                   .ToClassStringList(strNameSpace);
+}")
+                  .ToClassStringList(strNameSpace);
 
 
             CreateFilesByClassStringList(ls, strPath, "{0}Repository");
@@ -342,17 +360,23 @@ namespace " + strNameSpace + @"
         /// 作　　者:Blog.Core
         /// </summary>
         /// <param name="sqlSugarClient"></param>
+        /// <param name="ConnId">数据库链接ID</param>
         /// <param name="strPath">实体类存放路径</param>
         /// <param name="strNameSpace">命名空间</param>
         /// <param name="lstTableNames">生产指定的表</param>
         /// <param name="strInterface">实现接口</param>
         private static void Create_Services_ClassFileByDBTalbe(
           SqlSugarClient sqlSugarClient,
+          string ConnId,
           string strPath,
           string strNameSpace,
           string[] lstTableNames,
           string strInterface)
         {
+            //多库文件分离
+            strPath = strPath + @"\" + ConnId;
+            strNameSpace = strNameSpace + "." + ConnId;
+
             var IDbFirst = sqlSugarClient.DbFirst;
             if (lstTableNames != null && lstTableNames.Length > 0)
             {
@@ -360,28 +384,25 @@ namespace " + strNameSpace + @"
             }
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
-                  .SettingClassTemplate(p => p = @"
-using Blog.Core.IRepository;
-using Blog.Core.IServices;
-using Blog.Core.Model.Models;
-using Blog.Core.Services.BASE;
+                  .SettingClassTemplate(p => p =
+@"using ShanYing.Sunrise.IRepository." + ConnId + @";
+using ShanYing.Sunrise.IServices." + ConnId + @";
+using ShanYing.Sunrise.Model.Models." + ConnId + @";
+using ShanYing.Sunrise.Services.BASE;
 
 namespace " + strNameSpace + @"
 {
     public partial class {ClassName}Services : BaseServices<{ClassName}>, I{ClassName}Services" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
     {
-        I{ClassName}Repository _dal;
+        private readonly I{ClassName}Repository _dal;
         public {ClassName}Services(I{ClassName}Repository dal)
         {
             this._dal = dal;
             base.BaseDal = dal;
         }
-
     }
-}
-                    ")
-
-                   .ToClassStringList(strNameSpace);
+}")
+                  .ToClassStringList(strNameSpace);
 
             CreateFilesByClassStringList(ls, strPath, "{0}Services");
         }
@@ -410,8 +431,5 @@ namespace " + strNameSpace + @"
             }
         }
         #endregion
-
-
-
     }
 }

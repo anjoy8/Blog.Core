@@ -1,84 +1,89 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
+	<PropertyGroup>
 
-    <OutputType>Exe</OutputType>
-    
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
-    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
-  </PropertyGroup>
+		<OutputType>Exe</OutputType>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>..\Blog.Core\Blog.Core.xml</DocumentationFile>
-    <NoWarn>1701;1702;1591</NoWarn>
-  </PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
+		<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Hubs\**" />
-    <Content Remove="Hubs\**" />
-    <EmbeddedResource Remove="Hubs\**" />
-    <None Remove="Hubs\**" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>..\Blog.Core\Blog.Core.xml</DocumentationFile>
+		<NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Extensions\Log4netExtensions.cs" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>..\Blog.Core\Blog.Core.xml</DocumentationFile>
+		<NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="index.html" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Hubs\**" />
+		<Content Remove="Hubs\**" />
+		<EmbeddedResource Remove="Hubs\**" />
+		<None Remove="Hubs\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="index.html" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Extensions\Log4netExtensions.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AspNetCoreRateLimit" Version="3.0.5" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Autofac.Extras.DynamicProxy" Version="5.0.0" />
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="5.0.0-preview.2.20167.3" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0-preview.2.20160.3" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="3.1.0" />
-    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.1.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="index.html" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Blog.Core.IRepository\Blog.Core.IRepository.csproj" />
-    <ProjectReference Include="..\Blog.Core.IServices\Blog.Core.IServices.csproj" />
-    <ProjectReference Include="..\Blog.Core.Tasks\Blog.Core.Tasks.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="index.html" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="wwwroot\BlogCore.Data.json\BlogArticle.tsv" />
-    <None Include="wwwroot\BlogCore.Data.json\Module.tsv" />
-    <None Include="wwwroot\BlogCore.Data.json\Permission.tsv" />
-    <None Include="wwwroot\BlogCore.Data.json\Role.tsv" />
-    <None Include="wwwroot\BlogCore.Data.json\RoleModulePermission.tsv" />
-    <None Include="wwwroot\BlogCore.Data.json\sysUserInfo.tsv" />
-    <None Include="wwwroot\BlogCore.Data.json\Topic.tsv" />
-    <None Include="wwwroot\BlogCore.Data.json\TopicDetail.tsv" />
-    <None Include="wwwroot\BlogCore.Data.json\UserRole.tsv" />
-    <None Include="wwwroot\BlogCore.Mini.Data.json\Module.tsv" />
-    <None Include="wwwroot\BlogCore.Mini.Data.json\Permission.tsv" />
-    <None Include="wwwroot\BlogCore.Mini.Data.json\Role.tsv" />
-    <None Include="wwwroot\BlogCore.Mini.Data.json\RoleModulePermission.tsv" />
-    <None Include="wwwroot\BlogCore.Mini.Data.json\SysAdmin.tsv" />
-    <None Include="wwwroot\BlogCore.Mini.Data.json\UserRole.tsv" />
-    <None Include="wwwroot\测试下载中文名称的图片.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AspNetCoreRateLimit" Version="3.0.5" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="5.0.0" />
+		<PackageReference Include="AutoMapper" Version="9.0.0" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="5.0.0-preview.2.20167.3" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0-preview.2.20160.3" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="3.1.0" />
+		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.1.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.3" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.1.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Blog.Core.IRepository\Blog.Core.IRepository.csproj" />
+		<ProjectReference Include="..\Blog.Core.IServices\Blog.Core.IServices.csproj" />
+		<ProjectReference Include="..\Blog.Core.Tasks\Blog.Core.Tasks.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="wwwroot\BlogCore.Data.json\BlogArticle.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\Module.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\Permission.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\Role.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\RoleModulePermission.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\sysUserInfo.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\Topic.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\TopicDetail.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\UserRole.tsv" />
+		<None Include="wwwroot\BlogCore.Mini.Data.json\Module.tsv" />
+		<None Include="wwwroot\BlogCore.Mini.Data.json\Permission.tsv" />
+		<None Include="wwwroot\BlogCore.Mini.Data.json\Role.tsv" />
+		<None Include="wwwroot\BlogCore.Mini.Data.json\RoleModulePermission.tsv" />
+		<None Include="wwwroot\BlogCore.Mini.Data.json\SysAdmin.tsv" />
+		<None Include="wwwroot\BlogCore.Mini.Data.json\UserRole.tsv" />
+		<None Include="wwwroot\测试下载中文名称的图片.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
 </Project>

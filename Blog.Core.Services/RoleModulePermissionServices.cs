@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Blog.Core.Common;
 using System.Linq;
+using System.Linq.Expressions;
+using System;
 
 namespace Blog.Core.Services
 {
@@ -71,6 +73,11 @@ namespace Blog.Core.Services
         public async Task<List<RoleModulePermission>> RoleModuleMaps()
         {
             return await _dal.RoleModuleMaps();
+        }
+
+        public async Task<List<RoleModulePermission>> GetRMPMaps()
+        {
+            return await _dal.GetRMPMaps();
         }
     }
 }
