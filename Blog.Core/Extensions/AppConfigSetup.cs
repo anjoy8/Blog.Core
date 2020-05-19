@@ -2,6 +2,7 @@
 using Blog.Core.Common.Helper;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Text;
 
 namespace Blog.Core.Extensions
 {
@@ -16,6 +17,9 @@ namespace Blog.Core.Extensions
 
             if (Appsettings.app(new string[] { "Startup", "AppConfigAlert", "Enabled" }).ObjToBool())
             {
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                Console.OutputEncoding = Encoding.GetEncoding("GB2312");
+
                 Console.WriteLine("************ Blog.Core Config Set *****************");
                 // 授权策略方案
                 if (Permissions.IsUseIds4)
