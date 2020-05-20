@@ -73,7 +73,13 @@ namespace Blog.Core
                     //不带参数：表示log4net.config的配置文件就在应用程序根目录下，也可以指定配置文件的路径
                     //需要添加nuget包：Microsoft.Extensions.Logging.Log4Net.AspNetCore
                     builder.AddLog4Net(path);
-                });
+                })
+                .ConfigureAppConfiguration((c, h) =>
+                {
+                    h.AddJsonFile($@"/home/my-file/blog.core.secret.json", true, true);
+                    h.AddJsonFile($@"C:\my-file\blog.core.secret.json", true, true);
+                })
+                ;
             });
     }
 }
