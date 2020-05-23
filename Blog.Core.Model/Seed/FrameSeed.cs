@@ -1,4 +1,4 @@
-﻿using Blog.Core.Common;
+using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.Model.Models;
 using SqlSugar;
@@ -225,8 +225,8 @@ namespace " + strNameSpace + @"
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
                  .SettingClassTemplate(p => p =
-@"using ShanYing.Sunrise.IRepository.Base;
-using ShanYing.Sunrise.Model.Models." + ConnId + @";
+@"using Blog.Core.IRepository.Base;
+using Blog.Core.Model.Models." + ConnId + @";
 
 namespace " + strNameSpace + @"
 {
@@ -276,8 +276,8 @@ namespace " + strNameSpace + @"
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
                   .SettingClassTemplate(p => p =
-@"using ShanYing.Sunrise.IServices.BASE;
-using ShanYing.Sunrise.Model.Models." + ConnId + @";
+@"using Blog.Core.IServices.BASE;
+using Blog.Core.Model.Models." + ConnId + @";
 
 namespace " + strNameSpace + @"
 {	
@@ -328,10 +328,10 @@ namespace " + strNameSpace + @"
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
                   .SettingClassTemplate(p => p =
-@"using ShanYing.Sunrise.IRepository." + ConnId + @";
-using ShanYing.Sunrise.IRepository.UnitOfWork;
-using ShanYing.Sunrise.Model.Models." + ConnId + @";
-using ShanYing.Sunrise.Repository.Base;
+@"using Blog.Core.IRepository." + ConnId + @";
+using Blog.Core.IRepository.UnitOfWork;
+using Blog.Core.Model.Models." + ConnId + @";
+using Blog.Core.Repository.Base;
 
 namespace " + strNameSpace + @"
 {
@@ -385,10 +385,10 @@ namespace " + strNameSpace + @"
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
                   .SettingClassTemplate(p => p =
-@"using ShanYing.Sunrise.IRepository." + ConnId + @";
-using ShanYing.Sunrise.IServices." + ConnId + @";
-using ShanYing.Sunrise.Model.Models." + ConnId + @";
-using ShanYing.Sunrise.Services.BASE;
+@"using Blog.Core.IRepository." + ConnId + @";
+using Blog.Core.IServices." + ConnId + @";
+using Blog.Core.Model.Models." + ConnId + @";
+using Blog.Core.Services.BASE;
 
 namespace " + strNameSpace + @"
 {
