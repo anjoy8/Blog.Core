@@ -68,8 +68,9 @@ namespace Blog.Core
 
             services.AddScoped<UseServiceDIAttribute>();
 
-            services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
-                    .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
+            //services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
+            //        //.Configure<IISServerOptions>(x => x.AllowSynchronousIO = true)
+            //        ;
 
             services.AddControllers(o =>
             {

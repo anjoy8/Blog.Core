@@ -61,7 +61,12 @@ namespace Blog.Core
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder
+                .ConfigureKestrel(serverOptions =>
+                {
+                    serverOptions.AllowSynchronousIO = true;//启用同步 IO
+                })
                 .UseStartup<Startup>()
+                .UseUrls("http://localhost:8081")
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     //该方法需要引入Microsoft.Extensions.Logging名称空间
@@ -74,11 +79,11 @@ namespace Blog.Core
                     //需要添加nuget包：Microsoft.Extensions.Logging.Log4Net.AspNetCore
                     builder.AddLog4Net(path);
                 })
-                .ConfigureAppConfiguration((c, h) =>
-                {
-                    h.AddJsonFile($@"/home/my-file/blog.core.secret.json", true, true);
-                    h.AddJsonFile($@"C:\my-file\blog.core.secret.json", true, true);
-                })
+                //.ConfigureAppConfiguration((c, h) =>
+                //{
+                //    h.AddJsonFile($@"/home/my-file/blog.core.secret.json", true, true);
+                //    h.AddJsonFile($@"C:\my-file\blog.core.secret.json", true, true);
+                //})
                 ;
             });
     }
