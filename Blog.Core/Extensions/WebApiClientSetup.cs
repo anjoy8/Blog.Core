@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using WebApiClient.Extensions.DependencyInjection;
 using Blog.Core.Common.WebApiClients.HttpApis;
@@ -16,6 +16,8 @@ namespace Blog.Core.Extensions
         /// <param name="services"></param>
         public static void AddHttpApi(this IServiceCollection services)
         {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+
             services.AddHttpApi<IBlogApi>().ConfigureHttpApiConfig(c =>
             {
                 c.HttpHost = new Uri("http://apk.neters.club/");
