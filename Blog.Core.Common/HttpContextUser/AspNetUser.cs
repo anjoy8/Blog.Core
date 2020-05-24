@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -15,7 +16,24 @@ namespace Blog.Core.Common.HttpContextUser
             _accessor = accessor;
         }
 
-        public string Name => _accessor.HttpContext.User.Identity.Name;
+        public string Name => GetName();
+
+        private string GetName()
+        {
+            if (IsAuthenticated())
+            {
+                return _accessor.HttpContext.User.Identity.Name;
+            }
+            else {
+                if (!string.IsNullOrEmpty(GetToken()))
+                {
+                    return GetUserInfoFromToken("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").FirstOrDefault().ObjToString();
+                }
+            }
+
+            return "";
+        }
+
         public int ID => GetClaimValueByType("jti").FirstOrDefault().ObjToInt();
 
         public bool IsAuthenticated()
