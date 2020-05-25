@@ -72,6 +72,7 @@ namespace Blog.Core
                     //该方法需要引入Microsoft.Extensions.Logging名称空间
                     builder.AddFilter("System", LogLevel.Error); //过滤掉系统默认的一些日志
                     builder.AddFilter("Microsoft", LogLevel.Error);//过滤掉系统默认的一些日志
+                    builder.AddFilter("Blog.Core.AuthHelper.ApiResponseHandler", LogLevel.Error);//过滤掉系统默认的一些日志
 
                     //添加Log4Net
                     var path = Path.Combine(Directory.GetCurrentDirectory(), "Log4net.config");
