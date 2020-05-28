@@ -54,5 +54,25 @@ namespace Blog.Core.Middlewares
         {
             return app.UseMiddleware<IPLogMildd>();
         }
+
+        /// <summary>
+        /// QuartzJob中间件
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseQuartzNetJobMildd(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<QuartzNetJobMildd>();
+        }
+
+        /// <summary>
+        /// QuartzJob中间件
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseSeedDbDataMildd(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<SeedDbDataMildd>();
+        }
     }
 }

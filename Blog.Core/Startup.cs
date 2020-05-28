@@ -6,6 +6,7 @@ using Blog.Core.Extensions;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.Middlewares;
+using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -68,9 +69,8 @@ namespace Blog.Core
 
             services.AddScoped<UseServiceDIAttribute>();
 
-            //services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
-            //        //.Configure<IISServerOptions>(x => x.AllowSynchronousIO = true)
-            //        ;
+            services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
+                    .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
 
             services.AddControllers(o =>
             {
@@ -102,7 +102,7 @@ namespace Blog.Core
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MyContext myContext)
         {
             // Ip限流,尽量放管道外层
             app.UseIpRateLimiting();
@@ -130,7 +130,7 @@ namespace Blog.Core
 
             // 封装Swagger展示
             app.UseSwaggerMildd(() => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.index.html"));
-           
+
             // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
 
             // CORS跨域
@@ -155,6 +155,11 @@ namespace Blog.Core
             // 开启异常中间件，要放到最后
             //app.UseExceptionHandlerMidd();
 
+            // 开启生成种子数据中间件
+            app.UseSeedDbDataMildd();
+            // 开启QuartzNetJob中间件
+            app.UseQuartzNetJobMildd();
+
             // 性能分析
             app.UseMiniProfiler();
 
@@ -166,7 +171,6 @@ namespace Blog.Core
 
                 endpoints.MapHub<ChatHub>("/api2/chatHub");
             });
-
 
         }
 
