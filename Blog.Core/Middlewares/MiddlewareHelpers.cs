@@ -66,7 +66,7 @@ namespace Blog.Core.Middlewares
         }
 
         /// <summary>
-        /// QuartzJob中间件
+        /// 生成种子数据中间件
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
