@@ -5,18 +5,20 @@ using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Blog.Core.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(Permissions.Name)]
     public class TasksQzController : ControllerBase
     {
         private readonly ITasksQzServices _tasksQzServices;
         private readonly ISchedulerCenter _schedulerCenter;
 
-        public TasksQzController(ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter) 
+        public TasksQzController(ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter)
         {
             _tasksQzServices = tasksQzServices;
             _schedulerCenter = schedulerCenter;
@@ -106,16 +108,19 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>();
 
             var model = await _tasksQzServices.QueryById(jobId);
-            var ResuleModel = await _schedulerCenter.AddScheduleJobAsync(model);
-            if (ResuleModel.success)
+            if (model != null)
             {
-                model.IsStart = true;
-                data.success = await _tasksQzServices.Update(model);
-            }
-            if (data.success)
-            {
-                data.msg = "启动成功";
-                data.response = jobId.ObjToString();
+                var ResuleModel = await _schedulerCenter.AddScheduleJobAsync(model);
+                if (ResuleModel.success)
+                {
+                    model.IsStart = true;
+                    data.success = await _tasksQzServices.Update(model);
+                }
+                if (data.success)
+                {
+                    data.msg = "启动成功";
+                    data.response = jobId.ObjToString();
+                }
             }
             return data;
 
@@ -131,16 +136,19 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>();
 
             var model = await _tasksQzServices.QueryById(jobId);
-            var ResuleModel = await _schedulerCenter.StopScheduleJobAsync(model);
-            if (ResuleModel.success)
+            if (model != null)
             {
-                model.IsStart = false;
-                data.success = await _tasksQzServices.Update(model);
-            }
-            if (data.success)
-            {
-                data.msg = "暂停成功";
-                data.response = jobId.ObjToString();
+                var ResuleModel = await _schedulerCenter.StopScheduleJobAsync(model);
+                if (ResuleModel.success)
+                {
+                    model.IsStart = false;
+                    data.success = await _tasksQzServices.Update(model);
+                }
+                if (data.success)
+                {
+                    data.msg = "暂停成功";
+                    data.response = jobId.ObjToString();
+                }
             }
             return data;
 
@@ -156,16 +164,19 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>();
 
             var model = await _tasksQzServices.QueryById(jobId);
-            var ResuleModel = await _schedulerCenter.ResumeJob(model);
-            if (ResuleModel.success)
+            if (model != null)
             {
-                model.IsStart = true;
-                data.success = await _tasksQzServices.Update(model);
-            }
-            if (data.success)
-            {
-                data.msg = "重启成功";
-                data.response = jobId.ObjToString();
+                var ResuleModel = await _schedulerCenter.ResumeJob(model);
+                if (ResuleModel.success)
+                {
+                    model.IsStart = true;
+                    data.success = await _tasksQzServices.Update(model);
+                }
+                if (data.success)
+                {
+                    data.msg = "重启成功";
+                    data.response = jobId.ObjToString();
+                }
             }
             return data;
 

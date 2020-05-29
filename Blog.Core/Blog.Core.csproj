@@ -28,7 +28,7 @@
 
 	<ItemGroup>
 		<Compile Remove="Extensions\Log4netExtensions.cs" />
-		<Compile Remove="Middlewares\SeedDataMildd.cs" />
+		<Compile Remove="Middlewares\QuartzNetJobMildd.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -5,8 +5,10 @@ using Blog.Core.Common.LogHelper;
 using Blog.Core.Extensions;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
+using Blog.Core.IServices;
 using Blog.Core.Middlewares;
 using Blog.Core.Model.Models;
+using Blog.Core.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -102,7 +104,7 @@ namespace Blog.Core
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MyContext myContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MyContext myContext, ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter)
         {
             // Ip限流,尽量放管道外层
             app.UseIpRateLimiting();
@@ -155,11 +157,6 @@ namespace Blog.Core
             // 开启异常中间件，要放到最后
             //app.UseExceptionHandlerMidd();
 
-            // 开启生成种子数据中间件
-            app.UseSeedDbDataMildd();
-            // 开启QuartzNetJob中间件
-            app.UseQuartzNetJobMildd();
-
             // 性能分析
             app.UseMiniProfiler();
 
@@ -171,6 +168,12 @@ namespace Blog.Core
 
                 endpoints.MapHub<ChatHub>("/api2/chatHub");
             });
+
+            // 生成种子数据
+            app.UseSeedDataMildd(myContext, Env.WebRootPath);
+
+            // 开启QuartzNetJob调度服务
+            app.UseQuartzJobMildd(tasksQzServices, schedulerCenter);
 
         }
 
