@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
 
 namespace Blog.Core.Extensions
@@ -37,7 +38,7 @@ namespace Blog.Core.Extensions
                     c.SwaggerDoc(version, new OpenApiInfo
                     {
                         Version = version,
-                        Title = $"{ApiName} 接口文档——Netcore 3.1",
+                        Title = $"{ApiName} 接口文档——{RuntimeInformation.FrameworkDescription}",
                         Description = $"{ApiName} HTTP API " + version,
                         Contact = new OpenApiContact { Name = ApiName, Email = "Blog.Core@xxx.com", Url = new Uri("https://www.jianshu.com/u/94102b59cc2a") },
                         License = new OpenApiLicense { Name = ApiName + " 官方文档", Url = new Uri("http://apk.neters.club/.doc/") }

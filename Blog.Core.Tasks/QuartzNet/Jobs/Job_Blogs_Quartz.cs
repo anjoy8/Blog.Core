@@ -51,7 +51,7 @@ namespace Blog.Core.Tasks
                 if (model != null)
                 {
                     model.RunTimes += 1;
-                    model.Remark += $"【{DateTime.Now}】执行任务【Id：{context.JobDetail.Key.Name}，组别：{context.JobDetail.Key.Group}】，【执行成功】";
+                    model.Remark += $"【{DateTime.Now}】执行任务【Id：{context.JobDetail.Key.Name}，组别：{context.JobDetail.Key.Group}】【执行成功】<br>";
                     await _tasksQzServices.Update(model);
                 }
             }

@@ -14,5 +14,11 @@ namespace Blog.Core.Common.Helper
             dateTime = dateTime.AddSeconds(timestamp).ToLocalTime();
             return dateTime;
         }
+
+        public static string TimeSubTract(DateTime time1,DateTime time2)
+        {
+            TimeSpan subTract = time1.Subtract(time2);
+            return $"{subTract.Days} 天 {subTract.Hours} 时 {subTract.Minutes} 分 ";
+        }
     }
 }
