@@ -1,6 +1,13 @@
 ﻿
 ## 更新日志
 
+
+### 2020-05-29
+项目启动开启 `QuzrtzNet` 调度任务，并且在 `Admin` 后台管理中配置操作界面；  
+> 内容更新：封装生成种子数据的入口方法；   
+
+
+
 ### 2020-05-12
 修复：支持多库模式下，生成项目模板代码 `DbFirstController`  [102c6d6](https://github.com/anjoy8/Blog.Core/commit/102c6d6bfcafd06bf5241844759dea5e7a6815da) 
 > 注意：`T4` 模板不能此功能，一次只能一个数据库，且只能 `SqlServer`
