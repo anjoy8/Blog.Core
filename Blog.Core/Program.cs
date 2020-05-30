@@ -17,6 +17,7 @@ namespace Blog.Core
              {
                  webBuilder
                  .UseStartup<Startup>()
+                 .UseUrls("http://localhost:8081")
                  .ConfigureLogging((hostingContext, builder) =>
                  {
                      //过滤掉系统默认的一些日志
