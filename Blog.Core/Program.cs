@@ -10,13 +10,13 @@ namespace Blog.Core
     {
         public static void Main(string[] args)
         {
+            //初始化默认主机Builder
             Host.CreateDefaultBuilder(args)
              .UseServiceProviderFactory(new AutofacServiceProviderFactory())
              .ConfigureWebHostDefaults(webBuilder =>
              {
                  webBuilder
                  .UseStartup<Startup>()
-                 .UseUrls("http://localhost:8081")
                  .ConfigureLogging((hostingContext, builder) =>
                  {
                      //过滤掉系统默认的一些日志
