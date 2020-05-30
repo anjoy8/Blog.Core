@@ -36,6 +36,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 任务描述
         /// </summary>
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 1000, IsNullable = true)]
         public string Remark { get; set; }
         /// <summary>
         /// 执行次数
