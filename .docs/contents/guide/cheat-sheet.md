@@ -421,9 +421,9 @@ models = _mapper.Map<BlogViewModels>(blogArticle);
 
  
 
-## Log4 
+## Log 
 
-通过集成，完美配合 `NetCore` 官方的 `ILogger<T>` 接口:
+通过集成 `Log4Net` 组件，完美配合 `NetCore` 官方的 `ILogger<T>` 接口，实现对日志的管控，引用 `nuget` 包 `Microsoft.Extensions.Logging.Log4Net.AspNetCore`:
 Program.cs
 ```
   webBuilder
@@ -447,6 +447,10 @@ Program.cs
 ` public UserController(ILogger<UserController> logger)`
 
 然后就可以使用了。  
+
+> 注意：日志 其实是分为两部分的：  
+> netcore输出(控制台、输出窗口等) 和 `ILogger` 持久化  
+> 两者对应配置也不一样，就比如上边的过滤，是针对日志持久化的，如果想要对控制台进行控制，需要配置 `appsettings.json` 中的 `Logging` 节点
 
 
 ## MemoryCache
