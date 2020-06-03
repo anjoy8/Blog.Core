@@ -82,6 +82,15 @@ namespace Blog.Core
         /// 
         /// </summary>
         /// <param name="thisValue"></param>
+        /// <returns></returns>
+        public static bool IsNotEmptyOrNull(this object thisValue)
+        {
+            return ObjToString(thisValue) != "";
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="thisValue"></param>
         /// <param name="errorValue"></param>
         /// <returns></returns>
         public static string ObjToString(this object thisValue, string errorValue)

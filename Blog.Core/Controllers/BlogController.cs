@@ -48,20 +48,20 @@ namespace Blog.Core.Controllers
         /// <param name="page"></param>
         /// <param name="bcategory"></param>
         /// <param name="key"></param>
-        /// <param name="intPageSize"></param>
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         //[ResponseCache(Duration = 600)]
-        public async Task<MessageModel<PageModel<BlogArticle>>> Get(int id, int page = 1, string bcategory = "技术博文", string key = "", int intPageSize = 6)
+        public async Task<MessageModel<PageModel<BlogArticle>>> Get(int id, int page = 1, string bcategory = "技术博文", string key = "")
         {
+            int intPageSize = 6;
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
                 key = "";
             }
 
-            Expression<Func<BlogArticle, bool>> whereExpression = a =>(a.bcategory == bcategory && a.IsDeleted == false) && ((a.btitle != null && a.btitle.Contains(key)) || (a.bcontent != null && a.bcontent.Contains(key)));
+            Expression<Func<BlogArticle, bool>> whereExpression = a => (a.bcategory == bcategory && a.IsDeleted == false) && ((a.btitle != null && a.btitle.Contains(key)) || (a.bcontent != null && a.bcontent.Contains(key)));
 
             var pageModelBlog = await _blogArticleServices.QueryPage(whereExpression, page, intPageSize, " bID desc ");
 
@@ -133,6 +133,21 @@ namespace Blog.Core.Controllers
             };
         }
 
+        [HttpGet]
+        [Route("GoUrl")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GoUrl(int id)
+        {
+            var response = await _blogArticleServices.QueryById(id);
+            if (response != null && response.bsubmitter.IsNotEmptyOrNull())
+            {
+                response.btraffic += 1;
+                await _blogArticleServices.Update(response);
+                return Redirect(response.bsubmitter);
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// 获取博客测试信息 v2版本
