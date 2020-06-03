@@ -48,14 +48,14 @@ namespace Blog.Core.Controllers
         /// <param name="page"></param>
         /// <param name="bcategory"></param>
         /// <param name="key"></param>
+        /// <param name="intPageSize"></param>
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         //[ResponseCache(Duration = 600)]
-        public async Task<MessageModel<PageModel<BlogArticle>>> Get(int id, int page = 1, string bcategory = "技术博文", string key = "")
+        public async Task<MessageModel<PageModel<BlogArticle>>> Get(int id, int page = 1, string bcategory = "技术博文", string key = "", int intPageSize = 6)
         {
-            int intPageSize = 6;
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
                 key = "";

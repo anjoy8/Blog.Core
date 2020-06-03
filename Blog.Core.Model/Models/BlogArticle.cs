@@ -17,7 +17,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 创建人
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 60, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 600, IsNullable = true)]
         public string bsubmitter { get; set; }
 
         /// <summary>
