@@ -1,8 +1,4 @@
-﻿using Blog.Core.Model;
-using Blog.Core.Model.Models;
-using Blog.Core.Model.ViewModels;
-using System.ComponentModel.DataAnnotations;
-using WebApiClient;
+﻿using WebApiClient;
 using WebApiClient.Attributes;
 
 namespace Blog.Core.Common.WebApiClients.HttpApis

@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Blog.Core.Common;
 using System.Linq;
-using System.Linq.Expressions;
-using System;
 
 namespace Blog.Core.Services
 {

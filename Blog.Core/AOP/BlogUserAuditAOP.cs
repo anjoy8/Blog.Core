@@ -1,10 +1,6 @@
-﻿using Blog.Core.Common;
-using Blog.Core.Common.MemoryCache;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Blog.Core.AOP
 {

@@ -1,11 +1,9 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.IServices;
-using Blog.Core.Model.Models;
 using Blog.Core.Tasks;
 using log4net;
 using Microsoft.AspNetCore.Builder;
 using System;
-using System.Threading.Tasks;
 
 namespace Blog.Core.Extensions
 {

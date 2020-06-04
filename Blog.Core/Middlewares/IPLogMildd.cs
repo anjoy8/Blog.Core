@@ -1,18 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Blog.Core.AuthHelper.OverWrite;
-using Microsoft.AspNetCore.Builder;
-using System.IO;
+﻿using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
-using StackExchange.Profiling;
-using System.Text.RegularExpressions;
-using Blog.Core.IServices;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using Blog.Core.Common;
+using System;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Middlewares
 {

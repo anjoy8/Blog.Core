@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using static Blog.Core.SwaggerHelper.CustomApiVersion;
 
 namespace Blog.Core.SwaggerHelper

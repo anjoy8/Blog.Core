@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Blog.Core.Common.WebApiClients.HttpApis
+﻿namespace Blog.Core.Common.WebApiClients.HttpApis
 {
     public class Data
     {

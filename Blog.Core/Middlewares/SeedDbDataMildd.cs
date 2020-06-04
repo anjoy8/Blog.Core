@@ -2,7 +2,6 @@
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using System;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Middlewares

@@ -1,6 +1,5 @@
 using Blog.Core.Common;
 using Blog.Core.Controllers;
-using Blog.Core.IRepository;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Moq;

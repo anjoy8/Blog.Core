@@ -1,12 +1,6 @@
-using Blog.Core.Common;
 using Blog.Core.Controllers;
-using Blog.Core.IRepository;
 using Blog.Core.IServices;
-using Blog.Core.Model.Models;
-using Moq;
 using Xunit;
-using System;
-using Microsoft.Extensions.Logging;
 using Autofac;
 using Blog.Core.AuthHelper;
 

@@ -1,17 +1,13 @@
 ﻿using Blog.Core.Common.LogHelper;
 using Blog.Core.Hubs;
-using Blog.Core.Model.Models;
 using Castle.DynamicProxy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using StackExchange.Profiling;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Blog.Core.AOP

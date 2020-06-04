@@ -1,9 +1,6 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.Common.LogHelper;
 using Blog.Core.IRepository.UnitOfWork;
 using Castle.DynamicProxy;
-using Microsoft.AspNetCore.SignalR;
-using StackExchange.Profiling;
 using System;
 using System.Linq;
 using System.Reflection;

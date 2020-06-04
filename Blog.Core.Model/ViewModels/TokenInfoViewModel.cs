@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Blog.Core.Model.ViewModels
+﻿namespace Blog.Core.Model.ViewModels
 {
-  public  class TokenInfoViewModel
+    public  class TokenInfoViewModel
     {
         public bool success { get; set; }
         public string token { get; set; }

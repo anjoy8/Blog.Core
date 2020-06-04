@@ -1,5 +1,4 @@
-﻿using Blog.Core.Common.LogHelper;
-using Quartz;
+﻿using Quartz;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;

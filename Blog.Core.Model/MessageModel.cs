@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Blog.Core.Model
+﻿namespace Blog.Core.Model
 {
     /// <summary>
     /// 通用返回信息类

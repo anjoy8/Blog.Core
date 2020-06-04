@@ -1,8 +1,4 @@
-﻿using Blog.Core.Common.Helper;
-using Blog.Core.Hubs;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;

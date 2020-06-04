@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Blog.Core.Common.Helper
+﻿namespace Blog.Core.Common.Helper
 {
     public static class HtmlHelper
     {

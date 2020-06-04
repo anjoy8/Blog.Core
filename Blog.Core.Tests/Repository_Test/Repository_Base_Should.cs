@@ -1,15 +1,8 @@
 ﻿using Blog.Core.Model.Models;
 using Xunit;
 using System;
-using Blog.Core.Repository.Base;
-using Blog.Core.Repository;
 using System.Linq;
-using Blog.Core.Common.DB;
-using SqlSugar;
-using Microsoft.AspNetCore.Hosting;
 using Autofac;
-using Blog.Core.Common;
-using Blog.Core.IServices;
 using Blog.Core.IRepository;
 
 namespace Blog.Core.Tests
