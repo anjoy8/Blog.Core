@@ -93,9 +93,12 @@ Gitee（国内） 下载 [https://gitee.com/laozhangIsPhi/Blog.Core](https://git
 
 
 ## 新增数据库表，如何反向生成四层文件
-1、可以通过 `T4` 模板来生成，是 `Blog.Core.FrameWork` 层的使用；  
-2、也可以通过 `Sqlsugar` 所带的方法来实现，具体查看 `Controller` 层下的 `DbFirstController.cs`；  
-3、总体操作过程，可以参考我的视频：https://www.bilibili.com/video/av77612407?p=2；   
+1、可以通过 `T4` 模板来生成，在 `Blog.Core.FrameWork` 层，使用方法: [9757999.html](https://www.cnblogs.com/laozhang-is-phi/p/9757999.html#autoid-4-3-0) ；  
+> 注意：这种方案，目前默认的只能是 `SqlServer` ，其他类型的数据库，可以看上边文章中的代码，或者群文件里对应的代码。  
+
+2、也可以通过 `Sqlsugar` 所带的方法来实现 `DbFirst`，具体查看 `Controller` 层下的 `DbFirstController.cs`；   
+
+3、总体操作过程，可以参考我的视频：[av77612407](https://www.bilibili.com/video/av77612407?p=2) ；   
 
 
 ## 发布与部署
