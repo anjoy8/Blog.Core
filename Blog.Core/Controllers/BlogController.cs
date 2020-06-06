@@ -148,9 +148,9 @@ namespace Blog.Core.Controllers
         }
 
         [HttpGet]
-        [Route("GetBlogsByTypes")]
+        [Route("GetBlogsByTypesForMVP")]
         [AllowAnonymous]
-        public async Task<MessageModel<List<BlogArticle>>> GetBlogsByTypes(string types = "")
+        public async Task<MessageModel<List<BlogArticle>>> GetBlogsByTypesForMVP(string types = "", int id = 0)
         {
             if (types.IsNotEmptyOrNull())
             {
@@ -164,6 +164,24 @@ namespace Blog.Core.Controllers
             }
 
             return new MessageModel<List<BlogArticle>>() { };
+        }
+
+        [HttpGet]
+        [Route("GetBlogByIdForMVP")]
+        [AllowAnonymous]
+        public async Task<MessageModel<BlogArticle>> GetBlogByIdForMVP(int id = 0)
+        {
+            if (id > 0)
+            {
+                return new MessageModel<BlogArticle>()
+                {
+                    msg = "获取成功",
+                    success = true,
+                    response = await _blogArticleServices.QueryById(id)
+                };
+            }
+
+            return new MessageModel<BlogArticle>() { };
         }
 
         /// <summary>
@@ -195,7 +213,6 @@ namespace Blog.Core.Controllers
         /// <param name="blogArticle"></param>
         /// <returns></returns>
         [HttpPost]
-        [AllowAnonymous]
         public async Task<MessageModel<string>> Post([FromBody] BlogArticle blogArticle)
         {
             var data = new MessageModel<string>();
