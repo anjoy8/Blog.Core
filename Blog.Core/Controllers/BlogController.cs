@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Blog.Core.Common.Helper;
@@ -144,6 +145,25 @@ namespace Blog.Core.Controllers
             }
 
             return null;
+        }
+
+        [HttpGet]
+        [Route("GetBlogsByTypes")]
+        [AllowAnonymous]
+        public async Task<MessageModel<List<BlogArticle>>> GetBlogsByTypes(string types = "")
+        {
+            if (types.IsNotEmptyOrNull())
+            {
+                var blogs = await _blogArticleServices.Query(d => d.bcategory != null && types.Contains(d.bcategory) && d.IsDeleted == false);
+                return new MessageModel<List<BlogArticle>>()
+                {
+                    msg = "获取成功",
+                    success = true,
+                    response = blogs
+                };
+            }
+
+            return new MessageModel<List<BlogArticle>>() { };
         }
 
         /// <summary>
