@@ -232,6 +232,72 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="blogArticle"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("AddForMVP")]
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<MessageModel<string>> AddForMVP([FromBody] BlogArticle blogArticle)
+        {
+            var data = new MessageModel<string>();
+
+            blogArticle.bCreateTime = DateTime.Now;
+            blogArticle.bUpdateTime = DateTime.Now;
+            blogArticle.IsDeleted = false;
+
+            var id = (await _blogArticleServices.Add(blogArticle));
+            data.success = id > 0;
+            if (data.success)
+            {
+                data.response = id.ObjToString();
+                data.msg = "添加成功";
+            }
+
+            return data;
+        }
+        /// <summary>
+        /// 更新博客信息
+        /// </summary>
+        /// <param name="BlogArticle"></param>
+        /// <returns></returns>
+        // PUT: api/User/5
+        [HttpPut]
+        [Route("Update")]
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<MessageModel<string>> Put([FromBody] BlogArticle BlogArticle)
+        {
+            var data = new MessageModel<string>();
+            if (BlogArticle != null && BlogArticle.bID > 0)
+            {
+                var model = await _blogArticleServices.QueryById(BlogArticle.bID);
+
+                if (model != null)
+                {
+                    model.btitle = BlogArticle.btitle;
+                    model.bcategory = BlogArticle.bcategory;
+                    model.bsubmitter = BlogArticle.bsubmitter;
+                    model.bcontent = BlogArticle.bcontent;
+                    model.btraffic = BlogArticle.btraffic;
+
+                    data.success = await _blogArticleServices.Update(model);
+                    if (data.success)
+                    {
+                        data.msg = "更新成功";
+                        data.response = BlogArticle?.bID.ObjToString();
+                    }
+                }
+
+            }
+
+            return data;
+        }
+
+
+
         /// <summary>
         /// 删除博客
         /// </summary>
@@ -257,42 +323,6 @@ namespace Blog.Core.Controllers
 
             return data;
         }
-
-
-        /// <summary>
-        /// 更新博客信息
-        /// </summary>
-        /// <param name="BlogArticle"></param>
-        /// <returns></returns>
-        // PUT: api/User/5
-        [HttpPut]
-        [Route("Update")]
-        public async Task<MessageModel<string>> Put([FromBody] BlogArticle BlogArticle)
-        {
-            var data = new MessageModel<string>();
-            if (BlogArticle != null && BlogArticle.bID > 0)
-            {
-                var model = await _blogArticleServices.QueryById(BlogArticle.bID);
-
-                if (model != null)
-                {
-                    model.btitle = BlogArticle.btitle;
-                    model.bcategory = BlogArticle.bcategory;
-                    model.bsubmitter = BlogArticle.bsubmitter;
-                    model.bcontent = BlogArticle.bcontent;
-                    data.success = await _blogArticleServices.Update(model);
-                    if (data.success)
-                    {
-                        data.msg = "更新成功";
-                        data.response = BlogArticle?.bID.ObjToString();
-                    }
-                }
-
-            }
-
-            return data;
-        }
-
         /// <summary>
         /// apache jemeter 压力测试
         /// 更新接口
