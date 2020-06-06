@@ -220,6 +220,7 @@ namespace Blog.Core.Controllers
             blogArticle.bCreateTime = DateTime.Now;
             blogArticle.bUpdateTime = DateTime.Now;
             blogArticle.IsDeleted = false;
+            blogArticle.bcategory = "技术博文";
 
             var id = (await _blogArticleServices.Add(blogArticle));
             data.success = id > 0;
@@ -240,7 +241,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("AddForMVP")]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Permissions.Name)]
         public async Task<MessageModel<string>> AddForMVP([FromBody] BlogArticle blogArticle)
         {
             var data = new MessageModel<string>();
@@ -267,7 +268,7 @@ namespace Blog.Core.Controllers
         // PUT: api/User/5
         [HttpPut]
         [Route("Update")]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Permissions.Name)]
         public async Task<MessageModel<string>> Put([FromBody] BlogArticle BlogArticle)
         {
             var data = new MessageModel<string>();
