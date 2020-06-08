@@ -8,7 +8,7 @@ namespace Blog.Core.Services
 	/// <summary>
 	/// ModuleServices
 	/// </summary>	
-	public class ModuleServices : BaseServices<Module>, IModuleServices
+	public class ModuleServices : BaseServices<Modules>, IModuleServices
     {
 	
         IModuleRepository _dal;

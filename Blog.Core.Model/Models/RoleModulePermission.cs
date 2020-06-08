@@ -69,7 +69,7 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsIgnore = true)]
         public Role Role { get; set; }
         [SugarColumn(IsIgnore = true)]
-        public Module Module { get; set; }
+        public Modules Module { get; set; }
         [SugarColumn(IsIgnore = true)]
         public Permission Permission { get; set; }
     }

@@ -29,7 +29,7 @@ namespace Blog.Core.Repository
 
         public async Task<List<TestMuchTableResult>> QueryMuchTable()
         {
-            return await QueryMuch<RoleModulePermission, Module, Permission, TestMuchTableResult>(
+            return await QueryMuch<RoleModulePermission, Modules, Permission, TestMuchTableResult>(
                 (rmp, m, p) => new object[] {
                     JoinType.Left, rmp.ModuleId == m.Id,
                     JoinType.Left,  rmp.PermissionId == p.Id
@@ -56,7 +56,7 @@ namespace Blog.Core.Repository
         /// <returns></returns>
         public async Task<List<RoleModulePermission>> RoleModuleMaps()
         {
-            return await QueryMuch<RoleModulePermission, Module, Role, RoleModulePermission>(
+            return await QueryMuch<RoleModulePermission, Modules, Role, RoleModulePermission>(
                 (rmp, m, r) => new object[] {
                     JoinType.Left, rmp.ModuleId == m.Id,
                     JoinType.Left,  rmp.RoleId == r.Id

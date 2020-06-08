@@ -1,5 +1,5 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.Model.Models;
+using Blog.Core.Model.Seed;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;

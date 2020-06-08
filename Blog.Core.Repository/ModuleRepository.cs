@@ -8,7 +8,7 @@ namespace Blog.Core.Repository
     /// <summary>
     /// ModuleRepository
     /// </summary>	
-    public class ModuleRepository : BaseRepository<Module>, IModuleRepository
+    public class ModuleRepository : BaseRepository<Modules>, IModuleRepository
     {
         public ModuleRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {

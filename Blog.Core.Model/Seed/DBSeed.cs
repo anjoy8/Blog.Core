@@ -1,14 +1,16 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.DB;
 using Blog.Core.Common.Helper;
+using Blog.Core.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Model.Models
+namespace Blog.Core.Model.Seed
 {
     public class DBSeed
     {
@@ -79,36 +81,32 @@ namespace Blog.Core.Model.Models
                 }
 
                 Console.WriteLine();
-                Console.WriteLine($"Create Database(The Db Id:{MyContext.ConnId})...");
-                // 创建数据库
-                myContext.Db.DbMaintenance.CreateDatabase();
 
+
+                // 创建数据库
+                Console.WriteLine($"Create Database(The Db Id:{MyContext.ConnId})...");
+                myContext.Db.DbMaintenance.CreateDatabase();
                 ConsoleHelper.WriteSuccessLine($"Database created successfully!");
 
+
+                // 创建数据库表，遍历指定命名空间下的class，
+                // 注意不要把其他命名空间下的也添加进来。
                 Console.WriteLine("Create Tables...");
-                // 创建表
-                myContext.CreateTableByEntity(false,
-                    typeof(Advertisement),
-                    typeof(BlogArticle),
-                    typeof(Guestbook),
-                    typeof(Module),
-                    typeof(ModulePermission),
-                    typeof(OperateLog),
-                    typeof(PasswordLib),
-                    typeof(Permission),
-                    typeof(Role),
-                    typeof(RoleModulePermission),
-                    typeof(sysUserInfo),
-                    typeof(Topic),
-                    typeof(TopicDetail),
-                    typeof(TasksQz),
-                    typeof(UserRole));
-
-                // 后期单独处理某些表
-                // myContext.Db.CodeFirst.InitTables(typeof(sysUserInfo));
-
+                var modelTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
+                        where t.IsClass && t.Namespace == "Blog.Core.Model.Models"
+                        select t;
+                modelTypes.ToList().ForEach(t =>
+                {
+                    if (!myContext.Db.DbMaintenance.IsAnyTable(t.Name))
+                    {
+                        Console.WriteLine(t.Name);
+                        myContext.Db.CodeFirst.InitTables(t);
+                    }
+                });
                 ConsoleHelper.WriteSuccessLine($"Tables created successfully!");
                 Console.WriteLine();
+
+
 
                 if (Appsettings.app(new string[] { "AppSettings", "SeedDBDataEnabled" }).ObjToBool())
                 {
@@ -128,9 +126,9 @@ namespace Blog.Core.Model.Models
 
 
                     #region Module
-                    if (!await myContext.Db.Queryable<Module>().AnyAsync())
+                    if (!await myContext.Db.Queryable<Modules>().AnyAsync())
                     {
-                        myContext.GetEntityDB<Module>().InsertRange(JsonHelper.ParseFormByJson<List<Module>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Module"), Encoding.UTF8)));
+                        myContext.GetEntityDB<Modules>().InsertRange(JsonHelper.ParseFormByJson<List<Modules>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Module"), Encoding.UTF8)));
                         Console.WriteLine("Table:Module created success!");
                     }
                     else

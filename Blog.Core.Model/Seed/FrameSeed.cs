@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Blog.Core.Model.Models
+namespace Blog.Core.Model.Seed
 {
     public class FrameSeed
     {

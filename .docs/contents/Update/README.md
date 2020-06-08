@@ -1,6 +1,12 @@
 ﻿
 ## 更新日志
 
+### 2020-06-08
+
+> 简单项目更新：生成数据库表结构的时候，利用反射机制，自动生成固定命名空间 `Blog.Core.Model.Models` 下的全部实体.  
+> 同时判断表是否存在，如果存在下次不再重复生成。
+
+
 ### 2020-06-06
 
 项目更新：更新项目模板 `Update Blog.Core.Webapi.Template.2.1.0.nupkg` [1a726f8](https://github.com/anjoy8/Blog.Core/commit/1a726f890e527c978982071462e82db4478632f0)，更新项目即可 。    

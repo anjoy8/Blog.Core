@@ -6,9 +6,9 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 接口API地址信息表
     /// </summary>
-    public class Module : RootEntity
+    public class Modules : RootEntity
     {
-        public Module()
+        public Modules()
         {
             //this.ChildModule = new List<Module>();
             //this.ModulePermission = new List<ModulePermission>();

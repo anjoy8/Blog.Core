@@ -36,7 +36,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<Module>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<Modules>>> Get(int page = 1, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -44,11 +44,11 @@ namespace Blog.Core.Controllers
             }
             int intPageSize = 50;
 
-            Expression<Func<Module, bool>> whereExpression = a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key));
+            Expression<Func<Modules, bool>> whereExpression = a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key));
 
             var data = await _moduleServices.QueryPage(whereExpression, page, intPageSize, " Id desc ");
 
-            return new MessageModel<PageModel<Module>>()
+            return new MessageModel<PageModel<Modules>>()
             {
                 msg = "获取成功",
                 success = data.dataCount >= 0,
@@ -71,7 +71,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // POST: api/User
         [HttpPost]
-        public async Task<MessageModel<string>> Post([FromBody] Module module)
+        public async Task<MessageModel<string>> Post([FromBody] Modules module)
         {
             var data = new MessageModel<string>();
 
@@ -96,7 +96,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // PUT: api/User/5
         [HttpPut]
-        public async Task<MessageModel<string>> Put([FromBody] Module module)
+        public async Task<MessageModel<string>> Put([FromBody] Modules module)
         {
             var data = new MessageModel<string>();
             if (module != null && module.Id > 0)

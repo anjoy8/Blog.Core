@@ -1,6 +1,6 @@
 ﻿using Blog.Core.Common.DB;
 using Blog.Core.Model;
-using Blog.Core.Model.Models;
+using Blog.Core.Model.Seed;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;

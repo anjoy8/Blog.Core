@@ -7,7 +7,7 @@ using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
 using Blog.Core.Middlewares;
-using Blog.Core.Model.Models;
+using Blog.Core.Model.Seed;
 using Blog.Core.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
