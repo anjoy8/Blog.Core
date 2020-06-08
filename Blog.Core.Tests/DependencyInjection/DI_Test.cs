@@ -4,21 +4,22 @@ using Autofac.Extras.DynamicProxy;
 using AutoMapper;
 using Blog.Core.AuthHelper;
 using Blog.Core.Common;
+using Blog.Core.Common.AppConfig;
 using Blog.Core.Common.DB;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.IServices;
+using Blog.Core.Model.Seed;
 using Blog.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Xunit;
-using System;
 using System.Security.Claims;
-using Blog.Core.Common.AppConfig;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using System.Collections.Generic;
+using Xunit;
 
 namespace Blog.Core.Tests
 {
@@ -113,8 +114,8 @@ namespace Blog.Core.Tests
             services.AddSingleton(new Appsettings(basePath));
             services.AddSingleton(new LogLock(basePath));
             services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
-            services.AddScoped<Blog.Core.Model.Models.DBSeed>();
-            services.AddScoped<Blog.Core.Model.Models.MyContext>();
+            services.AddScoped<DBSeed>();
+            services.AddScoped<MyContext>();
 
             //读取配置文件
             var symmetricKeyAsBase64 = AppSecretConfig.Audience_Secret_String;
