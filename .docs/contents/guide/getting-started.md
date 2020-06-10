@@ -67,7 +67,7 @@ Gitee（国内） 下载 [https://gitee.com/laozhangIsPhi/Blog.Core](https://git
 ```
 
 ## 如何配置项目端口号
-1、在 `Blog.Core` 层下的 `appsettings.json` 文件中，将 ` urls `  中的`8081`端口，修改为自己想要的端口号；    
+1、在 `Blog.Core` 层下的 `program.cs` 文件中，将 `8081`端口，修改为自己想要的端口号；    
 2、或者在 `launchSettings.json` 中设置；
 
 ## 如何项目重命名

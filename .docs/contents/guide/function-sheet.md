@@ -1,8 +1,46 @@
 # H  核心功能一览表
 
+## 一、表结构解析
+
+`Blog.Core` 项目共包含四部分的数据库表结构，分别是：用户角色管理部分、接口菜单权限管理部分、博客文章管理部分、以及其他不重要部分。
+> 注意：目前不提供与维护数据库数据，直接通过 `SeedData` 生成种子数据；
+
+### 1、用户角色管理部分[必须]
+主要是三个表：分别对应用户表(sysUserInfo)、角色表(Role)、用户角色关系表(UserRole)。  
+
+<img src="http://img.neters.club/doc/usermanager.png" alt="usermanager"  >
 
 
-## 一、日志记录
+
+### 2、接口菜单权限管理部分[必须]
+
+主要是四个表：分别对应接口表(Module)、菜单表(Permission)、接口菜单关系表(ModulePermission)暂时没用到、角色接口菜单关系表(RoleModulePermission)。  
+
+<img src="http://img.neters.club/doc/permissionmanager.png" alt="permissionmanager"  >
+
+
+
+
+### 3、博客文章管理部分[可选]
+主要是三个表：分别对应博客表(BlogArticle)、Bug专题表(Topic)、Bug内容表(TopicDetail)。  
+
+<img src="http://img.neters.club/doc/blogmanager.png" alt="blogmanager"  >
+
+
+
+
+### 4、其他不重要部分
+
+主要是三个表：分别对应Job调度表(TasksQz)、密码库表(PasswordLib)、操作日志表(OperateLog)、广告表(Advertisement)、公告表(Guestbook)。  
+
+<img src="http://img.neters.club/doc/othersmanager.png" alt="othersmanager"  >
+
+
+
+
+
+
+## 二、日志记录
 
 本框架涵盖了不同领域的日志记录，共五个，分别是：  
   
@@ -48,13 +86,13 @@
     【SQL语句】：SELECT `bID`,`bsubmitter`,`btitle`,`bcategory`,`bcontent`,`btraffic`,`bcommentNum`,`bUpdateTime`,`bCreateTime`,`bRemark`,`IsDeleted` FROM `BlogArticle`  WHERE ( `bID` = @bID0 ) 
 
 
-  ## 二、控制台信息展示
+  ## 三、控制台信息展示
 
   <img src="http://apk.neters.club/images/2020-05-09_182758.png" alt="配置" width="800" >
 
 
 
-  ## 三、Nginx一览表
+  ## 四、Nginx一览表
 
   
 
