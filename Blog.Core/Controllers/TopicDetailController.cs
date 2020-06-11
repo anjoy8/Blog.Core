@@ -39,10 +39,11 @@ namespace Blog.Core.Controllers
         /// <param name="page">页数</param>
         /// <param name="tname">专题类型</param>
         /// <param name="key">关键字</param>
+        /// <param name="intPageSize"></param>
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<MessageModel<PageModel<TopicDetail>>> Get(int page = 1, string tname = "", string key = "")
+        public async Task<MessageModel<PageModel<TopicDetail>>> Get(int page = 1, string tname = "", string key = "", int intPageSize = 12)
         {
             int tid = 0;
 
@@ -60,8 +61,6 @@ namespace Blog.Core.Controllers
             {
                 tid = ((await _topicServices.Query(ts => ts.tName == tname)).FirstOrDefault()?.Id).ObjToInt();
             }
-
-            int intPageSize = 6;
 
 
             var data = await _topicDetailServices.QueryPage(a => !a.tdIsDelete && a.tdSectendDetail == "tbug" && ((tid == 0 && true) || (tid > 0 && a.TopicId == tid)) && ((a.tdName != null && a.tdName.Contains(key)) || (a.tdDetail != null && a.tdDetail.Contains(key))), page, intPageSize, " Id desc ");
