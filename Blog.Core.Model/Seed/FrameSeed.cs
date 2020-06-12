@@ -14,13 +14,14 @@ namespace Blog.Core.Model.Seed
         /// <param name="sqlSugarClient">sqlsugar实例</param>
         /// <param name="ConnId">数据库链接ID</param>
         /// <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
+        /// <param name="isMuti"></param>
         /// <returns></returns>
-        public static bool CreateModels(SqlSugarClient sqlSugarClient, string ConnId, string[] tableNames = null)
+        public static bool CreateModels(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
 
             try
             {
-                Create_Model_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Model", "Blog.Core.Model.Models", tableNames, "");
+                Create_Model_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Model", "Blog.Core.Model.Models", tableNames, "", isMuti);
                 return true;
             }
             catch (Exception)
@@ -35,14 +36,15 @@ namespace Blog.Core.Model.Seed
         /// </summary>
         /// <param name="sqlSugarClient">sqlsugar实例</param>
         /// <param name="ConnId">数据库链接ID</param>
+        /// <param name="isMuti"></param>
         /// <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
         /// <returns></returns>
-        public static bool CreateIRepositorys(SqlSugarClient sqlSugarClient, string ConnId, string[] tableNames = null)
+        public static bool CreateIRepositorys(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
 
             try
             {
-                Create_IRepository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IRepository", "Blog.Core.IRepository", tableNames, "");
+                Create_IRepository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IRepository", "Blog.Core.IRepository", tableNames, "", isMuti);
                 return true;
             }
             catch (Exception)
@@ -59,14 +61,15 @@ namespace Blog.Core.Model.Seed
         /// </summary>
         /// <param name="sqlSugarClient">sqlsugar实例</param>
         /// <param name="ConnId">数据库链接ID</param>
+        /// <param name="isMuti"></param>
         /// <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
         /// <returns></returns>
-        public static bool CreateIServices(SqlSugarClient sqlSugarClient, string ConnId, string[] tableNames = null)
+        public static bool CreateIServices(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
 
             try
             {
-                Create_IServices_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IServices", "Blog.Core.IServices", tableNames, "");
+                Create_IServices_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IServices", "Blog.Core.IServices", tableNames, "", isMuti);
                 return true;
             }
             catch (Exception)
@@ -83,14 +86,15 @@ namespace Blog.Core.Model.Seed
         /// </summary>
         /// <param name="sqlSugarClient">sqlsugar实例</param>
         /// <param name="ConnId">数据库链接ID</param>
+        /// <param name="isMuti"></param>
         /// <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
         /// <returns></returns>
-        public static bool CreateRepository(SqlSugarClient sqlSugarClient, string ConnId, string[] tableNames = null)
+        public static bool CreateRepository(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
 
             try
             {
-                Create_Repository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Repository", "Blog.Core.Repository", tableNames, "");
+                Create_Repository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Repository", "Blog.Core.Repository", tableNames, "", isMuti);
                 return true;
             }
             catch (Exception)
@@ -107,14 +111,15 @@ namespace Blog.Core.Model.Seed
         /// </summary>
         /// <param name="sqlSugarClient">sqlsugar实例</param>
         /// <param name="ConnId">数据库链接ID</param>
+        /// <param name="isMuti"></param>
         /// <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
         /// <returns></returns>
-        public static bool CreateServices(SqlSugarClient sqlSugarClient, string ConnId, string[] tableNames = null)
+        public static bool CreateServices(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
 
             try
             {
-                Create_Services_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Services", "Blog.Core.Services", tableNames, "");
+                Create_Services_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Services", "Blog.Core.Services", tableNames, "", isMuti);
                 return true;
             }
             catch (Exception)
@@ -140,6 +145,7 @@ namespace Blog.Core.Model.Seed
         /// <param name="strNameSpace">命名空间</param>
         /// <param name="lstTableNames">生产指定的表</param>
         /// <param name="strInterface">实现接口</param>
+        /// <param name="isMuti"></param>
         /// <param name="blnSerializable">是否序列化</param>
         private static void Create_Model_ClassFileByDBTalbe(
           SqlSugarClient sqlSugarClient,
@@ -148,11 +154,15 @@ namespace Blog.Core.Model.Seed
           string strNameSpace,
           string[] lstTableNames,
           string strInterface,
+          bool isMuti = false,
           bool blnSerializable = false)
         {
             //多库文件分离
-            strPath = strPath + @"\Models\" + ConnId;
-            strNameSpace = strNameSpace + "." + ConnId;
+            if (isMuti)
+            {
+                strPath = strPath + @"\Models\" + ConnId;
+                strNameSpace = strNameSpace + "." + ConnId;
+            }
 
             var IDbFirst = sqlSugarClient.DbFirst;
             if (lstTableNames != null && lstTableNames.Length > 0)
@@ -201,17 +211,23 @@ namespace " + strNameSpace + @"
         /// <param name="strNameSpace">命名空间</param>
         /// <param name="lstTableNames">生产指定的表</param>
         /// <param name="strInterface">实现接口</param>
+        /// <param name="isMuti"></param>
         private static void Create_IRepository_ClassFileByDBTalbe(
-          SqlSugarClient sqlSugarClient, 
+          SqlSugarClient sqlSugarClient,
           string ConnId,
           string strPath,
           string strNameSpace,
           string[] lstTableNames,
-          string strInterface)
+          string strInterface,
+          bool isMuti = false
+            )
         {
             //多库文件分离
-            strPath = strPath + @"\" + ConnId;
-            strNameSpace = strNameSpace + "." + ConnId;
+            if (isMuti)
+            {
+                strPath = strPath + @"\" + ConnId;
+                strNameSpace = strNameSpace + "." + ConnId;
+            }
 
             var IDbFirst = sqlSugarClient.DbFirst;
             if (lstTableNames != null && lstTableNames.Length > 0)
@@ -222,7 +238,7 @@ namespace " + strNameSpace + @"
 
                  .SettingClassTemplate(p => p =
 @"using Blog.Core.IRepository.Base;
-using Blog.Core.Model.Models." + ConnId + @";
+using Blog.Core.Model.Models" + (isMuti ? "." + ConnId + "" : "") + @";
 
 namespace " + strNameSpace + @"
 {
@@ -252,17 +268,22 @@ namespace " + strNameSpace + @"
         /// <param name="strNameSpace">命名空间</param>
         /// <param name="lstTableNames">生产指定的表</param>
         /// <param name="strInterface">实现接口</param>
+        /// <param name="isMuti"></param>
         private static void Create_IServices_ClassFileByDBTalbe(
-          SqlSugarClient sqlSugarClient, 
+          SqlSugarClient sqlSugarClient,
           string ConnId,
           string strPath,
           string strNameSpace,
           string[] lstTableNames,
-          string strInterface)
+          string strInterface,
+          bool isMuti = false)
         {
             //多库文件分离
-            strPath = strPath + @"\" + ConnId;
-            strNameSpace = strNameSpace + "." + ConnId;
+            if (isMuti)
+            {
+                strPath = strPath + @"\" + ConnId;
+                strNameSpace = strNameSpace + "." + ConnId;
+            }
 
             var IDbFirst = sqlSugarClient.DbFirst;
             if (lstTableNames != null && lstTableNames.Length > 0)
@@ -273,7 +294,7 @@ namespace " + strNameSpace + @"
 
                   .SettingClassTemplate(p => p =
 @"using Blog.Core.IServices.BASE;
-using Blog.Core.Model.Models." + ConnId + @";
+using Blog.Core.Model.Models" + (isMuti ? "." + ConnId + "" : "") + @";
 
 namespace " + strNameSpace + @"
 {	
@@ -304,17 +325,22 @@ namespace " + strNameSpace + @"
         /// <param name="strNameSpace">命名空间</param>
         /// <param name="lstTableNames">生产指定的表</param>
         /// <param name="strInterface">实现接口</param>
+        /// <param name="isMuti"></param>
         private static void Create_Repository_ClassFileByDBTalbe(
-          SqlSugarClient sqlSugarClient, 
+          SqlSugarClient sqlSugarClient,
           string ConnId,
           string strPath,
           string strNameSpace,
           string[] lstTableNames,
-          string strInterface)
+          string strInterface,
+          bool isMuti = false)
         {
             //多库文件分离
-            strPath = strPath + @"\" + ConnId;
-            strNameSpace = strNameSpace + "." + ConnId;
+            if (isMuti)
+            {
+                strPath = strPath + @"\" + ConnId;
+                strNameSpace = strNameSpace + "." + ConnId;
+            }
 
             var IDbFirst = sqlSugarClient.DbFirst;
             if (lstTableNames != null && lstTableNames.Length > 0)
@@ -324,9 +350,9 @@ namespace " + strNameSpace + @"
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
                   .SettingClassTemplate(p => p =
-@"using Blog.Core.IRepository." + ConnId + @";
+@"using Blog.Core.IRepository" + (isMuti ? "." + ConnId + "" : "") + @";
 using Blog.Core.IRepository.UnitOfWork;
-using Blog.Core.Model.Models." + ConnId + @";
+using Blog.Core.Model.Models" + (isMuti ? "." + ConnId + "" : "") + @";
 using Blog.Core.Repository.Base;
 
 namespace " + strNameSpace + @"
@@ -361,17 +387,22 @@ namespace " + strNameSpace + @"
         /// <param name="strNameSpace">命名空间</param>
         /// <param name="lstTableNames">生产指定的表</param>
         /// <param name="strInterface">实现接口</param>
+        /// <param name="isMuti"></param>
         private static void Create_Services_ClassFileByDBTalbe(
           SqlSugarClient sqlSugarClient,
           string ConnId,
           string strPath,
           string strNameSpace,
           string[] lstTableNames,
-          string strInterface)
+          string strInterface,
+          bool isMuti = false)
         {
             //多库文件分离
-            strPath = strPath + @"\" + ConnId;
-            strNameSpace = strNameSpace + "." + ConnId;
+            if (isMuti)
+            {
+                strPath = strPath + @"\" + ConnId;
+                strNameSpace = strNameSpace + "." + ConnId;
+            }
 
             var IDbFirst = sqlSugarClient.DbFirst;
             if (lstTableNames != null && lstTableNames.Length > 0)
@@ -381,9 +412,9 @@ namespace " + strNameSpace + @"
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
                   .SettingClassTemplate(p => p =
-@"using Blog.Core.IRepository." + ConnId + @";
-using Blog.Core.IServices." + ConnId + @";
-using Blog.Core.Model.Models." + ConnId + @";
+@"using Blog.Core.IRepository" + (isMuti ? "." + ConnId + "" : "") + @";
+using Blog.Core.IServices" + (isMuti ? "." + ConnId + "" : "") + @";
+using Blog.Core.Model.Models" + (isMuti ? "." + ConnId + "" : "") + @";
 using Blog.Core.Services.BASE;
 
 namespace " + strNameSpace + @"

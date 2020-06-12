@@ -1,4 +1,5 @@
-﻿using Blog.Core.Common.DB;
+﻿using Blog.Core.Common;
+using Blog.Core.Common.DB;
 using Blog.Core.Model;
 using Blog.Core.Model.Seed;
 using Microsoft.AspNetCore.Hosting;
@@ -34,16 +35,18 @@ namespace Blog.Core.Controllers
         public MessageModel<string> GetFrameFiles()
         {
             var data = new MessageModel<string>() { success = true, msg = "" };
+            data.response += @"file path is:C:\my-file\}";
+            var isMuti = Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool();
             if (Env.IsDevelopment())
             {
                 BaseDBConfig.MutiConnectionString.Item1.ToList().ForEach(m =>
                 {
                     _sqlSugarClient.ChangeDatabase(m.ConnId.ToLower());
-                    data.response += $"库{m.ConnId}-Model层生成：{FrameSeed.CreateModels(_sqlSugarClient, m.ConnId)} || ";
-                    data.response += $"库{m.ConnId}-IRepositorys层生成：{FrameSeed.CreateIRepositorys(_sqlSugarClient, m.ConnId)} || ";
-                    data.response += $"库{m.ConnId}-IServices层生成：{FrameSeed.CreateIServices(_sqlSugarClient, m.ConnId)} || ";
-                    data.response += $"库{m.ConnId}-Repository层生成：{FrameSeed.CreateRepository(_sqlSugarClient, m.ConnId)} || ";
-                    data.response += $"库{m.ConnId}-Services层生成：{FrameSeed.CreateServices(_sqlSugarClient, m.ConnId)} || ";
+                    data.response += $"库{m.ConnId}-Model层生成：{FrameSeed.CreateModels(_sqlSugarClient, m.ConnId, isMuti)} || ";
+                    data.response += $"库{m.ConnId}-IRepositorys层生成：{FrameSeed.CreateIRepositorys(_sqlSugarClient, m.ConnId, isMuti)} || ";
+                    data.response += $"库{m.ConnId}-IServices层生成：{FrameSeed.CreateIServices(_sqlSugarClient, m.ConnId, isMuti)} || ";
+                    data.response += $"库{m.ConnId}-Repository层生成：{FrameSeed.CreateRepository(_sqlSugarClient, m.ConnId, isMuti)} || ";
+                    data.response += $"库{m.ConnId}-Services层生成：{FrameSeed.CreateServices(_sqlSugarClient, m.ConnId, isMuti)} || ";
                 });
 
                 // 切回主库
@@ -70,14 +73,15 @@ namespace Blog.Core.Controllers
         {
             ConnID = ConnID == null ? MainDb.CurrentDbConnId.ToLower() : ConnID;
 
+            var isMuti = Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool();
             var data = new MessageModel<string>() { success = true, msg = "" };
             if (Env.IsDevelopment())
             {
 
-                data.response += $"库{ConnID}-IRepositorys层生成：{FrameSeed.CreateIRepositorys(_sqlSugarClient, ConnID, tableNames)} || ";
-                data.response += $"库{ConnID}-IServices层生成：{FrameSeed.CreateIServices(_sqlSugarClient, ConnID, tableNames)} || ";
-                data.response += $"库{ConnID}-Repository层生成：{FrameSeed.CreateRepository(_sqlSugarClient, ConnID, tableNames)} || ";
-                data.response += $"库{ConnID}-Services层生成：{FrameSeed.CreateServices(_sqlSugarClient, ConnID, tableNames)} || ";
+                data.response += $"库{ConnID}-IRepositorys层生成：{FrameSeed.CreateIRepositorys(_sqlSugarClient, ConnID, isMuti, tableNames)} || ";
+                data.response += $"库{ConnID}-IServices层生成：{FrameSeed.CreateIServices(_sqlSugarClient, ConnID, isMuti, tableNames)} || ";
+                data.response += $"库{ConnID}-Repository层生成：{FrameSeed.CreateRepository(_sqlSugarClient, ConnID, isMuti, tableNames)} || ";
+                data.response += $"库{ConnID}-Services层生成：{FrameSeed.CreateServices(_sqlSugarClient, ConnID, isMuti, tableNames)} || ";
             }
             else
             {
