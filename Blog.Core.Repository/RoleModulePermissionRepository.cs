@@ -17,16 +17,6 @@ namespace Blog.Core.Repository
         {
         }
 
-        public async Task<List<RoleModulePermission>> WithChildrenModel()
-        {
-            var list = await Task.Run(() => Db.Queryable<RoleModulePermission>()
-                    .Mapper(it => it.Role, it => it.RoleId)
-                    .Mapper(it => it.Permission, it => it.PermissionId)
-                    .Mapper(it => it.Module, it => it.ModuleId).ToList());
-
-            return null;
-        }
-
         public async Task<List<TestMuchTableResult>> QueryMuchTable()
         {
             return await QueryMuch<RoleModulePermission, Modules, Permission, TestMuchTableResult>(
@@ -86,6 +76,20 @@ namespace Blog.Core.Repository
                 .Mapper(rmp => rmp.Permission, rmp => rmp.PermissionId)
                 .Mapper(rmp => rmp.Role, rmp => rmp.RoleId)
                 .ToListAsync();
+        }
+
+
+        /// <summary>
+        /// 查询出角色-菜单-接口关系表全部Map属性数据
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<RoleModulePermission>> GetRMPMapsPage()
+        {
+            return await Db.Queryable<RoleModulePermission>()
+                .Mapper(rmp => rmp.Module, rmp => rmp.ModuleId)
+                .Mapper(rmp => rmp.Permission, rmp => rmp.PermissionId)
+                .Mapper(rmp => rmp.Role, rmp => rmp.RoleId)
+                .ToPageListAsync(1, 5, 10);
         }
     }
 

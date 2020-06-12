@@ -59,10 +59,6 @@ namespace Blog.Core.Services
             return roleModulePermissions;
         }
 
-        public async Task<List<RoleModulePermission>> TestModelWithChildren()
-        {
-            return await _dal.WithChildrenModel();
-        }
         public async Task<List<TestMuchTableResult>> QueryMuchTable()
         {
             return await _dal.QueryMuchTable();
