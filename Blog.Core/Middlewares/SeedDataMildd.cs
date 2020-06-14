@@ -7,7 +7,7 @@ using System;
 namespace Blog.Core.Extensions
 {
     /// <summary>
-    /// Cors 启动服务
+    /// 生成种子数据中间件服务
     /// </summary>
     public static class SeedDataMildd
     {

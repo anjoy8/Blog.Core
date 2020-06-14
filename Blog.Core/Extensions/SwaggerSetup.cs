@@ -49,11 +49,13 @@ namespace Blog.Core.Extensions
 
                 try
                 {
-                    //就是这里
-                    var xmlPath = Path.Combine(basePath, "Blog.Core.xml");//这个就是刚刚配置的xml文件名
-                    c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
+                    //这个就是刚刚配置的xml文件名
+                    var xmlPath = Path.Combine(basePath, "Blog.Core.xml");
+                    //默认的第二个参数是false，这个是controller的注释，记得修改
+                    c.IncludeXmlComments(xmlPath, true);
 
-                    var xmlModelPath = Path.Combine(basePath, "Blog.Core.Model.xml");//这个就是Model层的xml文件名
+                    //这个就是Model层的xml文件名
+                    var xmlModelPath = Path.Combine(basePath, "Blog.Core.Model.xml");
                     c.IncludeXmlComments(xmlModelPath);
                 }
                 catch (Exception ex)

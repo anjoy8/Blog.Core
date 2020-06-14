@@ -7,7 +7,7 @@ using System.Text;
 namespace Blog.Core.Extensions
 {
     /// <summary>
-    /// Cors 启动服务
+    /// 项目 启动服务
     /// </summary>
     public static class AppConfigSetup
     {

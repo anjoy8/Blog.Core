@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace Blog.Core.Extensions
 {
     /// <summary>
-    /// Db 启动服务
+    /// JWT权限 启动服务
     /// </summary>
     public static class AuthorizationSetup
     {

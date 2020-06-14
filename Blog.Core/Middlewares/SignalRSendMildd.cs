@@ -9,7 +9,7 @@ namespace Blog.Core.Middlewares
 {
     /// <summary>
     /// 中间件
-    /// 记录请求和响应数据
+    /// SignalR发送数据
     /// </summary>
     public class SignalRSendMildd
     {

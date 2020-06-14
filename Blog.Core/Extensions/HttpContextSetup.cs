@@ -6,7 +6,7 @@ using System;
 namespace Blog.Core.Extensions
 {
     /// <summary>
-    /// Db 启动服务
+    /// HttpContext 相关服务
     /// </summary>
     public static class HttpContextSetup
     {

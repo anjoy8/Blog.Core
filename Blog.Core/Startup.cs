@@ -104,7 +104,7 @@ namespace Blog.Core
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MyContext myContext, ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MyContext myContext, ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter, IHostApplicationLifetime lifetime)
         {
             // Ip限流,尽量放管道外层
             app.UseIpRateLimiting();
@@ -153,10 +153,8 @@ namespace Blog.Core
             app.UseAuthentication();
             // 然后是授权中间件
             app.UseAuthorization();
-
             // 开启异常中间件，要放到最后
             //app.UseExceptionHandlerMidd();
-
             // 性能分析
             app.UseMiniProfiler();
 
@@ -171,10 +169,10 @@ namespace Blog.Core
 
             // 生成种子数据
             app.UseSeedDataMildd(myContext, Env.WebRootPath);
-
             // 开启QuartzNetJob调度服务
             app.UseQuartzJobMildd(tasksQzServices, schedulerCenter);
-
+            //服务注册
+            app.UseConsulMildd(Configuration, lifetime);
         }
 
     }

@@ -16,7 +16,7 @@ using System.Text;
 namespace Blog.Core.Extensions
 {
     /// <summary>
-    /// 权限 启动服务
+    /// Ids4权限 启动服务
     /// </summary>
     public static class Authorization_Ids4Setup
     {

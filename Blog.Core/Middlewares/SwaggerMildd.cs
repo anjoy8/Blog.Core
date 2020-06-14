@@ -9,7 +9,7 @@ using static Blog.Core.SwaggerHelper.CustomApiVersion;
 namespace Blog.Core.Extensions
 {
     /// <summary>
-    /// Cors 启动服务
+    /// Swagger中间件
     /// </summary>
     public static class SwaggerMildd
     {

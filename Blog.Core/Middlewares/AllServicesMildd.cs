@@ -10,7 +10,7 @@ using System.Reflection;
 namespace Blog.Core.Extensions
 {
     /// <summary>
-    /// Cors 启动服务
+    /// 查看所有注入的服务
     /// </summary>
     public static class AllServicesMildd
     {

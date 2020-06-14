@@ -6,7 +6,7 @@ using System;
 namespace Blog.Core.Extensions
 {
     /// <summary>
-    /// Cors 启动服务
+    /// 任务调度 启动服务
     /// </summary>
     public static class JobSetup
     {
