@@ -92,7 +92,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // IP限流
-                if (!Appsettings.app(new string[] { "IpRateLimiting", "EnableEndpointRateLimiting" }).ObjToBool())
+                if (!Appsettings.app("Middleware", "IpRateLimit", "Enabled").ObjToBool())
                 {
                     Console.WriteLine($"IpRateLimiting: False");
                 }

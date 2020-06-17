@@ -1,5 +1,4 @@
-﻿using AspNetCoreRateLimit;
-using Autofac;
+﻿using Autofac;
 using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Extensions;
@@ -107,7 +106,7 @@ namespace Blog.Core
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MyContext myContext, ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter, IHostApplicationLifetime lifetime)
         {
             // Ip限流,尽量放管道外层
-            app.UseIpRateLimiting();
+            app.UseIpLimitMildd();
             // 记录请求与返回数据 
             app.UseReuestResponseLog();
             // signalr 
