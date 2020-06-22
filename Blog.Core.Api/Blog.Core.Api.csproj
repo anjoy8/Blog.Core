@@ -75,7 +75,6 @@
 		<None Include="wwwroot\BlogCore.Mini.Data.json\RoleModulePermission.tsv" />
 		<None Include="wwwroot\BlogCore.Mini.Data.json\SysAdmin.tsv" />
 		<None Include="wwwroot\BlogCore.Mini.Data.json\UserRole.tsv" />
-		<None Include="wwwroot\测试下载中文名称的图片.png" />
 	</ItemGroup>
 
 	<ItemGroup>
