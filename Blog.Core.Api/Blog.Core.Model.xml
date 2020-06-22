@@ -1,0 +1,1366 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Blog.Core.Model</name>
+    </assembly>
+    <members>
+        <member name="T:Blog.Core.Model.Love">
+            <summary>
+            这是爱
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Love.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Love.Name">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Love.Age">
+            <summary>
+            年龄
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.MessageModel`1">
+            <summary>
+            通用返回信息类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel`1.status">
+            <summary>
+            状态码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel`1.success">
+            <summary>
+            操作是否成功
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel`1.msg">
+            <summary>
+            返回信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel`1.response">
+            <summary>
+            返回数据集合
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Advertisement.ImgUrl">
+            <summary>
+            广告图片
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Advertisement.Title">
+            <summary>
+            广告标题
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Advertisement.Url">
+            <summary>
+            广告链接
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Advertisement.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Advertisement.Createdate">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.BlogArticle">
+            <summary>
+            博客文章
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.bID">
+            <summary>
+            主键
+            </summary>
+            这里之所以没用RootEntity，是想保持和之前的数据库一致，主键是bID，不是Id
+        </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.bsubmitter">
+            <summary>
+            创建人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.btitle">
+            <summary>
+            标题blog
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.bcategory">
+            <summary>
+            类别
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.bcontent">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.btraffic">
+            <summary>
+            访问量
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.bcommentNum">
+            <summary>
+            评论数量
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.bUpdateTime">
+            <summary> 
+            修改时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.bCreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.bRemark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.IsDeleted">
+            <summary>
+            逻辑删除
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Guestbook.id">
+            <summary>
+            留言表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Guestbook.blogId">
+            <summary>博客ID
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Guestbook.createdate">
+            <summary>创建时间
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Guestbook.phone">
+            <summary>手机
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Guestbook.QQ">
+            <summary>qq
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Guestbook.body">
+            <summary>留言内容
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Guestbook.ip">
+            <summary>ip地址
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Guestbook.isshow">
+            <summary>是否显示在前台,0否1是
+            
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.Modules">
+            <summary>
+            接口API地址信息表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.IsDeleted">
+             <summary>
+            获取或设置是否禁用，逻辑上的删除，非物理删除
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.ParentId">
+            <summary>
+            父ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.LinkUrl">
+            <summary>
+            菜单链接地址
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.Area">
+            <summary>
+            区域名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.Controller">
+            <summary>
+            控制器名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.Action">
+            <summary>
+            Action名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.Code">
+            <summary>
+            菜单编号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.OrderSort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.Description">
+            <summary>
+            /描述
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.IsMenu">
+            <summary>
+            是否是右侧菜单
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.Enabled">
+            <summary>
+            是否激活
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.CreateId">
+            <summary>
+            创建ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.CreateBy">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.ModifyId">
+            <summary>
+            修改ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.ModifyBy">
+            <summary>
+            修改者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Modules.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.ModulePermission">
+            <summary>
+            菜单与按钮关系表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.IsDeleted">
+             <summary>
+            获取或设置是否禁用，逻辑上的删除，非物理删除
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.ModuleId">
+            <summary>
+            菜单ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.PermissionId">
+            <summary>
+            按钮ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateId">
+            <summary>
+            创建ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateBy">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyId">
+            <summary>
+            修改ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyBy">
+            <summary>
+            修改者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyTime">
+             <summary>
+            修改时间
+             </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.OperateLog">
+            <summary>
+            日志记录
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.OperateLog.IsDeleted">
+             <summary>
+            获取或设置是否禁用，逻辑上的删除，非物理删除
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.OperateLog.Area">
+            <summary>
+            区域名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.OperateLog.Controller">
+            <summary>
+            区域控制器名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.OperateLog.Action">
+            <summary>
+            Action名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.OperateLog.IPAddress">
+            <summary>
+            IP地址
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.OperateLog.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.OperateLog.LogTime">
+            <summary>
+            登录时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.OperateLog.LoginName">
+            <summary>
+            登录名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.OperateLog.UserId">
+            <summary>
+            用户ID
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.PasswordLib">
+            <summary>
+            密码库表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.PasswordLib.IsDeleted">
+             <summary>
+            获取或设置是否禁用，逻辑上的删除，非物理删除
+             </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.Permission">
+            <summary>
+            路由菜单表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.Code">
+            <summary>
+            菜单执行Action名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.Name">
+            <summary>
+            菜单显示名（如用户页、编辑(按钮)、删除(按钮)）
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.IsButton">
+            <summary>
+            是否是按钮
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.IsHide">
+            <summary>
+            是否是隐藏菜单
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.IskeepAlive">
+            <summary>
+            是否keepAlive
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.Func">
+            <summary>
+            按钮事件
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.Pid">
+            <summary>
+            上一级菜单（0表示上一级无菜单）
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.Mid">
+            <summary>
+            接口api
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.OrderSort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.Icon">
+            <summary>
+            菜单图标
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.Description">
+            <summary>
+            菜单描述    
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.Enabled">
+            <summary>
+            激活状态
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.CreateId">
+            <summary>
+            创建ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.CreateBy">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.ModifyId">
+            <summary>
+            修改ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.ModifyBy">
+            <summary>
+            修改者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Permission.IsDeleted">
+             <summary>
+            获取或设置是否禁用，逻辑上的删除，非物理删除
+             </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.Role">
+            <summary>
+            角色表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.IsDeleted">
+             <summary>
+            获取或设置是否禁用，逻辑上的删除，非物理删除
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.Name">
+            <summary>
+            角色名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.Description">
+             <summary>
+            描述
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.OrderSort">
+             <summary>
+            排序
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.Enabled">
+            <summary>
+            是否激活
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.CreateId">
+            <summary>
+            创建ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.CreateBy">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.ModifyId">
+            <summary>
+            修改ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.ModifyBy">
+            <summary>
+            修改者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.RoleModulePermission">
+            <summary>
+            按钮跟权限关联表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RoleModulePermission.IsDeleted">
+             <summary>
+            获取或设置是否禁用，逻辑上的删除，非物理删除
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RoleModulePermission.RoleId">
+            <summary>
+            角色ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RoleModulePermission.ModuleId">
+            <summary>
+            菜单ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RoleModulePermission.PermissionId">
+            <summary>
+            api ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RoleModulePermission.CreateId">
+            <summary>
+            创建ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RoleModulePermission.CreateBy">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RoleModulePermission.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RoleModulePermission.ModifyId">
+            <summary>
+            修改ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RoleModulePermission.ModifyBy">
+            <summary>
+            修改者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RoleModulePermission.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.sysUserInfo">
+            <summary>
+            用户信息表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.uID">
+            <summary>
+            用户ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.uLoginName">
+            <summary>
+            登录账号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.uLoginPWD">
+            <summary>
+            登录密码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.uRealName">
+            <summary>
+            真实姓名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.uStatus">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.uRemark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.uCreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.uUpdateTime">
+            <summary>
+            更新时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.uLastErrTime">
+             <summary>
+            最后登录时间 
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.uErrorCount">
+             <summary>
+            错误次数 
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.sysUserInfo.name">
+            <summary>
+            登录账号
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.TasksQz">
+            <summary>
+            任务计划表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.Name">
+            <summary>
+            任务名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.JobGroup">
+            <summary>
+            任务分组
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.Cron">
+            <summary>
+            任务运行时间表达式
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.AssemblyName">
+            <summary>
+            任务所在DLL对应的程序集名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.ClassName">
+            <summary>
+            任务所在类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.Remark">
+            <summary>
+            任务描述
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.RunTimes">
+            <summary>
+            执行次数
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.BeginTime">
+            <summary>
+            开始时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.EndTime">
+            <summary>
+            结束时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.TriggerType">
+            <summary>
+            触发器类型（0、simple 1、cron）
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.IntervalSecond">
+            <summary>
+            执行间隔时间, 秒为单位
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.IsStart">
+            <summary>
+            是否启动
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.JobParams">
+            <summary>
+            执行传参
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.Topic">
+            <summary>
+            Tibug 类别
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.TopicDetail">
+            <summary>
+            Tibug 博文
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.UserRole">
+            <summary>
+            用户跟角色关联表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.UserRole.IsDeleted">
+             <summary>
+            获取或设置是否禁用，逻辑上的删除，非物理删除
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.UserRole.UserId">
+            <summary>
+            用户ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.UserRole.RoleId">
+            <summary>
+            角色ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.UserRole.CreateId">
+            <summary>
+            创建ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.UserRole.CreateBy">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.UserRole.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.UserRole.ModifyId">
+            <summary>
+            修改ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.UserRole.ModifyBy">
+            <summary>
+            修改者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.UserRole.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.RootEntity.Id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.PageModel`1">
+            <summary>
+            通用分页信息类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PageModel`1.page">
+            <summary>
+            当前页标
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PageModel`1.pageCount">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PageModel`1.dataCount">
+            <summary>
+            数据总数
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PageModel`1.PageSize">
+            <summary>
+            每页大小
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PageModel`1.data">
+            <summary>
+            返回数据
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.ResponseEnum.NoPermissions">
+            <summary>
+            无权限
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.ResponseEnum.NoFound">
+            <summary>
+            找不到指定资源
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.ResponseEnum.ServerError">
+            <summary>
+            找不到指定资源
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.DBSeed.SeedAsync(Blog.Core.Model.Seed.MyContext,System.String)">
+            <summary>
+            异步添加种子数据
+            </summary>
+            <param name="myContext"></param>
+            <param name="WebRootPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.CreateModels(SqlSugar.SqlSugarClient,System.String,System.Boolean,System.String[])">
+            <summary>
+            生成Model层
+            </summary>
+            <param name="sqlSugarClient">sqlsugar实例</param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
+            <param name="isMuti"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.CreateIRepositorys(SqlSugar.SqlSugarClient,System.String,System.Boolean,System.String[])">
+            <summary>
+            生成IRepository层
+            </summary>
+            <param name="sqlSugarClient">sqlsugar实例</param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="isMuti"></param>
+            <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.CreateIServices(SqlSugar.SqlSugarClient,System.String,System.Boolean,System.String[])">
+            <summary>
+            生成 IService 层
+            </summary>
+            <param name="sqlSugarClient">sqlsugar实例</param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="isMuti"></param>
+            <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.CreateRepository(SqlSugar.SqlSugarClient,System.String,System.Boolean,System.String[])">
+            <summary>
+            生成 Repository 层
+            </summary>
+            <param name="sqlSugarClient">sqlsugar实例</param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="isMuti"></param>
+            <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.CreateServices(SqlSugar.SqlSugarClient,System.String,System.Boolean,System.String[])">
+            <summary>
+            生成 Service 层
+            </summary>
+            <param name="sqlSugarClient">sqlsugar实例</param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="isMuti"></param>
+            <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.Create_Model_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String,System.String[],System.String,System.Boolean,System.Boolean)">
+            <summary>
+            功能描述:根据数据库表生产Model层
+            作　　者:Blog.Core
+            </summary>
+            <param name="sqlSugarClient"></param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+            <param name="isMuti"></param>
+            <param name="blnSerializable">是否序列化</param>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.Create_IRepository_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String,System.String[],System.String,System.Boolean)">
+            <summary>
+            功能描述:根据数据库表生产IRepository层
+            作　　者:Blog.Core
+            </summary>
+            <param name="sqlSugarClient"></param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+            <param name="isMuti"></param>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.Create_IServices_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String,System.String[],System.String,System.Boolean)">
+            <summary>
+            功能描述:根据数据库表生产IServices层
+            作　　者:Blog.Core
+            </summary>
+            <param name="sqlSugarClient"></param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+            <param name="isMuti"></param>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.Create_Repository_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String,System.String[],System.String,System.Boolean)">
+            <summary>
+            功能描述:根据数据库表生产 Repository 层
+            作　　者:Blog.Core
+            </summary>
+            <param name="sqlSugarClient"></param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+            <param name="isMuti"></param>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.Create_Services_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String,System.String[],System.String,System.Boolean)">
+            <summary>
+            功能描述:根据数据库表生产 Services 层
+            作　　者:Blog.Core
+            </summary>
+            <param name="sqlSugarClient"></param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+            <param name="isMuti"></param>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.CreateFilesByClassStringList(System.Collections.Generic.Dictionary{System.String,System.String},System.String,System.String)">
+            <summary>
+            根据模板内容批量生成文件
+            </summary>
+            <param name="ls">类文件字符串list</param>
+            <param name="strPath">生成路径</param>
+            <param name="fileNameTp">文件名格式模板</param>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.GetMainConnectionDb">
+            <summary>
+            连接字符串 
+            Blog.Core
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Seed.MyContext.ConnectionString">
+            <summary>
+            连接字符串 
+            Blog.Core
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Seed.MyContext.DbType">
+            <summary>
+            数据库类型 
+            Blog.Core 
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Seed.MyContext.Db">
+            <summary>
+            数据连接对象 
+            Blog.Core 
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Seed.MyContext.Context">
+            <summary>
+            数据库上下文实例（自动关闭连接）
+            Blog.Core 
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.#ctor">
+            <summary>
+            功能描述:构造函数
+            作　　者:Blog.Core
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.GetEntityDB``1">
+            <summary>
+            功能描述:获取数据库处理对象
+            作　　者:Blog.Core
+            </summary>
+            <returns>返回值</returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.GetEntityDB``1(SqlSugar.SqlSugarClient)">
+            <summary>
+            功能描述:获取数据库处理对象
+            作　　者:Blog.Core
+            </summary>
+            <param name="db">db</param>
+            <returns>返回值</returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.CreateTableByEntity``1(System.Boolean,``0[])">
+            <summary>
+            功能描述:根据实体类生成数据库表
+            作　　者:Blog.Core
+            </summary>
+            <param name="blnBackupTable">是否备份表</param>
+            <param name="lstEntitys">指定的实体</param>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.CreateTableByEntity(System.Boolean,System.Type[])">
+            <summary>
+            功能描述:根据实体类生成数据库表
+            作　　者:Blog.Core
+            </summary>
+            <param name="blnBackupTable">是否备份表</param>
+            <param name="lstEntitys">指定的实体</param>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.GetDbContext">
+            <summary>
+            功能描述:获得一个DbContext
+            作　　者:Blog.Core
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.Init(System.String,SqlSugar.DbType)">
+            <summary>
+            功能描述:设置初始化参数
+            作　　者:Blog.Core
+            </summary>
+            <param name="strConnectionString">连接字符串</param>
+            <param name="enmDbType">数据库类型</param>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.GetConnectionConfig(System.Boolean,System.Boolean)">
+            <summary>
+            功能描述:创建一个链接配置
+            作　　者:Blog.Core
+            </summary>
+            <param name="blnIsAutoCloseConnection">是否自动关闭连接</param>
+            <param name="blnIsShardSameThread">是否夸类事务</param>
+            <returns>ConnectionConfig</returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.GetCustomDB(SqlSugar.ConnectionConfig)">
+            <summary>
+            功能描述:获取一个自定义的DB
+            作　　者:Blog.Core
+            </summary>
+            <param name="config">config</param>
+            <returns>返回值</returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.GetCustomEntityDB``1(SqlSugar.SqlSugarClient)">
+            <summary>
+            功能描述:获取一个自定义的数据库处理对象
+            作　　者:Blog.Core
+            </summary>
+            <param name="sugarClient">sugarClient</param>
+            <returns>返回值</returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.MyContext.GetCustomEntityDB``1(SqlSugar.ConnectionConfig)">
+            <summary>
+            功能描述:获取一个自定义的数据库处理对象
+            作　　者:Blog.Core
+            </summary>
+            <param name="config">config</param>
+            <returns>返回值</returns>
+        </member>
+        <member name="T:Blog.Core.Model.TableModel`1">
+            <summary>
+            表格数据，支持分页
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.TableModel`1.Code">
+            <summary>
+            返回编码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.TableModel`1.Msg">
+            <summary>
+            返回信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.TableModel`1.Count">
+            <summary>
+            记录总数
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.TableModel`1.Data">
+            <summary>
+            返回数据集
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.AdvertisementViewModels">
+            <summary>
+            广告类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.Id">
+            <summary>
+            分类ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.Createdate">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.ImgUrl">
+            <summary>
+            广告图片
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.Title">
+            <summary>
+            广告标题
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.Url">
+            <summary>
+            广告链接
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.AdvertisementViewModels.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.BlogViewModels">
+            <summary>
+            博客信息展示类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bsubmitter">
+            <summary>创建人
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.btitle">
+            <summary>博客标题
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.digest">
+            <summary>摘要
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.previous">
+            <summary>
+            上一篇
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.previousID">
+            <summary>
+            上一篇id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.next">
+            <summary>
+            下一篇
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.nextID">
+            <summary>
+            下一篇id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bcategory">
+            <summary>类别
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bcontent">
+            <summary>内容
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.btraffic">
+            <summary>
+            访问量
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bcommentNum">
+            <summary>
+            评论数量
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bUpdateTime">
+            <summary> 修改时间
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bCreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bRemark">
+            <summary>备注
+            
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.GuestbookViewModels">
+            <summary>
+            留言信息展示类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.id">
+            <summary>留言表
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.blogId">
+            <summary>博客ID
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.createdate">
+            <summary>创建时间
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.phone">
+            <summary>手机
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.QQ">
+            <summary>qq
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.body">
+            <summary>留言内容
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.ip">
+            <summary>ip地址
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.GuestbookViewModels.isshow">
+            <summary>是否显示在前台,0否1是
+            
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.ServerViewModel">
+            <summary>
+            服务器VM
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.ServerViewModel.EnvironmentName">
+            <summary>
+            环境变量
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.ServerViewModel.OSArchitecture">
+            <summary>
+            系统架构
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.ServerViewModel.ContentRootPath">
+            <summary>
+            ContentRootPath
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.ServerViewModel.WebRootPath">
+            <summary>
+            WebRootPath
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.ServerViewModel.FrameworkDescription">
+            <summary>
+            .NET Core版本
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.ServerViewModel.MemoryFootprint">
+            <summary>
+            内存占用
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.ServerViewModel.WorkingTime">
+            <summary>
+            启动时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.SidebarMenuViewModel">
+            <summary>
+            菜单展示model
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.TestRestSharpGetDto">
+            <summary>
+            用来测试 RestSharp Get 请求
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TestRestSharpGetDto.success">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TestRestSharpGetDto.data">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.TestRestSharpPostDto">
+            <summary>
+            用来测试 RestSharp Post 请求
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.TopgbViewModels">
+            <summary>
+            留言排名展示类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TopgbViewModels.blogId">
+            <summary>博客ID
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TopgbViewModels.counts">
+            <summary>
+            评论数量
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TopgbViewModels.btitle">
+            <summary>博客标题
+            
+            </summary>
+        </member>
+    </members>
+</doc>

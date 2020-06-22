@@ -12,7 +12,7 @@ taskkill /f /pid %n%
 
 dotnet build
 
-cd Blog.Core
+cd Blog.Core.Api
 
 
 
