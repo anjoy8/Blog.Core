@@ -6,6 +6,6 @@
 
 ## 微信公众号
 
-<img src="http://apk.neters.club/images/wechat.png" alt="公众号" width="600" >
+<img src="https://img.neters.club/doc/WeChat%20Screenshot_20200624194936.png" alt="公众号" width="600" >
 
 
