@@ -20,33 +20,44 @@ BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET C
 
 ### 功能与进度
 
-- [x] 采用仓储+服务+接口的形式封装框架；
-- [x] 使用Swagger做api文档；
-- [x] 使用MiniProfiler做接口性能分析；
-- [x] 使用Automapper做Dto处理；
-- [x] 接入SqlSugar ORM，封装数据库操作； 
-- [x] 项目启动，自动生成seed种子数据； 
-- [x] 五种日志记录，审计/异常/请求响应/服务操作/Sql记录等；  
+框架模块：  
+- [x] 采用`仓储+服务+接口`的形式封装框架；
+- [x] 异步 async/await 开发；
+- [x] 接入 SqlSugar 提供ORM，封装数据库操作；
 - [x] 支持自由切换多种数据库，Sqlite/SqlServer/MySql/PostgreSQL/Oracle；
-- [x] 异步async/await开发；
-- [x] 支持事务；
-- [x] AutoFac接入做依赖注入；
-- [x] 支持AOP切面编程；
-- [x] 支持CORS跨域；
-- [x] 支持T4代码模板，自动生成每层代码；
-- [x] 支持一键创建自己项目；
+- [x] 实现项目启动，自动生成种子数据 ✨； 
+- [x] 五种日志记录，审计/异常/请求响应/服务操作/Sql记录等； 
+- [x] 支持项目事务处理（若要分布式，用cap即可）✨；
+- [x] 设计4种 AOP 切面编程，功能涵盖：日志、缓存、审计、事务 ✨；
+- [x] 支持 T4 代码模板，自动生成每层代码；
+- [x] 或使用 DbFirst 一键创建自己项目的四层文件（支持多库）；
+- [x] 封装`Blog.Core.Webapi.Template`项目模板，一键重建自己的项目 ✨；
+- [x] 搭配多个前端案例供参考和借鉴：Blog.Vue、Blog.Admin、Nuxt.tbug、Blog.Mvp.Blazor ✨；
+- [x] 统一集成 IdentityServer4 认证 ✨;
+
+组件模块：
+- [x] 提供 Redis 做缓存处理；
+- [x] 使用 Swagger 做api文档；
+- [x] 使用 MiniProfiler 做接口性能分析 ✨；
+- [x] 使用 Automapper 处理对象映射；  
+- [x] 使用 AutoFac 做依赖注入容器，并提供批量服务注入 ✨；
+- [x] 支持 CORS 跨域；
 - [x] 封装 JWT 自定义策略授权；
-- [x] 使用Log4Net日志框架+自定义日志输出；
-- [x] 使用SingleR推送日志信息到管理后台；
-- [x] 搭配前端Blog项目，vue开发；
-- [x] 搭配一个Admin管理后台，用vue+ele开发；
-- [x] IdentityServer4 认证;
-- [x] API 限速;
-- [x] 作业调度 Quartz.net;
-- [x] Sqlsugar 读写分离;
-- [ ] 支付;
-- [ ] Redis/RBMQ 队列;
-- [ ] 数据部门权限;
+- [x] 使用 Log4Net 日志框架，集成原生 ILogger 接口做日志记录；
+- [x] 使用 SingleR 双工通讯 ✨；
+- [x] 添加 IpRateLimiting 做 API 限流处理;
+- [x] 使用 Quartz.net 做任务调度;
+- [x] 支持 数据库`读写分离`和多库操作 ✨;
+- [ ] 计划 - 设计支付宝/微信支付;
+- [ ] 计划 - Redis/RBMQ 消息队列;
+- [ ] 计划 - 数据部门权限;
+- [ ] 计划 - ES 搜索;
+
+微服务模块：
+- [x] 可配合 Consul 实现服务发现；
+- [x] 可配合 Ocelot 实现网关处理；
+- [x] 可配合 Nginx  实现负载均衡；
+- [x] 可配合 Ids4   实现认证中心；
 
 
 &nbsp;

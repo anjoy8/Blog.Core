@@ -11,7 +11,7 @@ namespace Blog.Core.Extensions
     /// </summary>
     public static class IpLimitMildd
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(SeedDataMildd));
+        private static readonly ILog log = LogManager.GetLogger(typeof(IpLimitMildd));
         public static void UseIpLimitMildd(this IApplicationBuilder app)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));

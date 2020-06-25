@@ -350,3 +350,4 @@ healthchecksdb
 Blog.Core/WMBlog.db
 .docs/contents/.vuepress/dist/*
 Blog.Core/Blog.Core*.xml
+Blog.Core.Api/WMBlog.db
