@@ -61,7 +61,7 @@
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
 		<None Include="wwwroot\BlogCore.Data.json\BlogArticle.tsv" />
-		<None Include="wwwroot\BlogCore.Data.json\Module.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\Modules.tsv" />
 		<None Include="wwwroot\BlogCore.Data.json\Permission.tsv" />
 		<None Include="wwwroot\BlogCore.Data.json\Role.tsv" />
 		<None Include="wwwroot\BlogCore.Data.json\RoleModulePermission.tsv" />
@@ -69,12 +69,6 @@
 		<None Include="wwwroot\BlogCore.Data.json\Topic.tsv" />
 		<None Include="wwwroot\BlogCore.Data.json\TopicDetail.tsv" />
 		<None Include="wwwroot\BlogCore.Data.json\UserRole.tsv" />
-		<None Include="wwwroot\BlogCore.Mini.Data.json\Module.tsv" />
-		<None Include="wwwroot\BlogCore.Mini.Data.json\Permission.tsv" />
-		<None Include="wwwroot\BlogCore.Mini.Data.json\Role.tsv" />
-		<None Include="wwwroot\BlogCore.Mini.Data.json\RoleModulePermission.tsv" />
-		<None Include="wwwroot\BlogCore.Mini.Data.json\SysAdmin.tsv" />
-		<None Include="wwwroot\BlogCore.Mini.Data.json\UserRole.tsv" />
 	</ItemGroup>
 
 	<ItemGroup>

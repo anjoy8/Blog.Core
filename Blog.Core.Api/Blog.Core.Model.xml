@@ -175,6 +175,56 @@
             
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Models.ModulePermission">
+            <summary>
+            菜单与按钮关系表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.IsDeleted">
+             <summary>
+            获取或设置是否禁用，逻辑上的删除，非物理删除
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.ModuleId">
+            <summary>
+            菜单ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.PermissionId">
+            <summary>
+            按钮ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateId">
+            <summary>
+            创建ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateBy">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyId">
+            <summary>
+            修改ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyBy">
+            <summary>
+            修改者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyTime">
+             <summary>
+            修改时间
+             </summary>
+        </member>
         <member name="T:Blog.Core.Model.Models.Modules">
             <summary>
             接口API地址信息表
@@ -274,56 +324,6 @@
             <summary>
             修改时间
             </summary>
-        </member>
-        <member name="T:Blog.Core.Model.Models.ModulePermission">
-            <summary>
-            菜单与按钮关系表
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.IsDeleted">
-             <summary>
-            获取或设置是否禁用，逻辑上的删除，非物理删除
-             </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.ModuleId">
-            <summary>
-            菜单ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.PermissionId">
-            <summary>
-            按钮ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateId">
-            <summary>
-            创建ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateBy">
-            <summary>
-            创建者
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateTime">
-            <summary>
-            创建时间
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyId">
-            <summary>
-            修改ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyBy">
-            <summary>
-            修改者
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyTime">
-             <summary>
-            修改时间
-             </summary>
         </member>
         <member name="T:Blog.Core.Model.Models.OperateLog">
             <summary>
