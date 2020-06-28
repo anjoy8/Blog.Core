@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Blog.Core.SwaggerHelper;
 using Microsoft.AspNetCore.Mvc;
-using static Blog.Core.SwaggerHelper.CustomApiVersion;
+using static Blog.Core.Extensions.CustomApiVersion;
 
 namespace Blog.Core.Controllers.v1
 {

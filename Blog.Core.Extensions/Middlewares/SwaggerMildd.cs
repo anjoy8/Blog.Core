@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using System;
 using System.IO;
 using System.Linq;
-using static Blog.Core.SwaggerHelper.CustomApiVersion;
+using static Blog.Core.Extensions.CustomApiVersion;
 
 namespace Blog.Core.Extensions
 {
@@ -27,6 +27,8 @@ namespace Blog.Core.Extensions
                 {
                     c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{ApiName} {version}");
                 });
+
+                c.SwaggerEndpoint($"https://petstore.swagger.io/v2/swagger.json", $"{ApiName} pet");
 
                 // 将swagger首页，设置成我们自定义的页面，记得这个字符串的写法：{项目名.index.html}
                 if (streamHtml.Invoke() == null)

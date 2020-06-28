@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Blog.Core.SwaggerHelper;
+﻿using Blog.Core.SwaggerHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Blog.Core.SwaggerHelper.CustomApiVersion;
+using System.Collections.Generic;
+using static Blog.Core.Extensions.CustomApiVersion;
 
 namespace Blog.Core.Controllers.v2
 {

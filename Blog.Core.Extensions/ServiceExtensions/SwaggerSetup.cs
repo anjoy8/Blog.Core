@@ -1,5 +1,4 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.Filter;
 using log4net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -9,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using static Blog.Core.SwaggerHelper.CustomApiVersion;
+using static Blog.Core.Extensions.CustomApiVersion;
 
 namespace Blog.Core.Extensions
 {
@@ -20,7 +19,7 @@ namespace Blog.Core.Extensions
     {
 
         private static readonly ILog log =
-        LogManager.GetLogger(typeof(GlobalExceptionsFilter));
+        LogManager.GetLogger(typeof(SwaggerSetup));
 
         public static void AddSwaggerSetup(this IServiceCollection services)
         {
@@ -109,4 +108,26 @@ namespace Blog.Core.Extensions
             });
         }
     }
+
+    /// <summary>
+    /// 自定义版本
+    /// </summary>
+    public class CustomApiVersion
+    {
+        /// <summary>
+        /// Api接口版本 自定义
+        /// </summary>
+        public enum ApiVersions
+        {
+            /// <summary>
+            /// V1 版本
+            /// </summary>
+            V1 = 1,
+            /// <summary>
+            /// V2 版本
+            /// </summary>
+            V2 = 2,
+        }
+    }
+
 }

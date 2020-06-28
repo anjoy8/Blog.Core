@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using StackExchange.Profiling;
-using static Blog.Core.SwaggerHelper.CustomApiVersion;
+using static Blog.Core.Extensions.CustomApiVersion;
 
 namespace Blog.Core.Controllers
 {

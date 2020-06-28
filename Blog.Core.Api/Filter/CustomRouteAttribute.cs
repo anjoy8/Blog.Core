@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using System;
-using static Blog.Core.SwaggerHelper.CustomApiVersion;
+using static Blog.Core.Extensions.CustomApiVersion;
 
 namespace Blog.Core.SwaggerHelper
 {
