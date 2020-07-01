@@ -32,6 +32,10 @@ namespace Blog.Core.Extensions
                             {
                                 Console.WriteLine($"QuartzNetJob{item.Name}启动成功！");
                             }
+                            else
+                            {
+                                Console.WriteLine($"QuartzNetJob{item.Name}启动失败！错误信息：{ResuleModel.msg}");
+                            }
                         }
                     }
 

@@ -110,9 +110,10 @@ namespace Blog.Core.Tasks
         public async Task<MessageModel<string>> AddScheduleJobAsync(TasksQz tasksQz)
         {
             var result = new MessageModel<string>();
-            try
+
+            if (tasksQz != null)
             {
-                if (tasksQz != null)
+                try
                 {
                     JobKey jobKey = new JobKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
                     if (await _scheduler.Result.CheckExists(jobKey))
@@ -176,16 +177,18 @@ namespace Blog.Core.Tasks
                     result.msg = $"启动任务:【{tasksQz.Name}】成功";
                     return result;
                 }
-                else
+                catch (Exception ex)
                 {
                     result.success = false;
-                    result.msg = $"任务计划不存在:【{tasksQz.Name}】";
+                    result.msg = $"任务计划异常:【{ex.Message}】";
                     return result;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                throw ex;
+                result.success = false;
+                result.msg = $"任务计划不存在:【{tasksQz.Name}】";
+                return result;
             }
         }
 
