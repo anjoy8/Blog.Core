@@ -16,6 +16,7 @@ module.exports = {
             { text: '首页', link: '/' },
             { text: '指南', link: '/guide/' },
             { text: '更新日志', link: '/Update/' },
+            { text: '压测', link: '/PressureTest/' },
             { text: '参与贡献', link: '/Contribution/' },
             { text: '社区', link: '/QQ/' },
             { text: '接口API', link: 'http://apk.neters.club' },
