@@ -115,18 +115,21 @@ namespace Blog.Core.AOP
 
         private async Task SuccessAction(IInvocation invocation, string dataIntercept, object o = null)
         {
-            invocation.ReturnValue = o;
-            var type = invocation.Method.ReturnType;
-            if (typeof(Task).IsAssignableFrom(type))
-            {
-                var resultProperty = type.GetProperty("Result");
-                //类型错误 都可以不要invocation参数，直接将o系列化保存到日记中
-                dataIntercept += ($"【执行完成结果】：{JsonConvert.SerializeObject(invocation.ReturnValue)}");
-            }
-            else
-            {
-                dataIntercept += ($"【执行完成结果】：{invocation.ReturnValue}");
-            }
+            //invocation.ReturnValue = o;
+            //var type = invocation.Method.ReturnType;
+            //if (typeof(Task).IsAssignableFrom(type))
+            //{
+            //    //var resultProperty = type.GetProperty("Result");
+            //    //类型错误 都可以不要invocation参数，直接将o系列化保存到日记中
+            //    dataIntercept += ($"【执行完成结果】：{JsonConvert.SerializeObject(invocation.ReturnValue)}");
+            //}
+            //else
+            //{
+            //    dataIntercept += ($"【执行完成结果】：{invocation.ReturnValue}");
+            //}
+
+            dataIntercept += ($"【执行完成结果】：{JsonConvert.SerializeObject(o)}");
+
 
             await Task.Run(() =>
             {

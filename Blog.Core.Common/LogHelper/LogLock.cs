@@ -49,6 +49,11 @@ namespace Blog.Core.Common.LogHelper
                        );
                 }
 
+                if (logContent.IsNotEmptyOrNull() && logContent.Length > 500)
+                {
+                    logContent = logContent.Substring(0, 500) + "\r\n";
+                }
+
                 File.AppendAllText(logFilePath, logContent);
                 WritedCount++;
             }
