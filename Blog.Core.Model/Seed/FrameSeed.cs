@@ -2,6 +2,7 @@ using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Blog.Core.Model.Seed
 {
@@ -369,7 +370,23 @@ namespace " + strNameSpace + @"
                    //.SettingConstructorTemplate(p => p = "              this._{PropertyName} ={DefaultValue};")
 
                    .ToClassStringList(strNameSpace);
-            CreateFilesByClassStringList(ls, strPath, "{0}");
+
+
+
+            Dictionary<string, string> newdic = new Dictionary<string, string>();
+
+            //循环处理 首字母小写 并插入新的 Dictionary
+            foreach (KeyValuePair<string, string> item in ls)
+            {
+
+                string newkey = "_" + item.Key.First().ToString().ToLower() + item.Key.Substring(1);
+
+                string newvalue = item.Value.Replace("_" + item.Key, newkey);
+
+                newdic.Add(item.Key, newvalue);
+            }
+
+            CreateFilesByClassStringList(newdic, strPath, "{0}Controller");
         }
         #endregion
 
