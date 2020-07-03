@@ -9,6 +9,29 @@ namespace Blog.Core.Model.Seed
     {
 
         /// <summary>
+        /// 生成Controller层
+        /// </summary>
+        /// <param name="sqlSugarClient">sqlsugar实例</param>
+        /// <param name="ConnId">数据库链接ID</param>
+        /// <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
+        /// <param name="isMuti"></param>
+        /// <returns></returns>
+        public static bool CreateControllers(SqlSugarClient sqlSugarClient, string ConnId = null, bool isMuti = false, string[] tableNames = null)
+        {
+
+            try
+            {
+                Create_Controller_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Api.Controllers", "Blog.Core.Api.Controllers", tableNames, "", isMuti);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
+        /// <summary>
         /// 生成Model层
         /// </summary>
         /// <param name="sqlSugarClient">sqlsugar实例</param>
@@ -130,7 +153,159 @@ namespace Blog.Core.Model.Seed
         }
 
 
+        #region 根据数据库表生产Controller层
 
+        /// <summary>
+        /// 功能描述:根据数据库表生产Controller层
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <param name="sqlSugarClient"></param>
+        /// <param name="ConnId">数据库链接ID</param>
+        /// <param name="strPath">实体类存放路径</param>
+        /// <param name="strNameSpace">命名空间</param>
+        /// <param name="lstTableNames">生产指定的表</param>
+        /// <param name="strInterface">实现接口</param>
+        /// <param name="isMuti"></param>
+        /// <param name="blnSerializable">是否序列化</param>
+        private static void Create_Controller_ClassFileByDBTalbe(
+          SqlSugarClient sqlSugarClient,
+          string ConnId,
+          string strPath,
+          string strNameSpace,
+          string[] lstTableNames,
+          string strInterface,
+          bool isMuti = false,
+          bool blnSerializable = false)
+        {
+            var IDbFirst = sqlSugarClient.DbFirst;
+            if (lstTableNames != null && lstTableNames.Length > 0)
+            {
+                IDbFirst = IDbFirst.Where(lstTableNames);
+            }
+            var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
+
+                 .SettingClassTemplate(p => p =
+@"using Blog.Core.IServices;
+using Blog.Core.Model;
+using Blog.Core.Model.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+
+namespace " + strNameSpace + @"
+{
+	[Route(""api/[controller]/[action]"")]
+	[ApiController]
+    [Authorize(Permissions.Name)]
+     public class {ClassName}Controller : ControllerBase
+        {
+             /// <summary>
+             /// 服务器接口，因为是模板生成，所以首字母是大写的，自己可以重构下
+             /// </summary>
+            private readonly I{ClassName}Services _{ClassName}Services;
+    
+            public {ClassName}Controller(I{ClassName}Services {ClassName}Services)
+            {
+                _{ClassName}Services = {ClassName}Services;
+            }
+    
+            [HttpGet]
+            public async Task<MessageModel<PageModel<{ClassName}>>> Get(int page = 1, string key = """")
+            {
+                if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+                {
+                    key = """";
+                }
+                int intPageSize = 50;
+    
+                Expression<Func<{ClassName}, bool>> whereExpression = a => a.id > 0;
+    
+                return new MessageModel<PageModel<{ClassName}>>()
+                {
+                    msg = ""获取成功"",
+                    success = true,
+                    response = await _{ClassName}Services.QueryPage(whereExpression, page, intPageSize)
+                };
+
+    }
+
+    [HttpGet(""{id}"")]
+    public async Task<MessageModel<{ClassName}>> Get(int id = 0)
+    {
+        return new MessageModel<{ClassName}>()
+        {
+            msg = ""获取成功"",
+            success = true,
+            response = await _{ClassName}Services.QueryById(id)
+        };
+    }
+
+    [HttpPost]
+    public async Task<MessageModel<string>> Post([FromBody] {ClassName} request)
+    {
+        var data = new MessageModel<string>();
+
+        var id = await _{ClassName}Services.Add(request);
+        data.success = id > 0;
+
+        if (data.success)
+        {
+            data.response = id.ObjToString();
+            data.msg = ""添加成功"";
+        }
+
+        return data;
+    }
+
+    [HttpPut]
+    public async Task<MessageModel<string>> Put([FromBody] {ClassName} request)
+    {
+        var data = new MessageModel<string>();
+        if (request.id > 0)
+        {
+            data.success = await _{ClassName}Services.Update(request);
+            if (data.success)
+            {
+                data.msg = ""更新成功"";
+                data.response = request?.id.ObjToString();
+            }
+        }
+
+        return data;
+    }
+
+    [HttpDelete(""{id}"")]
+    public async Task<MessageModel<string>> Delete(int id = 0)
+    {
+        var data = new MessageModel<string>();
+        if (id > 0)
+        {
+            var detail = await _{ClassName}Services.QueryById(id);
+
+            detail.IsDeleted = true;
+
+                if (detail != null)
+                {
+                    data.success = await _{ClassName}Services.Update(detail);
+                    if (data.success)
+                    {
+                        data.msg = ""删除成功"";
+                        data.response = detail?.id.ObjToString();
+                    }
+                }
+        }
+
+        return data;
+    }
+}
+}")
+
+                  .ToClassStringList(strNameSpace);
+            CreateFilesByClassStringList(ls, strPath, "{0}Controller");
+        }
+        #endregion
 
 
         #region 根据数据库表生产Model层

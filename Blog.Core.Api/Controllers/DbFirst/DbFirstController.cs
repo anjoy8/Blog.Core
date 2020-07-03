@@ -39,6 +39,8 @@ namespace Blog.Core.Controllers
             var isMuti = Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool();
             if (Env.IsDevelopment())
             {
+                data.response += $"Controller层生成：{FrameSeed.CreateControllers(_sqlSugarClient)} || ";
+
                 BaseDBConfig.MutiConnectionString.Item1.ToList().ForEach(m =>
                 {
                     _sqlSugarClient.ChangeDatabase(m.ConnId.ToLower());

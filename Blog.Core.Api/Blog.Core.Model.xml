@@ -853,6 +853,16 @@
             <param name="WebRootPath"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.CreateControllers(SqlSugar.SqlSugarClient,System.String,System.Boolean,System.String[])">
+            <summary>
+            生成Controller层
+            </summary>
+            <param name="sqlSugarClient">sqlsugar实例</param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
+            <param name="isMuti"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Model.Seed.FrameSeed.CreateModels(SqlSugar.SqlSugarClient,System.String,System.Boolean,System.String[])">
             <summary>
             生成Model层
@@ -902,6 +912,20 @@
             <param name="isMuti"></param>
             <param name="tableNames">数据库表名数组，默认空，生成所有表</param>
             <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.Seed.FrameSeed.Create_Controller_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String,System.String[],System.String,System.Boolean,System.Boolean)">
+            <summary>
+            功能描述:根据数据库表生产Controller层
+            作　　者:Blog.Core
+            </summary>
+            <param name="sqlSugarClient"></param>
+            <param name="ConnId">数据库链接ID</param>
+            <param name="strPath">实体类存放路径</param>
+            <param name="strNameSpace">命名空间</param>
+            <param name="lstTableNames">生产指定的表</param>
+            <param name="strInterface">实现接口</param>
+            <param name="isMuti"></param>
+            <param name="blnSerializable">是否序列化</param>
         </member>
         <member name="M:Blog.Core.Model.Seed.FrameSeed.Create_Model_ClassFileByDBTalbe(SqlSugar.SqlSugarClient,System.String,System.String,System.String,System.String[],System.String,System.Boolean,System.Boolean)">
             <summary>
