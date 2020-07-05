@@ -213,13 +213,12 @@ namespace " + strNameSpace + @"
             }
     
             [HttpGet]
-            public async Task<MessageModel<PageModel<{ClassName}>>> Get(int page = 1, string key = """")
+            public async Task<MessageModel<PageModel<{ClassName}>>> Get(int page = 1, string key = """",int intPageSize = 50)
             {
                 if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
                 {
                     key = """";
                 }
-                int intPageSize = 50;
     
                 Expression<Func<{ClassName}, bool>> whereExpression = a => a.id > 0;
     
@@ -304,7 +303,16 @@ namespace " + strNameSpace + @"
 }")
 
                   .ToClassStringList(strNameSpace);
-            CreateFilesByClassStringList(ls, strPath, "{0}Controller");
+
+            Dictionary<string, string> newdic = new Dictionary<string, string>();
+            //循环处理 首字母小写 并插入新的 Dictionary
+            foreach (KeyValuePair<string, string> item in ls)
+            {
+                string newkey = "_" + item.Key.First().ToString().ToLower() + item.Key.Substring(1);
+                string newvalue = item.Value.Replace("_" + item.Key, newkey);
+                newdic.Add(item.Key, newvalue);
+            }
+            CreateFilesByClassStringList(newdic, strPath, "{0}Controller");
         }
         #endregion
 
@@ -370,23 +378,7 @@ namespace " + strNameSpace + @"
                    //.SettingConstructorTemplate(p => p = "              this._{PropertyName} ={DefaultValue};")
 
                    .ToClassStringList(strNameSpace);
-
-
-
-            Dictionary<string, string> newdic = new Dictionary<string, string>();
-
-            //循环处理 首字母小写 并插入新的 Dictionary
-            foreach (KeyValuePair<string, string> item in ls)
-            {
-
-                string newkey = "_" + item.Key.First().ToString().ToLower() + item.Key.Substring(1);
-
-                string newvalue = item.Value.Replace("_" + item.Key, newkey);
-
-                newdic.Add(item.Key, newvalue);
-            }
-
-            CreateFilesByClassStringList(newdic, strPath, "{0}Controller");
+            CreateFilesByClassStringList(ls, strPath, "{0}");
         }
         #endregion
 
