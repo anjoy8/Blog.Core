@@ -93,5 +93,41 @@ namespace Blog.Core.Controllers
 
             return data;
         }
+
+        /// <summary>
+        /// DbFrist 根据数据库表名 生成整体框架,包含Model层
+        /// </summary>
+        /// <param name="ConnID">数据库链接名称</param>
+        /// <param name="tableNames">需要生成的表名</param>
+        /// <returns></returns>
+        [HttpPost]
+        public MessageModel<string> GetAllFrameFilesByTableNames([FromBody]string[] tableNames, [FromQuery]string ConnID = null)
+        {
+            ConnID = ConnID == null ? MainDb.CurrentDbConnId.ToLower() : ConnID;
+
+            var isMuti = Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool();
+            var data = new MessageModel<string>() { success = true, msg = "" };
+            if (Env.IsDevelopment())
+            {
+                _sqlSugarClient.ChangeDatabase(ConnID.ToLower());
+                data.response += $"Controller层生成：{FrameSeed.CreateControllers(_sqlSugarClient, ConnID, isMuti, tableNames)} || ";
+                data.response += $"库{ConnID}-Model层生成：{FrameSeed.CreateModels(_sqlSugarClient, ConnID, isMuti, tableNames)} || ";
+                data.response += $"库{ConnID}-IRepositorys层生成：{FrameSeed.CreateIRepositorys(_sqlSugarClient, ConnID, isMuti, tableNames)} || ";
+                data.response += $"库{ConnID}-IServices层生成：{FrameSeed.CreateIServices(_sqlSugarClient, ConnID, isMuti, tableNames)} || ";
+                data.response += $"库{ConnID}-Repository层生成：{FrameSeed.CreateRepository(_sqlSugarClient, ConnID, isMuti, tableNames)} || ";
+                data.response += $"库{ConnID}-Services层生成：{FrameSeed.CreateServices(_sqlSugarClient, ConnID, isMuti, tableNames)} || ";
+                // 切回主库
+                _sqlSugarClient.ChangeDatabase(MainDb.CurrentDbConnId.ToLower());
+            }
+            else
+            {
+                data.success = false;
+                data.msg = "当前不处于开发模式，代码生成不可用！";
+            }
+
+            return data;
+        }
+
+
     }
 }
