@@ -101,6 +101,14 @@
             <param name="tableNames">需要生成的表名</param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetAllFrameFilesByTableNames(System.String[],System.String)">
+            <summary>
+            DbFrist 根据数据库表名 生成整体框架,包含Model层
+            </summary>
+            <param name="ConnID">数据库链接名称</param>
+            <param name="tableNames">需要生成的表名</param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Controllers.MigrateController.GetRMPMaps">
             <summary>
             获取权限部分Map数据

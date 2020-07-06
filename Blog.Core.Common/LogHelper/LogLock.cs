@@ -49,10 +49,10 @@ namespace Blog.Core.Common.LogHelper
                        );
                 }
 
-                if (logContent.IsNotEmptyOrNull() && logContent.Length > 500)
-                {
-                    logContent = logContent.Substring(0, 500) + "\r\n";
-                }
+                //if (logContent.IsNotEmptyOrNull() && logContent.Length > 500)
+                //{
+                //    logContent = logContent.Substring(0, 500) + "\r\n";
+                //}
 
                 File.AppendAllText(logFilePath, logContent);
                 WritedCount++;
@@ -130,7 +130,7 @@ namespace Blog.Core.Common.LogHelper
 
             try
             {
-                var exclogContent = ReadLog(Path.Combine(_contentRoot, "Log", $"GlobalExcepLogs_{DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8);
+                var exclogContent = ReadLog(Path.Combine(_contentRoot, "Log", $"GlobalExceptionLogs_{DateTime.Now.ToString("yyyMMdd")}.log"), Encoding.UTF8);
 
                 if (!string.IsNullOrEmpty(exclogContent))
                 {

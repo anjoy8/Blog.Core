@@ -156,6 +156,8 @@ namespace Blog.Core
             //app.UseExceptionHandlerMidd();
             // 性能分析
             app.UseMiniProfiler();
+            // 用户访问记录
+            app.UseRecordAccessLogsMildd();
 
             app.UseEndpoints(endpoints =>
             {

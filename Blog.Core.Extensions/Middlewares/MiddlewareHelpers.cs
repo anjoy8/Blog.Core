@@ -54,5 +54,15 @@ namespace Blog.Core.Middlewares
         {
             return app.UseMiddleware<IPLogMildd>();
         }
+
+        /// <summary>
+        /// 用户访问中间件
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseRecordAccessLogsMildd(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<RecordAccessLogsMildd>();
+        }
     }
 }

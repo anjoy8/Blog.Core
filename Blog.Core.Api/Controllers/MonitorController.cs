@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Hubs;
+using Blog.Core.Middlewares;
 using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 
 namespace Blog.Core.Controllers
 {
@@ -104,6 +109,20 @@ namespace Blog.Core.Controllers
                 msg = "获取成功",
                 success = true,
                 response = LogLock.AccessApiByHour()
+            };
+        }
+
+        [HttpGet]
+        public MessageModel<List<UserAccessModel>> GetAccessLogs([FromServices]IWebHostEnvironment environment)
+        {
+            var Logs = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(Path.Combine(environment.ContentRootPath, "Log", "RecordAccessLogs.log"), Encoding.UTF8) + "]");
+
+            Logs = Logs.Where(d => d.BeginTime.ObjToDate() >= DateTime.Today).OrderByDescending(d => d.BeginTime).Take(50).ToList();
+            return new MessageModel<List<UserAccessModel>>()
+            {
+                msg = "获取成功",
+                success = true,
+                response = Logs
             };
         }
 

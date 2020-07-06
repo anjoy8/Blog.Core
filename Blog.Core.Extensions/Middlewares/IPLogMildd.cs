@@ -57,7 +57,7 @@ namespace Blog.Core.Middlewares
                             });
 
                             // 这种方案也行，用的是Serilog
-                            SerilogServer.WriteLog("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
+                            //SerilogServer.WriteLog("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
 
                             request.Body.Position = 0;
                         }
