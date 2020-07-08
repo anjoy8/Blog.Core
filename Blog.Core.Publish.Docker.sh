@@ -13,6 +13,6 @@ cd /home/Blog.Core/.PublishFiles
 # 编译镜像
 docker build -t laozhangisphi/apkimg .
 # 生成容器
-docker run --name=apkcontainer -it -p 8081:8081 laozhangisphi/apkimg
+docker run --name=apkcontainer -v /etc/localtime:/etc/localtime -it -p 8081:8081 laozhangisphi/apkimg
 # 启动容器
 docker start apkcontainer
