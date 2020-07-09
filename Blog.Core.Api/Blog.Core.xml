@@ -109,16 +109,16 @@
             <param name="tableNames">需要生成的表名</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.MigrateController.GetRMPMaps">
+        <member name="M:Blog.Core.Controllers.MigrateController.DataMigrateFromOld2New">
             <summary>
-            获取权限部分Map数据
-            生成到tsb文件
+            获取权限部分Map数据（从库）
+            迁移到新库（主库）
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.MigrateController.SaveDataToDb">
+        <member name="M:Blog.Core.Controllers.MigrateController.SaveData2TsvAsync">
             <summary>
-            保存数据到数据库
+            权限数据库导出tsv
             </summary>
             <returns></returns>
         </member>

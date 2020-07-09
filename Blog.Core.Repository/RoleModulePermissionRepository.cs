@@ -75,6 +75,7 @@ namespace Blog.Core.Repository
                 .Mapper(rmp => rmp.Module, rmp => rmp.ModuleId)
                 .Mapper(rmp => rmp.Permission, rmp => rmp.PermissionId)
                 .Mapper(rmp => rmp.Role, rmp => rmp.RoleId)
+                .Where(d => d.IsDeleted == false)
                 .ToListAsync();
         }
 
