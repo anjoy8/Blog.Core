@@ -39,17 +39,17 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 区域名称
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
         public string Area { get; set; }
         /// <summary>
         /// 控制器名称
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
         public string Controller { get; set; }
         /// <summary>
         /// Action名称
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
         public string Action { get; set; }
         /// <summary>
         /// 图标

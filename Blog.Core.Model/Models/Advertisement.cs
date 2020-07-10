@@ -27,7 +27,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 备注
         /// </summary>
-        [SugarColumn(Length = int.MaxValue, IsNullable = true, ColumnDataType = "nvarchar")]
+        [SugarColumn(Length = 2000, IsNullable = true, ColumnDataType = "nvarchar")]
         public string Remark { get; set; }
 
         /// <summary>

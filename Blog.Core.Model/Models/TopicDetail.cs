@@ -21,10 +21,10 @@ namespace Blog.Core.Model.Models
         [SugarColumn(ColumnDataType ="nvarchar",Length = 200, IsNullable = true)]
         public string tdName { get; set; }
 
-        [SugarColumn(ColumnDataType ="nvarchar",Length = int.MaxValue , IsNullable = true)]
+        [SugarColumn(ColumnDataType ="nvarchar",Length = 5000 , IsNullable = true)]
         public string tdContent { get; set; }
 
-        [SugarColumn(ColumnDataType ="nvarchar",Length = 400, IsNullable = true)]
+        [SugarColumn(ColumnDataType ="nvarchar",Length = 2000, IsNullable = true)]
         public string tdDetail { get; set; }
 
         [SugarColumn(ColumnDataType ="nvarchar",Length = 200, IsNullable = true)]

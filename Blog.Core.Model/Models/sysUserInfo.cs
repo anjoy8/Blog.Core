@@ -51,7 +51,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 备注
         /// </summary>
-        [SugarColumn(ColumnDataType ="nvarchar",Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType ="nvarchar",Length = 2000, IsNullable = true)]
         public string uRemark { get; set; }
         /// <summary>
         /// 创建时间
