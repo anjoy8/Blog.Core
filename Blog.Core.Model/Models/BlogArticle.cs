@@ -35,7 +35,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 内容
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 5000, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
         public string bcontent { get; set; }
 
         /// <summary>
