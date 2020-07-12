@@ -59,7 +59,7 @@ namespace Blog.Core.Common
                 }
                 catch (Exception)
                 {
-                    //throw new Exception("Redis服务未启用，请开启该服务，并且请注意端口号，本项目使用的的6319，而且我的是没有设置密码。");
+                    throw new Exception("Redis服务未启用，请开启该服务，并且请注意端口号，本项目使用的的6319，而且我的是没有设置密码。");
                 }
             }
             return this.redisConnection;
