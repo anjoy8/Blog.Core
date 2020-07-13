@@ -115,7 +115,7 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public MessageModel<List<UserAccessModel>> GetAccessLogs([FromServices]IWebHostEnvironment environment)
         {
-            var Logs = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(Path.Combine(environment.ContentRootPath, "Log", "RecordAccessLogs.log"), Encoding.UTF8) + "]");
+            var Logs = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.Prefix) + "]");
 
             Logs = Logs.Where(d => d.BeginTime.ObjToDate() >= DateTime.Today).OrderByDescending(d => d.BeginTime).Take(50).ToList();
             return new MessageModel<List<UserAccessModel>>()
