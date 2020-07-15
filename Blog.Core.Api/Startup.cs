@@ -56,14 +56,18 @@ namespace Blog.Core
             services.AddHttpContextSetup();
             services.AddAppConfigSetup();
             services.AddHttpApi();
+
+            // 授权+认证 (jwt or ids4)
+            services.AddAuthorizationSetup();
             if (Permissions.IsUseIds4)
             {
-                services.AddAuthorization_Ids4Setup();
+                services.AddAuthentication_Ids4Setup();
             }
             else
             {
-                services.AddAuthorizationSetup();
+                services.AddAuthentication_JWTSetup();
             }
+
             services.AddIpPolicyRateLimitSetup(Configuration);
 
             services.AddSignalR().AddNewtonsoftJsonProtocol();
