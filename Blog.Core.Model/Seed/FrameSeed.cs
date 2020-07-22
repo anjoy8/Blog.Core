@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Blog.Core.Model.Seed
 {
@@ -638,7 +639,7 @@ namespace " + strNameSpace + @"
                 {
                     Directory.CreateDirectory(strPath);
                 }
-                File.WriteAllText(fileFullPath, item.Value);
+                File.WriteAllText(fileFullPath, item.Value, Encoding.UTF8);
             }
         }
         #endregion
