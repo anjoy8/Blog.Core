@@ -1,11 +1,12 @@
-﻿using Blog.Core.Services.BASE;
-using Blog.Core.Model.Models;
-using Blog.Core.IServices;
+﻿using Blog.Core.Common;
 using Blog.Core.IRepository;
-using System.Threading.Tasks;
+using Blog.Core.IRepository.Base;
+using Blog.Core.IServices;
+using Blog.Core.Model.Models;
+using Blog.Core.Services.BASE;
 using System.Collections.Generic;
-using Blog.Core.Common;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Services
 {
@@ -15,11 +16,14 @@ namespace Blog.Core.Services
     public class RoleModulePermissionServices : BaseServices<RoleModulePermission>, IRoleModulePermissionServices
     {
         readonly IRoleModulePermissionRepository _dal;
-        readonly IModuleRepository _moduleRepository;
-        readonly IRoleRepository _roleRepository;
+        readonly IBaseRepository<Modules> _moduleRepository;
+        readonly IBaseRepository<Role> _roleRepository;
 
         // 将多个仓储接口注入
-        public RoleModulePermissionServices(IRoleModulePermissionRepository dal, IModuleRepository moduleRepository, IRoleRepository roleRepository)
+        public RoleModulePermissionServices(
+            IRoleModulePermissionRepository dal, 
+            IBaseRepository<Modules> moduleRepository, 
+            IBaseRepository<Role> roleRepository)
         {
             this._dal = dal;
             this._moduleRepository = moduleRepository;

@@ -1,21 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Blog.Core.Common;
-using Blog.Core.IRepository;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Model.ViewModels;
 using Blog.Core.Services.BASE;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Services
 {
     public class BlogArticleServices : BaseServices<BlogArticle>, IBlogArticleServices
     {
-        IBlogArticleRepository _dal;
+        IBaseRepository<BlogArticle> _dal;
         IMapper _mapper;
-        public BlogArticleServices(IBlogArticleRepository dal, IMapper mapper)
+        public BlogArticleServices(IBaseRepository<BlogArticle> dal, IMapper mapper)
         {
             this._dal = dal;
             base.BaseDal = dal;

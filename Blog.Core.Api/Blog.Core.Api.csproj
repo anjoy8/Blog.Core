@@ -47,8 +47,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Blog.Core.Extensions\Blog.Core.Extensions.csproj" />
-		<ProjectReference Include="..\Blog.Core.IRepository\Blog.Core.IRepository.csproj" />
-		<ProjectReference Include="..\Blog.Core.IServices\Blog.Core.IServices.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

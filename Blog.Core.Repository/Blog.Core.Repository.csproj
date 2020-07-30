@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Blog.Core.IRepository\Blog.Core.IRepository.csproj" />
+	  <ProjectReference Include="..\Blog.Core.Model\Blog.Core.Model.csproj" />
 	</ItemGroup>
 
 </Project>

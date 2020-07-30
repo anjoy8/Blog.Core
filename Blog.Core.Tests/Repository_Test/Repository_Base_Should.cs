@@ -3,13 +3,13 @@ using Xunit;
 using System;
 using System.Linq;
 using Autofac;
-using Blog.Core.IRepository;
+using Blog.Core.IRepository.Base;
 
 namespace Blog.Core.Tests
 {
     public class Repository_Base_Should
     {
-        private IBlogArticleRepository baseRepository;
+        private IBaseRepository<BlogArticle> baseRepository;
         DI_Test dI_Test = new DI_Test();
 
         public Repository_Base_Should()
@@ -17,7 +17,7 @@ namespace Blog.Core.Tests
 
             var container = dI_Test.DICollections();
 
-            baseRepository = container.Resolve<IBlogArticleRepository>();
+            baseRepository = container.Resolve<IBaseRepository<BlogArticle>>();
 
             //DbContext.Init(BaseDBConfig.ConnectionString,(DbType)BaseDBConfig.DbType);
         }
