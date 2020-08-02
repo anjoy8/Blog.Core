@@ -1,21 +1,21 @@
-using Blog.Core.IServices;
-using Blog.Core.IRepository;
-using Blog.Core.Services.BASE;
-using Blog.Core.Model.Models;
-using System.Threading.Tasks;
-using System.Linq;
 using Blog.Core.Common;
+using Blog.Core.IRepository.Base;
+using Blog.Core.IServices;
+using Blog.Core.Model.Models;
+using Blog.Core.Services.BASE;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Services
-{	
-	/// <summary>
-	/// RoleServices
-	/// </summary>	
-	public class RoleServices : BaseServices<Role>, IRoleServices
+{
+    /// <summary>
+    /// RoleServices
+    /// </summary>	
+    public class RoleServices : BaseServices<Role>, IRoleServices
     {
-	
-        IRoleRepository _dal;
-        public RoleServices(IRoleRepository dal)
+
+        IBaseRepository<Role> _dal;
+        public RoleServices(IBaseRepository<Role> dal)
         {
             this._dal = dal;
             base.BaseDal = dal;

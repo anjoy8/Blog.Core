@@ -139,7 +139,7 @@ namespace Blog.Core
             // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
 
             // CORS跨域
-            app.UseCors("LimitRequests");
+            app.UseCors(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
             // 跳转https
             //app.UseHttpsRedirection();
             // 使用静态文件

@@ -2,7 +2,9 @@
 using Autofac.Extras.DynamicProxy;
 using Blog.Core.AOP;
 using Blog.Core.Common;
+using Blog.Core.IRepository.Base;
 using Blog.Core.Model;
+using Blog.Core.Repository.Base;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -56,6 +58,8 @@ namespace Blog.Core.Extensions
                 builder.RegisterType<BlogLogAOP>();
                 cacheType.Add(typeof(BlogLogAOP));
             }
+
+            builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();//注册仓储
 
             // 获取 Service.dll 程序集服务，并注册
             var assemblysServices = Assembly.LoadFrom(servicesDllFile);
