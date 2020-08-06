@@ -115,3 +115,11 @@ Gitee（国内） 下载 [https://gitee.com/laozhangIsPhi/Blog.Core](https://git
 1、双击项目根目录下的 `Blog.Core.Publish.bat`批处理文件；  
 2、执行完成后，根目录会有一个`.PublishFiles` 文件夹，就是发布后的项目；
 
+
+## 如何更新项目模板
+1、着急的话自己打包，不着急就提 `issue`，等我更新；  
+2、我的开源项目中，有个模板项目 `BlogCoreTempl` [地址](https://github.com/anjoy8/BlogCoreTempl)，下载下来；   
+3、下载最新的 `Blog.Core` 源代码；  
+4、将源代码拷贝到模板项目的 `content` 文件夹下；   
+5、双击 `Package.bat` 文件，就生成了最新的模板了； 
+
