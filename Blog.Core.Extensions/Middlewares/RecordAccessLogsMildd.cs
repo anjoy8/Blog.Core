@@ -2,6 +2,7 @@
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.LogHelper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
@@ -23,15 +24,17 @@ namespace Blog.Core.Middlewares
         /// </summary>
         private readonly RequestDelegate _next;
         private readonly IUser _user;
+        private readonly ILogger<RecordAccessLogsMildd> _logger;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="next"></param>
-        public RecordAccessLogsMildd(RequestDelegate next, IUser user)
+        public RecordAccessLogsMildd(RequestDelegate next, IUser user, ILogger<RecordAccessLogsMildd> logger)
         {
             _next = next;
             _user = user;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -56,24 +59,22 @@ namespace Blog.Core.Middlewares
                         {
                             context.Response.Body = ms;
 
-
-                            await _next(context);
-
-
-                            ms.Position = 0;
-                            await ms.CopyToAsync(originalBody);
-
-
                             stopwatch.Stop();
                             var opTime = stopwatch.Elapsed.TotalMilliseconds.ToString("00") + "ms";
                             // 存储请求数据
                             await RequestDataLog(context, opTime);
+
+                            await _next(context);
+
+                            ms.Position = 0;
+                            await ms.CopyToAsync(originalBody);
                         }
+
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         // 记录异常
-                        //ErrorLogData(context.Response, ex);
+                        _logger.LogError(ex.Message + "\r\n" + ex.InnerException);
                     }
                     finally
                     {
