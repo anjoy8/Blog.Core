@@ -225,23 +225,39 @@ namespace Blog.Core.Tasks
         /// <summary>
         /// 恢复指定的计划任务
         /// </summary>
-        /// <param name="sysSchedule"></param>
+        /// <param name="tasksQz"></param>
         /// <returns></returns>
-        public async Task<MessageModel<string>> ResumeJob(TasksQz sysSchedule)
+        public async Task<MessageModel<string>> ResumeJob(TasksQz tasksQz)
         {
             var result = new MessageModel<string>();
             try
             {
-                JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
+                JobKey jobKey = new JobKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
                 if (!await _scheduler.Result.CheckExists(jobKey))
                 {
                     result.success = false;
-                    result.msg = $"未找到要重新的任务:【{sysSchedule.Name}】,请先选择添加计划！";
+                    result.msg = $"未找到要重新的任务:【{tasksQz.Name}】,请先选择添加计划！";
                     return result;
                 }
-                await this._scheduler.Result.ResumeJob(jobKey);
+
+                //await this._scheduler.Result.ResumeJob(jobKey);
+
+                ITrigger trigger;
+                if (tasksQz.Cron != null && CronExpression.IsValidExpression(tasksQz.Cron) && tasksQz.TriggerType > 0)
+                {
+                    trigger = CreateCronTrigger(tasksQz);
+                }
+                else
+                {
+                    trigger = CreateSimpleTrigger(tasksQz);
+                }
+
+                TriggerKey triggerKey = new TriggerKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
+                await _scheduler.Result.RescheduleJob(triggerKey, trigger);
+
+
                 result.success = true;
-                result.msg = $"恢复计划任务:【{sysSchedule.Name}】成功";
+                result.msg = $"恢复计划任务:【{tasksQz.Name}】成功";
                 return result;
             }
             catch (Exception)
