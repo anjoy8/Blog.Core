@@ -453,6 +453,91 @@ namespace Blog.Core.Repository.Base
             return await _db.Queryable(joinExpression).Where(whereLambda).Select(selectExpression).ToListAsync();
         }
 
+
+        /// <summary>
+        /// 两表联合查询-分页
+        /// </summary>
+        /// <typeparam name="T">实体1</typeparam>
+        /// <typeparam name="T2">实体1</typeparam>
+        /// <typeparam name="TResult">返回对象</typeparam>
+        /// <param name="joinExpression">关联表达式</param>
+        /// <param name="selectExpression">返回表达式</param>
+        /// <param name="whereExpression">查询表达式</param>
+        /// <param name="intPageIndex">页码</param>
+        /// <param name="intPageSize">页大小</param>
+        /// <param name="strOrderByFileds">排序字段</param>
+        /// <returns></returns>
+        public async Task<PageModel<TResult>> QueryTabsPage<T, T2, TResult>(
+            Expression<Func<T, T2, object[]>> joinExpression,
+            Expression<Func<T, T2, TResult>> selectExpression,
+            Expression<Func<TResult, bool>> whereExpression,
+            int intPageIndex = 1,
+            int intPageSize = 20,
+            string strOrderByFileds = null)
+        {
+
+            RefAsync<int> totalCount = 0;
+            var list = await _db.Queryable<T, T2>(joinExpression)
+             .Select(selectExpression)
+             .OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds)
+             .WhereIF(whereExpression != null, whereExpression)
+             .ToPageListAsync(intPageIndex, intPageSize, totalCount);
+            int pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intPageSize.ObjToDecimal())).ObjToInt();
+            return new PageModel<TResult>() { dataCount = totalCount, pageCount = pageCount, page = intPageIndex, PageSize = intPageSize, data = list };
+        }
+
+        /// <summary>
+        /// 两表联合查询-分页-分组
+        /// </summary>
+        /// <typeparam name="T">实体1</typeparam>
+        /// <typeparam name="T2">实体1</typeparam>
+        /// <typeparam name="TResult">返回对象</typeparam>
+        /// <param name="joinExpression">关联表达式</param>
+        /// <param name="selectExpression">返回表达式</param>
+        /// <param name="whereExpression">查询表达式</param>
+        /// <param name="intPageIndex">页码</param>
+        /// <param name="intPageSize">页大小</param>
+        /// <param name="strOrderByFileds">排序字段</param>
+        /// <returns></returns>
+        public async Task<PageModel<TResult>> QueryTabsPage<T, T2, TResult>(
+            Expression<Func<T, T2, object[]>> joinExpression,
+            Expression<Func<T, T2, TResult>> selectExpression,
+            Expression<Func<TResult, bool>> whereExpression,
+            Expression<Func<T, object>> groupExpression,
+            int intPageIndex = 1,
+            int intPageSize = 20,
+            string strOrderByFileds = null)
+        {
+
+            RefAsync<int> totalCount = 0;
+            var list = await _db.Queryable<T, T2>(joinExpression).GroupBy(groupExpression)
+             .Select(selectExpression)
+             .OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds)
+             .WhereIF(whereExpression != null, whereExpression)
+             .ToPageListAsync(intPageIndex, intPageSize, totalCount);
+            int pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intPageSize.ObjToDecimal())).ObjToInt();
+            return new PageModel<TResult>() { dataCount = totalCount, pageCount = pageCount, page = intPageIndex, PageSize = intPageSize, data = list };
+        }
+
+        //var exp = Expressionable.Create<ProjectToUser>()
+        //        .And(s => s.tdIsDelete != true)
+        //        .And(p => p.IsDeleted != true)
+        //        .And(p => p.pmId != null)
+        //        .AndIF(!string.IsNullOrEmpty(model.paramCode1), (s) => s.uID == model.paramCode1.ObjToInt())
+        //                .AndIF(!string.IsNullOrEmpty(model.searchText), (s) => (s.groupName != null && s.groupName.Contains(model.searchText))
+        //                        || (s.jobName != null && s.jobName.Contains(model.searchText))
+        //                        || (s.uRealName != null && s.uRealName.Contains(model.searchText)))
+        //                .ToExpression();//拼接表达式
+        //var data = await _projectMemberServices.QueryTabsPage<sysUserInfo, ProjectMember, ProjectToUser>(
+        //    (s, p) => new object[] { JoinType.Left, s.uID == p.uId },
+        //    (s, p) => new ProjectToUser
+        //    {
+        //        uID = s.uID,
+        //        uRealName = s.uRealName,
+        //        groupName = s.groupName,
+        //        jobName = s.jobName
+        //    }, exp, s => new { s.uID, s.uRealName, s.groupName, s.jobName }, model.currentPage, model.pageSize, model.orderField + " " + model.orderType);
+
     }
 
 }
