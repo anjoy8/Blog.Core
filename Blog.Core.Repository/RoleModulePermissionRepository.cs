@@ -92,6 +92,18 @@ namespace Blog.Core.Repository
                 .Mapper(rmp => rmp.Role, rmp => rmp.RoleId)
                 .ToPageListAsync(1, 5, 10);
         }
+
+        /// <summary>
+        /// 批量更新菜单与接口的关系
+        /// </summary>
+        /// <param name="permissionId">菜单主键</param>
+        /// <param name="moduleId">接口主键</param>
+        /// <returns></returns>
+        public async Task UpdateModuleId(int permissionId, int moduleId)
+        {
+            await Db.Updateable<RoleModulePermission>(it => it.ModuleId == moduleId).Where(
+                it => it.PermissionId == permissionId).ExecuteCommandAsync();
+        }
     }
 
 }

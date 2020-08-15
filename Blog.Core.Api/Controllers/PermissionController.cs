@@ -486,6 +486,7 @@ namespace Blog.Core.Controllers
             if (permission != null && permission.Id > 0)
             {
                 data.success = await _permissionServices.Update(permission);
+                await _roleModulePermissionServices.UpdateModuleId(permission.Id, permission.Mid);
                 if (data.success)
                 {
                     data.msg = "更新成功";
