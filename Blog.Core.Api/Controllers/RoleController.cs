@@ -1,10 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using Blog.Core.Common.Helper;
 
 namespace Blog.Core.Controllers
 {
@@ -34,7 +37,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<Role>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<Role>>> Get(int page = 1, int f = 0, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -43,15 +46,44 @@ namespace Blog.Core.Controllers
 
             int intPageSize = 50;
 
-            var data = await _roleServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
+            //var roleList = await _roleServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
+            PageModel<Role> roles;
+            if (key == "")
+            {
+                roles = await _roleServices.QueryPage(a => a.IsDeleted != true 
+                  && a.Pid == f, page, intPageSize,
+                    " Id desc ");
+            }
+            else
+            {
+                roles = await _roleServices.QueryPage(a => a.IsDeleted != true 
+                    && (a.Name != null && a.Name.Contains(key)), page, intPageSize,
+                    " Id desc ");
+            }
+
+            foreach (var item in roles.data)
+            {
+                List<int> pidarr = new List<int> { };
+                var parent = await _roleServices.QueryById(item.Pid);
+
+                while (parent != null)
+                {
+                    pidarr.Add(parent.Id);
+                    parent = await _roleServices.QueryById(parent.Pid);
+                }
+
+                pidarr.Reverse();
+                pidarr.Insert(0, 0);
+                item.PidArr = pidarr;
+                item.hasChildren = await _roleServices.ExistsChild(item.Id);
+            }
 
             return new MessageModel<PageModel<Role>>()
             {
                 msg = "获取成功",
-                success = data.dataCount >= 0,
-                response = data
+                success = roles.dataCount >= 0,
+                response = roles
             };
-
         }
 
         // GET: api/User/5

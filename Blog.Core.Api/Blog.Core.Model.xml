@@ -490,6 +490,11 @@
             角色表
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.Role.Pid">
+            <summary>
+            父Id
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Role.IsDeleted">
              <summary>
             获取或设置是否禁用，逻辑上的删除，非物理删除

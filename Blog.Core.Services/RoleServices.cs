@@ -49,5 +49,17 @@ namespace Blog.Core.Services
         {
             return ((await base.QueryById(rid))?.Name);
         }
+
+        /// <summary>
+        /// 是否存在子类
+        /// </summary>
+        /// <param name="id">当前id</param>
+        /// <returns></returns>
+        public async Task<bool> ExistsChild(int id)
+        {
+            var count = await _dal.QueryCount(it => it.Pid == id && it.IsDeleted != true);
+
+            return count > 0;
+        }
     }
 }

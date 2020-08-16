@@ -41,6 +41,13 @@ namespace Blog.Core.IRepository.Base
         Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression, int intTop, string strOrderByFileds);
         Task<List<TEntity>> Query(string strWhere, int intTop, string strOrderByFileds);
         Task<List<TEntity>> QuerySql(string strSql, SugarParameter[] parameters = null);
+
+        /// <summary>
+        /// 查询数目
+        /// </summary>
+        /// <param name="whereExpression">where条件</param>
+        /// <returns></returns>
+        Task<int> QueryCount(Expression<Func<TEntity, bool>> whereExpression);
         Task<DataTable> QueryTable(string strSql, SugarParameter[] parameters = null);
 
         Task<List<TEntity>> Query(

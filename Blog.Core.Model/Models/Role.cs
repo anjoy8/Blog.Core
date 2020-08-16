@@ -1,5 +1,6 @@
 ﻿using SqlSugar;
 using System;
+using System.Collections.Generic;
 
 namespace Blog.Core.Model.Models
 {
@@ -26,6 +27,11 @@ namespace Blog.Core.Model.Models
 
         }
 
+        /// <summary>
+        /// 父Id
+        /// </summary>
+        [SugarColumn(IsNullable = true)]
+        public int Pid { get; set; }
         /// <summary>
         ///获取或设置是否禁用，逻辑上的删除，非物理删除
         /// </summary>
@@ -80,6 +86,16 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public DateTime? ModifyTime { get; set; } = DateTime.Now;
 
+        [SugarColumn(IsIgnore = true)]
+        public List<int> PidArr { get; set; }
+        [SugarColumn(IsIgnore = true)]
+        public List<string> PnameArr { get; set; } = new List<string>();
+        [SugarColumn(IsIgnore = true)]
+        public List<string> PCodeArr { get; set; } = new List<string>();
+        [SugarColumn(IsIgnore = true)]
+        public string MName { get; set; }
 
+        [SugarColumn(IsIgnore = true)]
+        public bool hasChildren { get; set; } = true;
     }
 }

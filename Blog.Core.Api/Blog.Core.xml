@@ -351,7 +351,7 @@
             角色管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.RoleController.Get(System.Int32,System.String)">
+        <member name="M:Blog.Core.Controllers.RoleController.Get(System.Int32,System.Int32,System.String)">
             <summary>
             获取全部角色
             </summary>

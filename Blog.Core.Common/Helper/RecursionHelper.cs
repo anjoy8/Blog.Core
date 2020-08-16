@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Blog.Core.Common.Helper
@@ -53,8 +54,6 @@ namespace Blog.Core.Common.Helper
             }
         }
 
-
-
         public static void LoopNaviBarAppendChildren(List<NavigationBar> all, NavigationBar curItem)
         {
 
@@ -79,11 +78,11 @@ namespace Blog.Core.Common.Helper
 
 
 
-        public static void LoopToAppendChildrenT<T>(List<T> all, T curItem, string parentIdName = "Pid", string idName = "value", string childrenName = "children")
+        public static void LoopToAppendChildrenT<T>(List<T> all, T curItem, string parentIdName = "pid", string idName = "value", string childrenName = "children")
         {
             var subItems = all.Where(ee => ee.GetType().GetProperty(parentIdName).GetValue(ee, null).ToString() == curItem.GetType().GetProperty(idName).GetValue(curItem, null).ToString()).ToList();
 
-            if (subItems.Count > 0) curItem.GetType().GetField(childrenName).SetValue(curItem, subItems);
+            if (subItems.Count > 0) curItem.GetType().GetProperty(childrenName).SetValue(curItem, subItems);
             foreach (var subItem in subItems)
             {
                 LoopToAppendChildrenT(all, subItem);
@@ -102,6 +101,19 @@ namespace Blog.Core.Common.Helper
         public List<PermissionTree> children { get; set; }
         public List<PermissionTree> btns { get; set; }
     }
+
+    public class RoleTree
+    {
+        public int value { get; set; }
+        public int pid { get; set; }
+        public string label { get; set; }
+        public int order { get; set; }
+        public string description { get; set; }
+        public bool enabled { get; set; }
+        public DateTime? createTime { get; set; }
+        public List<RoleTree> children { get; set; }
+    }
+
     public class NavigationBar
     {
         public int id { get; set; }

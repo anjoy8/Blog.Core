@@ -355,6 +355,16 @@ namespace Blog.Core.Repository.Base
         }
 
         /// <summary>
+        /// 查询数目
+        /// </summary>
+        /// <param name="whereExpression">where条件</param>
+        /// <returns></returns>
+        public async Task<int> QueryCount(Expression<Func<TEntity, bool>> whereExpression)
+        {
+            return await _db.Queryable<TEntity>().Where(whereExpression).CountAsync();
+        }
+
+        /// <summary>
         /// 根据sql语句查询
         /// </summary>
         /// <param name="strSql">完整的sql语句</param>
