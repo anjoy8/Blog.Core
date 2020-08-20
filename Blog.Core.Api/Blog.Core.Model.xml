@@ -4,6 +4,58 @@
         <name>Blog.Core.Model</name>
     </assembly>
     <members>
+        <member name="T:Blog.Core.Model.IDS4DbModels.ApplicationRole">
+            <summary>
+            以下model 来自ids4项目，多库模式，为了调取ids4数据
+            角色表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.OrderSort">
+             <summary>
+            排序
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.Enabled">
+            <summary>
+            是否激活
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.CreateId">
+            <summary>
+            创建ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.CreateBy">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.ModifyId">
+            <summary>
+            修改ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.ModifyBy">
+            <summary>
+            修改者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.IDS4DbModels.ApplicationUser">
+            <summary>
+            以下model 来自ids4项目，多库模式，为了调取ids4数据
+            用户表
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.Love">
             <summary>
             这是爱

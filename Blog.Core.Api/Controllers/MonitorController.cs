@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Hubs;
+using Blog.Core.IServices;
 using Blog.Core.Middlewares;
 using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
@@ -15,7 +10,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Controllers
 {
@@ -26,11 +30,15 @@ namespace Blog.Core.Controllers
     {
         private readonly IHubContext<ChatHub> _hubContext;
         private readonly IWebHostEnvironment _env;
+        private readonly IApplicationUserServices _applicationUserServices;
+        private readonly ILogger<MonitorController> _logger;
 
-        public MonitorController(IHubContext<ChatHub> hubContext, IWebHostEnvironment env)
+        public MonitorController(IHubContext<ChatHub> hubContext, IWebHostEnvironment env, IApplicationUserServices applicationUserServices, ILogger<MonitorController> logger)
         {
             _hubContext = hubContext;
             _env = env;
+            _applicationUserServices = applicationUserServices;
+            _logger = logger;
         }
 
         /// <summary>
@@ -126,7 +134,53 @@ namespace Blog.Core.Controllers
             };
         }
 
-    }
+        [HttpGet]
+        public async Task<MessageModel<AccessApiDateView>> GetIds4Users()
+        {
+            List<ApiDate> apiDates = new List<ApiDate>();
+            try
+            {
+                if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                {
+                    var users = await _applicationUserServices.Query(d => d.tdIsDelete == false);
 
+                    apiDates = (from n in users
+                                group n by new { n.birth.Date } into g
+                                select new ApiDate
+                                {
+                                    date = g.Key?.Date.ToString("yyyy-MM-dd"),
+                                    count = g.Count(),
+                                }).ToList();
+
+                    apiDates = apiDates.OrderByDescending(d => d.date).Take(30).ToList();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+            }
+
+            if (apiDates.Count == 0)
+            {
+                apiDates.Add(new ApiDate()
+                {
+                    date = "没数据,或未开启相应接口服务",
+                    count = 0
+                });
+            }
+            return new MessageModel<AccessApiDateView>()
+            {
+                msg = "获取成功",
+                success = true,
+                response = new AccessApiDateView
+                {
+                    columns = new string[] { "date", "count" },
+                    rows = apiDates.OrderBy(d => d.date).ToList(),
+                }
+            };
+        }
+
+    }
 
 }

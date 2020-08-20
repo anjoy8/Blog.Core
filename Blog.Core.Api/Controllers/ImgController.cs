@@ -58,7 +58,10 @@ namespace Blog.Core.Controllers
 
             try
             {
+                // 获取提交的文件
                 files = Request.Form.Files;
+                // 获取附带的数据
+                var max_ver= Request.Form["max_ver"].ObjToString();
             }
             catch (Exception)
             {

@@ -21,6 +21,9 @@ namespace Blog.Core.Extensions
                 Console.OutputEncoding = Encoding.GetEncoding("GB2312");
 
                 Console.WriteLine("************ Blog.Core Config Set *****************");
+               
+                ConsoleHelper.WriteSuccessLine("Current environment: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+
                 // 授权策略方案
                 if (Permissions.IsUseIds4)
                 {
