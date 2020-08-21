@@ -1,4 +1,4 @@
-﻿namespace Blog.Core.Common.MemoryCache
+﻿namespace Blog.Core.Common
 {
     /// <summary>
     /// 简单的缓存接口，只有查询和添加，以后会进行扩展

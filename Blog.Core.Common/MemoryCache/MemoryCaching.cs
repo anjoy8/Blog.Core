@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System;
 
-namespace Blog.Core.Common.MemoryCache
+namespace Blog.Core.Common
 {
     /// <summary>
     /// 实例化缓存接口ICaching
