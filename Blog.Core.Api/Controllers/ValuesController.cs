@@ -227,9 +227,9 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet("RestsharpGet")]
         [AllowAnonymous]
-        public TestRestSharpGetDto RestsharpGet()
+        public MessageModel<BlogViewModels> RestsharpGet()
         {
-            return HttpHelper.GetApi<TestRestSharpGetDto>("http://apk.neters.club/", "api/Blog/DetailNuxtNoPer", "id=1");
+            return HttpHelper.GetApi<MessageModel<BlogViewModels>>("http://apk.neters.club/", "api/Blog/DetailNuxtNoPer", "id=1");
         }
         /// <summary>
         /// 测试http请求 RestSharp Post
