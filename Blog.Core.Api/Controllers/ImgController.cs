@@ -128,7 +128,7 @@ namespace Blog.Core.Controllers
             // 前端 blob 接收，具体查看前端admin代码
             string filepath = Path.Combine(environment.WebRootPath, filename);
             var stream = System.IO.File.OpenRead(filepath);
-            string fileExt = ".bmd";
+            //string fileExt = ".bmd";
             //获取文件的ContentType
             var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
             //var memi = provider.Mappings[fileExt];
