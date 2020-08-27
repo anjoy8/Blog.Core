@@ -115,7 +115,6 @@ namespace Blog.Core.Tests
 
             services.AddSingleton(new Appsettings(basePath));
             services.AddSingleton(new LogLock(basePath));
-            services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
             services.AddScoped<DBSeed>();
             services.AddScoped<MyContext>();
 
