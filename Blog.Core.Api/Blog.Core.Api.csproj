@@ -50,7 +50,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\.editorconfig" Link=".editorconfig" />
 		<None Include="wwwroot\BlogCore.Data.json\BlogArticle.tsv" />
 		<None Include="wwwroot\BlogCore.Data.json\Modules.tsv" />
 		<None Include="wwwroot\BlogCore.Data.json\Permission.tsv" />
