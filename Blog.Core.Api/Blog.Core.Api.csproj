@@ -47,6 +47,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Blog.Core.Extensions\Blog.Core.Extensions.csproj" />
+		<ProjectReference Include="..\Blog.Core.SqlSugarDbRepository\Blog.Core.SqlSugarDbRepository.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -7,6 +7,7 @@ using Blog.Core.Hubs;
 using Blog.Core.IServices;
 using Blog.Core.Middlewares;
 using Blog.Core.Model.Seed;
+using Blog.Core.SqlSugarDbRepository;
 using Blog.Core.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -97,6 +98,8 @@ namespace Blog.Core
                 //设置时间格式
                 //options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
             });
+
+            services.AddSqlSugarDbStorage();
 
             _services = services;
         }
