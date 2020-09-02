@@ -57,6 +57,7 @@ namespace Blog.Core
             services.AddHttpContextSetup();
             services.AddAppConfigSetup();
             services.AddHttpApi();
+            services.AddRedisInitMqSetup();
 
             // 授权+认证 (jwt or ids4)
             services.AddAuthorizationSetup();

@@ -592,7 +592,7 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi,Blog.Core.Common.WebApiClients.HttpApis.IDoubanApi)">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi,Blog.Core.Common.IRedisBasketRepository,Blog.Core.Common.WebApiClients.HttpApis.IDoubanApi)">
             <summary>
             ValuesController
             </summary>
@@ -604,6 +604,7 @@
             <param name="user"></param>
             <param name="passwordLibServices"></param>
             <param name="blogApi"></param>
+            <param name="redisBasketRepository"></param>
             <param name="doubanApi"></param>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get">

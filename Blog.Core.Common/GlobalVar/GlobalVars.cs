@@ -26,4 +26,12 @@
         /// </summary>
         public const string Name = "";
     }
+
+    /// <summary>
+    /// RedisMqKey
+    /// </summary>
+    public static class RedisMqKey
+    {
+        public const string Loging = "Loging";
+    }
 }

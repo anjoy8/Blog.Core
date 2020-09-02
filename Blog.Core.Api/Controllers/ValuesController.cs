@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AutoMapper;
+using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.HttpRestSharp;
 using Blog.Core.Common.WebApiClients.HttpApis;
@@ -19,7 +20,7 @@ namespace Blog.Core.Controllers
     /// <summary>
     /// Values控制器
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     //[Authorize]
     //[Authorize(Roles = "Admin,Client")]
@@ -35,6 +36,7 @@ namespace Blog.Core.Controllers
         private readonly IUser _user;
         private readonly IPasswordLibServices _passwordLibServices;
         private readonly IBlogApi _blogApi;
+        private readonly IRedisBasketRepository _redisBasketRepository;
         private readonly IDoubanApi _doubanApi;
         readonly IBlogArticleServices _blogArticleServices;
 
@@ -49,22 +51,28 @@ namespace Blog.Core.Controllers
         /// <param name="user"></param>
         /// <param name="passwordLibServices"></param>
         /// <param name="blogApi"></param>
+        /// <param name="redisBasketRepository"></param>
         /// <param name="doubanApi"></param>
-        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices, IBlogApi blogApi, IDoubanApi doubanApi)
+        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices
+            , IBlogApi blogApi
+            , IRedisBasketRepository redisBasketRepository
+            , IDoubanApi doubanApi)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
             _advertisementServices = advertisementServices;
             _love = love;
-            _roleModulePermissionServices = roleModulePermissionServices;
             // 测试 Httpcontext
             _user = user;
             // 测试多库
             _passwordLibServices = passwordLibServices;
             // 测试http请求
             _blogApi = blogApi;
+            _redisBasketRepository = redisBasketRepository;
             _doubanApi = doubanApi;
             // 测试AOP加载顺序，配合 return
+            _blogArticleServices = blogArticleServices;
+            // 测试redis消息队列
             _blogArticleServices = blogArticleServices;
         }
         /// <summary>
@@ -77,6 +85,8 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<ResponseEnum>> Get()
         {
             var data = new MessageModel<ResponseEnum>();
+
+            await _redisBasketRepository.ListLeftPushAsync(RedisMqKey.Loging, "xxxxxxxxxxxxxxxxxxx");
 
             /*
              *  测试 sql 查询
@@ -124,6 +134,15 @@ namespace Blog.Core.Controllers
 
             return data;
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task RedisMq()
+        {
+            var msg = "这里是一条日志";
+            await _redisBasketRepository.ListLeftPushAsync(RedisMqKey.Loging, msg);
+        }
+
         /// <summary>
         /// Get(int id)方法
         /// </summary>
