@@ -129,9 +129,6 @@ namespace Blog.Core.Controllers
             // 测试service层返回异常
             _advertisementServices.ReturnExp();
 
-            Love love = null;
-            love.SayLoveU();
-
             return data;
         }
 

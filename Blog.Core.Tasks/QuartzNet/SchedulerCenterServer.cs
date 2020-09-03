@@ -187,7 +187,7 @@ namespace Blog.Core.Tasks
             else
             {
                 result.success = false;
-                result.msg = $"任务计划不存在:【{tasksQz.Name}】";
+                result.msg = $"任务计划不存在:【{tasksQz?.Name}】";
                 return result;
             }
         }

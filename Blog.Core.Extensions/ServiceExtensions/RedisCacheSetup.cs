@@ -19,7 +19,7 @@ namespace Blog.Core.Extensions
             services.AddSingleton<ConnectionMultiplexer>(sp =>
             {
                 //获取连接字符串
-                string redisConfiguration = Appsettings.app(new string[] { "AppSettings", "RedisCachingAOP", "ConnectionString" });
+                string redisConfiguration = Appsettings.app(new string[] { "Redis", "ConnectionString" });
                 var configuration = ConfigurationOptions.Parse(redisConfiguration, true);
 
                 configuration.ResolveDns = true;

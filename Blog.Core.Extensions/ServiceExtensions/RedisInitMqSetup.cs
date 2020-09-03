@@ -17,13 +17,21 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddInitQ(m =>
+            if (Appsettings.app(new string[] { "Startup", "RedisMq", "Enabled" }).ObjToBool())
             {
+                // 
+                services.AddInitQ(m =>
+                {
+                //时间间隔
                 m.SuspendTime = 5000;
-                m.ConnectionString = "127.0.0.1:6379";
-                m.ListSubscribe = new List<IRedisSubscribe>() { new RedisSubscribe()};
+                //redis服务器地址
+                m.ConnectionString = Appsettings.app(new string[] { "Redis", "ConnectionString" });
+                //对应的订阅者类，需要new一个实例对象，当然你也可以传参，比如日志对象
+                m.ListSubscribe = new List<IRedisSubscribe>() { new RedisSubscribe() };
+                //显示日志
                 m.ShowLog = false;
-            });
+                }); 
+            }
         }
     }
 }

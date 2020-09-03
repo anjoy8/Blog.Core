@@ -194,7 +194,7 @@ namespace Blog.Core.Controllers
             return new MessageModel<List<Permission>>()
             {
                 msg = "获取成功",
-                success = permissions.Count >= 0,
+                success = true,
                 response = permissions
             };
         }
