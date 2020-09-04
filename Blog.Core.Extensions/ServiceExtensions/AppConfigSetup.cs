@@ -104,6 +104,16 @@ namespace Blog.Core.Extensions
                     ConsoleHelper.WriteSuccessLine($"IpRateLimiting: True");
                 }
 
+                // redis消息队列
+                if (!Appsettings.app("Startup", "RedisMq", "Enabled").ObjToBool())
+                {
+                    Console.WriteLine($"Redis MQ: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"Redis MQ: True");
+                }
+
                 // 多库
                 if (!Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {

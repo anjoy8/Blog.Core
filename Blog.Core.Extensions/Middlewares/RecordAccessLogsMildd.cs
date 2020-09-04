@@ -59,16 +59,21 @@ namespace Blog.Core.Middlewares
                         {
                             context.Response.Body = ms;
 
-                            stopwatch.Stop();
-                            var opTime = stopwatch.Elapsed.TotalMilliseconds.ToString("00") + "ms";
-                            // 存储请求数据
-                            await RequestDataLog(context, opTime);
 
                             await _next(context);
 
                             ms.Position = 0;
                             await ms.CopyToAsync(originalBody);
                         }
+
+                        // 响应完成记录时间和存入日志
+                        context.Response.OnCompleted(async () =>
+                        {
+                            stopwatch.Stop();
+                            var opTime = stopwatch.Elapsed.TotalMilliseconds.ToString("00") + "ms";
+                            // 存储请求数据
+                            await RequestDataLog(context, opTime);
+                        });
 
                     }
                     catch (Exception ex)

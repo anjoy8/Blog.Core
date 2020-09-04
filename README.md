@@ -48,8 +48,8 @@ BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET C
 - [x] 添加 IpRateLimiting 做 API 限流处理;
 - [x] 使用 Quartz.net 做任务调度;
 - [x] 支持 数据库`读写分离`和多库操作 ✨;
+- [x] 新增 Redis 消息队列 ✨;
 - [ ] 计划 - 设计支付宝/微信支付;
-- [ ] 计划 - Redis/RBMQ 消息队列;
 - [ ] 计划 - 数据部门权限;
 - [ ] 计划 - ES 搜索;
 
