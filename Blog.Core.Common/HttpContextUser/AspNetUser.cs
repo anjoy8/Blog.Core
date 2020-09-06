@@ -3,16 +3,19 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Blog.Core.Common.HttpContextUser
 {
     public class AspNetUser : IUser
     {
         private readonly IHttpContextAccessor _accessor;
+        private readonly ILogger<AspNetUser> _logger;
 
-        public AspNetUser(IHttpContextAccessor accessor)
+        public AspNetUser(IHttpContextAccessor accessor, ILogger<AspNetUser> logger)
         {
             _accessor = accessor;
+            _logger = logger;
         }
 
         public string Name => GetName();
@@ -23,7 +26,8 @@ namespace Blog.Core.Common.HttpContextUser
             {
                 return _accessor.HttpContext.User.Identity.Name;
             }
-            else {
+            else
+            {
                 if (!string.IsNullOrEmpty(GetToken()))
                 {
                     return GetUserInfoFromToken("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").FirstOrDefault().ObjToString();
@@ -43,25 +47,31 @@ namespace Blog.Core.Common.HttpContextUser
 
         public string GetToken()
         {
-            return _accessor.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "");
+            return _accessor.HttpContext?.Request?.Headers["Authorization"].ObjToString().Replace("Bearer ", "");
         }
 
         public List<string> GetUserInfoFromToken(string ClaimType)
         {
-
             var jwtHandler = new JwtSecurityTokenHandler();
-            if (!string.IsNullOrEmpty(GetToken()))
+            var token = "";
+            try
             {
-                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(GetToken());
+                token = GetToken();
+                if (!string.IsNullOrEmpty(token))
+                {
+                    JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(token);
 
-                return (from item in jwtToken.Claims
-                        where item.Type == ClaimType
-                        select item.Value).ToList();
+                    return (from item in jwtToken.Claims
+                            where item.Type == ClaimType
+                            select item.Value).ToList();
+                }
             }
-            else
+            catch (System.Exception ex)
             {
-                return new List<string>() { };
+                _logger.LogError($"Token:{token} formal is wrong{ex.Message}");
             }
+
+            return new List<string>() { };
         }
 
         public IEnumerable<Claim> GetClaimsIdentity()
