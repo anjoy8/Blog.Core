@@ -78,8 +78,7 @@ namespace Blog.Core.Middlewares
                     }
                     catch (Exception ex)
                     {
-                        // 记录异常
-                        _logger.LogError(ex.Message + "\r\n" + ex.InnerException);
+                        _logger.LogError("请求路径：" + context.Request.Path + ex.Message + "\r\n" + ex.InnerException);
                     }
                     finally
                     {
