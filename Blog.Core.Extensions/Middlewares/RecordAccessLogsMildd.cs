@@ -60,7 +60,7 @@ namespace Blog.Core.Middlewares
 
 
                     // 获取请求body内容
-                    if (request.Method.ToLower().Equals("post"))
+                    if (request.Method.ToLower().Equals("post") || request.Method.ToLower().Equals("put"))
                     {
                         // 启用倒带功能，就可以让 Request.Body 可以再次读取
                         request.EnableBuffering();
