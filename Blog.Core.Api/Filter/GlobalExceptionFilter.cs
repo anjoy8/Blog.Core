@@ -38,7 +38,8 @@ namespace Blog.Core.Filter
             {
                 json.Message = json.Message.Replace(errorAudit, $"（若新添加服务，需要重新编译项目）{errorAudit}");
             }
-            if (_env.IsDevelopment())
+
+            //if (_env.IsDevelopment())
             {
                 json.DevelopmentMessage = context.Exception.StackTrace;//堆栈信息
             }

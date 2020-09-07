@@ -57,7 +57,7 @@ namespace Blog.Core.Common.HttpContextUser
             try
             {
                 token = GetToken();
-                if (!string.IsNullOrEmpty(token))
+                if (token.IsNotEmptyOrNull())
                 {
                     JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(token);
 
