@@ -86,8 +86,6 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<ResponseEnum>();
 
-            await _redisBasketRepository.ListLeftPushAsync(RedisMqKey.Loging, "xxxxxxxxxxxxxxxxxxx");
-
             /*
              *  测试 sql 查询
              */
