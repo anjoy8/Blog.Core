@@ -22,7 +22,7 @@ namespace Blog.Core.Common.HttpContextUser
 
         private string GetName()
         {
-            if (IsAuthenticated())
+            if (IsAuthenticated() && _accessor.HttpContext.User.Identity.Name.IsNotEmptyOrNull())
             {
                 return _accessor.HttpContext.User.Identity.Name;
             }
