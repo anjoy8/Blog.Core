@@ -30,7 +30,8 @@ namespace Blog.Core.Common.HttpContextUser
             {
                 if (!string.IsNullOrEmpty(GetToken()))
                 {
-                    return GetUserInfoFromToken("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").FirstOrDefault().ObjToString();
+                    var getNameType = Permissions.IsUseIds4 ? "name" : "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name";
+                    return GetUserInfoFromToken(getNameType).FirstOrDefault().ObjToString();
                 }
             }
 
