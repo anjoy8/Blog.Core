@@ -115,8 +115,6 @@ namespace Blog.Core
             app.UseIpLimitMildd();
             // 记录请求与返回数据 
             app.UseReuestResponseLog();
-            // 用户访问记录(必须放到外层，不然如果遇到异常，会报错，因为不能返回流)
-            app.UseRecordAccessLogsMildd();
             // signalr 
             app.UseSignalRSendMildd();
             // 记录ip请求
@@ -162,6 +160,8 @@ namespace Blog.Core
             app.UseAuthorization();
             // 开启异常中间件，要放到最后
             //app.UseExceptionHandlerMidd();
+            // 用户访问记录(必须放到外层，不然如果遇到异常，会报错，因为不能返回流)
+            app.UseRecordAccessLogsMildd();
             // 性能分析
             app.UseMiniProfiler();
 
