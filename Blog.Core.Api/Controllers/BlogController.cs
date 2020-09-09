@@ -128,7 +128,7 @@ namespace Blog.Core.Controllers
 
         [HttpGet]
         [Route("GoUrl")]
-        public async Task<IActionResult> GoUrl(int id)
+        public async Task<IActionResult> GoUrl(int id = 0)
         {
             var response = await _blogArticleServices.QueryById(id);
             if (response != null && response.bsubmitter.IsNotEmptyOrNull())
@@ -138,7 +138,7 @@ namespace Blog.Core.Controllers
                 return Redirect(response.bsubmitter);
             }
 
-            return null;
+            return Ok();
         }
 
         [HttpGet]
