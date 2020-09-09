@@ -43,15 +43,18 @@ namespace Blog.Core.Middlewares
         {
             if (Appsettings.app("Middleware", "RecordAccessLogs", "Enabled").ObjToBool())
             {
+                var api = context.Request.Path.ObjToString().TrimEnd('/').ToLower();
+                var ignoreApis = Appsettings.app("Middleware", "RecordAccessLogs", "IgnoreApis");
+
                 // 过滤，只有接口
-                if (context.Request.Path.Value.Contains("api"))
+                if (api.Contains("api") && !ignoreApis.Contains(api))
                 {
                     _stopwatch.Restart();
                     var userAccessModel = new UserAccessModel();
 
                     HttpRequest request = context.Request;
 
-                    userAccessModel.API = request.Path.ObjToString().TrimEnd('/').ToLower();
+                    userAccessModel.API =
                     userAccessModel.User = _user.Name;
                     userAccessModel.IP = IPLogMildd.GetClientIP(context);
                     userAccessModel.BeginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
