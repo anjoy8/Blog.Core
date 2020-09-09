@@ -29,14 +29,7 @@ namespace Blog.Core.Filter
 
         private void DeleteSubscriptionFiles()
         {
-            try
-            {
-                // ...
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error Delete Subscription Files");
-            }
+           
         }
     }
 }

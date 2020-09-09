@@ -55,22 +55,16 @@ namespace Blog.Core.Common.HttpContextUser
         {
             var jwtHandler = new JwtSecurityTokenHandler();
             var token = "";
-            try
-            {
-                token = GetToken();
-                // token校验
-                if (token.IsNotEmptyOrNull() && jwtHandler.CanReadToken(token))
-                {
-                    JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(token);
 
-                    return (from item in jwtToken.Claims
-                            where item.Type == ClaimType
-                            select item.Value).ToList();
-                }
-            }
-            catch (System.Exception ex)
+            token = GetToken();
+            // token校验
+            if (token.IsNotEmptyOrNull() && jwtHandler.CanReadToken(token))
             {
-                _logger.LogError($"Token:{token} formal is wrong{ex.Message}");
+                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(token);
+
+                return (from item in jwtToken.Claims
+                        where item.Type == ClaimType
+                        select item.Value).ToList();
             }
 
             return new List<string>() { };

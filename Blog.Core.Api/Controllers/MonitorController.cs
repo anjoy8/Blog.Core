@@ -138,28 +138,22 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<AccessApiDateView>> GetIds4Users()
         {
             List<ApiDate> apiDates = new List<ApiDate>();
-            try
+
+            if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
             {
-                if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
-                {
-                    var users = await _applicationUserServices.Query(d => d.tdIsDelete == false);
+                var users = await _applicationUserServices.Query(d => d.tdIsDelete == false);
 
-                    apiDates = (from n in users
-                                group n by new { n.birth.Date } into g
-                                select new ApiDate
-                                {
-                                    date = g.Key?.Date.ToString("yyyy-MM-dd"),
-                                    count = g.Count(),
-                                }).ToList();
+                apiDates = (from n in users
+                            group n by new { n.birth.Date } into g
+                            select new ApiDate
+                            {
+                                date = g.Key?.Date.ToString("yyyy-MM-dd"),
+                                count = g.Count(),
+                            }).ToList();
 
-                    apiDates = apiDates.OrderByDescending(d => d.date).Take(30).ToList();
-                }
-
+                apiDates = apiDates.OrderByDescending(d => d.date).Take(30).ToList();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-            }
+
 
             if (apiDates.Count == 0)
             {
