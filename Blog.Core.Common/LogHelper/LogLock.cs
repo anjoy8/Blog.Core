@@ -285,7 +285,7 @@ namespace Blog.Core.Common.LogHelper
             var weeks = apiWeeks.GroupBy(x => new { x.week }).Select(s => s.First()).ToList();
             foreach (var week in weeks)
             {
-                var apiweeksCurrentWeek = apiWeeks.Where(d => d.week == week.week).OrderByDescending(d => d.count).Take(8).ToList();
+                var apiweeksCurrentWeek = apiWeeks.Where(d => d.week == week.week).OrderByDescending(d => d.count).Take(5).ToList();
                 jsonBuilder.Append("{");
 
                 jsonBuilder.Append("\"");
