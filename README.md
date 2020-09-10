@@ -10,8 +10,9 @@
 &nbsp;
 
 
-![Logo](http://apk.neters.club/logocore.png)
-![MVP](http://apk.neters.club/MVP_Logo_Horizontal_Preferred_Cyan300_CMYK_72ppi.png)
+![Logo](http://apk.neters.club/logocore.png)  
+
+[![MVP](http://apk.neters.club/MVP_Logo_Horizontal_Preferred_Cyan300_CMYK_72ppi.png)](https://mvp.microsoft.com/zh-cn/PublicProfile/5003704?fullName=anson%20zhang)
 
 
 BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET Core3.1 Api + Vue 2.x + RBAC】权限框架。 
@@ -73,7 +74,8 @@ BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET C
 
 还在陆续整理中，不过基本操作都在,包括如何新手入门，配置数据，连接DB等等    
 
-[官方文档](http://apk.neters.club/.doc/)  
+[官方文档](http://apk.neters.club/.doc/)    
+[公众号重要文章+视频地址](https://mvp.neters.club/)    
 
 
 
