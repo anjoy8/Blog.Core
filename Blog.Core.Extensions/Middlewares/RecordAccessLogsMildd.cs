@@ -54,7 +54,7 @@ namespace Blog.Core.Middlewares
 
                     HttpRequest request = context.Request;
 
-                    userAccessModel.API =
+                    userAccessModel.API = api;
                     userAccessModel.User = _user.Name;
                     userAccessModel.IP = IPLogMildd.GetClientIP(context);
                     userAccessModel.BeginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
