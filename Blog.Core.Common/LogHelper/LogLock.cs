@@ -263,8 +263,6 @@ namespace Blog.Core.Common.LogHelper
             {
                 Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log"), "RequestIpInfoLog_", Encoding.UTF8, ReadType.Prefix) + "]");
 
-                var ddd = Logs.Where(d => d.Week == "周日").ToList();
-
                 apiWeeks = (from n in Logs
                             group n by new { n.Week, n.Url } into g
                             select new ApiWeek
@@ -298,6 +296,7 @@ namespace Blog.Core.Common.LogHelper
 
                 foreach (var item in apiweeksCurrentWeek)
                 {
+                    columns.Add(item.url);
                     jsonBuilder.Append("\"");
                     jsonBuilder.Append(item.url);
                     jsonBuilder.Append("\":\"");
@@ -311,7 +310,8 @@ namespace Blog.Core.Common.LogHelper
             jsonBuilder.Remove(jsonBuilder.Length - 1, 1);
             jsonBuilder.Append("]");
 
-            columns.AddRange(apiWeeks.OrderByDescending(d => d.count).Take(8).Select(d => d.url).ToList());
+            //columns.AddRange(apiWeeks.OrderByDescending(d => d.count).Take(8).Select(d => d.url).ToList());
+            columns = columns.Distinct().ToList();
 
             return new RequestApiWeekView()
             {
