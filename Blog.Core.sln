@@ -32,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		Blog.Core.Build.bat = Blog.Core.Build.bat
 		Blog.Core.Publish.bat = Blog.Core.Publish.bat
+		Blog.Core.Publish.Docker.Jenkins.sh = Blog.Core.Publish.Docker.Jenkins.sh
 		Blog.Core.Publish.Docker.sh = Blog.Core.Publish.Docker.sh
 		Blog.Core.Publish.Linux.sh = Blog.Core.Publish.Linux.sh
 		codecov.yml = codecov.yml
