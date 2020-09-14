@@ -1,4 +1,5 @@
-FROM swr.cn-south-1.myhuaweicloud.com/mcr/aspnet:3.1-alpine
+#FROM swr.cn-south-1.myhuaweicloud.com/mcr/aspnet:3.1-alpine
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN echo 'Asia/Shanghai' >/etc/timezone
 
