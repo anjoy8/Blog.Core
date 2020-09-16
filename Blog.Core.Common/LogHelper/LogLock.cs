@@ -123,6 +123,21 @@ namespace Blog.Core.Common.LogHelper
                         }
                     }
                 }
+
+                // 根据前缀读取 最新文件 时间倒叙
+                if (readType == ReadType.PrefixLatest)
+                {
+                    var allFiles = new DirectoryInfo(folderPath);
+                    var selectLastestFile = allFiles.GetFiles().Where(fi => fi.Name.ToLower().Contains(fileName.ToLower())).OrderByDescending(d => d.Name).FirstOrDefault();
+
+                    if (selectLastestFile != null && File.Exists(selectLastestFile.FullName))
+                    {
+                        StreamReader f2 = new StreamReader(selectLastestFile.FullName, encode);
+                        s = f2.ReadToEnd();
+                        f2.Close();
+                        f2.Dispose();
+                    }
+                }
             }
             catch (Exception)
             {
@@ -384,8 +399,18 @@ namespace Blog.Core.Common.LogHelper
 
     public enum ReadType
     {
+        /// <summary>
+        /// 精确查找一个
+        /// </summary>
         Accurate,
-        Prefix
+        /// <summary>
+        /// 指定前缀，模糊查找全部
+        /// </summary>
+        Prefix,
+        /// <summary>
+        /// 指定前缀，最新一个文件
+        /// </summary>
+        PrefixLatest
     }
 
 }

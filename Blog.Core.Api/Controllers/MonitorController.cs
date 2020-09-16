@@ -123,14 +123,40 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public MessageModel<List<UserAccessModel>> GetAccessLogs([FromServices]IWebHostEnvironment environment)
         {
-            var Logs = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.Prefix) + "]");
+            var Logs = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.PrefixLatest) + "]");
 
             Logs = Logs.Where(d => d.BeginTime.ObjToDate() >= DateTime.Today).OrderByDescending(d => d.BeginTime).Take(50).ToList();
+
             return new MessageModel<List<UserAccessModel>>()
             {
                 msg = "获取成功",
                 success = true,
                 response = Logs
+            };
+        }
+
+        [HttpGet]
+        public MessageModel<List<ActiveUserVM>> GetActiveUsers([FromServices]IWebHostEnvironment environment)
+        {
+            var Logs = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.PrefixLatest) + "]");
+
+            Logs = Logs.Where(d => d.User != "").ToList();
+
+            var activeUsers = (from n in Logs
+                               group n by new { n.User } into g
+                               select new ActiveUserVM
+                               {
+                                   user = g.Key.User,
+                                   count = g.Count(),
+                               }).ToList();
+
+            activeUsers = activeUsers.OrderByDescending(d => d.count).Take(10).ToList();
+
+            return new MessageModel<List<ActiveUserVM>>()
+            {
+                msg = "获取成功",
+                success = true,
+                response = activeUsers
             };
         }
 
