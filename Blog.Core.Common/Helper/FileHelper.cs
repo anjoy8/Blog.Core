@@ -74,7 +74,7 @@ namespace Blog.Core.Common.Helper
         public static string GetAvailableFileWithPrefixOrderSize(string folderPath, string prefix, int size = 1 * 1024 * 1024, string ext = ".log")
         {
             var allFiles = new DirectoryInfo(folderPath);
-            var selectFiles = allFiles.GetFiles().Where(fi => fi.Name.ToLower().Contains(prefix.ToLower()) && fi.Extension.ToLower() == ext.ToLower() && fi.Length < size).ToList();
+            var selectFiles = allFiles.GetFiles().Where(fi => fi.Name.ToLower().Contains(prefix.ToLower()) && fi.Extension.ToLower() == ext.ToLower() && fi.Length < size).OrderByDescending(d=>d.Name).ToList();
 
             if (selectFiles.Count > 0)
             {

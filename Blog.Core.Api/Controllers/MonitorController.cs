@@ -136,13 +136,15 @@ namespace Blog.Core.Controllers
         }
 
         [HttpGet]
-        public MessageModel<List<ActiveUserVM>> GetActiveUsers([FromServices]IWebHostEnvironment environment)
+        public MessageModel<WelcomeInitData> GetActiveUsers([FromServices]IWebHostEnvironment environment)
         {
-            var Logs = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.PrefixLatest) + "]");
+            var accessLogsToday = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.PrefixLatest) + "]");
 
-            Logs = Logs.Where(d => d.User != "").ToList();
+            var errorCountToday = LogLock.GetLogData().Where(d => d.Import == 9).Count();
 
-            var activeUsers = (from n in Logs
+            accessLogsToday = accessLogsToday.Where(d => d.User != "").ToList();
+
+            var activeUsers = (from n in accessLogsToday
                                group n by new { n.User } into g
                                select new ActiveUserVM
                                {
@@ -150,13 +152,19 @@ namespace Blog.Core.Controllers
                                    count = g.Count(),
                                }).ToList();
 
+            int activeUsersCount = activeUsers.Count;
             activeUsers = activeUsers.OrderByDescending(d => d.count).Take(10).ToList();
 
-            return new MessageModel<List<ActiveUserVM>>()
+            return new MessageModel<WelcomeInitData>()
             {
                 msg = "获取成功",
                 success = true,
-                response = activeUsers
+                response = new WelcomeInitData()
+                {
+                    activeUsers = activeUsers,
+                    activeUserCount = activeUsersCount,
+                    errorCount = errorCountToday
+                }
             };
         }
 
@@ -201,6 +209,14 @@ namespace Blog.Core.Controllers
             };
         }
 
+    }
+
+    public class WelcomeInitData
+    {
+
+        public List<ActiveUserVM> activeUsers { get; set; }
+        public int activeUserCount { get; set; }
+        public int errorCount { get; set; }
     }
 
 }
