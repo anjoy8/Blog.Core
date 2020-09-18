@@ -121,24 +121,14 @@ namespace Blog.Core.Controllers
         }
 
         [HttpGet]
-        public MessageModel<List<UserAccessModel>> GetAccessLogs([FromServices]IWebHostEnvironment environment)
-        {
-            var Logs = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.PrefixLatest) + "]");
-
-            Logs = Logs.Where(d => d.BeginTime.ObjToDate() >= DateTime.Today).OrderByDescending(d => d.BeginTime).Take(50).ToList();
-
-            return new MessageModel<List<UserAccessModel>>()
-            {
-                msg = "获取成功",
-                success = true,
-                response = Logs
-            };
-        }
-
-        [HttpGet]
         public MessageModel<WelcomeInitData> GetActiveUsers([FromServices]IWebHostEnvironment environment)
         {
-            var accessLogsToday = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.PrefixLatest) + "]");
+            var accessLogsToday = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(
+                Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.PrefixLatest
+                ) + "]")
+                .Where(d => d.BeginTime.ObjToDate() >= DateTime.Today);
+
+            var Logs = accessLogsToday.OrderByDescending(d => d.BeginTime).Take(50).ToList();
 
             var errorCountToday = LogLock.GetLogData().Where(d => d.Import == 9).Count();
 
@@ -163,7 +153,8 @@ namespace Blog.Core.Controllers
                 {
                     activeUsers = activeUsers,
                     activeUserCount = activeUsersCount,
-                    errorCount = errorCountToday
+                    errorCount = errorCountToday,
+                    logs = Logs
                 }
             };
         }
@@ -213,9 +204,9 @@ namespace Blog.Core.Controllers
 
     public class WelcomeInitData
     {
-
         public List<ActiveUserVM> activeUsers { get; set; }
         public int activeUserCount { get; set; }
+        public List<UserAccessModel> logs { get; set; }
         public int errorCount { get; set; }
     }
 

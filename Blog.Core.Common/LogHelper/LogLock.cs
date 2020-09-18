@@ -198,7 +198,7 @@ namespace Blog.Core.Common.LogHelper
 
             try
             {
-                var sqllogContent = ReadLog(Path.Combine(_contentRoot, "Log"), "SqlLog_", Encoding.UTF8, ReadType.Prefix);
+                var sqllogContent = ReadLog(Path.Combine(_contentRoot, "Log"), "SqlLog_", Encoding.UTF8, ReadType.PrefixLatest);
 
                 if (!string.IsNullOrEmpty(sqllogContent))
                 {
@@ -232,7 +232,7 @@ namespace Blog.Core.Common.LogHelper
 
             try
             {
-                var Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log"), "RequestIpInfoLog_", Encoding.UTF8, ReadType.Prefix) + "]");
+                var Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log"), "RequestIpInfoLog_", Encoding.UTF8, ReadType.PrefixLatest) + "]");
 
                 Logs = Logs.Where(d => d.Datetime.ObjToDate() >= DateTime.Today).ToList();
 
