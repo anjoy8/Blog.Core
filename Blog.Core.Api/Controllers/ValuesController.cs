@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.HttpRestSharp;
@@ -14,6 +10,10 @@ using Blog.Core.Model.Models;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Controllers
 {
@@ -53,7 +53,12 @@ namespace Blog.Core.Controllers
         /// <param name="blogApi"></param>
         /// <param name="redisBasketRepository"></param>
         /// <param name="doubanApi"></param>
-        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices
+        public ValuesController(IBlogArticleServices blogArticleServices
+            , IMapper mapper
+            , IAdvertisementServices advertisementServices
+            , Love love
+            , IRoleModulePermissionServices roleModulePermissionServices
+            , IUser user, IPasswordLibServices passwordLibServices
             , IBlogApi blogApi
             , IRedisBasketRepository redisBasketRepository
             , IDoubanApi doubanApi)
@@ -62,6 +67,7 @@ namespace Blog.Core.Controllers
             _mapper = mapper;
             _advertisementServices = advertisementServices;
             _love = love;
+            _roleModulePermissionServices = roleModulePermissionServices;
             // 测试 Httpcontext
             _user = user;
             // 测试多库
