@@ -136,7 +136,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task RedisMq([FromServices] IRedisBasketRepository _redisBasketRepository)
         {
-            var msg = "这里是一条日志";
+            var msg = $"这里是一条日志{DateTime.Now}";
             await _redisBasketRepository.ListLeftPushAsync(RedisMqKey.Loging, msg);
         }
 

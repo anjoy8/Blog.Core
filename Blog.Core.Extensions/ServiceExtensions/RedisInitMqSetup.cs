@@ -1,7 +1,6 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.Redis;
 using InitQ;
-using InitQ.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -22,15 +21,18 @@ namespace Blog.Core.Extensions
                 // 
                 services.AddInitQ(m =>
                 {
-                //时间间隔
-                m.SuspendTime = 5000;
-                //redis服务器地址
-                m.ConnectionString = Appsettings.app(new string[] { "Redis", "ConnectionString" });
-                //对应的订阅者类，需要new一个实例对象，当然你也可以传参，比如日志对象
-                m.ListSubscribe = new List<IRedisSubscribe>() { new RedisSubscribe() };
-                //显示日志
-                m.ShowLog = false;
-                }); 
+                    //时间间隔
+                    m.SuspendTime = 2000;
+                    //redis服务器地址
+                    m.ConnectionString = Appsettings.app(new string[] { "Redis", "ConnectionString" });
+                    //对应的订阅者类，需要new一个实例对象，当然你也可以传参，比如日志对象
+                    m.ListSubscribe = new List<Type>() { 
+                        typeof(RedisSubscribe), 
+                        typeof(RedisSubscribe2) 
+                    };
+                    //显示日志
+                    m.ShowLog = false;
+                });
             }
         }
     }
