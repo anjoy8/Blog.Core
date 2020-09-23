@@ -16,20 +16,18 @@ namespace Blog.Core.Extensions
 
             services.AddTransient<IRedisBasketRepository, RedisBasketRepository>();
 
-            if (Appsettings.app(new string[] { "AppSettings", "RedisCachingAOP", "Enabled" }).ObjToBool())
-            {
-                services.AddSingleton<ConnectionMultiplexer>(sp =>
-                   {
-                //获取连接字符串
-                string redisConfiguration = Appsettings.app(new string[] { "Redis", "ConnectionString" });
-                       var configuration = ConfigurationOptions.Parse(redisConfiguration, true);
+            services.AddSingleton<ConnectionMultiplexer>(sp =>
+               {
+                   //获取连接字符串
+                   string redisConfiguration = Appsettings.app(new string[] { "Redis", "ConnectionString" });
 
-                       configuration.ResolveDns = true;
+                   var configuration = ConfigurationOptions.Parse(redisConfiguration, true);
 
-                       return ConnectionMultiplexer.Connect(configuration);
-                   });
+                   configuration.ResolveDns = true;
 
-            }
+                   return ConnectionMultiplexer.Connect(configuration);
+               });
+
         }
     }
 }

@@ -36,7 +36,6 @@ namespace Blog.Core.Controllers
         private readonly IUser _user;
         private readonly IPasswordLibServices _passwordLibServices;
         private readonly IBlogApi _blogApi;
-        private readonly IRedisBasketRepository _redisBasketRepository;
         private readonly IDoubanApi _doubanApi;
         readonly IBlogArticleServices _blogArticleServices;
 
@@ -51,7 +50,6 @@ namespace Blog.Core.Controllers
         /// <param name="user"></param>
         /// <param name="passwordLibServices"></param>
         /// <param name="blogApi"></param>
-        /// <param name="redisBasketRepository"></param>
         /// <param name="doubanApi"></param>
         public ValuesController(IBlogArticleServices blogArticleServices
             , IMapper mapper
@@ -60,7 +58,6 @@ namespace Blog.Core.Controllers
             , IRoleModulePermissionServices roleModulePermissionServices
             , IUser user, IPasswordLibServices passwordLibServices
             , IBlogApi blogApi
-            , IRedisBasketRepository redisBasketRepository
             , IDoubanApi doubanApi)
         {
             // 测试 Authorize 和 mapper
@@ -74,7 +71,6 @@ namespace Blog.Core.Controllers
             _passwordLibServices = passwordLibServices;
             // 测试http请求
             _blogApi = blogApi;
-            _redisBasketRepository = redisBasketRepository;
             _doubanApi = doubanApi;
             // 测试AOP加载顺序，配合 return
             _blogArticleServices = blogArticleServices;
@@ -138,7 +134,7 @@ namespace Blog.Core.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task RedisMq()
+        public async Task RedisMq([FromServices] IRedisBasketRepository _redisBasketRepository)
         {
             var msg = "这里是一条日志";
             await _redisBasketRepository.ListLeftPushAsync(RedisMqKey.Loging, msg);
