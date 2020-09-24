@@ -4,7 +4,6 @@
         data-authorized="true" data-max-traces="15" data-toggle-shortcut="Alt+P"
         data-trivial-milliseconds="2.0" data-ignored-duplicate-execute-types="Open,OpenAsync,Close,CloseAsync">
 </script>-->
-
 <!--1、版本号要与nuget包一致；2、id不能为空-->
 <script async="async" id="mini-profiler" src="/profiler/includes.min.js?v=4.1.0+c940f0f28d"
         data-version="4.1.0+c940f0f28d" data-path="/profiler/"
@@ -45,7 +44,9 @@
         }
 
         .qqgroup {
-            float: right;
+            position: absolute;
+            top: 67px;
+            right: 10px;
         }
 
         .info {
@@ -116,21 +117,12 @@
             // Apply OAuth config
             ui.initOAuth(oauthConfigObject);
 
+            $(".link img").attr("src", "./logo/favicon-32x32.png");
 
-            int = setInterval(function () {
-                getData();
-            }, 1000);
-            $("img").attr("src", "./logo/favicon-32x32.png");
-        }
-        function getData() {
-
-            if ($(".qqgroup").length <= 0) {
-                $('.info').after("<div class='qqgroup'><img src='https://images.cnblogs.com/cnblogs_com/laozhang-is-phi/1284763/o_WeChat%20Screenshot_20191021142452.png' alt='QQ二维码' style='width: 450px;'><div style=\"margin-left: 16px;color: #4990e2;\"><a href=\"../allservices\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"link\">查看所有注册的服务</a></div></div><div style='clear: both;'></div>");
-                console.log(2);
-                clearInterval(int);
-            }
+            $('#swagger-ui').after("<div class='qqgroup'><img src='https://img.neters.club/doc/wechatgongzhonghao.png' alt='QQ二维码' style='width: 150px;'><div style=\"color: #4990e2;\"><a href=\"../allservices\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"link\">1、查看所有依赖注册的服务</a></div></div><div style='clear: both;'></div>");
 
         }
+
 
     </script>
 </body>
