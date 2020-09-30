@@ -45,7 +45,7 @@ BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET C
 - [x] 支持 CORS 跨域；
 - [x] 封装 JWT 自定义策略授权；
 - [x] 使用 Log4Net 日志框架，集成原生 ILogger 接口做日志记录；
-- [x] 使用 SingleR 双工通讯 ✨；
+- [x] 使用 SignalR 双工通讯 ✨；
 - [x] 添加 IpRateLimiting 做 API 限流处理;
 - [x] 使用 Quartz.net 做任务调度;
 - [x] 支持 数据库`读写分离`和多库操作 ✨;
