@@ -56,7 +56,7 @@ BCVP（Blog.Core&Vue Project）开箱即用的企业级前后端分离【 .NET C
 
 微服务模块：
 - [x] 可配合 Docker 实现容器化；
-- [x] 可配合 Jenkins 实现C；
+- [x] 可配合 Jenkins 实现CI / CD；
 - [x] 可配合 Consul 实现服务发现；
 - [x] 可配合 Ocelot 实现网关处理；
 - [x] 可配合 Nginx  实现负载均衡；
