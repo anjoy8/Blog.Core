@@ -46,7 +46,7 @@ namespace Blog.Core.Extensions
                         ConnectionString = m.Connection,
                         DbType = (DbType)m.DbType,
                         IsAutoCloseConnection = true,
-                        IsShardSameThread = false,
+                        IsShardSameThread = true,
                         AopEvents = new AopEvents
                         {
                             OnLogExecuting = (sql, p) =>
