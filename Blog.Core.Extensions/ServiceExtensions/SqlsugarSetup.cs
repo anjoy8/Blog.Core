@@ -68,7 +68,18 @@ namespace Blog.Core.Extensions
                         },
                         // 从库
                         SlaveConnectionConfigs = listConfig_Slave,
-                        //InitKeyType = InitKeyType.SystemTable
+                        ConfigureExternalServices = new ConfigureExternalServices()
+                        {
+                            EntityService = (property, column) =>
+                            {
+                                // 待测中
+                                if (column.IsPrimarykey && property.PropertyType == typeof(string))
+                                {
+                                    column.IsIdentity = false;
+                                }
+                            }
+                        },
+                        //InitKeyType = InitKeyType.Attribute
                     }
                    );
                 });
