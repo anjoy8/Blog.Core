@@ -1077,13 +1077,7 @@
             Blog.Core 
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Seed.MyContext.Context">
-            <summary>
-            数据库上下文实例（自动关闭连接）
-            Blog.Core 
-            </summary>
-        </member>
-        <member name="M:Blog.Core.Model.Seed.MyContext.#ctor">
+        <member name="M:Blog.Core.Model.Seed.MyContext.#ctor(SqlSugar.ISqlSugarClient)">
             <summary>
             功能描述:构造函数
             作　　者:Blog.Core
@@ -1119,13 +1113,6 @@
             </summary>
             <param name="blnBackupTable">是否备份表</param>
             <param name="lstEntitys">指定的实体</param>
-        </member>
-        <member name="M:Blog.Core.Model.Seed.MyContext.GetDbContext">
-            <summary>
-            功能描述:获得一个DbContext
-            作　　者:Blog.Core
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:Blog.Core.Model.Seed.MyContext.Init(System.String,SqlSugar.DbType)">
             <summary>

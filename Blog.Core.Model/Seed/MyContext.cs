@@ -63,43 +63,16 @@ namespace Blog.Core.Model.Seed
         }
 
         /// <summary>
-        /// 数据库上下文实例（自动关闭连接）
-        /// Blog.Core 
-        /// </summary>
-        public static MyContext Context
-        {
-            get
-            {
-                return new MyContext();
-            }
-
-        }
-
-
-        /// <summary>
         /// 功能描述:构造函数
         /// 作　　者:Blog.Core
         /// </summary>
-        public MyContext()
+        public MyContext(ISqlSugarClient sqlSugarClient)
         {
             if (string.IsNullOrEmpty(_connectionString))
                 throw new ArgumentNullException("数据库连接字符串为空");
-            _db = new SqlSugarClient(new ConnectionConfig()
-            {
-                ConnectionString = _connectionString,
-                DbType = _dbType,
-                IsAutoCloseConnection = true,
-                InitKeyType = InitKeyType.Attribute,//mark
-                ConfigureExternalServices = new ConfigureExternalServices()
-                {
-                    //DataInfoCacheService = new HttpRuntimeCache()
-                },
-                MoreSettings = new ConnMoreSettings()
-                {
-                    //IsWithNoLockQuery = true,
-                    IsAutoRemoveDataCache = true
-                }
-            });
+
+            _db = sqlSugarClient as SqlSugarClient;
+
         }
 
 
@@ -173,15 +146,15 @@ namespace Blog.Core.Model.Seed
 
         #region 静态方法
 
-        /// <summary>
-        /// 功能描述:获得一个DbContext
-        /// 作　　者:Blog.Core
-        /// </summary>
-        /// <returns></returns>
-        public static MyContext GetDbContext()
-        {
-            return new MyContext();
-        }
+        ///// <summary>
+        ///// 功能描述:获得一个DbContext
+        ///// 作　　者:Blog.Core
+        ///// </summary>
+        ///// <returns></returns>
+        //public static MyContext GetDbContext()
+        //{
+        //    return new MyContext();
+        //}
 
         /// <summary>
         /// 功能描述:设置初始化参数

@@ -64,22 +64,23 @@ namespace Blog.Core.Extensions
                         },
                         MoreSettings = new ConnMoreSettings()
                         {
+                            //IsWithNoLockQuery = true,
                             IsAutoRemoveDataCache = true
                         },
                         // 从库
                         SlaveConnectionConfigs = listConfig_Slave,
+                        // 自定义特性
                         ConfigureExternalServices = new ConfigureExternalServices()
                         {
                             EntityService = (property, column) =>
                             {
-                                // 待测中
-                                if (column.IsPrimarykey && property.PropertyType == typeof(string))
+                                if (column.IsPrimarykey && property.PropertyType == typeof(int))
                                 {
-                                    column.IsIdentity = false;
+                                    column.IsIdentity = true;
                                 }
                             }
                         },
-                        //InitKeyType = InitKeyType.Attribute
+                        InitKeyType = InitKeyType.Attribute
                     }
                    );
                 });
