@@ -12,7 +12,7 @@
     "EndTime": "\/Date(1640966400000+0800)\/",
     "IntervalSecond": 0,
     "IsStart": true,
-    "JobParams": "1",
+    "JobParams": 1,
     "IsDeleted": false,
     "CreateTime": "\/Date(1546272000000+0800)\/",
     "Id": 1

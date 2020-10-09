@@ -287,11 +287,6 @@
             获取或设置是否禁用，逻辑上的删除，非物理删除
              </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.Modules.ParentId">
-            <summary>
-            父ID
-            </summary>
-        </member>
         <member name="P:Blog.Core.Model.Models.Modules.Name">
             <summary>
             名称
@@ -850,6 +845,23 @@
         <member name="P:Blog.Core.Model.RootEntity.Id">
             <summary>
             ID
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ModulesRoot`1">
+            <summary>
+            接口API地址信息表 
+            父类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ModulesRoot`1.ParentId">
+            <summary>
+            父ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.RootEntityTkey`1.Id">
+            <summary>
+            ID
+            泛型主键Tkey
             </summary>
         </member>
         <member name="T:Blog.Core.Model.PageModel`1">

@@ -2,6 +2,7 @@
 using Blog.Core.Common.DB;
 using Blog.Core.Common.Helper;
 using Blog.Core.Model.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -83,8 +84,8 @@ namespace Blog.Core.Model.Seed
                 // 注意不要把其他命名空间下的也添加进来。
                 Console.WriteLine("Create Tables...");
                 var modelTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
-                        where t.IsClass && t.Namespace == "Blog.Core.Model.Models"
-                        select t;
+                                 where t.IsClass && t.Namespace == "Blog.Core.Model.Models"
+                                 select t;
                 modelTypes.ToList().ForEach(t =>
                 {
                     if (!myContext.Db.DbMaintenance.IsAnyTable(t.Name))
@@ -118,7 +119,26 @@ namespace Blog.Core.Model.Seed
                     #region Modules
                     if (!await myContext.Db.Queryable<Modules>().AnyAsync())
                     {
-                        myContext.GetEntityDB<Modules>().InsertRange(JsonHelper.ParseFormByJson<List<Modules>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Modules"), Encoding.UTF8)));
+                        JsonSerializerSettings setting = new JsonSerializerSettings();
+                        JsonConvert.DefaultSettings = new Func<JsonSerializerSettings>(() =>
+                        {
+                            //日期类型默认格式化处理
+                            setting.DateFormatHandling = DateFormatHandling.MicrosoftDateFormat;
+                            setting.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+
+                            //空值处理
+                            setting.NullValueHandling = NullValueHandling.Ignore;
+
+                            //高级用法九中的Bool类型转换 设置
+                            //    setting.Converters.Add(new BoolConvert("是,否"));
+
+                            return setting;
+                        });
+
+
+                        var data = JsonConvert.DeserializeObject<List<Modules>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Modules"), Encoding.UTF8), setting);
+
+                        myContext.GetEntityDB<Modules>().InsertRange(data);
                         Console.WriteLine("Table:Modules created success!");
                     }
                     else

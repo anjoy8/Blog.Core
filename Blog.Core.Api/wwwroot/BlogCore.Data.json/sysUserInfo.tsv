@@ -15,7 +15,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "0"
+    "tdIsDelete": 0
   },
   {
     "uID": 2,
@@ -33,7 +33,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "0"
+    "tdIsDelete": 0
   },
   {
     "uID": 3,
@@ -51,7 +51,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "0"
+    "tdIsDelete": 0
   },
   {
     "uID": 4,
@@ -69,7 +69,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "0"
+    "tdIsDelete": 0
   },
   {
     "uID": 5,
@@ -87,7 +87,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 6,
@@ -105,7 +105,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 7,
@@ -123,7 +123,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "0"
+    "tdIsDelete": 0
   },
   {
     "uID": 8,
@@ -141,7 +141,7 @@
     "age": 3,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "0"
+    "tdIsDelete": 0
   },
   {
     "uID": 9,
@@ -159,7 +159,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 10,
@@ -177,7 +177,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 11,
@@ -195,7 +195,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 12,
@@ -213,7 +213,7 @@
     "age": 10,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "0"
+    "tdIsDelete": 0
   },
   {
     "uID": 13,
@@ -231,7 +231,7 @@
     "age": 12,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": "北京市",
-    "tdIsDelete": "0"
+    "tdIsDelete": 0
   },
   {
     "uID": 14,
@@ -249,7 +249,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 15,
@@ -267,7 +267,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 16,
@@ -285,7 +285,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 17,
@@ -303,7 +303,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 18,
@@ -321,7 +321,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 19,
@@ -339,7 +339,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 20,
@@ -357,7 +357,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 21,
@@ -375,7 +375,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 22,
@@ -393,7 +393,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 23,
@@ -411,7 +411,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 24,
@@ -429,7 +429,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 25,
@@ -447,7 +447,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 26,
@@ -465,7 +465,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 27,
@@ -483,7 +483,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 28,
@@ -501,7 +501,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 29,
@@ -519,7 +519,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 30,
@@ -537,7 +537,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 31,
@@ -555,7 +555,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 32,
@@ -573,7 +573,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 33,
@@ -591,7 +591,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 34,
@@ -609,7 +609,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 35,
@@ -627,7 +627,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 36,
@@ -645,7 +645,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 37,
@@ -663,7 +663,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 38,
@@ -681,7 +681,7 @@
     "age": 0,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "1"
+    "tdIsDelete": 1
   },
   {
     "uID": 39,
@@ -699,6 +699,6 @@
     "age": 18,
     "birth": "\/Date(1546272000000+0800)\/",
     "addr": null,
-    "tdIsDelete": "0"
+    "tdIsDelete": 0
   }
 ]
