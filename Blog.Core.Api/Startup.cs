@@ -97,6 +97,8 @@ namespace Blog.Core
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 //设置时间格式
                 //options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
+                //忽略Model中为null的属性
+                //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             });
 
             _services = services;
