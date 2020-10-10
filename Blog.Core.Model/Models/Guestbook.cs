@@ -3,15 +3,9 @@ using System;
 
 namespace Blog.Core.Model.Models
 {
-    public class Guestbook
+    public class Guestbook:RootEntityTkey<int>
     {
-
-        /// <summary>
-        /// 留言表
-        /// </summary>
-        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
-        public int id { get; set; }
-
+        
         /// <summary>博客ID
         /// 
         /// </summary>

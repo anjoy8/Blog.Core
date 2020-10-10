@@ -3,7 +3,7 @@ using System;
 
 namespace Blog.Core.Model.Models
 {
-    public class Advertisement : RootEntity
+    public class Advertisement : RootEntityTkey<int>
     {
 
         /// <summary>
