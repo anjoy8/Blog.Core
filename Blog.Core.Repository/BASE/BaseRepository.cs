@@ -97,6 +97,10 @@ namespace Blog.Core.Repository.Base
             //return (int)i;
 
             var insert = _db.Insertable(entity);
+            
+            //这里你可以返回TEntity，这样的话就可以获取id值，无论主键是什么类型
+            //var return3 = await insert.ExecuteReturnEntityAsync();
+
             return await insert.ExecuteReturnIdentityAsync();
         }
 
