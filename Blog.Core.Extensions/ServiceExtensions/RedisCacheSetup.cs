@@ -16,6 +16,7 @@ namespace Blog.Core.Extensions
 
             services.AddTransient<IRedisBasketRepository, RedisBasketRepository>();
 
+            // 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
             services.AddSingleton<ConnectionMultiplexer>(sp =>
                {
                    //获取连接字符串

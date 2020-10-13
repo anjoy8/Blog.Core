@@ -46,7 +46,7 @@ namespace Blog.Core.Model.Seed
                 if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {
                     var slaveIndex = 0;
-                    BaseDBConfig.MutiConnectionString.Item1.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
+                    BaseDBConfig.MutiConnectionString.allDbs.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
                     {
                         slaveIndex++;
                         Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
@@ -58,7 +58,7 @@ namespace Blog.Core.Model.Seed
                 else if (Appsettings.app(new string[] { "CQRSEnabled" }).ObjToBool())
                 {
                     var slaveIndex = 0;
-                    BaseDBConfig.MutiConnectionString.Item2.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
+                    BaseDBConfig.MutiConnectionString.slaveDbs.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
                     {
                         slaveIndex++;
                         Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");

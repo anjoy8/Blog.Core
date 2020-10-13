@@ -19,12 +19,12 @@ namespace Blog.Core.Model.Seed
         /// </summary>
         public static MutiDBOperate GetMainConnectionDb()
         {
-            var mainConnetctDb = BaseDBConfig.MutiConnectionString.Item1.Find(x => x.ConnId == MainDb.CurrentDbConnId);
-            if (BaseDBConfig.MutiConnectionString.Item1.Count > 0)
+            var mainConnetctDb = BaseDBConfig.MutiConnectionString.allDbs.Find(x => x.ConnId == MainDb.CurrentDbConnId);
+            if (BaseDBConfig.MutiConnectionString.allDbs.Count > 0)
             {
                 if (mainConnetctDb == null)
                 {
-                    mainConnetctDb = BaseDBConfig.MutiConnectionString.Item1[0];
+                    mainConnetctDb = BaseDBConfig.MutiConnectionString.allDbs[0];
                 }
             }
             else

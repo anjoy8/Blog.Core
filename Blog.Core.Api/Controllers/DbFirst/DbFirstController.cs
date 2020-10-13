@@ -41,7 +41,7 @@ namespace Blog.Core.Controllers
             {
                 data.response += $"Controller层生成：{FrameSeed.CreateControllers(_sqlSugarClient)} || ";
 
-                BaseDBConfig.MutiConnectionString.Item1.ToList().ForEach(m =>
+                BaseDBConfig.MutiConnectionString.allDbs.ToList().ForEach(m =>
                 {
                     _sqlSugarClient.ChangeDatabase(m.ConnId.ToLower());
                     data.response += $"库{m.ConnId}-Model层生成：{FrameSeed.CreateModels(_sqlSugarClient, m.ConnId, isMuti)} || ";

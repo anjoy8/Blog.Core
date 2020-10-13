@@ -29,7 +29,7 @@ namespace Blog.Core.Extensions
                 var listConfig = new List<ConnectionConfig>();
                 // 从库
                 var listConfig_Slave = new List<SlaveConnectionConfig>();
-                BaseDBConfig.MutiConnectionString.Item2.ForEach(s =>
+                BaseDBConfig.MutiConnectionString.slaveDbs.ForEach(s =>
                 {
                     listConfig_Slave.Add(new SlaveConnectionConfig()
                     {
@@ -38,7 +38,7 @@ namespace Blog.Core.Extensions
                     });
                 });
 
-                BaseDBConfig.MutiConnectionString.Item1.ForEach(m =>
+                BaseDBConfig.MutiConnectionString.allDbs.ForEach(m =>
                 {
                     listConfig.Add(new ConnectionConfig()
                     {
