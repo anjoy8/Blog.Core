@@ -17,11 +17,13 @@ namespace Blog.Core.Extensions
 
             if (Appsettings.app(new string[] { "Startup", "AppConfigAlert", "Enabled" }).ObjToBool())
             {
+#if DEBUG
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                 Console.OutputEncoding = Encoding.GetEncoding("GB2312");
+#endif
 
                 Console.WriteLine("************ Blog.Core Config Set *****************");
-               
+
                 ConsoleHelper.WriteSuccessLine("Current environment: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
 
                 // 授权策略方案
