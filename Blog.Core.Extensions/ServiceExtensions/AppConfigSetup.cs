@@ -1,6 +1,8 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.Helper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Text;
 
@@ -11,16 +13,17 @@ namespace Blog.Core.Extensions
     /// </summary>
     public static class AppConfigSetup
     {
-        public static void AddAppConfigSetup(this IServiceCollection services)
+        public static void AddAppConfigSetup(this IServiceCollection services, IWebHostEnvironment env)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             if (Appsettings.app(new string[] { "Startup", "AppConfigAlert", "Enabled" }).ObjToBool())
             {
-#if DEBUG
-                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-                Console.OutputEncoding = Encoding.GetEncoding("GB2312");
-#endif
+                if (env.IsDevelopment())
+                {
+                    Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                    Console.OutputEncoding = Encoding.GetEncoding("GB2312");
+                }
 
                 Console.WriteLine("************ Blog.Core Config Set *****************");
 

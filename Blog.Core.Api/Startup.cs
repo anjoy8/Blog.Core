@@ -55,7 +55,7 @@ namespace Blog.Core
             services.AddSwaggerSetup();
             services.AddJobSetup();
             services.AddHttpContextSetup();
-            services.AddAppConfigSetup();
+            services.AddAppConfigSetup(Env);
             services.AddHttpApi();
             services.AddRedisInitMqSetup();
 
