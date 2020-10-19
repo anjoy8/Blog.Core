@@ -96,7 +96,8 @@ namespace Blog.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [Authorize(Policy = "Scope_BlogModule_Policy")]
+        //[Authorize(Policy = "Scope_BlogModule_Policy")]
+        [Authorize]
         public async Task<MessageModel<BlogViewModels>> Get(int id)
         {
             return new MessageModel<BlogViewModels>()
@@ -204,7 +205,8 @@ namespace Blog.Core.Controllers
         /// <param name="blogArticle"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize(Policy = "Scope_BlogModule_Policy")]
+        //[Authorize(Policy = "Scope_BlogModule_Policy")]
+        [Authorize]
         public async Task<MessageModel<string>> Post([FromBody] BlogArticle blogArticle)
         {
             var data = new MessageModel<string>();
