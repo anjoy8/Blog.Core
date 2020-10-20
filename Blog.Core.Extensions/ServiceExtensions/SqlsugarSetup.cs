@@ -46,7 +46,8 @@ namespace Blog.Core.Extensions
                         ConnectionString = m.Connection,
                         DbType = (DbType)m.DbType,
                         IsAutoCloseConnection = true,
-                        IsShardSameThread = true,
+                        // Check out more information: https://github.com/anjoy8/Blog.Core/issues/122
+                        IsShardSameThread = false,
                         AopEvents = new AopEvents
                         {
                             OnLogExecuting = (sql, p) =>
