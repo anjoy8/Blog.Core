@@ -256,6 +256,8 @@ namespace Blog.Core.Tasks
                     trigger = CreateSimpleTrigger(tasksQz);
                 }
 
+               ((CronTriggerImpl)trigger).MisfireInstruction = MisfireInstruction.CronTrigger.DoNothing;
+
                 TriggerKey triggerKey = new TriggerKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
                 await _scheduler.Result.RescheduleJob(triggerKey, trigger);
 
