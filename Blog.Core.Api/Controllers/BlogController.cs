@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
@@ -134,9 +135,14 @@ namespace Blog.Core.Controllers
             var response = await _blogArticleServices.QueryById(id);
             if (response != null && response.bsubmitter.IsNotEmptyOrNull())
             {
-                response.btraffic += 1;
-                await _blogArticleServices.Update(response);
-                return Redirect(response.bsubmitter);
+                string Url = @"^http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$";
+                if (Regex.IsMatch(response.bsubmitter, Url))
+                {
+                    response.btraffic += 1;
+                    await _blogArticleServices.Update(response);
+                    return Redirect(response.bsubmitter);
+                }
+
             }
 
             return Ok();
