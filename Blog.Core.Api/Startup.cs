@@ -162,10 +162,17 @@ namespace Blog.Core
             app.UseRouting();
             // 这种自定义授权中间件，可以尝试，但不推荐
             // app.UseJwtTokenAuth();
+
+            // 测试用户，用来通过鉴权
+            if (Configuration.GetValue<bool>("AppSettings:UseLoadTest"))
+            {
+                app.UseMiddleware<ByPassAuthMidd>();
+            }
             // 先开启认证
             app.UseAuthentication();
             // 然后是授权中间件
             app.UseAuthorization();
+
             // 开启异常中间件，要放到最后
             //app.UseExceptionHandlerMidd();
             // 性能分析
