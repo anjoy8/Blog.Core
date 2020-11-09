@@ -72,20 +72,8 @@
 |62|包 * * 华|10|微信号错误| 	
 |63|西 * * 5°|30|| 	
 |64|王 * * 粮|20|| 	
+|65|Q1 * * ..|30|| 	
+|66|Le * * ry|100|| 	
+|67|bo * * t|30|| 	
  
 
-  
-    
-
-
-## 参与贡献的开源项目
-
-如果帮忙以前完善文档，可以在这里留下你的开源项目，做推广。
-
-```
-1、https://github.com/GeorGeWzw/Sukt.Core（作者：kawhi）  
-2、https://github.com/wmowm/Gourd（作者：提伯斯）  
-3、https://github.com/GeorGeWzw/Destiny.Core.Flow（作者：大黄瓜|kawhi）备注：重写的Identity的用户角色 
-
-
-```

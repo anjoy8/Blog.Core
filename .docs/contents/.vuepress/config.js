@@ -18,7 +18,7 @@ module.exports = {
             { text: '更新日志', link: '/Update/' },
             { text: '压测', link: '/PressureTest/' },
             { text: '参与贡献', link: '/Contribution/' },
-            { text: '社区', link: '/QQ/' },
+            { text: 'BCVP社区', link: '/QQ/' },
             { text: '接口API', link: 'http://apk.neters.club' },
             { text: '管理后台', link: 'http://vueadmin.neters.club' },
             { text: 'Github', link: 'https://github.com/anjoy8/Blog.Core' },
