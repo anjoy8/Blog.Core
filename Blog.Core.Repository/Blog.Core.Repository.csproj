@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -13,7 +13,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.1.0" />
+		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.1" />
 	</ItemGroup>
 
 	<ItemGroup>
