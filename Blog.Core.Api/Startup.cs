@@ -92,6 +92,11 @@ namespace Blog.Core
                 // 全局路由前缀，统一修改路由
                 o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
             })
+            // 这种写法也可以
+            //.AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            //})
             //全局配置Json序列化处理
             .AddNewtonsoftJson(options =>
             {
