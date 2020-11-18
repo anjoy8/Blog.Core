@@ -138,6 +138,9 @@ namespace Blog.Core.Controllers
         {
             var msg = $"这里是一条日志{DateTime.Now}";
             await _redisBasketRepository.ListLeftPushAsync(RedisMqKey.Loging, msg);
+
+            //var priceChangedEvent = new ProductPriceChangedIntegrationEvent(catalogItem.Id, productToUpdate.Price, oldPrice);
+            //_eventBus.Publish(evt);
         }
 
         /// <summary>
