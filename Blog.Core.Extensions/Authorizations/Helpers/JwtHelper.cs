@@ -76,23 +76,25 @@ namespace Blog.Core.AuthHelper.OverWrite
         public static TokenModelJwt SerializeJwt(string jwtStr)
         {
             var jwtHandler = new JwtSecurityTokenHandler();
-            JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(jwtStr);
-            object role;
-            try
+            TokenModelJwt tokenModelJwt = new TokenModelJwt();
+
+            // token校验
+            if (jwtStr.IsNotEmptyOrNull() && jwtHandler.CanReadToken(jwtStr))
             {
+
+                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(jwtStr);
+
+                object role;
+
                 jwtToken.Payload.TryGetValue(ClaimTypes.Role, out role);
+
+                tokenModelJwt = new TokenModelJwt
+                {
+                    Uid = (jwtToken.Id).ObjToInt(),
+                    Role = role != null ? role.ObjToString() : "",
+                };
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            var tm = new TokenModelJwt
-            {
-                Uid = (jwtToken.Id).ObjToInt(),
-                Role = role != null ? role.ObjToString() : "",
-            };
-            return tm;
+            return tokenModelJwt;
         }
     }
 
