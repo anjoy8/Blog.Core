@@ -1,6 +1,5 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.Extensions.RabbitMQPersistent;
-using Blog.Core.Model.Seed;
+using Blog.Core.EventBus;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;

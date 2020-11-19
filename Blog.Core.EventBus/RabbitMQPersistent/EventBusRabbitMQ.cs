@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using Blog.Core.Common.Extensions;
+using Blog.Core.Common.Helper;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,23 +10,21 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Extensions.RabbitMQPersistent
+namespace Blog.Core.EventBus
 {
     public class EventBusRabbitMQ : IEventBus, IDisposable
     {
-        const string BROKER_NAME = "eshop_event_bus";
+        const string BROKER_NAME = "blogcore_event_bus";
 
         private readonly IRabbitMQPersistentConnection _persistentConnection;
         private readonly ILogger<EventBusRabbitMQ> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly ILifetimeScope _autofac;
-        private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
+        private readonly string AUTOFAC_SCOPE_NAME = "blogcore_event_bus";
         private readonly int _retryCount;
 
         private IModel _consumerChannel;
@@ -127,6 +127,8 @@ namespace Blog.Core.Extensions.RabbitMQPersistent
             DoInternalSubscription(eventName);
 
             _logger.LogInformation("Subscribing to event {EventName} with {EventHandler}", eventName, typeof(TH).GetGenericTypeName());
+
+            ConsoleHelper.WriteSuccessLine($"Subscribing to event {eventName} with {typeof(TH).GetGenericTypeName()}");
 
             _subsManager.AddSubscription<T, TH>();
             StartBasicConsume();

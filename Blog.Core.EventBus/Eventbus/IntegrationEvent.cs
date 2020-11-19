@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Blog.Core.Extensions.RabbitMQPersistent
+namespace Blog.Core.EventBus
 {
     public class IntegrationEvent
     {

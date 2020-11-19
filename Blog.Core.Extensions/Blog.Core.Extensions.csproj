@@ -17,13 +17,12 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0-preview.2.20160.3" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="3.1.0" />
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.1" />
-    <PackageReference Include="Polly" Version="7.2.1" />
-    <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Blog.Core.EventBus\Blog.Core.EventBus.csproj" />
     <ProjectReference Include="..\Blog.Core.Services\Blog.Core.Services.csproj" />
     <ProjectReference Include="..\Blog.Core.Tasks\Blog.Core.Tasks.csproj" />
   </ItemGroup>

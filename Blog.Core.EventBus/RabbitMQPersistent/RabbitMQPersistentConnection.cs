@@ -8,7 +8,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 
-namespace Blog.Core.Extensions.RabbitMQPersistent
+namespace Blog.Core.EventBus
 {
     public class RabbitMQPersistentConnection
      : IRabbitMQPersistentConnection

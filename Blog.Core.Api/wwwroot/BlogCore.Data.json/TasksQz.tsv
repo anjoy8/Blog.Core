@@ -3,7 +3,7 @@
     "Name": "博客管理",
     "JobGroup": "博客测试组",
     "TriggerType": 1, 
-    "Cron": "0 */1 * * * ?",
+    "Cron": "0 */10 * * * ?",
     "AssemblyName": "Blog.Core.Tasks",
     "ClassName": "Job_Blogs_Quartz",
     "Remark": "",

@@ -119,6 +119,26 @@ namespace Blog.Core.Extensions
                     ConsoleHelper.WriteSuccessLine($"Redis MQ: True");
                 }
 
+                // RabbitMQ 消息队列
+                if (!Appsettings.app("RabbitMQ", "Enabled").ObjToBool())
+                {
+                    Console.WriteLine($"RabbitMQ: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"RabbitMQ: True");
+                }
+
+                // EventBus 事件总线
+                if (!Appsettings.app("EventBus", "Enabled").ObjToBool())
+                {
+                    Console.WriteLine($"EventBus: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"EventBus: True");
+                }
+
                 // 多库
                 if (!Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {

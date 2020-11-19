@@ -612,6 +612,21 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.RedisMq(Blog.Core.Common.IRedisBasketRepository)">
+            <summary>
+            测试Redis消息队列
+            </summary>
+            <param name="_redisBasketRepository"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.EventBusTry(Blog.Core.EventBus.IEventBus,System.String)">
+            <summary>
+            测试RabbitMQ事件总线
+            </summary>
+            <param name="_eventBus"></param>
+            <param name="blogId"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get(System.Int32)">
             <summary>
             Get(int id)方法

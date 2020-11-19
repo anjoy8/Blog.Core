@@ -15,8 +15,7 @@
 [![MVP](http://apk.neters.club/MVP_Logo_Horizontal_Preferred_Cyan300_CMYK_72ppi.png)](https://mvp.microsoft.com/zh-cn/PublicProfile/5003704?fullName=anson%20zhang)
 
 
-
-Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x + RBAC】权限框架。   
+Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x + RBAC】权限框架。
 已被多家公司所使用：[点击查看列表](https://github.com/anjoy8/Blog.Core/issues/75)
 
 &nbsp;

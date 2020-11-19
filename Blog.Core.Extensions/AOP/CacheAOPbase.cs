@@ -44,8 +44,8 @@ namespace Blog.Core.AOP
             if (arg is DateTime || arg is DateTime?)
                 return ((DateTime)arg).ToString("yyyyMMddHHmmss");
 
-            if (arg is string || arg is ValueType || arg is Nullable)
-                return arg.ToString();
+            if (!arg.IsNotEmptyOrNull())
+                return arg.ObjToString();
 
             if (arg != null)
             {

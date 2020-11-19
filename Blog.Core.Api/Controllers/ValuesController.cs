@@ -3,6 +3,8 @@ using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.HttpRestSharp;
 using Blog.Core.Common.WebApiClients.HttpApis;
+using Blog.Core.EventBus;
+using Blog.Core.EventBus.EventHandling;
 using Blog.Core.Filter;
 using Blog.Core.IServices;
 using Blog.Core.Model;
@@ -13,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Controllers
@@ -132,15 +135,32 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        /// <summary>
+        /// 测试Redis消息队列
+        /// </summary>
+        /// <param name="_redisBasketRepository"></param>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task RedisMq([FromServices] IRedisBasketRepository _redisBasketRepository)
         {
             var msg = $"这里是一条日志{DateTime.Now}";
             await _redisBasketRepository.ListLeftPushAsync(RedisMqKey.Loging, msg);
+        }
 
-            //var priceChangedEvent = new ProductPriceChangedIntegrationEvent(catalogItem.Id, productToUpdate.Price, oldPrice);
-            //_eventBus.Publish(evt);
+        /// <summary>
+        /// 测试RabbitMQ事件总线
+        /// </summary>
+        /// <param name="_eventBus"></param>
+        /// <param name="blogId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public void EventBusTry([FromServices] IEventBus _eventBus, string blogId = "1")
+        {
+            var blogDeletedEvent = new BlogDeletedIntegrationEvent(blogId);
+
+            _eventBus.Publish(blogDeletedEvent);
         }
 
         /// <summary>
@@ -167,7 +187,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("/api/values/RequiredPara")]
-        public string RequiredP([Required]string id)
+        public string RequiredP([Required] string id)
         {
             return id;
         }
@@ -221,7 +241,7 @@ namespace Blog.Core.Controllers
         /// <param name="id">独立参数</param>
         [HttpPost]
         [AllowAnonymous]
-        public object Post([FromBody]  BlogArticle blogArticle, int id)
+        public object Post([FromBody] BlogArticle blogArticle, int id)
         {
             return Ok(new { success = true, data = blogArticle, id = id });
         }

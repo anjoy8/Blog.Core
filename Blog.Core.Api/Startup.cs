@@ -63,6 +63,9 @@ namespace Blog.Core
             services.AddHttpApi();
             services.AddRedisInitMqSetup();
 
+            services.AddRabbitMQSetup();
+            services.AddEventBusSetup();
+
             // 授权+认证 (jwt or ids4)
             services.AddAuthorizationSetup();
             if (Permissions.IsUseIds4)
@@ -196,8 +199,11 @@ namespace Blog.Core
             app.UseSeedDataMildd(myContext, Env.WebRootPath);
             // 开启QuartzNetJob调度服务
             app.UseQuartzJobMildd(tasksQzServices, schedulerCenter);
-            //服务注册
+            // 服务注册
             app.UseConsulMildd(Configuration, lifetime);
+            // 事件总线，订阅服务
+            app.ConfigureEventBus();
+
         }
 
     }

@@ -24,9 +24,9 @@ namespace Blog.Core.Common.Helper
                     result = System.Text.Encoding.UTF8.GetString(ms.ToArray());
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
             return result;
         }
@@ -52,9 +52,8 @@ namespace Blog.Core.Common.Helper
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
             }
 
             return st.ToString();
@@ -93,9 +92,8 @@ namespace Blog.Core.Common.Helper
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
             }
 
             return st.ToString();

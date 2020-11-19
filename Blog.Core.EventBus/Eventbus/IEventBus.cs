@@ -1,4 +1,4 @@
-﻿namespace Blog.Core.Extensions.RabbitMQPersistent
+﻿namespace Blog.Core.EventBus
 {
     public interface IEventBus
     {
