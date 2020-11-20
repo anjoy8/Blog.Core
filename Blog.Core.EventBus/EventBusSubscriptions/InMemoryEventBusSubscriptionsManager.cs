@@ -4,10 +4,13 @@ using System.Linq;
 
 namespace Blog.Core.EventBus
 {
+    /// <summary>
+    /// 基于内存
+    /// 事件总线订阅管理器
+    /// 单例模式
+    /// </summary>
     public partial class InMemoryEventBusSubscriptionsManager : IEventBusSubscriptionsManager
     {
-
-
         private readonly Dictionary<string, List<SubscriptionInfo>> _handlers;
         private readonly List<Type> _eventTypes;
 
@@ -22,12 +25,22 @@ namespace Blog.Core.EventBus
         public bool IsEmpty => !_handlers.Keys.Any();
         public void Clear() => _handlers.Clear();
 
+        /// <summary>
+        /// 添加动态订阅
+        /// </summary>
+        /// <typeparam name="TH">约束：动态事件处理器接口</typeparam>
+        /// <param name="eventName"></param>
         public void AddDynamicSubscription<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
             DoAddSubscription(typeof(TH), eventName, isDynamic: true);
         }
 
+        /// <summary>
+        /// 添加订阅
+        /// </summary>
+        /// <typeparam name="T">约束：事件</typeparam>
+        /// <typeparam name="TH">约束：事件处理器接口<事件></typeparam>
         public void AddSubscription<T, TH>()
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
@@ -65,7 +78,11 @@ namespace Blog.Core.EventBus
             }
         }
 
-
+        /// <summary>
+        /// 移除动态订阅
+        /// </summary>
+        /// <typeparam name="TH"></typeparam>
+        /// <param name="eventName"></param>
         public void RemoveDynamicSubscription<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
@@ -123,7 +140,12 @@ namespace Blog.Core.EventBus
             return DoFindSubscriptionToRemove(eventName, typeof(TH));
         }
 
-
+        /// <summary>
+        /// 查询订阅并移除
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TH"></typeparam>
+        /// <returns></returns>
         private SubscriptionInfo FindSubscriptionToRemove<T, TH>()
              where T : IntegrationEvent
              where TH : IIntegrationEventHandler<T>

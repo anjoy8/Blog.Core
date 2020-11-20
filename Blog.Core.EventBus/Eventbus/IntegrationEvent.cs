@@ -3,6 +3,10 @@ using System;
 
 namespace Blog.Core.EventBus
 {
+    /// <summary>
+    /// 事件模型
+    /// 基类
+    /// </summary>
     public class IntegrationEvent
     {
         public IntegrationEvent()

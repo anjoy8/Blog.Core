@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 
 namespace Blog.Core.EventBus
 {
+    /// <summary>
+    /// 基于RabbitMQ的事件总线
+    /// </summary>
     public class EventBusRabbitMQ : IEventBus, IDisposable
     {
         const string BROKER_NAME = "blogcore_event_bus";
@@ -30,8 +33,20 @@ namespace Blog.Core.EventBus
         private IModel _consumerChannel;
         private string _queueName;
 
+        /// <summary>
+        /// RabbitMQ事件总线
+        /// </summary>
+        /// <param name="persistentConnection">RabbitMQ持久连接</param>
+        /// <param name="logger">日志</param>
+        /// <param name="autofac">autofac容器</param>
+        /// <param name="subsManager">事件总线订阅管理器</param>
+        /// <param name="queueName">队列名称</param>
+        /// <param name="retryCount">重试次数</param>
         public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, ILogger<EventBusRabbitMQ> logger,
-            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
+            ILifetimeScope autofac, 
+            IEventBusSubscriptionsManager subsManager, 
+            string queueName = null, 
+            int retryCount = 5)
         {
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -43,6 +58,11 @@ namespace Blog.Core.EventBus
             _subsManager.OnEventRemoved += SubsManager_OnEventRemoved;
         }
 
+        /// <summary>
+        /// 订阅管理器事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventName"></param>
         private void SubsManager_OnEventRemoved(object sender, string eventName)
         {
             if (!_persistentConnection.IsConnected)
@@ -64,6 +84,10 @@ namespace Blog.Core.EventBus
             }
         }
 
+        /// <summary>
+        /// 发布
+        /// </summary>
+        /// <param name="event">事件模型</param>
         public void Publish(IntegrationEvent @event)
         {
             if (!_persistentConnection.IsConnected)
@@ -109,6 +133,12 @@ namespace Blog.Core.EventBus
             }
         }
 
+        /// <summary>
+        /// 订阅
+        /// 动态
+        /// </summary>
+        /// <typeparam name="TH">事件处理器</typeparam>
+        /// <param name="eventName">事件名</param>
         public void SubscribeDynamic<TH>(string eventName)
             where TH : IDynamicIntegrationEventHandler
         {
@@ -119,6 +149,11 @@ namespace Blog.Core.EventBus
             StartBasicConsume();
         }
 
+        /// <summary>
+        /// 订阅
+        /// </summary>
+        /// <typeparam name="T">约束：事件模型</typeparam>
+        /// <typeparam name="TH">约束：事件处理器<事件模型></typeparam>
         public void Subscribe<T, TH>()
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
@@ -153,6 +188,11 @@ namespace Blog.Core.EventBus
             }
         }
 
+        /// <summary>
+        /// 取消订阅
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TH"></typeparam>
         public void Unsubscribe<T, TH>()
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
@@ -180,6 +220,9 @@ namespace Blog.Core.EventBus
             _subsManager.Clear();
         }
 
+        /// <summary>
+        /// 开始基本消费
+        /// </summary>
         private void StartBasicConsume()
         {
             _logger.LogTrace("Starting RabbitMQ basic consume");
@@ -201,6 +244,12 @@ namespace Blog.Core.EventBus
             }
         }
 
+        /// <summary>
+        /// 消费者接受到
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        /// <returns></returns>
         private async Task Consumer_Received(object sender, BasicDeliverEventArgs eventArgs)
         {
             var eventName = eventArgs.RoutingKey;
@@ -226,6 +275,10 @@ namespace Blog.Core.EventBus
             _consumerChannel.BasicAck(eventArgs.DeliveryTag, multiple: false);
         }
 
+        /// <summary>
+        /// 创造消费通道
+        /// </summary>
+        /// <returns></returns>
         private IModel CreateConsumerChannel()
         {
             if (!_persistentConnection.IsConnected)

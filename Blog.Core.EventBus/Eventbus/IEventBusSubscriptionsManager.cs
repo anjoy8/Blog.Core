@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace Blog.Core.EventBus
 {
+    /// <summary>
+    /// 事件总线订阅管理器
+    /// 接口
+    /// </summary>
     public interface IEventBusSubscriptionsManager
     {
         bool IsEmpty { get; }

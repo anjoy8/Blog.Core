@@ -2,6 +2,9 @@
 
 namespace Blog.Core.EventBus
 {
+    /// <summary>
+    /// 订阅信息模型
+    /// </summary>
     public class SubscriptionInfo
     {
         public bool IsDynamic { get; }

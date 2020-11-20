@@ -10,6 +10,9 @@ using System.Net.Sockets;
 
 namespace Blog.Core.EventBus
 {
+    /// <summary>
+    /// RabbitMQ持久连接
+    /// </summary>
     public class RabbitMQPersistentConnection
      : IRabbitMQPersistentConnection
     {
@@ -21,13 +24,17 @@ namespace Blog.Core.EventBus
 
         object sync_root = new object();
 
-        public RabbitMQPersistentConnection(IConnectionFactory connectionFactory, ILogger<RabbitMQPersistentConnection> logger, int retryCount = 5)
+        public RabbitMQPersistentConnection(IConnectionFactory connectionFactory, ILogger<RabbitMQPersistentConnection> logger,
+            int retryCount = 5)
         {
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _retryCount = retryCount;
         }
 
+        /// <summary>
+        /// 是否已连接
+        /// </summary>
         public bool IsConnected
         {
             get
@@ -36,6 +43,10 @@ namespace Blog.Core.EventBus
             }
         }
 
+        /// <summary>
+        /// 创建Model
+        /// </summary>
+        /// <returns></returns>
         public IModel CreateModel()
         {
             if (!IsConnected)
@@ -46,6 +57,9 @@ namespace Blog.Core.EventBus
             return _connection.CreateModel();
         }
 
+        /// <summary>
+        /// 释放
+        /// </summary>
         public void Dispose()
         {
             if (_disposed) return;
@@ -62,6 +76,10 @@ namespace Blog.Core.EventBus
             }
         }
 
+        /// <summary>
+        /// 连接
+        /// </summary>
+        /// <returns></returns>
         public bool TryConnect()
         {
             _logger.LogInformation("RabbitMQ Client is trying to connect");
@@ -70,10 +88,12 @@ namespace Blog.Core.EventBus
             {
                 var policy = RetryPolicy.Handle<SocketException>()
                     .Or<BrokerUnreachableException>()
-                    .WaitAndRetry(_retryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, time) =>
-                    {
-                        _logger.LogWarning(ex, "RabbitMQ Client could not connect after {TimeOut}s ({ExceptionMessage})", $"{time.TotalSeconds:n1}", ex.Message);
-                    }
+                    .WaitAndRetry(_retryCount,
+                        retryAttempt =>
+                            TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, time) =>
+                            {
+                                _logger.LogWarning(ex, "RabbitMQ Client could not connect after {TimeOut}s ({ExceptionMessage})", $"{time.TotalSeconds:n1}", ex.Message);
+                            }
                 );
 
                 policy.Execute(() =>
@@ -101,6 +121,11 @@ namespace Blog.Core.EventBus
             }
         }
 
+        /// <summary>
+        /// 连接被阻断
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnConnectionBlocked(object sender, ConnectionBlockedEventArgs e)
         {
             if (_disposed) return;
@@ -110,6 +135,11 @@ namespace Blog.Core.EventBus
             TryConnect();
         }
 
+        /// <summary>
+        /// 连接出现异常
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void OnCallbackException(object sender, CallbackExceptionEventArgs e)
         {
             if (_disposed) return;
@@ -119,6 +149,11 @@ namespace Blog.Core.EventBus
             TryConnect();
         }
 
+        /// <summary>
+        /// 连接被关闭
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="reason"></param>
         void OnConnectionShutdown(object sender, ShutdownEventArgs reason)
         {
             if (_disposed) return;
