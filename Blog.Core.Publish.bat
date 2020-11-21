@@ -8,7 +8,7 @@ dotnet build
 
 cd Blog.Core.Api
 
-dotnet publish -o ..\Blog.Core.Api\bin\Debug\netcoreapp3.1\
+dotnet publish -o ..\Blog.Core.Api\bin\Debug\net5.0\
 
 md ..\.PublishFiles
 
