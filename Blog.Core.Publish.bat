@@ -12,7 +12,7 @@ dotnet publish -o ..\Blog.Core.Api\bin\Debug\net5.0\
 
 md ..\.PublishFiles
 
-xcopy ..\Blog.Core.Api\bin\Debug\netcoreapp3.1\*.* ..\.PublishFiles\ /s /e 
+xcopy ..\Blog.Core.Api\bin\Debug\net5.0\*.* ..\.PublishFiles\ /s /e 
 
 echo "Successfully!!!! ^ please see the file .PublishFiles"
 
