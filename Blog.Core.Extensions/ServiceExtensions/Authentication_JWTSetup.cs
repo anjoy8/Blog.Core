@@ -46,7 +46,8 @@ namespace Blog.Core.Extensions
             };
 
             // 开启Bearer认证
-            services.AddAuthentication(o=> {
+            services.AddAuthentication(o =>
+            {
                 o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 o.DefaultChallengeScheme = nameof(ApiResponseHandler);
                 o.DefaultForbidScheme = nameof(ApiResponseHandler);
@@ -64,17 +65,22 @@ namespace Blog.Core.Extensions
                      },
                      OnAuthenticationFailed = context =>
                      {
-                         var token= context.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "");
-                         var jwtToken = (new JwtSecurityTokenHandler()).ReadJwtToken(token);
+                         var jwtHandler = new JwtSecurityTokenHandler();
+                         var token = context.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "");
 
-                         if (jwtToken.Issuer != Issuer)
+                         if (token.IsNotEmptyOrNull() && jwtHandler.CanReadToken(token))
                          {
-                             context.Response.Headers.Add("Token-Error-Iss", "issuer is wrong!");
-                         }
+                             var jwtToken = jwtHandler.ReadJwtToken(token);
 
-                         if (jwtToken.Audiences.FirstOrDefault() != Audience)
-                         {
-                             context.Response.Headers.Add("Token-Error-Aud", "Audience is wrong!");
+                             if (jwtToken.Issuer != Issuer)
+                             {
+                                 context.Response.Headers.Add("Token-Error-Iss", "issuer is wrong!");
+                             }
+
+                             if (jwtToken.Audiences.FirstOrDefault() != Audience)
+                             {
+                                 context.Response.Headers.Add("Token-Error-Aud", "Audience is wrong!");
+                             }
                          }
 
 
