@@ -12,7 +12,11 @@
 
 ![Logo](http://apk.neters.club/logocore.png)  
 
-[![MVP](http://apk.neters.club/MVP_Logo_Horizontal_Preferred_Cyan300_CMYK_72ppi.png)](https://mvp.microsoft.com/zh-cn/PublicProfile/5003704?fullName=anson%20zhang)
+
+<a href="https://mvp.microsoft.com/zh-cn/PublicProfile/5003704?fullName=anson%20zhang" ><img src="http://apk.neters.club/MVP_Logo_Horizontal_Preferred_Cyan300_CMYK_72ppi.png" alt="MVP"   ></a>
+<a href="https://dotnetfoundation.org/member/Profile" ><img src="https://vueadmin.neters.club/images/1125120255netfoundation.png" alt=".netfoundation" width="220" ></a>
+
+
 
 
 Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x + RBAC】权限框架。
@@ -26,7 +30,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 - [x] 采用`仓储+服务+接口`的形式封装框架；
 - [x] 异步 async/await 开发；
 - [x] 接入国产数据库ORM组件 —— SqlSugar，封装数据库操作；
-- [x] 支持自由切换多种数据库，Sqlite/SqlServer/MySql/PostgreSQL/Oracle；
+- [x] 支持自由切换多种数据库，MySql/SqlServer/Sqlite/Oracle/Postgresql/达梦/人大金仓；
 - [x] 实现项目启动，自动生成种子数据 ✨； 
 - [x] 五种日志记录，审计/异常/请求响应/服务操作/Sql记录等； 
 - [x] 支持项目事务处理（若要分布式，用cap即可）✨；
