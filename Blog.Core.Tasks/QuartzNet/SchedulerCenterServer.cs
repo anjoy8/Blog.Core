@@ -164,13 +164,13 @@ namespace Blog.Core.Tasks
                     if (tasksQz.Cron != null && CronExpression.IsValidExpression(tasksQz.Cron) && tasksQz.TriggerType > 0)
                     {
                         trigger = CreateCronTrigger(tasksQz);
+
+                        ((CronTriggerImpl)trigger).MisfireInstruction = MisfireInstruction.CronTrigger.DoNothing;
                     }
                     else
                     {
                         trigger = CreateSimpleTrigger(tasksQz);
                     }
-
-                    ((CronTriggerImpl)trigger).MisfireInstruction = MisfireInstruction.CronTrigger.DoNothing;
 
                     // 告诉Quartz使用我们的触发器来安排作业
                     await _scheduler.Result.ScheduleJob(job, trigger);
