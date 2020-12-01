@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Controllers
@@ -289,11 +288,13 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<object> TestMutiDBAPI()
         {
-            // 从主库（Sqlite）中，操作blogs
+            // 从主库中，操作blogs
             var blogs = await _blogArticleServices.Query(d => d.bID == 1);
+            var addBlog = await _blogArticleServices.Add(new BlogArticle() { });
 
-            // 从从库（Sqlserver）中，获取pwds
+            // 从从库中，操作pwds
             var pwds = await _passwordLibServices.Query(d => d.PLID > 0);
+            var addPwd = await _passwordLibServices.Add(new PasswordLib() { });
 
             return new
             {
