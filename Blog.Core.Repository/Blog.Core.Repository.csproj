@@ -4,6 +4,14 @@
 		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
 
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Bson" Version="2.11.5" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.11.5" />
+    <PackageReference Include="MongoDB.Driver" Version="2.11.5" />
+  </ItemGroup>
+  
+  
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputPath>..\Blog.Core.Api\bin\Debug\</OutputPath>
 	</PropertyGroup>
