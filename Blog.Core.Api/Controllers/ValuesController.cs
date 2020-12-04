@@ -95,6 +95,11 @@ namespace Blog.Core.Controllers
              */
             var queryBySql = await _blogArticleServices.QuerySql("SELECT bsubmitter,btitle,bcontent,bCreateTime FROM BlogArticle WHERE bID>5");
 
+            /*
+             *  测试按照指定列查询
+             */
+            var queryByColums = await _blogArticleServices
+                .Query<BlogViewModels>(it => new BlogViewModels() { btitle = it.btitle });
 
             /*
              *  测试 sql 更新

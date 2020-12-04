@@ -34,6 +34,7 @@ namespace Blog.Core.IRepository.Base
         Task<List<TEntity>> Query();
         Task<List<TEntity>> Query(string strWhere);
         Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression);
+        Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression);
         Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds);
         Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true);
         Task<List<TEntity>> Query(string strWhere, string strOrderByFileds);
