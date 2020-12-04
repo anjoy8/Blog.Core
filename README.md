@@ -52,7 +52,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 - [x] 使用 Log4Net 日志框架，集成原生 ILogger 接口做日志记录；
 - [x] 使用 SignalR 双工通讯 ✨；
 - [x] 添加 IpRateLimiting 做 API 限流处理;
-- [x] 使用 Quartz.net 做任务调度;
+- [x] 使用 Quartz.net 做任务调度（目前单机多任务，集群调度暂不支持）;
 - [x] 支持 数据库`读写分离`和多库操作 ✨;
 - [x] 新增 Redis 消息队列 ✨;
 - [x] 新增 RabbitMQ 消息队列 ✨;
