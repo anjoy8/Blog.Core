@@ -1,4 +1,6 @@
-﻿using Castle.DynamicProxy;
+﻿using Blog.Core.Common.Helper;
+using Castle.DynamicProxy;
+using Newtonsoft.Json;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -54,12 +56,14 @@ namespace Blog.Core.AOP
                 {
                     var obj = arg as Expression;
                     var result = Resolve(obj);
-                    return Common.Helper.MD5Helper.MD5Encrypt16(result);
+                    return MD5Helper.MD5Encrypt16(result);
                 }
                 else if (arg.GetType().IsClass)
                 {
-                    return Common.Helper.MD5Helper.MD5Encrypt16(Newtonsoft.Json.JsonConvert.SerializeObject(arg));
+                    return MD5Helper.MD5Encrypt16(JsonConvert.SerializeObject(arg));
                 }
+
+                return $"value:{arg.ObjToString()}";
             }
             return string.Empty;
         }
