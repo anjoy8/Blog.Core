@@ -5,11 +5,11 @@ using MongoDB.Driver;
 namespace Blog.Core.Repository.MongoRepository
 {
 
-    public class LocationsContext
+    public class MongoDbContext
     {
         private readonly IMongoDatabase _database = null;
 
-        public LocationsContext()
+        public MongoDbContext()
         {
             var client = new MongoClient(Appsettings.app(new string[] { "Mongo", "ConnectString" }));
             if (client != null)
