@@ -183,6 +183,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 
  
 <img src="http://apk.neters.club/laozhangisphigood.jpg" alt="赞赏码" width="300" >
+[图片若加载不出来，点这里](http://apk.neters.club/laozhangisphigood.jpg)
 
 
 
