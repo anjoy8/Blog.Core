@@ -292,13 +292,13 @@ namespace Blog.Core.Repository.Base
         /// 作　　者:Blog.Core
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
-        /// <param name="strWhere">过滤条件</param>
+        /// <param name="whereExpression">过滤条件</param>
         /// <param name="expression">查询实体条件</param>
         /// <param name="strOrderByFileds">排序条件</param>
         /// <returns></returns>
-        public async Task<List<TResult>> Query<TResult>(string strWhere, Expression<Func<TEntity, TResult>> expression, string strOrderByFileds)
+        public async Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression, Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds)
         {
-            return await _db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds).WhereIF(!string.IsNullOrEmpty(strWhere), strWhere).Select(expression).ToListAsync();
+            return await _db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds).WhereIF(whereExpression != null, whereExpression).Select(expression).ToListAsync();
         }
 
         /// <summary>

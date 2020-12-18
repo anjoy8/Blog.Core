@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Controllers
@@ -100,6 +101,13 @@ namespace Blog.Core.Controllers
              */
             var queryByColums = await _blogArticleServices
                 .Query<BlogViewModels>(it => new BlogViewModels() { btitle = it.btitle });
+
+            /*
+            *  测试按照指定列查询带多条件和排序方法
+            */
+            Expression<Func<BlogArticle, bool>> registerInfoWhere = a => a.btitle == "xxx" && a.bRemark=="XXX";
+            var queryByColumsByMultiTerms = await _blogArticleServices
+                .Query<BlogArticle>(it => new BlogArticle() { btitle = it.btitle }, registerInfoWhere, "bID Desc");
 
             /*
              *  测试 sql 更新
