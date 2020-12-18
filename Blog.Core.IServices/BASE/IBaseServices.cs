@@ -37,7 +37,7 @@ namespace Blog.Core.IServices.BASE
         Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression);
         Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds);
         Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression);
-        Task<List<TResult>> Query<TResult>(string strWhere, Expression<Func<TEntity, TResult>> expression, string strOrderByFileds);
+        Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression, Expression<Func<TEntity, bool>> whereExpression,string strOrderByFileds);
         Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true);
         Task<List<TEntity>> Query(string strWhere, string strOrderByFileds);
         Task<List<TEntity>> QuerySql(string strSql, SugarParameter[] parameters = null);
