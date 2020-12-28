@@ -99,7 +99,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 ### 系统架构图
 
 
-![系统架构图](https://img.neters.club/github/20201228135550.pnghttps://img.neters.club/github/20201228135550.pnghttps://img.neters.club/github/20201228135550.png)
+![系统架构图](https://img.neters.club/github/20201228135550.png)
 
 &nbsp;
 
