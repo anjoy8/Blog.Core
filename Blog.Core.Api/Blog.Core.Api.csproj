@@ -8,6 +8,7 @@
 		<!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
 		<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
