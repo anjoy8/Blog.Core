@@ -1,6 +1,9 @@
-color 3
+color 5
+echo "if u install template error,pls use:>>dotnet new -i .template.config\Blog.Core.Webapi.Template.2.5.2.nupkg"
 
-dotnet new -i .template.config\Blog.Core.Webapi.Template.2.5.2.nupkg
+
+color 3
+dotnet new -i Blog.Core.Webapi.Template::2.5.2
 
 set /p OP=Please set your project name(for example:Baidu.Api):
 
