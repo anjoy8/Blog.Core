@@ -88,6 +88,8 @@ namespace Blog.Core.Model.Seed
                                  select t;
                 modelTypes.ToList().ForEach(t =>
                 {
+                    // 这里只支持添加表，不支持删除
+                    // 如果想要删除，数据库直接右键删除，或者联系SqlSugar作者；
                     if (!myContext.Db.DbMaintenance.IsAnyTable(t.Name))
                     {
                         Console.WriteLine(t.Name);
@@ -277,7 +279,10 @@ namespace Blog.Core.Model.Seed
             }
             catch (Exception ex)
             {
-                throw new Exception("1、如果使用的是Mysql，生成的数据库字段字符集可能不是utf8的，手动修改下，或者尝试方案：删掉数据库，在连接字符串后加上CharSet=UTF8mb4，重新生成数据库. \n 2、其他错误：" + ex.Message);
+                throw new Exception(
+                    $"1、若是Mysql,查看常见问题:https://github.com/anjoy8/Blog.Core/issues/148#issue-776281770" +
+                    $"2、若是Oracle,查看常见问题:https://github.com/anjoy8/Blog.Core/issues/148#issuecomment-752340231" +
+                    "3、其他错误：" + ex.Message);
             }
         }
     }
