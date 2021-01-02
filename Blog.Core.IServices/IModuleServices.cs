@@ -6,7 +6,7 @@ namespace Blog.Core.IServices
 	/// <summary>
 	/// ModuleServices
 	/// </summary>	
-    public interface IModuleServices :IBaseServices<Module>
+    public interface IModuleServices :IBaseServices<Modules>
 	{
 
        

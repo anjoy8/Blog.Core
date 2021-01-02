@@ -1,35 +1,32 @@
 ﻿using SqlSugar;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Core.Model.Models
 {
     /// <summary>
     /// Tibug 类别
     /// </summary>
-    public class Topic:RootEntity
+    public class Topic : RootEntityTkey<int>
     {
         public Topic()
         {
             this.TopicDetail = new List<TopicDetail>();
             this.tUpdatetime = DateTime.Now;
         }
-        [SugarColumn(ColumnDataType ="nvarchar",Length = 200, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
         public string tLogo { get; set; }
 
-        [SugarColumn(ColumnDataType ="nvarchar",Length = 200, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
         public string tName { get; set; }
 
-        [SugarColumn(ColumnDataType ="nvarchar",Length = 400, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 400, IsNullable = true)]
         public string tDetail { get; set; }
 
-        [SugarColumn(ColumnDataType ="nvarchar",Length = 200, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
         public string tAuthor { get; set; }
 
-        [SugarColumn(ColumnDataType ="nvarchar",Length = 200, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
         public string tSectendDetail { get; set; }
 
         public bool tIsDelete { get; set; }

@@ -17,7 +17,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 创建人
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 60, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 600, IsNullable = true)]
         public string bsubmitter { get; set; }
 
         /// <summary>
@@ -29,13 +29,13 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 类别
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
         public string bcategory { get; set; }
 
         /// <summary>
         /// 内容
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
         public string bcontent { get; set; }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 备注
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = int.MaxValue, IsNullable = true)]
+        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
         public string bRemark { get; set; }
 
         /// <summary>

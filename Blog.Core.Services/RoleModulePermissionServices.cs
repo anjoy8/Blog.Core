@@ -1,11 +1,12 @@
-﻿using Blog.Core.Services.BASE;
-using Blog.Core.Model.Models;
-using Blog.Core.IServices;
+﻿using Blog.Core.Common;
 using Blog.Core.IRepository;
-using System.Threading.Tasks;
+using Blog.Core.IRepository.Base;
+using Blog.Core.IServices;
+using Blog.Core.Model.Models;
+using Blog.Core.Services.BASE;
 using System.Collections.Generic;
-using Blog.Core.Common;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Services
 {
@@ -15,11 +16,14 @@ namespace Blog.Core.Services
     public class RoleModulePermissionServices : BaseServices<RoleModulePermission>, IRoleModulePermissionServices
     {
         readonly IRoleModulePermissionRepository _dal;
-        readonly IModuleRepository _moduleRepository;
-        readonly IRoleRepository _roleRepository;
+        readonly IBaseRepository<Modules> _moduleRepository;
+        readonly IBaseRepository<Role> _roleRepository;
 
         // 将多个仓储接口注入
-        public RoleModulePermissionServices(IRoleModulePermissionRepository dal, IModuleRepository moduleRepository, IRoleRepository roleRepository)
+        public RoleModulePermissionServices(
+            IRoleModulePermissionRepository dal, 
+            IBaseRepository<Modules> moduleRepository, 
+            IBaseRepository<Role> roleRepository)
         {
             this._dal = dal;
             this._moduleRepository = moduleRepository;
@@ -59,10 +63,6 @@ namespace Blog.Core.Services
             return roleModulePermissions;
         }
 
-        public async Task<List<RoleModulePermission>> TestModelWithChildren()
-        {
-            return await _dal.WithChildrenModel();
-        }
         public async Task<List<TestMuchTableResult>> QueryMuchTable()
         {
             return await _dal.QueryMuchTable();
@@ -71,6 +71,22 @@ namespace Blog.Core.Services
         public async Task<List<RoleModulePermission>> RoleModuleMaps()
         {
             return await _dal.RoleModuleMaps();
+        }
+
+        public async Task<List<RoleModulePermission>> GetRMPMaps()
+        {
+            return await _dal.GetRMPMaps();
+        }
+
+        /// <summary>
+        /// 批量更新菜单与接口的关系
+        /// </summary>
+        /// <param name="permissionId">菜单主键</param>
+        /// <param name="moduleId">接口主键</param>
+        /// <returns></returns>
+        public async Task UpdateModuleId(int permissionId, int moduleId)
+        {
+            await _dal.UpdateModuleId(permissionId, moduleId);
         }
     }
 }

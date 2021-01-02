@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Blog.Core.IRepository;
+﻿using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Services.BASE;
@@ -13,8 +7,8 @@ namespace Blog.Core.Services
 {
     public class AdvertisementServices : BaseServices<Advertisement>, IAdvertisementServices
     {
-        IAdvertisementRepository _dal;
-        public AdvertisementServices(IAdvertisementRepository dal)
+        IBaseRepository<Advertisement> _dal;
+        public AdvertisementServices(IBaseRepository<Advertisement> dal)
         {
             this._dal = dal;
             base.BaseDal = dal;

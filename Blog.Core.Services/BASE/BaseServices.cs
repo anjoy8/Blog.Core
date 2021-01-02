@@ -1,10 +1,11 @@
 ﻿using Blog.Core.IRepository.Base;
 using Blog.Core.IServices.BASE;
 using Blog.Core.Model;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Services.BASE
@@ -49,6 +50,16 @@ namespace Blog.Core.Services.BASE
         public async Task<int> Add(TEntity entity)
         {
             return await BaseDal.Add(entity);
+        }
+
+        /// <summary>
+        /// 批量插入实体(速度快)
+        /// </summary>
+        /// <param name="listEntity">实体集合</param>
+        /// <returns>影响行数</returns>
+        public async Task<int> Add(List<TEntity> listEntity)
+        {
+            return await BaseDal.Add(listEntity);
         }
 
         /// <summary>
@@ -143,6 +154,33 @@ namespace Blog.Core.Services.BASE
         {
             return await BaseDal.Query(whereExpression);
         }
+
+        /// <summary>
+        /// 功能描述:按照特定列查询数据列表
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public async Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression)
+        {
+            return await BaseDal.Query(expression);
+        }
+
+        /// <summary>
+        /// 功能描述:按照特定列查询数据列表带条件排序
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="whereExpression">过滤条件</param>
+        /// <param name="expression">查询实体条件</param>
+        /// <param name="strOrderByFileds">排序条件</param>
+        /// <returns></returns>
+        public async Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression, Expression<Func<TEntity, bool>> whereExpression,string strOrderByFileds)
+        {
+            return await BaseDal.Query(expression, whereExpression, strOrderByFileds);
+        }
+
         /// <summary>
         /// 功能描述:查询一个列表
         /// 作　　者:AZLinli.Blog.Core
@@ -172,6 +210,29 @@ namespace Blog.Core.Services.BASE
             return await BaseDal.Query(strWhere, strOrderByFileds);
         }
 
+        /// <summary>
+        /// 根据sql语句查询
+        /// </summary>
+        /// <param name="strSql">完整的sql语句</param>
+        /// <param name="parameters">参数</param>
+        /// <returns>泛型集合</returns>
+        public async Task<List<TEntity>> QuerySql(string strSql, SugarParameter[] parameters = null)
+        {
+            return await BaseDal.QuerySql(strSql, parameters);
+
+        }
+
+        /// <summary>
+        /// 根据sql语句查询
+        /// </summary>
+        /// <param name="strSql">完整的sql语句</param>
+        /// <param name="parameters">参数</param>
+        /// <returns>DataTable</returns>
+        public async Task<DataTable> QueryTable(string strSql, SugarParameter[] parameters = null)
+        {
+            return await BaseDal.QueryTable(strSql, parameters);
+
+        }
         /// <summary>
         /// 功能描述:查询前N条数据
         /// 作　　者:AZLinli.Blog.Core

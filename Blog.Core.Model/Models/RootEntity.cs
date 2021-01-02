@@ -1,14 +1,13 @@
 ﻿using SqlSugar;
-using System;
 
-namespace Blog.Core.Model.Models
+namespace Blog.Core.Model
 {
     public class RootEntity
     {
         /// <summary>
         /// ID
         /// </summary>
-        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
+        [SugarColumn(IsNullable = false, IsPrimaryKey = true)]
         public int Id { get; set; }
 
       

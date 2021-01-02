@@ -1,23 +1,19 @@
-﻿using Blog.Core.Common;
-using Blog.Core.Common.DB;
-using Blog.Core.Common.LogHelper;
-using Blog.Core.IRepository.UnitOfWork;
+﻿using Blog.Core.IRepository.UnitOfWork;
+using Microsoft.Extensions.Logging;
 using SqlSugar;
-using StackExchange.Profiling;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Core.Repository.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ISqlSugarClient _sqlSugarClient;
+        private readonly ILogger<UnitOfWork> _logger;
 
-        public UnitOfWork(ISqlSugarClient sqlSugarClient)
+        public UnitOfWork(ISqlSugarClient sqlSugarClient, ILogger<UnitOfWork> logger)
         {
             _sqlSugarClient = sqlSugarClient;
+            _logger = logger;
         }
 
         /// <summary>
@@ -44,7 +40,7 @@ namespace Blog.Core.Repository.UnitOfWork
             catch (Exception ex)
             {
                 GetDbClient().RollbackTran();
-                throw ex;
+                _logger.LogError($"{ex.Message}\r\n{ex.InnerException}");
             }
         }
 

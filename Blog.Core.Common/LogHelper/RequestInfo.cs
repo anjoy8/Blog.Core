@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Blog.Core.Common.LogHelper
 {
@@ -12,6 +11,12 @@ namespace Blog.Core.Common.LogHelper
     public class ApiDate
     {
         public string date { get; set; }
+        public int count { get; set; }
+    }
+
+    public class ActiveUserVM
+    {
+        public string user { get; set; }
         public int count { get; set; }
     }
 

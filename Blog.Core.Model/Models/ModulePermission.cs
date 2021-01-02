@@ -1,16 +1,12 @@
 ﻿using SqlSugar;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Core.Model.Models
 {
     /// <summary>
     /// 菜单与按钮关系表
     /// </summary>
-    public class ModulePermission : RootEntity
+    public class ModulePermission : ModulePermissionRoot<int>
     {
 
         /// <summary>
@@ -18,14 +14,7 @@ namespace Blog.Core.Model.Models
         /// </summary>
         [SugarColumn(IsNullable = true)]
         public bool? IsDeleted { get; set; }
-        /// <summary>
-        /// 菜单ID
-        /// </summary>
-        public int ModuleId { get; set; }
-        /// <summary>
-        /// 按钮ID
-        /// </summary>
-        public int PermissionId { get; set; }
+      
         /// <summary>
         /// 创建ID
         /// </summary>

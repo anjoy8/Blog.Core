@@ -343,10 +343,11 @@ healthchecksdb
 
 # wwwroot/images
 *images/
-!Blog.Core/WMBlog.db
 .1YourProject
 .PublishFiles
 !.template.config/*.nupkg
 !Blog.Core.Webapi.Template.*.nupkg
 Blog.Core/WMBlog.db
 .docs/contents/.vuepress/dist/*
+Blog.Core/Blog.Core*.xml
+Blog.Core.Api/WMBlog.db

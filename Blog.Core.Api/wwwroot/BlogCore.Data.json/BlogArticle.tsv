@@ -1,0 +1,15 @@
+[
+  {
+    "bID": 1,
+    "bsubmitter": "admin",
+    "btitle": "测试数据：IIS new add website ，some wrong:The requested page cannot be accessed because the related configuration data for the page is invalid.",
+    "bcategory": "技术博文",
+    "bcontent": "                            <p>问题:</p><h1><a href=\"https://www.cnblogs.com/yipeng-yu/p/6210380.html\">The requested page cannot be accessed because the related configuration data for the page is invalid.</a></h1><p>HTTP Error 500.19 - Internal Server Error The requested page cannot be accessed because the related configuration data for the page is invalid.</p><p>Detailed Error Information:</p><p>Module IIS Web Core</p><p>Notification Unknown</p><p>Handler Not yet determined</p><p>Error Code 0x80070003</p><p>Config Error Cannot read configuration file</p><p>Config File \\?\\D:\\Projects\\...\\web.config</p><p>Requested URL http:// localhost:8080/</p><p>Physical Path</p><p>Logon Method Not yet determined</p><p>Logon User Not yet determined</p><p>Request Tracing Directory C:\\Users\\...\\TraceLogFiles\\</p><p>Config Source:</p><p>Answer:</p><p>1，find the site's application pools</p><p>2,\"Advanced Settings\" ==&gt; Indentity ==&gt;&nbsp; Custom account</p><p><br></p><p><br></p>",
+    "btraffic": 127,
+    "bcommentNum": 1,
+    "bUpdateTime": "\/Date(1546272000000+0800)\/",
+    "bCreateTime": "\/Date(1546272000000+0800)\/",
+    "bRemark": null,
+    "IsDeleted": 0
+  }
+]

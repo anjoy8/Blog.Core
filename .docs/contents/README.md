@@ -10,5 +10,5 @@ features:
   details: 通过 QQ 群，和数千位同业大佬一起切磋交流。
 - title: 丰富的内容
   details: 框架涵盖ASP.Net Core开发中常见的基本知识点，不仅适合初学者入门，同时也适用于企业级别的开发。
-footer: MIT Licensed | Copyright © 2018-2020-老张的哲学
+footer: MIT Licensed | Copyright © 2018-2020-老张的哲学  Powered by VUEPRESS on CentOS 7.6 
 ---

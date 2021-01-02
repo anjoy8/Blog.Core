@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -63,6 +62,29 @@ namespace Blog.Core.Common.Helper
         }
         #endregion
 
+        #region 根据文件大小获取指定前缀的可用文件名
+        /// <summary>
+        /// 根据文件大小获取指定前缀的可用文件名
+        /// </summary>
+        /// <param name="folderPath">文件夹</param>
+        /// <param name="prefix">文件前缀</param>
+        /// <param name="size">文件大小(1m)</param>
+        /// <param name="ext">文件后缀(.log)</param>
+        /// <returns>可用文件名</returns>
+        public static string GetAvailableFileWithPrefixOrderSize(string folderPath, string prefix, int size = 1 * 1024 * 1024, string ext = ".log")
+        {
+            var allFiles = new DirectoryInfo(folderPath);
+            var selectFiles = allFiles.GetFiles().Where(fi => fi.Name.ToLower().Contains(prefix.ToLower()) && fi.Extension.ToLower() == ext.ToLower() && fi.Length < size).OrderByDescending(d=>d.Name).ToList();
+
+            if (selectFiles.Count > 0)
+            {
+                return selectFiles.FirstOrDefault().FullName;
+            }
+
+            return Path.Combine(folderPath, $@"{prefix}_{DateTime.Now.DateToTimeStamp()}.log");
+        }
+        #endregion
+
         #region 写文件
         /****************************************
           * 函数名称：WriteFile
@@ -80,12 +102,12 @@ namespace Blog.Core.Common.Helper
         /// <param name="Strings">文件内容</param>
         public static void WriteFile(string Path, string Strings)
         {
-            if (!System.IO.File.Exists(Path))
+            if (!File.Exists(Path))
             {
-                System.IO.FileStream f = System.IO.File.Create(Path);
+                FileStream f = File.Create(Path);
                 f.Close();
             }
-            System.IO.StreamWriter f2 = new System.IO.StreamWriter(Path, false, System.Text.Encoding.GetEncoding("gb2312"));
+            StreamWriter f2 = new StreamWriter(Path, false, System.Text.Encoding.GetEncoding("gb2312"));
             f2.Write(Strings);
             f2.Close();
             f2.Dispose();
@@ -99,12 +121,12 @@ namespace Blog.Core.Common.Helper
         /// <param name="encode">编码格式</param>
         public static void WriteFile(string Path, string Strings, Encoding encode)
         {
-            if (!System.IO.File.Exists(Path))
+            if (!File.Exists(Path))
             {
-                System.IO.FileStream f = System.IO.File.Create(Path);
+                FileStream f = File.Create(Path);
                 f.Close();
             }
-            System.IO.StreamWriter f2 = new System.IO.StreamWriter(Path, false, encode);
+            StreamWriter f2 = new StreamWriter(Path, false, encode);
             f2.Write(Strings);
             f2.Close();
             f2.Dispose();
@@ -128,7 +150,7 @@ namespace Blog.Core.Common.Helper
         public static string ReadFile(string Path)
         {
             string s = "";
-            if (!System.IO.File.Exists(Path))
+            if (!File.Exists(Path))
                 s = "不存在相应的目录";
             else
             {
@@ -150,7 +172,7 @@ namespace Blog.Core.Common.Helper
         public static string ReadFile(string Path, Encoding encode)
         {
             string s = "";
-            if (!System.IO.File.Exists(Path))
+            if (!File.Exists(Path))
                 s = "不存在相应的目录";
             else
             {

@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Blog.Core.Common;
-using Blog.Core.IRepository;
+﻿using Blog.Core.Common;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Services.BASE;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Services
 {
     public class TopicServices: BaseServices<Topic>, ITopicServices
     {
 
-        ITopicRepository _dal;
-        public TopicServices(ITopicRepository dal)
+        IBaseRepository<Topic> _dal;
+        public TopicServices(IBaseRepository<Topic> dal)
         {
             this._dal = dal;
             base.BaseDal = dal;

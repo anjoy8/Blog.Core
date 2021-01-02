@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# IDE0005: Using 指令是不需要的。
+dotnet_diagnostic.IDE0005.severity = warning

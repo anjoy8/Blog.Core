@@ -1,8 +1,6 @@
 ﻿using RestSharp;
 using RestSharp.Authenticators;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Blog.Core.Common.HttpRestSharp
 {
@@ -101,6 +99,7 @@ namespace Blog.Core.Common.HttpRestSharp
         /// });
         /// </remarks>
         /// <returns></returns>
+        [Obsolete]
         public RestRequestAsyncHandle ExecuteAsync(IRestRequest request, Action<IRestResponse> callback)
         {
             request.DateFormat = string.IsNullOrEmpty(request.DateFormat) ? DefaultDateParameterFormat : request.DateFormat;
@@ -126,6 +125,7 @@ namespace Blog.Core.Common.HttpRestSharp
         /// });
         /// </remarks>
         /// <returns></returns>
+        [Obsolete]
         public RestRequestAsyncHandle ExecuteAsync<T>(IRestRequest request, Action<IRestResponse<T>> callback) where T : new()
         {
             request.DateFormat = string.IsNullOrEmpty(request.DateFormat) ? DefaultDateParameterFormat : request.DateFormat;

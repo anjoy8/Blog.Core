@@ -46,11 +46,20 @@ namespace Blog.Core.Common
                 }
                 try
                 {
-                    this.redisConnection = ConnectionMultiplexer.Connect(redisConnenctionString);
+                    var config = new ConfigurationOptions
+                    {
+                        AbortOnConnectFail = false,
+                        AllowAdmin = true,
+                        ConnectTimeout = 15000,//改成15s
+                        SyncTimeout = 5000,
+                        //Password = "Pwd",//Redis数据库密码
+                        EndPoints = { redisConnenctionString }// connectionString 为IP:Port 如”192.168.2.110:6379”
+                    };
+                    this.redisConnection = ConnectionMultiplexer.Connect(config);
                 }
                 catch (Exception)
                 {
-                    //throw new Exception("Redis服务未启用，请开启该服务，并且请注意端口号，本项目使用的的6319，而且我的是没有设置密码。");
+                    throw new Exception("Redis服务未启用，请开启该服务，并且请注意端口号，本项目使用的的6319，而且我的是没有设置密码。");
                 }
             }
             return this.redisConnection;

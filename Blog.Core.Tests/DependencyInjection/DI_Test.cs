@@ -4,23 +4,24 @@ using Autofac.Extras.DynamicProxy;
 using AutoMapper;
 using Blog.Core.AuthHelper;
 using Blog.Core.Common;
+using Blog.Core.Common.AppConfig;
 using Blog.Core.Common.DB;
 using Blog.Core.Common.LogHelper;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
-using Blog.Core.Model.Models;
+using Blog.Core.Model.Seed;
+using Blog.Core.Repository.Base;
 using Blog.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Xunit;
-using System;
 using System.Security.Claims;
-using System.Configuration;
-using Blog.Core.Common.AppConfig;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using System.Collections.Generic;
+using Xunit;
 
 namespace Blog.Core.Tests
 {
@@ -39,7 +40,7 @@ namespace Blog.Core.Tests
             {
                 return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
                 {
-                    ConnectionString = GetMainConnectionDb().Conn,//必填, 数据库连接字符串
+                    ConnectionString = GetMainConnectionDb().Connection,//必填, 数据库连接字符串
                     DbType = (SqlSugar.DbType)GetMainConnectionDb().DbType,//必填, 数据库类型
                     IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
                     IsShardSameThread = true,//共享线程
@@ -89,12 +90,12 @@ namespace Blog.Core.Tests
         /// </summary>
         public static MutiDBOperate GetMainConnectionDb()
         {
-            var mainConnetctDb = BaseDBConfig.MutiConnectionString.Find(x => x.ConnId == MainDb.CurrentDbConnId);
-            if (BaseDBConfig.MutiConnectionString.Count > 0)
+            var mainConnetctDb = BaseDBConfig.MutiConnectionString.allDbs.Find(x => x.ConnId == MainDb.CurrentDbConnId);
+            if (BaseDBConfig.MutiConnectionString.allDbs.Count > 0)
             {
                 if (mainConnetctDb == null)
                 {
-                    mainConnetctDb = BaseDBConfig.MutiConnectionString[0];
+                    mainConnetctDb = BaseDBConfig.MutiConnectionString.allDbs[0];
                 }
             }
             else
@@ -114,9 +115,8 @@ namespace Blog.Core.Tests
 
             services.AddSingleton(new Appsettings(basePath));
             services.AddSingleton(new LogLock(basePath));
-            services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
-            services.AddScoped<Blog.Core.Model.Models.DBSeed>();
-            services.AddScoped<Blog.Core.Model.Models.MyContext>();
+            services.AddScoped<DBSeed>();
+            services.AddScoped<MyContext>();
 
             //读取配置文件
             var symmetricKeyAsBase64 = AppSecretConfig.Audience_Secret_String;
@@ -152,7 +152,7 @@ namespace Blog.Core.Tests
             {
                 return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
                 {
-                    ConnectionString = GetMainConnectionDb().Conn,//必填, 数据库连接字符串
+                    ConnectionString = GetMainConnectionDb().Connection,//必填, 数据库连接字符串
                     DbType = (SqlSugar.DbType)GetMainConnectionDb().DbType,//必填, 数据库类型
                     IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
                     IsShardSameThread = true,//共享线程
@@ -165,6 +165,9 @@ namespace Blog.Core.Tests
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
 
             //指定已扫描程序集中的类型注册为提供所有其实现的接口。
+
+            builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();//注册仓储
+
 
             var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
             var assemblysServices = Assembly.LoadFrom(servicesDllFile);
@@ -182,12 +185,6 @@ namespace Blog.Core.Tests
 
             //使用已进行的组件登记创建新容器
             var ApplicationContainer = builder.Build();
-
-            var blogservice = ApplicationContainer.Resolve<IBlogArticleServices>();
-            var myContext = ApplicationContainer.Resolve<MyContext>();
-
-            DBSeed.SeedAsync(myContext, basePath).Wait();
-
 
             return ApplicationContainer;
         }

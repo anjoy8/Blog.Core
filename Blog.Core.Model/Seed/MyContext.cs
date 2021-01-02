@@ -1,17 +1,16 @@
-﻿using Blog.Core.Common;
-using Blog.Core.Common.DB;
+﻿using Blog.Core.Common.DB;
 using SqlSugar;
 using System;
-using System.IO;
 
-namespace Blog.Core.Model.Models
+namespace Blog.Core.Model.Seed
 {
     public class MyContext
     {
 
         private static MutiDBOperate connectObject => GetMainConnectionDb();
-        private static string _connectionString = connectObject.Conn;
+        private static string _connectionString = connectObject.Connection;
         private static DbType _dbType = (DbType)connectObject.DbType;
+        public static string ConnId = connectObject.ConnId;
         private SqlSugarClient _db;
 
         /// <summary>
@@ -20,12 +19,12 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public static MutiDBOperate GetMainConnectionDb()
         {
-            var mainConnetctDb = BaseDBConfig.MutiConnectionString.Find(x => x.ConnId == MainDb.CurrentDbConnId);
-            if (BaseDBConfig.MutiConnectionString.Count > 0)
+            var mainConnetctDb = BaseDBConfig.MutiConnectionString.allDbs.Find(x => x.ConnId == MainDb.CurrentDbConnId);
+            if (BaseDBConfig.MutiConnectionString.allDbs.Count > 0)
             {
                 if (mainConnetctDb == null)
                 {
-                    mainConnetctDb = BaseDBConfig.MutiConnectionString[0];
+                    mainConnetctDb = BaseDBConfig.MutiConnectionString.allDbs[0];
                 }
             }
             else
@@ -64,293 +63,17 @@ namespace Blog.Core.Model.Models
         }
 
         /// <summary>
-        /// 数据库上下文实例（自动关闭连接）
-        /// Blog.Core 
-        /// </summary>
-        public static MyContext Context
-        {
-            get
-            {
-                return new MyContext();
-            }
-
-        }
-
-
-        /// <summary>
         /// 功能描述:构造函数
         /// 作　　者:Blog.Core
         /// </summary>
-        public MyContext()
+        public MyContext(ISqlSugarClient sqlSugarClient)
         {
             if (string.IsNullOrEmpty(_connectionString))
                 throw new ArgumentNullException("数据库连接字符串为空");
-            _db = new SqlSugarClient(new ConnectionConfig()
-            {
-                ConnectionString = _connectionString,
-                DbType = _dbType,
-                IsAutoCloseConnection = true,
-                InitKeyType = InitKeyType.Attribute,//mark
-                ConfigureExternalServices = new ConfigureExternalServices()
-                {
-                    //DataInfoCacheService = new HttpRuntimeCache()
-                },
-                MoreSettings = new ConnMoreSettings()
-                {
-                    //IsWithNoLockQuery = true,
-                    IsAutoRemoveDataCache = true
-                }
-            });
-        }
 
-
-        #region 根据数据库表生产Model层
-
-        /// <summary>
-        /// 功能描述:根据数据库表生产Model层
-        /// 作　　者:Blog.Core
-        /// </summary>
-        /// <param name="strPath">实体类存放路径</param>
-        /// <param name="strNameSpace">命名空间</param>
-        /// <param name="lstTableNames">生产指定的表</param>
-        /// <param name="strInterface">实现接口</param>
-        /// <param name="blnSerializable">是否序列化</param>
-        public void Create_Model_ClassFileByDBTalbe(
-          string strPath,
-          string strNameSpace,
-          string[] lstTableNames,
-          string strInterface,
-          bool blnSerializable = false)
-        {
-            var IDbFirst = _db.DbFirst;
-            if (lstTableNames != null && lstTableNames.Length > 0)
-            {
-                IDbFirst = IDbFirst.Where(lstTableNames);
-            }
-            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
-
-                .SettingClassTemplate(p => p = @"
-{using}
-
-namespace " + strNameSpace + @"
-{
-    {ClassDescription}{SugarTable}" + (blnSerializable ? "[Serializable]" : "") + @"
-    public class {ClassName}" + (string.IsNullOrEmpty(strInterface) ? "" : (" : " + strInterface)) + @"
-    {
-        public {ClassName}()
-        {
-        }
-        {PropertyName}
-    }
-}
-                    ")
-
-                .SettingPropertyTemplate(p => p = @"
-        {SugarColumn}
-        public {PropertyType} {PropertyName} { get; set; }
-
-            ")
-
-                 //.SettingPropertyDescriptionTemplate(p => p = "          private {PropertyType} _{PropertyName};\r\n" + p)
-                 //.SettingConstructorTemplate(p => p = "              this._{PropertyName} ={DefaultValue};")
-
-                 .CreateClassFile(strPath, strNameSpace);
+            _db = sqlSugarClient as SqlSugarClient;
 
         }
-        #endregion
-
-
-        #region 根据数据库表生产IRepository层
-
-        /// <summary>
-        /// 功能描述:根据数据库表生产IRepository层
-        /// 作　　者:Blog.Core
-        /// </summary>
-        /// <param name="strPath">实体类存放路径</param>
-        /// <param name="strNameSpace">命名空间</param>
-        /// <param name="lstTableNames">生产指定的表</param>
-        /// <param name="strInterface">实现接口</param>
-        public void Create_IRepository_ClassFileByDBTalbe(
-          string strPath,
-          string strNameSpace,
-          string[] lstTableNames,
-          string strInterface)
-        {
-            var IDbFirst = _db.DbFirst;
-            if (lstTableNames != null && lstTableNames.Length > 0)
-            {
-                IDbFirst = IDbFirst.Where(lstTableNames);
-            }
-            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
-
-                .SettingClassTemplate(p => p = @"
-using Blog.Core.IRepository.Base;
-using Blog.Core.Model.Models;
-
-namespace " + strNameSpace + @"
-{
-	/// <summary>
-	/// I{ClassName}Repository
-	/// </summary>	
-    public interface I{ClassName}Repository : IBaseRepository<{ClassName}>" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
-    {
-    }
-}
-                    ")
-
-                 .CreateClassFile(strPath, strNameSpace);
-
-        }
-        #endregion
-
-
-        #region 根据数据库表生产IServices层
-
-        /// <summary>
-        /// 功能描述:根据数据库表生产IServices层
-        /// 作　　者:Blog.Core
-        /// </summary>
-        /// <param name="strPath">实体类存放路径</param>
-        /// <param name="strNameSpace">命名空间</param>
-        /// <param name="lstTableNames">生产指定的表</param>
-        /// <param name="strInterface">实现接口</param>
-        public void Create_IServices_ClassFileByDBTalbe(
-          string strPath,
-          string strNameSpace,
-          string[] lstTableNames,
-          string strInterface)
-        {
-            var IDbFirst = _db.DbFirst;
-            if (lstTableNames != null && lstTableNames.Length > 0)
-            {
-                IDbFirst = IDbFirst.Where(lstTableNames);
-            }
-            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
-
-                .SettingClassTemplate(p => p = @"
-using Blog.Core.IServices.BASE;
-using Blog.Core.Model.Models;
-
-namespace " + strNameSpace + @"
-{	
-	/// <summary>
-	/// I{ClassName}Services
-	/// </summary>	
-    public interface I{ClassName}Services :IBaseServices<{ClassName}>" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
-	{
-
-       
-    }
-}
-                    ")
-
-                 .CreateClassFile(strPath, strNameSpace);
-
-        }
-        #endregion
-
-
-
-        #region 根据数据库表生产 Repository 层
-
-        /// <summary>
-        /// 功能描述:根据数据库表生产 Repository 层
-        /// 作　　者:Blog.Core
-        /// </summary>
-        /// <param name="strPath">实体类存放路径</param>
-        /// <param name="strNameSpace">命名空间</param>
-        /// <param name="lstTableNames">生产指定的表</param>
-        /// <param name="strInterface">实现接口</param>
-        public void Create_Repository_ClassFileByDBTalbe(
-          string strPath,
-          string strNameSpace,
-          string[] lstTableNames,
-          string strInterface)
-        {
-            var IDbFirst = _db.DbFirst;
-            if (lstTableNames != null && lstTableNames.Length > 0)
-            {
-                IDbFirst = IDbFirst.Where(lstTableNames);
-            }
-            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
-
-                .SettingClassTemplate(p => p = @"
-using Blog.Core.IRepository;
-using Blog.Core.IRepository.UnitOfWork;
-using Blog.Core.Model.Models;
-using Blog.Core.Repository.Base;
-
-namespace " + strNameSpace + @"
-{
-	/// <summary>
-	/// {ClassName}Repository
-	/// </summary>
-    public class {ClassName}Repository : BaseRepository<{ClassName}>, I{ClassName}Repository" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
-    {
-        public {ClassName}Repository(IUnitOfWork unitOfWork) : base(unitOfWork)
-        {
-        }
-    }
-}
-                    ")
-
-                 .CreateClassFile(strPath, strNameSpace);
-
-        }
-        #endregion
-
-
-        #region 根据数据库表生产 Services 层
-
-        /// <summary>
-        /// 功能描述:根据数据库表生产 Services 层
-        /// 作　　者:Blog.Core
-        /// </summary>
-        /// <param name="strPath">实体类存放路径</param>
-        /// <param name="strNameSpace">命名空间</param>
-        /// <param name="lstTableNames">生产指定的表</param>
-        /// <param name="strInterface">实现接口</param>
-        public void Create_Services_ClassFileByDBTalbe(
-          string strPath,
-          string strNameSpace,
-          string[] lstTableNames,
-          string strInterface)
-        {
-            var IDbFirst = _db.DbFirst;
-            if (lstTableNames != null && lstTableNames.Length > 0)
-            {
-                IDbFirst = IDbFirst.Where(lstTableNames);
-            }
-            IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
-
-                .SettingClassTemplate(p => p = @"
-using Blog.Core.IRepository;
-using Blog.Core.IServices;
-using Blog.Core.Model.Models;
-using Blog.Core.Services.BASE;
-
-namespace " + strNameSpace + @"
-{
-    public partial class {ClassName}Services : BaseServices<{ClassName}>, I{ClassName}Services" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
-    {
-        I{ClassName}Repository _dal;
-        public {ClassName}Services(I{ClassName}Repository dal)
-        {
-            this._dal = dal;
-            base.BaseDal = dal;
-        }
-
-    }
-}
-                    ")
-
-                 .CreateClassFile(strPath, strNameSpace);
-
-        }
-        #endregion
-
-
-
 
 
         #region 实例方法
@@ -423,15 +146,15 @@ namespace " + strNameSpace + @"
 
         #region 静态方法
 
-        /// <summary>
-        /// 功能描述:获得一个DbContext
-        /// 作　　者:Blog.Core
-        /// </summary>
-        /// <returns></returns>
-        public static MyContext GetDbContext()
-        {
-            return new MyContext();
-        }
+        ///// <summary>
+        ///// 功能描述:获得一个DbContext
+        ///// 作　　者:Blog.Core
+        ///// </summary>
+        ///// <returns></returns>
+        //public static MyContext GetDbContext()
+        //{
+        //    return new MyContext();
+        //}
 
         /// <summary>
         /// 功能描述:设置初始化参数

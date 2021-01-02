@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Blog.Core.Common;
-using Blog.Core.IRepository;
+﻿using Blog.Core.Common;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
+using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Blog.Core.Services.BASE;
+using System;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Services
 {
     public class GuestbookServices : BaseServices<Guestbook>, IGuestbookServices
     {
-        private readonly IGuestbookRepository _dal;
+        private readonly IBaseRepository<Guestbook> _dal;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IPasswordLibRepository _passwordLibRepository;
-        public GuestbookServices(IUnitOfWork unitOfWork, IGuestbookRepository dal, IPasswordLibRepository passwordLibRepository)
+        private readonly IBaseRepository<PasswordLib> _passwordLibRepository;
+        public GuestbookServices(IUnitOfWork unitOfWork, IBaseRepository<Guestbook> dal, IBaseRepository<PasswordLib> passwordLibRepository)
         {
             this._dal = dal;
             base.BaseDal = dal;
@@ -25,23 +23,14 @@ namespace Blog.Core.Services
             _passwordLibRepository = passwordLibRepository;
         }
 
-        public async Task<bool> TestTranInRepository()
+        public async Task<MessageModel<string>> TestTranInRepository()
         {
             try
             {
                 Console.WriteLine($"");
-                Console.WriteLine($"Begin Transaction");
+                Console.WriteLine($"事务操作开始");
                 _unitOfWork.BeginTran();
                 Console.WriteLine($"");
-
-
-
-
-
-
-                var passwords = await _passwordLibRepository.Query();
-                Console.WriteLine($"first time : the count of passwords is :{passwords.Count}");
-
 
                 Console.WriteLine($"insert a data into the table PasswordLib now.");
                 var insertPassword = await _passwordLibRepository.Add(new PasswordLib()
@@ -52,7 +41,7 @@ namespace Blog.Core.Services
                 });
 
 
-                passwords = await _passwordLibRepository.Query(d => d.IsDeleted == false);
+                var passwords = await _passwordLibRepository.Query(d => d.IsDeleted == false);
                 Console.WriteLine($"second time : the count of passwords is :{passwords.Count}");
 
                 //......
@@ -78,17 +67,13 @@ namespace Blog.Core.Services
                 Console.WriteLine($"second time : the count of guestbooks is :{guestbooks.Count}");
 
 
-
-
-
-
-
-
-
-
                 _unitOfWork.CommitTran();
 
-                return true;
+                return new MessageModel<string>()
+                {
+                    success = true,
+                    msg = "操作完成"
+                };
             }
             catch (Exception)
             {
@@ -99,7 +84,11 @@ namespace Blog.Core.Services
                 var guestbooks = await _dal.Query();
                 Console.WriteLine($"third time : the count of guestbooks is :{guestbooks.Count}");
 
-                return false;
+                return new MessageModel<string>()
+                {
+                    success = false,
+                    msg = "操作异常"
+                };
             }
         }
 

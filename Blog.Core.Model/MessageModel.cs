@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Blog.Core.Model
+﻿namespace Blog.Core.Model
 {
     /// <summary>
     /// 通用返回信息类
     /// </summary>
     public class MessageModel<T>
     {
+        /// <summary>
+        /// 状态码
+        /// </summary>
+        public int status { get; set; } = 200;
         /// <summary>
         /// 操作是否成功
         /// </summary>
