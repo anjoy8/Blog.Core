@@ -25,7 +25,6 @@ namespace Blog.Core.AOP
             var CachingAttribute = method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingAttribute));
             if (CachingAttribute is CachingAttribute qCachingAttribute)
             {
-                CachingAttribute cachingAttribute = CachingAttribute as CachingAttribute;
                 //获取自定义缓存键
                 var cacheKey = CustomCacheKey(invocation);
                 //根据key获取相应的缓存值
@@ -41,7 +40,7 @@ namespace Blog.Core.AOP
                 //存入缓存
                 if (!string.IsNullOrWhiteSpace(cacheKey))
                 {
-                    _cache.Set(cacheKey, invocation.ReturnValue, cachingAttribute.AbsoluteExpiration);
+                    _cache.Set(cacheKey, invocation.ReturnValue, qCachingAttribute.AbsoluteExpiration);
                 }
             }
             else
