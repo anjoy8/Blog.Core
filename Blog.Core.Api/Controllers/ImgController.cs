@@ -56,17 +56,12 @@ namespace Blog.Core.Controllers
             string foldername = "images";
             IFormFileCollection files = null;
 
-            try
-            {
-                // 获取提交的文件
-                files = Request.Form.Files;
-                // 获取附带的数据
-                var max_ver= Request.Form["max_ver"].ObjToString();
-            }
-            catch (Exception)
-            {
-                files = null;
-            }
+
+            // 获取提交的文件
+            files = Request.Form.Files;
+            // 获取附带的数据
+            var max_ver = Request.Form["max_ver"].ObjToString();
+
 
             if (files == null || !files.Any()) { data.msg = "请选择上传的文件。"; return data; }
             //格式限制

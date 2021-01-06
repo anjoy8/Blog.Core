@@ -20,14 +20,17 @@ namespace Blog.Core
                  .UseUrls("http://*:8081")
                  .ConfigureLogging((hostingContext, builder) =>
                  {
-                     //过滤掉系统默认的一些日志
+                     // 1.过滤掉系统默认的一些日志
                      builder.AddFilter("System", LogLevel.Error);
                      builder.AddFilter("Microsoft", LogLevel.Error);
-                     builder.AddFilter("Blog.Core.AuthHelper.ApiResponseHandler", LogLevel.Error);
 
-                     //可配置文件
-                     var path = Path.Combine(Directory.GetCurrentDirectory(), "Log4net.config");
-                     builder.AddLog4Net(path);
+                     // 2.也可以在appsettings.json中配置，LogLevel节点
+
+                     // 3.统一设置
+                     builder.SetMinimumLevel(LogLevel.Error);
+
+                     // 默认log4net.confg
+                     builder.AddLog4Net(Path.Combine(Directory.GetCurrentDirectory(), "Log4net.config"));
                  });
              })
             // 生成承载 web 应用程序的 Microsoft.AspNetCore.Hosting.IWebHost。Build是WebHostBuilder最终的目的，将返回一个构造的WebHost，最终生成宿主。

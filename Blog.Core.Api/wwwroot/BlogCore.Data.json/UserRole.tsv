@@ -1,6 +1,6 @@
 [
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "UserId": 4,
     "RoleId": 1,
     "CreateId": null,
@@ -12,7 +12,7 @@
     "Id": 1
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "UserId": 3,
     "RoleId": 2,
     "CreateId": null,
@@ -24,7 +24,7 @@
     "Id": 2
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "UserId": 7,
     "RoleId": 3,
     "CreateId": null,
@@ -36,7 +36,7 @@
     "Id": 3
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "UserId": 12,
     "RoleId": 4,
     "CreateId": 23,
@@ -48,7 +48,7 @@
     "Id": 4
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "UserId": 1,
     "RoleId": 2,
     "CreateId": 1,
@@ -60,7 +60,7 @@
     "Id": 5
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "UserId": 1,
     "RoleId": 1,
     "CreateId": 1,
@@ -72,7 +72,7 @@
     "Id": 6
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "UserId": 2,
     "RoleId": 1,
     "CreateId": 13,
@@ -84,7 +84,7 @@
     "Id": 7
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "UserId": 8,
     "RoleId": 6,
     "CreateId": 19,
@@ -96,7 +96,7 @@
     "Id": 8
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "UserId": 13,
     "RoleId": 7,
     "CreateId": 24,
@@ -108,7 +108,7 @@
     "Id": 9
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "UserId": 0,
     "RoleId": 0,
     "CreateId": 0,
@@ -120,7 +120,7 @@
     "Id": 10
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "UserId": 39,
     "RoleId": 28,
     "CreateId": 39,

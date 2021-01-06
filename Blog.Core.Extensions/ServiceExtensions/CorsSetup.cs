@@ -18,10 +18,10 @@ namespace Blog.Core.Extensions
                 if (!Appsettings.app(new string[] { "Startup", "Cors", "EnableAllIPs" }).ObjToBool())
                 {
                     c.AddPolicy(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }),
-                        
+
                         policy =>
                         {
-                           
+
                             policy
                             .WithOrigins(Appsettings.app(new string[] { "Startup", "Cors", "IPs" }).Split(','))
                             .AllowAnyHeader()//Ensures that the policy allows any header.
@@ -35,9 +35,10 @@ namespace Blog.Core.Extensions
                         policy =>
                         {
                             policy
-                            .AllowAnyOrigin()
+                            .SetIsOriginAllowed((host) => true)
                             .AllowAnyMethod()
-                            .AllowAnyHeader();
+                            .AllowAnyHeader()
+                            .AllowCredentials();
                         });
                 }
 

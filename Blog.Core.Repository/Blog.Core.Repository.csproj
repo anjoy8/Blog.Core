@@ -1,9 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
 
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Bson" Version="2.10.0" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.10.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.10.0" />
+  </ItemGroup>
+  
+  
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputPath>..\Blog.Core.Api\bin\Debug\</OutputPath>
 	</PropertyGroup>
@@ -13,7 +21,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.1.0" />
+		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.1" />
 	</ItemGroup>
 
 	<ItemGroup>

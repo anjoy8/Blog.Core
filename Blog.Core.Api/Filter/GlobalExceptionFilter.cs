@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using StackExchange.Profiling;
 using System;
@@ -38,7 +37,8 @@ namespace Blog.Core.Filter
             {
                 json.Message = json.Message.Replace(errorAudit, $"（若新添加服务，需要重新编译项目）{errorAudit}");
             }
-            if (_env.IsDevelopment())
+
+            //if (_env.IsDevelopment())
             {
                 json.DevelopmentMessage = context.Exception.StackTrace;//堆栈信息
             }

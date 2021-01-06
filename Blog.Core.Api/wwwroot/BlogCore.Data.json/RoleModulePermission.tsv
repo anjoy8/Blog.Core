@@ -1,6 +1,6 @@
 [
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 1,
     "ModuleId": 1,
     "PermissionId": null,
@@ -13,7 +13,7 @@
     "Id": 1
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 1,
     "ModuleId": 2,
     "PermissionId": null,
@@ -26,7 +26,7 @@
     "Id": 2
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 1,
     "ModuleId": 3,
     "PermissionId": null,
@@ -39,7 +39,7 @@
     "Id": 3
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 1,
     "ModuleId": 4,
     "PermissionId": null,
@@ -52,7 +52,7 @@
     "Id": 4
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 2,
     "ModuleId": 4,
     "PermissionId": null,
@@ -65,7 +65,7 @@
     "Id": 5
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 3,
     "ModuleId": 5,
     "PermissionId": 30,
@@ -78,7 +78,7 @@
     "Id": 6
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 3,
     "ModuleId": 6,
     "PermissionId": 31,
@@ -91,7 +91,7 @@
     "Id": 7
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 3,
     "ModuleId": 7,
     "PermissionId": 9,
@@ -104,7 +104,7 @@
     "Id": 8
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 3,
     "ModuleId": 26,
     "PermissionId": 28,
@@ -117,7 +117,7 @@
     "Id": 9
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 7,
     "PermissionId": 3,
@@ -130,7 +130,7 @@
     "Id": 10
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 7,
     "PermissionId": 9,
@@ -143,7 +143,7 @@
     "Id": 11
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 10,
     "PermissionId": 13,
@@ -156,7 +156,7 @@
     "Id": 12
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 12,
     "PermissionId": 14,
@@ -169,7 +169,7 @@
     "Id": 13
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 11,
     "PermissionId": 15,
@@ -182,7 +182,7 @@
     "Id": 14
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 2,
@@ -195,7 +195,7 @@
     "Id": 15
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 22,
     "PermissionId": 4,
@@ -208,7 +208,7 @@
     "Id": 16
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 22,
     "PermissionId": 16,
@@ -221,7 +221,7 @@
     "Id": 17
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 25,
     "PermissionId": 17,
@@ -234,7 +234,7 @@
     "Id": 18
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 24,
     "PermissionId": 18,
@@ -247,7 +247,7 @@
     "Id": 19
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 23,
     "PermissionId": 19,
@@ -260,7 +260,7 @@
     "Id": 20
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 1,
@@ -273,7 +273,7 @@
     "Id": 21
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 5,
@@ -286,7 +286,7 @@
     "Id": 22
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 13,
     "PermissionId": 6,
@@ -299,7 +299,7 @@
     "Id": 23
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 13,
     "PermissionId": 20,
@@ -312,7 +312,7 @@
     "Id": 24
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 16,
     "PermissionId": 21,
@@ -325,7 +325,7 @@
     "Id": 25
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 15,
     "PermissionId": 22,
@@ -338,7 +338,7 @@
     "Id": 26
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 14,
     "PermissionId": 23,
@@ -351,7 +351,7 @@
     "Id": 27
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 17,
     "PermissionId": 7,
@@ -364,7 +364,7 @@
     "Id": 28
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 17,
     "PermissionId": 24,
@@ -377,7 +377,7 @@
     "Id": 29
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 20,
     "PermissionId": 25,
@@ -390,7 +390,7 @@
     "Id": 30
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 19,
     "PermissionId": 26,
@@ -403,7 +403,7 @@
     "Id": 31
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 18,
     "PermissionId": 27,
@@ -416,7 +416,7 @@
     "Id": 32
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 8,
@@ -429,7 +429,7 @@
     "Id": 33
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 10,
@@ -442,7 +442,7 @@
     "Id": 34
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 11,
@@ -455,7 +455,7 @@
     "Id": 35
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 12,
@@ -468,7 +468,7 @@
     "Id": 36
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 26,
     "PermissionId": 28,
@@ -481,7 +481,7 @@
     "Id": 37
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 5,
     "PermissionId": 30,
@@ -494,7 +494,7 @@
     "Id": 38
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 6,
     "PermissionId": 31,
@@ -507,7 +507,7 @@
     "Id": 39
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 27,
     "PermissionId": 29,
@@ -520,7 +520,7 @@
     "Id": 40
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 26,
     "PermissionId": 32,
@@ -533,7 +533,7 @@
     "Id": 41
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 1,
@@ -546,7 +546,7 @@
     "Id": 42
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 8,
@@ -559,7 +559,7 @@
     "Id": 43
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 10,
@@ -572,7 +572,7 @@
     "Id": 44
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 11,
@@ -585,7 +585,7 @@
     "Id": 45
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 12,
@@ -598,7 +598,7 @@
     "Id": 46
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 27,
     "PermissionId": 29,
@@ -611,7 +611,7 @@
     "Id": 47
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 2,
@@ -624,7 +624,7 @@
     "Id": 48
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 7,
     "PermissionId": 3,
@@ -637,7 +637,7 @@
     "Id": 49
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 22,
     "PermissionId": 4,
@@ -650,7 +650,7 @@
     "Id": 50
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 5,
@@ -663,7 +663,7 @@
     "Id": 51
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 13,
     "PermissionId": 6,
@@ -676,7 +676,7 @@
     "Id": 52
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 17,
     "PermissionId": 7,
@@ -689,7 +689,7 @@
     "Id": 53
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 26,
     "PermissionId": 28,
@@ -702,7 +702,7 @@
     "Id": 54
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 28,
     "PermissionId": 34,
@@ -715,7 +715,7 @@
     "Id": 55
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 21,
     "PermissionId": 33,
@@ -728,7 +728,7 @@
     "Id": 56
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 7,
     "PermissionId": 9,
@@ -741,7 +741,7 @@
     "Id": 57
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 22,
     "PermissionId": 16,
@@ -754,7 +754,7 @@
     "Id": 58
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 13,
     "PermissionId": 20,
@@ -767,7 +767,7 @@
     "Id": 59
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 17,
     "PermissionId": 24,
@@ -780,7 +780,7 @@
     "Id": 60
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 26,
     "PermissionId": 32,
@@ -793,7 +793,7 @@
     "Id": 61
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 28,
     "PermissionId": 35,
@@ -806,7 +806,7 @@
     "Id": 62
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 21,
     "PermissionId": 33,
@@ -819,7 +819,7 @@
     "Id": 63
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 29,
     "PermissionId": 36,
@@ -832,7 +832,7 @@
     "Id": 64
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 34,
@@ -845,7 +845,7 @@
     "Id": 65
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 7,
     "ModuleId": 0,
     "PermissionId": 1,
@@ -858,7 +858,7 @@
     "Id": 66
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 7,
     "ModuleId": 0,
     "PermissionId": 2,
@@ -871,7 +871,7 @@
     "Id": 67
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 7,
     "ModuleId": 7,
     "PermissionId": 4,
@@ -884,7 +884,7 @@
     "Id": 68
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 7,
     "ModuleId": 0,
     "PermissionId": 10,
@@ -897,7 +897,7 @@
     "Id": 69
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 7,
     "ModuleId": 0,
     "PermissionId": 12,
@@ -910,7 +910,7 @@
     "Id": 70
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 7,
     "ModuleId": 0,
     "PermissionId": 8,
@@ -923,7 +923,7 @@
     "Id": 71
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 7,
     "ModuleId": 22,
     "PermissionId": 16,
@@ -936,7 +936,7 @@
     "Id": 72
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 37,
@@ -949,7 +949,7 @@
     "Id": 73
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 38,
@@ -962,7 +962,7 @@
     "Id": 74
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 39,
@@ -975,7 +975,7 @@
     "Id": 75
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 40,
@@ -988,7 +988,7 @@
     "Id": 76
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 40,
@@ -1001,7 +1001,7 @@
     "Id": 77
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 37,
@@ -1014,7 +1014,7 @@
     "Id": 78
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 38,
@@ -1027,7 +1027,7 @@
     "Id": 79
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 39,
@@ -1040,7 +1040,7 @@
     "Id": 80
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 41,
@@ -1053,7 +1053,7 @@
     "Id": 81
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 41,
@@ -1066,7 +1066,7 @@
     "Id": 82
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 42,
@@ -1079,7 +1079,7 @@
     "Id": 83
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 42,
@@ -1092,7 +1092,7 @@
     "Id": 84
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 3,
     "ModuleId": 0,
     "PermissionId": 42,
@@ -1105,7 +1105,7 @@
     "Id": 85
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 43,
@@ -1118,7 +1118,7 @@
     "Id": 86
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 43,
@@ -1131,7 +1131,7 @@
     "Id": 87
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 44,
@@ -1144,7 +1144,7 @@
     "Id": 88
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 45,
@@ -1157,7 +1157,7 @@
     "Id": 89
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 46,
@@ -1170,7 +1170,7 @@
     "Id": 90
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 47,
@@ -1183,7 +1183,7 @@
     "Id": 91
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 48,
@@ -1196,7 +1196,7 @@
     "Id": 92
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 32,
     "PermissionId": 64,
@@ -1209,7 +1209,7 @@
     "Id": 128
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 65,
@@ -1222,7 +1222,7 @@
     "Id": 129
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 33,
     "PermissionId": 66,
@@ -1235,7 +1235,7 @@
     "Id": 130
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 65,
@@ -1248,7 +1248,7 @@
     "Id": 131
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 33,
     "PermissionId": 66,
@@ -1261,7 +1261,7 @@
     "Id": 132
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 67,
@@ -1274,7 +1274,7 @@
     "Id": 133
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 67,
@@ -1287,7 +1287,7 @@
     "Id": 134
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 68,
@@ -1300,7 +1300,7 @@
     "Id": 135
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 0,
     "PermissionId": 69,
@@ -1313,7 +1313,7 @@
     "Id": 136
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 68,
@@ -1326,7 +1326,7 @@
     "Id": 137
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 69,
@@ -1339,7 +1339,7 @@
     "Id": 138
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 29,
     "PermissionId": 36,
@@ -1352,7 +1352,7 @@
     "Id": 139
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 7,
     "ModuleId": 29,
     "PermissionId": 36,
@@ -1365,7 +1365,7 @@
     "Id": 140
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 7,
     "ModuleId": 27,
     "PermissionId": 33,
@@ -1378,7 +1378,7 @@
     "Id": 141
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 36,
     "PermissionId": 72,
@@ -1391,7 +1391,7 @@
     "Id": 144
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 28,
     "ModuleId": 0,
     "PermissionId": 1,
@@ -1404,7 +1404,7 @@
     "Id": 145
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 28,
     "ModuleId": 0,
     "PermissionId": 2,
@@ -1417,7 +1417,7 @@
     "Id": 146
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 28,
     "ModuleId": 22,
     "PermissionId": 3,
@@ -1430,7 +1430,7 @@
     "Id": 147
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 28,
     "ModuleId": 7,
     "PermissionId": 4,
@@ -1443,7 +1443,7 @@
     "Id": 148
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 28,
     "ModuleId": 22,
     "PermissionId": 16,
@@ -1456,7 +1456,7 @@
     "Id": 149
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 28,
     "ModuleId": 7,
     "PermissionId": 9,
@@ -1469,7 +1469,7 @@
     "Id": 150
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 28,
     "ModuleId": 25,
     "PermissionId": 17,
@@ -1482,7 +1482,7 @@
     "Id": 151
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 28,
     "ModuleId": 10,
     "PermissionId": 13,
@@ -1495,7 +1495,7 @@
     "Id": 152
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 28,
     "ModuleId": 21,
     "PermissionId": 33,
@@ -1508,7 +1508,7 @@
     "Id": 153
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 28,
     "ModuleId": 29,
     "PermissionId": 36,
@@ -1521,7 +1521,7 @@
     "Id": 154
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 32,
     "PermissionId": 73,
@@ -1534,7 +1534,7 @@
     "Id": 155
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 6,
     "ModuleId": 32,
     "PermissionId": 73,
@@ -1547,7 +1547,7 @@
     "Id": 156
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "RoleId": 4,
     "ModuleId": 27,
     "PermissionId": 74,

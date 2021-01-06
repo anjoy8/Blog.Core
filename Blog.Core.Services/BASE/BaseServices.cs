@@ -154,6 +154,33 @@ namespace Blog.Core.Services.BASE
         {
             return await BaseDal.Query(whereExpression);
         }
+
+        /// <summary>
+        /// 功能描述:按照特定列查询数据列表
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public async Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression)
+        {
+            return await BaseDal.Query(expression);
+        }
+
+        /// <summary>
+        /// 功能描述:按照特定列查询数据列表带条件排序
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="whereExpression">过滤条件</param>
+        /// <param name="expression">查询实体条件</param>
+        /// <param name="strOrderByFileds">排序条件</param>
+        /// <returns></returns>
+        public async Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression, Expression<Func<TEntity, bool>> whereExpression,string strOrderByFileds)
+        {
+            return await BaseDal.Query(expression, whereExpression, strOrderByFileds);
+        }
+
         /// <summary>
         /// 功能描述:查询一个列表
         /// 作　　者:AZLinli.Blog.Core

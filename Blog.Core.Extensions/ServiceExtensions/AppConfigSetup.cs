@@ -1,6 +1,8 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.Helper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Text;
 
@@ -11,17 +13,20 @@ namespace Blog.Core.Extensions
     /// </summary>
     public static class AppConfigSetup
     {
-        public static void AddAppConfigSetup(this IServiceCollection services)
+        public static void AddAppConfigSetup(this IServiceCollection services, IWebHostEnvironment env)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             if (Appsettings.app(new string[] { "Startup", "AppConfigAlert", "Enabled" }).ObjToBool())
             {
-                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-                Console.OutputEncoding = Encoding.GetEncoding("GB2312");
+                if (env.IsDevelopment())
+                {
+                    Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                    Console.OutputEncoding = Encoding.GetEncoding("GB2312");
+                }
 
                 Console.WriteLine("************ Blog.Core Config Set *****************");
-               
+
                 ConsoleHelper.WriteSuccessLine("Current environment: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
 
                 // 授权策略方案
@@ -112,6 +117,26 @@ namespace Blog.Core.Extensions
                 else
                 {
                     ConsoleHelper.WriteSuccessLine($"Redis MQ: True");
+                }
+
+                // RabbitMQ 消息队列
+                if (!Appsettings.app("RabbitMQ", "Enabled").ObjToBool())
+                {
+                    Console.WriteLine($"RabbitMQ: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"RabbitMQ: True");
+                }
+
+                // EventBus 事件总线
+                if (!Appsettings.app("EventBus", "Enabled").ObjToBool())
+                {
+                    Console.WriteLine($"EventBus: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"EventBus: True");
                 }
 
                 // 多库

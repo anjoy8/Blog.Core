@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
@@ -96,7 +97,8 @@ namespace Blog.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [Authorize(Policy = "Scope_BlogModule_Policy")]
+        //[Authorize(Policy = "Scope_BlogModule_Policy")]
+        [Authorize]
         public async Task<MessageModel<BlogViewModels>> Get(int id)
         {
             return new MessageModel<BlogViewModels>()
@@ -128,17 +130,22 @@ namespace Blog.Core.Controllers
 
         [HttpGet]
         [Route("GoUrl")]
-        public async Task<IActionResult> GoUrl(int id)
+        public async Task<IActionResult> GoUrl(int id = 0)
         {
             var response = await _blogArticleServices.QueryById(id);
             if (response != null && response.bsubmitter.IsNotEmptyOrNull())
             {
-                response.btraffic += 1;
-                await _blogArticleServices.Update(response);
-                return Redirect(response.bsubmitter);
+                string Url = @"^http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$";
+                if (Regex.IsMatch(response.bsubmitter, Url))
+                {
+                    response.btraffic += 1;
+                    await _blogArticleServices.Update(response);
+                    return Redirect(response.bsubmitter);
+                }
+
             }
 
-            return null;
+            return Ok();
         }
 
         [HttpGet]
@@ -204,7 +211,8 @@ namespace Blog.Core.Controllers
         /// <param name="blogArticle"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize(Policy = "Scope_BlogModule_Policy")]
+        //[Authorize(Policy = "Scope_BlogModule_Policy")]
+        [Authorize]
         public async Task<MessageModel<string>> Post([FromBody] BlogArticle blogArticle)
         {
             var data = new MessageModel<string>();

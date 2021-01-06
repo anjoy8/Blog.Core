@@ -19,6 +19,7 @@ namespace Blog.Core.Extensions
 
             services.AddSingleton<IJobFactory, JobFactory>();
             services.AddTransient<Job_Blogs_Quartz>();//Job使用瞬时依赖注入
+            services.AddTransient<Job_OperateLog_Quartz>();//Job使用瞬时依赖注入
             services.AddSingleton<ISchedulerCenter, SchedulerCenterServer>();
         }
     }

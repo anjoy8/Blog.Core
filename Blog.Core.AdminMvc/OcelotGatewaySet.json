@@ -1,21 +1,40 @@
 ﻿{
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/module/get",
+      "DownstreamPathTemplate": "/api/{url}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 8081
-        },
-        {
-          "Host": "localhost",
-          "Port": 691
         }
       ],
-      "UpstreamPathTemplate": "/gateway/api/module/get",
+      "UpstreamPathTemplate": "/gateway/api/{url}",
       "UpstreamHttpMethod": [
-        "Get"
+        "Get",
+        "Post",
+        "Put",
+        "Delete"
+      ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/is4api/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5004
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/is4api/{url}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Post",
+        "Put",
+        "Delete"
       ],
       "LoadBalancerOptions": {
         "Type": "RoundRobin"

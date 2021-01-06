@@ -123,6 +123,21 @@ namespace Blog.Core.Common.LogHelper
                         }
                     }
                 }
+
+                // 根据前缀读取 最新文件 时间倒叙
+                if (readType == ReadType.PrefixLatest)
+                {
+                    var allFiles = new DirectoryInfo(folderPath);
+                    var selectLastestFile = allFiles.GetFiles().Where(fi => fi.Name.ToLower().Contains(fileName.ToLower())).OrderByDescending(d => d.Name).FirstOrDefault();
+
+                    if (selectLastestFile != null && File.Exists(selectLastestFile.FullName))
+                    {
+                        StreamReader f2 = new StreamReader(selectLastestFile.FullName, encode);
+                        s = f2.ReadToEnd();
+                        f2.Close();
+                        f2.Dispose();
+                    }
+                }
             }
             catch (Exception)
             {
@@ -183,7 +198,7 @@ namespace Blog.Core.Common.LogHelper
 
             try
             {
-                var sqllogContent = ReadLog(Path.Combine(_contentRoot, "Log"), "SqlLog_", Encoding.UTF8, ReadType.Prefix);
+                var sqllogContent = ReadLog(Path.Combine(_contentRoot, "Log"), "SqlLog_", Encoding.UTF8, ReadType.PrefixLatest);
 
                 if (!string.IsNullOrEmpty(sqllogContent))
                 {
@@ -217,7 +232,7 @@ namespace Blog.Core.Common.LogHelper
 
             try
             {
-                var Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log"), "RequestIpInfoLog_", Encoding.UTF8, ReadType.Prefix) + "]");
+                var Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log"), "RequestIpInfoLog_", Encoding.UTF8, ReadType.PrefixLatest) + "]");
 
                 Logs = Logs.Where(d => d.Datetime.ObjToDate() >= DateTime.Today).ToList();
 
@@ -263,8 +278,6 @@ namespace Blog.Core.Common.LogHelper
             {
                 Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log"), "RequestIpInfoLog_", Encoding.UTF8, ReadType.Prefix) + "]");
 
-                var ddd = Logs.Where(d => d.Week == "周日").ToList();
-
                 apiWeeks = (from n in Logs
                             group n by new { n.Week, n.Url } into g
                             select new ApiWeek
@@ -287,7 +300,7 @@ namespace Blog.Core.Common.LogHelper
             var weeks = apiWeeks.GroupBy(x => new { x.week }).Select(s => s.First()).ToList();
             foreach (var week in weeks)
             {
-                var apiweeksCurrentWeek = apiWeeks.Where(d => d.week == week.week).OrderByDescending(d => d.count).Take(8).ToList();
+                var apiweeksCurrentWeek = apiWeeks.Where(d => d.week == week.week).OrderByDescending(d => d.count).Take(5).ToList();
                 jsonBuilder.Append("{");
 
                 jsonBuilder.Append("\"");
@@ -298,6 +311,7 @@ namespace Blog.Core.Common.LogHelper
 
                 foreach (var item in apiweeksCurrentWeek)
                 {
+                    columns.Add(item.url);
                     jsonBuilder.Append("\"");
                     jsonBuilder.Append(item.url);
                     jsonBuilder.Append("\":\"");
@@ -311,7 +325,8 @@ namespace Blog.Core.Common.LogHelper
             jsonBuilder.Remove(jsonBuilder.Length - 1, 1);
             jsonBuilder.Append("]");
 
-            columns.AddRange(apiWeeks.OrderByDescending(d => d.count).Take(8).Select(d => d.url).ToList());
+            //columns.AddRange(apiWeeks.OrderByDescending(d => d.count).Take(8).Select(d => d.url).ToList());
+            columns = columns.Distinct().ToList();
 
             return new RequestApiWeekView()
             {
@@ -384,8 +399,18 @@ namespace Blog.Core.Common.LogHelper
 
     public enum ReadType
     {
+        /// <summary>
+        /// 精确查找一个
+        /// </summary>
         Accurate,
-        Prefix
+        /// <summary>
+        /// 指定前缀，模糊查找全部
+        /// </summary>
+        Prefix,
+        /// <summary>
+        /// 指定前缀，最新一个文件
+        /// </summary>
+        PrefixLatest
     }
 
 }

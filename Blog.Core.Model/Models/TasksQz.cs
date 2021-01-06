@@ -6,7 +6,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 任务计划表
     /// </summary>
-    public class TasksQz : RootEntity
+    public class TasksQz : RootEntityTkey<int>
     {
         /// <summary>
         /// 任务名称

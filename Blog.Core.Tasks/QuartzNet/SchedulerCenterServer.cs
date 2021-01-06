@@ -2,6 +2,7 @@
 using Blog.Core.Model.Models;
 using Quartz;
 using Quartz.Impl;
+using Quartz.Impl.Triggers;
 using Quartz.Spi;
 using System;
 using System.Collections.Specialized;
@@ -163,11 +164,14 @@ namespace Blog.Core.Tasks
                     if (tasksQz.Cron != null && CronExpression.IsValidExpression(tasksQz.Cron) && tasksQz.TriggerType > 0)
                     {
                         trigger = CreateCronTrigger(tasksQz);
+
+                        ((CronTriggerImpl)trigger).MisfireInstruction = MisfireInstruction.CronTrigger.DoNothing;
                     }
                     else
                     {
                         trigger = CreateSimpleTrigger(tasksQz);
                     }
+
                     // 告诉Quartz使用我们的触发器来安排作业
                     await _scheduler.Result.ScheduleJob(job, trigger);
                     //await Task.Delay(TimeSpan.FromSeconds(120));
@@ -251,6 +255,8 @@ namespace Blog.Core.Tasks
                 {
                     trigger = CreateSimpleTrigger(tasksQz);
                 }
+
+               ((CronTriggerImpl)trigger).MisfireInstruction = MisfireInstruction.CronTrigger.DoNothing;
 
                 TriggerKey triggerKey = new TriggerKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
                 await _scheduler.Result.RescheduleJob(triggerKey, trigger);

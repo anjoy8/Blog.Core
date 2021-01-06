@@ -187,11 +187,6 @@
             逻辑删除
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.Guestbook.id">
-            <summary>
-            留言表
-            </summary>
-        </member>
         <member name="P:Blog.Core.Model.Models.Guestbook.blogId">
             <summary>博客ID
             
@@ -237,16 +232,6 @@
             获取或设置是否禁用，逻辑上的删除，非物理删除
              </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.ModuleId">
-            <summary>
-            菜单ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.PermissionId">
-            <summary>
-            按钮ID
-            </summary>
-        </member>
         <member name="P:Blog.Core.Model.Models.ModulePermission.CreateId">
             <summary>
             创建ID
@@ -286,11 +271,6 @@
              <summary>
             获取或设置是否禁用，逻辑上的删除，非物理删除
              </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.Modules.ParentId">
-            <summary>
-            父ID
-            </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.Modules.Name">
             <summary>
@@ -472,16 +452,6 @@
             按钮事件
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.Permission.Pid">
-            <summary>
-            上一级菜单（0表示上一级无菜单）
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.Permission.Mid">
-            <summary>
-            接口api
-            </summary>
-        </member>
         <member name="P:Blog.Core.Model.Models.Permission.OrderSort">
             <summary>
             排序
@@ -607,21 +577,6 @@
             获取或设置是否禁用，逻辑上的删除，非物理删除
              </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.RoleModulePermission.RoleId">
-            <summary>
-            角色ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RoleModulePermission.ModuleId">
-            <summary>
-            菜单ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RoleModulePermission.PermissionId">
-            <summary>
-            api ID
-            </summary>
-        </member>
         <member name="P:Blog.Core.Model.Models.RoleModulePermission.CreateId">
             <summary>
             创建ID
@@ -655,11 +610,6 @@
         <member name="T:Blog.Core.Model.Models.sysUserInfo">
             <summary>
             用户信息表
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uID">
-            <summary>
-            用户ID
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.sysUserInfo.uLoginName">
@@ -807,16 +757,6 @@
             获取或设置是否禁用，逻辑上的删除，非物理删除
              </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.UserRole.UserId">
-            <summary>
-            用户ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.UserRole.RoleId">
-            <summary>
-            角色ID
-            </summary>
-        </member>
         <member name="P:Blog.Core.Model.Models.UserRole.CreateId">
             <summary>
             创建ID
@@ -850,6 +790,107 @@
         <member name="P:Blog.Core.Model.RootEntity.Id">
             <summary>
             ID
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ModulePermissionRoot`1">
+            <summary>
+            菜单与按钮关系表
+            父类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ModulePermissionRoot`1.ModuleId">
+            <summary>
+            菜单ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ModulePermissionRoot`1.PermissionId">
+            <summary>
+            按钮ID
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ModulesRoot`1">
+            <summary>
+            接口API地址信息表 
+            父类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ModulesRoot`1.ParentId">
+            <summary>
+            父ID
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.PermissionRoot`1">
+            <summary>
+            路由菜单表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PermissionRoot`1.Pid">
+            <summary>
+            上一级菜单（0表示上一级无菜单）
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PermissionRoot`1.Mid">
+            <summary>
+            接口api
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.RoleModulePermissionRoot`1">
+            <summary>
+            按钮跟权限关联表
+            父类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.RoleModulePermissionRoot`1.RoleId">
+            <summary>
+            角色ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.RoleModulePermissionRoot`1.ModuleId">
+            <summary>
+            菜单ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.RoleModulePermissionRoot`1.PermissionId">
+            <summary>
+            api ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.RootEntityTkey`1.Id">
+            <summary>
+            ID
+            泛型主键Tkey
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.sysUserInfoRoot`1">
+            <summary>
+            用户信息表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.sysUserInfoRoot`1.uID">
+            <summary>
+            uID
+            泛型主键Tkey
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.TopicDetailRoot`1">
+            <summary>
+            Tibug 博文
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.UserRoleRoot`1">
+            <summary>
+            用户跟角色关联表
+            父类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.UserRoleRoot`1.UserId">
+            <summary>
+            用户ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.UserRoleRoot`1.RoleId">
+            <summary>
+            角色ID
             </summary>
         </member>
         <member name="T:Blog.Core.Model.PageModel`1">
@@ -1077,13 +1118,7 @@
             Blog.Core 
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Seed.MyContext.Context">
-            <summary>
-            数据库上下文实例（自动关闭连接）
-            Blog.Core 
-            </summary>
-        </member>
-        <member name="M:Blog.Core.Model.Seed.MyContext.#ctor">
+        <member name="M:Blog.Core.Model.Seed.MyContext.#ctor(SqlSugar.ISqlSugarClient)">
             <summary>
             功能描述:构造函数
             作　　者:Blog.Core
@@ -1119,13 +1154,6 @@
             </summary>
             <param name="blnBackupTable">是否备份表</param>
             <param name="lstEntitys">指定的实体</param>
-        </member>
-        <member name="M:Blog.Core.Model.Seed.MyContext.GetDbContext">
-            <summary>
-            功能描述:获得一个DbContext
-            作　　者:Blog.Core
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:Blog.Core.Model.Seed.MyContext.Init(System.String,SqlSugar.DbType)">
             <summary>

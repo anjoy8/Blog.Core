@@ -15,7 +15,7 @@ namespace Blog.Core.AdminMvc
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.AddJsonFile("OcelotGatewaySet.json");
+                    config.AddJsonFile("OcelotGatewaySet.json", optional: false, reloadOnChange: true);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

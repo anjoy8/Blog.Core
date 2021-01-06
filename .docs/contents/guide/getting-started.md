@@ -1,7 +1,8 @@
-# K  快速上手
+﻿# K  快速上手
 注意
 
-请确保你的 `Visual Studio 2019` 版本 >= `16.4`。
+请确保你的 `Visual Studio 2019` 版本 >= `16.8.2`。    
+并安装 `.NET 5.0 SDK`  
 
 
 ## 下载
@@ -78,11 +79,11 @@ Gitee（国内） 下载 [https://gitee.com/laozhangIsPhi/Blog.Core](https://git
 
 ## 如何配置项目端口号
 1、在 `Blog.Core` 层下的 `program.cs` 文件中，将 `8081`端口，修改为自己想要的端口号；    
-2、或者在 `launchSettings.json` 中设置；
+2、或者在 `launchSettings.json` 中设置(`注意，如果仅仅修改这里，publish后，端口访问无效`)；
 
 ## 如何项目重命名
 1、双击项目根目录下的 `CreateYourProject.bat` 批处理文件；  
-2、根据提示，输入自己想要的项目名称即可；  
+2、根据提示，`在Dos窗口内`输入自己想要的项目名称即可；  
 3、在根目录会有一个 `.1YourProject` 文件夹，里边即你的项目；  
 
 
@@ -104,7 +105,13 @@ Gitee（国内） 下载 [https://gitee.com/laozhangIsPhi/Blog.Core](https://git
 
 ## 新增数据库表，如何反向生成四层文件
 1、可以通过 `T4` 模板来生成，在 `Blog.Core.FrameWork` 层，使用方法: [9757999.html](https://www.cnblogs.com/laozhang-is-phi/p/9757999.html#autoid-4-3-0) ；  
-> 注意：这种方案，目前默认的只能是 `SqlServer` ，其他类型的数据库，可以看上边文章中的代码，或者群文件里对应的代码。  
+> 注意：这种方案，目前默认的只能是 `SqlServer` ，其他类型的数据库，可以看上边文章中的代码，或者群文件里对应的代码。 
+
+> 1、修改`DbHelper.ttinclude`文件中的连接字符串，注意是`SqlServer`的： public static readonly string ConnectionString;  
+> 2、然后去各个层模板文件，点击`Ctrl+S`;  
+> 3、就会在对应的层内，看到新文件，比如：Blog.Core.Model/Model_NEW   
+
+
 
 2、也可以通过 `Sqlsugar` 所带的方法来实现 `DbFirst`，具体查看 `Controller` 层下的 `DbFirstController.cs`；   
 

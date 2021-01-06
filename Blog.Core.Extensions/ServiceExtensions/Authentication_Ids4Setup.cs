@@ -2,7 +2,6 @@
 using Blog.Core.Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -25,14 +24,11 @@ namespace Blog.Core.Extensions
                 o.DefaultChallengeScheme = nameof(ApiResponseHandler);
                 o.DefaultForbidScheme = nameof(ApiResponseHandler);
             })
-            .AddIdentityServerAuthentication(options =>
+            .AddJwtBearer(options =>
             {
                 options.Authority = Appsettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" });
                 options.RequireHttpsMetadata = false;
-                options.ApiName = Appsettings.app(new string[] { "Startup", "IdentityServer4", "ApiName" });
-                options.SupportedTokens = IdentityServer4.AccessTokenValidation.SupportedTokens.Jwt;
-                options.ApiSecret = "api_secret";
-
+                options.Audience = Appsettings.app(new string[] { "Startup", "IdentityServer4", "ApiName" });
             })
             .AddScheme<AuthenticationSchemeOptions, ApiResponseHandler>(nameof(ApiResponseHandler), o => { });
         }

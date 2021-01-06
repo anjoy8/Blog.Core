@@ -1,8 +1,8 @@
 ﻿# W 文档指南
 ## 亮点与优势
 
-`BCVP`（Blog.Core & Vue Project）是一个开箱即用的企业级权限管理应用框架。  
-采用最新的前后端完全分离技术【 ASP.NET Core Api 3.x + Vue 2.x 】。  
+Blog.Core 是一个开箱即用的企业级权限管理应用框架。  
+采用最新的前后端完全分离技术【 ASP.NET Core Api 5.0 + Vue 2.x 】。  
 并结合 `IdentityServer4` ，可快速解决多客户端和多资源服务的统一认证与鉴权的问题。   
   
 
@@ -21,7 +21,7 @@
 
 
 
-### BCVP 框架功能点
+### 框架功能点
 1、丰富完整的接口文档，在查看的基础上，可以模拟前端调用，更方便。  
 2、采用多层开发，隔离性更好，封装更完善。  
 3、基于项目模板，可以一键创建自己的项目。  
@@ -36,17 +36,17 @@
 
 ### 应用领域
 1、【对接第三方api】项目通过`webapi`，可以快速对接第三方`api`服务，实现业务逻辑。  
-2、【前后端分离】`BCVP`采用的是`API`+前端的完全分离的开发模式，满足平时开发的所有需求，
+2、【前后端分离】 采用的是`API`+前端的完全分离的开发模式，满足平时开发的所有需求，
 你可以对接任何的自定义前端项目：无论是微信小程序，还是授权APP，无论是PC网页，
 还是手机H5。  
-3、【多项目】同时BCVP还集成了一套鉴权平台，采用IdentityServer4，可以快速的实现多个客户端的认证与授权服务，
+3、【多项目】同时框架还集成了一套鉴权平台，采用IdentityServer4，可以快速的实现多个客户端的认证与授权服务，
 从而大大的减少了平时的工作量，可以快速的进行产品迭代。  
 4、【微服务】当然，因为采用的是API模式，所以同样适用于微服务项目，实现高并发的产品需求。  
 
 
 
 ### 市场前景
-1、前后端分离模式已经是目前的主流开发模式，BCVP已经是一套可行的方案，开箱即用。 
+1、前后端分离模式已经是目前的主流开发模式，框架已经是一套可行的方案，开箱即用。 
 2、拥有几十篇技术文档和3000人的技术社区，方便快捷的解决问题。  
 3、目前已经有超过20多家公司在生产环境中使用，当然实际中更多，具体查看 [点击查看使用的情况](https://github.com/anjoy8/Blog.Core/issues/75)。  
 4、同时可以搭配自己的业务，实现微服务的开发，在大数据高并发中，占有更好的优势。  
@@ -56,77 +56,52 @@
 
 ## 功能与进度
 
-- [√] 采用仓储+服务+接口的形式封装框架；
-- [√] 使用Swagger做api文档；
-- [√] 使用MiniProfiler做接口性能分析；
-- [√] 使用Automapper做Dto处理；
-- [√] 接入SqlSugar ORM，封装数据库操作；
-- [√] 项目启动，自动生成seed种子数据；
-- [√] 提供五种日志输出；
-- [√] 支持自由切换多种数据库，Sqlite/SqlServer/MySql/PostgreSQL/Oracle；
-- [√] 异步async/await开发；
-- [√] 支持事务；
-- [√] AutoFac接入做依赖注入；
-- [√] 支持AOP切面编程；
-- [√] 支持CORS跨域；
-- [√] 支持T4代码模板，自动生成每层代码；
-- [√] 支持一键创建自己项目；
-- [√] 封装 JWT 自定义策略授权；
-- [√] 使用Log4Net日志框架+自定义日志输出；
-- [√] 使用SingleR推送日志信息到管理后台；
-- [√] 搭配前端Blog项目，vue开发；
-- [√] 搭配一个Admin管理后台，用vue+ele开发；
-- [√] IdentityServer4 认证;
-- [√] API 限速;
-- [√] 作业调度 Quartz.net;
-- [√] Sqlsugar 读写分离;
-- [ ] Redis 队列;
-- [ ] 支付;
-- [ ] 数据部门权限;
+框架模块：  
+- [x] 采用`仓储+服务+接口`的形式封装框架；
+- [x] 异步 async/await 开发；
+- [x] 接入国产数据库ORM组件 —— SqlSugar，封装数据库操作；
+- [x] 支持自由切换多种数据库，MySql/SqlServer/Sqlite/Oracle/Postgresql/达梦/人大金仓；
+- [x] 实现项目启动，自动生成种子数据 ✨； 
+- [x] 五种日志记录，审计/异常/请求响应/服务操作/Sql记录等； 
+- [x] 支持项目事务处理（若要分布式，用cap即可）✨；
+- [x] 设计4种 AOP 切面编程，功能涵盖：日志、缓存、审计、事务 ✨；
+- [x] 支持 T4 代码模板，自动生成每层代码；
+- [x] 或使用 DbFirst 一键创建自己项目的四层文件（支持多库）；
+- [x] 封装`Blog.Core.Webapi.Template`项目模板，一键重建自己的项目 ✨；
+- [x] 搭配多个前端案例供参考和借鉴：Blog.Vue、Blog.Admin、Nuxt.tbug、Blog.Mvp.Blazor ✨；
+- [x] 统一集成 IdentityServer4 认证 ✨;
+
+组件模块：
+- [x] 提供 Redis 做缓存处理；
+- [x] 使用 Swagger 做api文档；
+- [x] 使用 MiniProfiler 做接口性能分析 ✨；
+- [x] 使用 Automapper 处理对象映射；  
+- [x] 使用 AutoFac 做依赖注入容器，并提供批量服务注入 ✨；
+- [x] 支持 CORS 跨域；
+- [x] 封装 JWT 自定义策略授权；
+- [x] 使用 Log4Net 日志框架，集成原生 ILogger 接口做日志记录；
+- [x] 使用 SignalR 双工通讯 ✨；
+- [x] 添加 IpRateLimiting 做 API 限流处理;
+- [x] 使用 Quartz.net 做任务调度（目前单机多任务，集群调度暂不支持）;
+- [x] 支持 数据库`读写分离`和多库操作 ✨;
+- [x] 新增 Redis 消息队列 ✨;
+- [x] 新增 RabbitMQ 消息队列 ✨;
+- [x] 新增 EventBus 事件总线 ✨;
+- [ ] 计划 - 设计支付宝/微信支付;
+- [ ] 计划 - 数据部门权限;
+- [ ] 计划 - ES 搜索;
+
+微服务模块：
+- [x] 可配合 Docker 实现容器化；
+- [x] 可配合 Jenkins 实现CI / CD；
+- [x] 可配合 Consul 实现服务发现；
+- [x] 可配合 Ocelot 实现网关处理；
+- [x] 可配合 Nginx  实现负载均衡；
+- [x] 可配合 Ids4   实现认证中心；
 
 
+&nbsp;
 
-## 它是如何工作的？
-
-这是一个基于 ASP.NET Core 3.1 的 api 项目，配合搭建 VUE 实现前后端分离工程。
-
-**************************************************************
-系统环境
-
-> windows 10、SQL server 2012、Visual Studio 2017、Windows Server 2008 R2
-
-后端技术：
-
-> 1、ASP.NET Core 3.1 API 
- 2、Swagger 前后端文档说明，基于RESTful风格编写接口  
- 3、Repository + Service 仓储模式编程  
- 4、Async和Await 异步编程  
- 5、CORS 简单的跨域解决方案  
- 6、AOP基于切面编程技术  
- 7、Autofac 轻量级IoC和DI依赖注入  
- 8、Vue 本地代理跨域方案，Nginx跨域代理  
- 9、JWT权限验证  
-10、Filter 过滤器  
-11、Middleware 中间件  
-12、AutoMapper 自动对象映射
-13、Redis  
-
-
-数据库技术
-
-> SqlSugar 轻量级ORM框架，CodeFirst  
- T4 模板生成框架结构  
- 支持SqlServer、Mysql、Sqlite、Oracle、Pgql数据库  
- 支持多库操作
-
-
-
-
-前端技术
-
-> Vue 2.x 框架全家桶 Vue2 + VueRouter2 + Webpack + Axios + vue-cli + vuex  
-ElementUI 基于Vue 2.0的组件库  
-Nuxt.js服务端渲染SSR  
 
 
 

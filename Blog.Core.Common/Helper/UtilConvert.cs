@@ -82,7 +82,7 @@ namespace Blog.Core
         /// <returns></returns>
         public static bool IsNotEmptyOrNull(this object thisValue)
         {
-            return ObjToString(thisValue) != "";
+            return ObjToString(thisValue) != "" && ObjToString(thisValue) != "undefined" && ObjToString(thisValue) != "null";
         }
         /// <summary>
         /// 

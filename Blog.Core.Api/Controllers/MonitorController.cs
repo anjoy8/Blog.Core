@@ -121,16 +121,41 @@ namespace Blog.Core.Controllers
         }
 
         [HttpGet]
-        public MessageModel<List<UserAccessModel>> GetAccessLogs([FromServices]IWebHostEnvironment environment)
+        public MessageModel<WelcomeInitData> GetActiveUsers([FromServices]IWebHostEnvironment environment)
         {
-            var Logs = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.Prefix) + "]");
+            var accessLogsToday = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(
+                Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.PrefixLatest
+                ) + "]")
+                .Where(d => d.BeginTime.ObjToDate() >= DateTime.Today);
 
-            Logs = Logs.Where(d => d.BeginTime.ObjToDate() >= DateTime.Today).OrderByDescending(d => d.BeginTime).Take(50).ToList();
-            return new MessageModel<List<UserAccessModel>>()
+            var Logs = accessLogsToday.OrderByDescending(d => d.BeginTime).Take(50).ToList();
+
+            var errorCountToday = LogLock.GetLogData().Where(d => d.Import == 9).Count();
+
+            accessLogsToday = accessLogsToday.Where(d => d.User != "").ToList();
+
+            var activeUsers = (from n in accessLogsToday
+                               group n by new { n.User } into g
+                               select new ActiveUserVM
+                               {
+                                   user = g.Key.User,
+                                   count = g.Count(),
+                               }).ToList();
+
+            int activeUsersCount = activeUsers.Count;
+            activeUsers = activeUsers.OrderByDescending(d => d.count).Take(10).ToList();
+
+            return new MessageModel<WelcomeInitData>()
             {
                 msg = "获取成功",
                 success = true,
-                response = Logs
+                response = new WelcomeInitData()
+                {
+                    activeUsers = activeUsers,
+                    activeUserCount = activeUsersCount,
+                    errorCount = errorCountToday,
+                    logs = Logs
+                }
             };
         }
 
@@ -138,28 +163,22 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<AccessApiDateView>> GetIds4Users()
         {
             List<ApiDate> apiDates = new List<ApiDate>();
-            try
+
+            if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
             {
-                if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
-                {
-                    var users = await _applicationUserServices.Query(d => d.tdIsDelete == false);
+                var users = await _applicationUserServices.Query(d => d.tdIsDelete == false);
 
-                    apiDates = (from n in users
-                                group n by new { n.birth.Date } into g
-                                select new ApiDate
-                                {
-                                    date = g.Key?.Date.ToString("yyyy-MM-dd"),
-                                    count = g.Count(),
-                                }).ToList();
+                apiDates = (from n in users
+                            group n by new { n.birth.Date } into g
+                            select new ApiDate
+                            {
+                                date = g.Key?.Date.ToString("yyyy-MM-dd"),
+                                count = g.Count(),
+                            }).ToList();
 
-                    apiDates = apiDates.OrderByDescending(d => d.date).Take(30).ToList();
-                }
-
+                apiDates = apiDates.OrderByDescending(d => d.date).Take(30).ToList();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-            }
+
 
             if (apiDates.Count == 0)
             {
@@ -181,6 +200,14 @@ namespace Blog.Core.Controllers
             };
         }
 
+    }
+
+    public class WelcomeInitData
+    {
+        public List<ActiveUserVM> activeUsers { get; set; }
+        public int activeUserCount { get; set; }
+        public List<UserAccessModel> logs { get; set; }
+        public int errorCount { get; set; }
     }
 
 }

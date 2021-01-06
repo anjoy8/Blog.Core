@@ -21,9 +21,9 @@ namespace Blog.Core.Common
             return _cache.Get(cacheKey);
         }
 
-        public void Set(string cacheKey, object cacheValue)
+        public void Set(string cacheKey, object cacheValue,int timeSpan)
         {
-            _cache.Set(cacheKey, cacheValue, TimeSpan.FromSeconds(7200));
+            _cache.Set(cacheKey, cacheValue, TimeSpan.FromSeconds(timeSpan * 60));
         }
     }
 
