@@ -612,7 +612,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.RedisMq(Blog.Core.Common.IRedisBasketRepository)">
+        <member name="M:Blog.Core.Controllers.ValuesController.RedisMq(Blog.Core.Extensions.IRedisBasketRepository)">
             <summary>
             测试Redis消息队列
             </summary>
