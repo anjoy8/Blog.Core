@@ -1,5 +1,5 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.Common.Redis;
+using Blog.Core.Extensions.Redis;
 using InitQ;
 using Microsoft.Extensions.DependencyInjection;
 using System;
