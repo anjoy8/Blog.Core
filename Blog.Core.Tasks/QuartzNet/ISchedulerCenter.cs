@@ -34,7 +34,12 @@ namespace Blog.Core.Tasks
         /// <param name="sysSchedule"></param>
         /// <returns></returns>
         Task<MessageModel<string>> StopScheduleJobAsync(TasksQz sysSchedule);
-
+        /// <summary>
+        /// 检测任务是否存在
+        /// </summary>
+        /// <param name="sysSchedule"></param>
+        /// <returns></returns>
+        Task<bool> IsExistScheduleJobAsync(TasksQz sysSchedule);
         /// <summary>
         /// 暂停指定的计划任务
         /// </summary>
