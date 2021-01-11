@@ -180,7 +180,7 @@ namespace Blog.Core.Tasks
                     //await Console.Out.WriteLineAsync("关闭了调度器！");
                     //await _scheduler.Result.Shutdown();
                     result.success = true;
-                    result.msg = $"启动任务:【{tasksQz.Name}】成功";
+                    result.msg = $"【{tasksQz.Name}】成功";
                     return result;
                 }
                 catch (Exception ex)
@@ -198,6 +198,22 @@ namespace Blog.Core.Tasks
             }
         }
 
+        /// <summary>
+        /// 任务是否存在?
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> IsExistScheduleJobAsync(TasksQz sysSchedule)
+        { 
+            JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
+            if (await _scheduler.Result.CheckExists(jobKey))
+            { 
+                return true;
+            }
+            else
+            { 
+                return false;
+            }
+        }
         /// <summary>
         /// 暂停一个指定的计划任务
         /// </summary>
@@ -218,7 +234,7 @@ namespace Blog.Core.Tasks
                 {
                     await this._scheduler.Result.DeleteJob(jobKey);
                     result.success = true;
-                    result.msg = $"暂停任务:【{sysSchedule.Name}】成功";
+                    result.msg = $"【{sysSchedule.Name}】成功";
                     return result;
                 }
             }
@@ -247,7 +263,7 @@ namespace Blog.Core.Tasks
                 }
                 await this._scheduler.Result.ResumeJob(jobKey);
                 result.success = true;
-                result.msg = $"恢复任务:【{sysSchedule.Name}】成功";
+                result.msg = $"【{sysSchedule.Name}】成功";
                 return result;
             }
             catch (Exception)
@@ -274,7 +290,7 @@ namespace Blog.Core.Tasks
                 }
                 await this._scheduler.Result.PauseJob(jobKey);
                 result.success = true;
-                result.msg = $"暂停任务:【{sysSchedule.Name}】成功";
+                result.msg = $"【{sysSchedule.Name}】成功";
                 return result;
             }
             catch (Exception)
