@@ -17,5 +17,12 @@
 		<ProjectReference Include="..\Blog.Core.IServices\Blog.Core.IServices.csproj" />
 		<ProjectReference Include="..\Blog.Core.Repository\Blog.Core.Repository.csproj" />
 	</ItemGroup>
+	 
+
+	<ItemGroup>
+	  <Reference Include="CCB_B2CPay_Util">
+	    <HintPath>File\CCB_B2CPay_Util.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
 
 </Project>

@@ -9,6 +9,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!--极速模式-->
+    <meta name="renderer" content="webkit" /> 
+    <meta name="force-rendering" content="webkit" />
     <title>%(DocumentTitle)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
@@ -78,8 +81,9 @@
     </svg>
     <div id="swagger-ui"></div>
     <div id="footer" style="text-align: center;margin-bottom: 10px;">
-        Copyright © 2018-2020 老张的哲学
-        <br><span id="poweredby">Powered by .NET 5.0.0 on Docker & CentOS 7.6</span>
+        Copyright © 2018-2020 爱玩云
+
+        <br><span id="poweredby">Powered by .NET 5.0.0  Developed by 繁星</span>
     </div>
     <!-- Workaround for https://github.com/swagger-api/swagger-editor/issues/1371 -->
     <script>
@@ -113,7 +117,7 @@
 
             $(".link img").attr("src", "./logo/favicon-32x32.png");
 
-            $('#swagger-ui').after("<div class='qqgroup'><img src='https://img.neters.club/doc/wechatgongzhonghao.png' alt='QQ二维码' style='width: 150px;'><div style=\"color: #4990e2;\"><a href=\"../allservices\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"link\">1、查看所有依赖注册的服务</a></div></div><div style='clear: both;'></div>");
+            $('#swagger-ui').after("<div class='qqgroup'><img src='QQGroup.png' alt='QQ二维码' style='width: 150px;'><div style=\"color: #4990e2;\"><a href=\"../allservices\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"link\">1、查看所有依赖注册的服务</a></div></div><div style='clear: both;'></div>");
 
         }
 

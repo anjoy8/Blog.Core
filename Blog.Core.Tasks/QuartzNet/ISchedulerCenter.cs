@@ -1,5 +1,7 @@
 ﻿using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.ViewModels;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Tasks
@@ -32,12 +34,32 @@ namespace Blog.Core.Tasks
         /// <param name="sysSchedule"></param>
         /// <returns></returns>
         Task<MessageModel<string>> StopScheduleJobAsync(TasksQz sysSchedule);
+
+        /// <summary>
+        /// 暂停指定的计划任务
+        /// </summary>
+        /// <param name="sysSchedule"></param>
+        /// <returns></returns>
+        Task<MessageModel<string>> PauseJob(TasksQz sysSchedule);
         /// <summary>
         /// 恢复一个任务
         /// </summary>
         /// <param name="sysSchedule"></param>
         /// <returns></returns>
         Task<MessageModel<string>> ResumeJob(TasksQz sysSchedule);
+
+        /// <summary>
+        /// 获取任务触发器状态
+        /// </summary>
+        /// <param name="sysSchedule"></param>
+        /// <returns></returns>
+        Task<List<TaskInfoDto>> GetTaskStaus(TasksQz sysSchedule);
+        /// <summary>
+        /// 获取触发器标识
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        string GetTriggerState(string key);
 
     }
 
