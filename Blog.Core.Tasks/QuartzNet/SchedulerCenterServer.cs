@@ -1,10 +1,12 @@
 ﻿using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.ViewModels;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Impl.Triggers;
 using Quartz.Spi;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -214,7 +216,7 @@ namespace Blog.Core.Tasks
                 }
                 else
                 {
-                    await this._scheduler.Result.PauseJob(jobKey);
+                    await this._scheduler.Result.DeleteJob(jobKey);
                     result.success = true;
                     result.msg = $"暂停任务:【{sysSchedule.Name}】成功";
                     return result;
@@ -229,41 +231,23 @@ namespace Blog.Core.Tasks
         /// <summary>
         /// 恢复指定的计划任务
         /// </summary>
-        /// <param name="tasksQz"></param>
+        /// <param name="sysSchedule"></param>
         /// <returns></returns>
-        public async Task<MessageModel<string>> ResumeJob(TasksQz tasksQz)
+        public async Task<MessageModel<string>> ResumeJob(TasksQz sysSchedule)
         {
             var result = new MessageModel<string>();
             try
             {
-                JobKey jobKey = new JobKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
+                JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
                 if (!await _scheduler.Result.CheckExists(jobKey))
                 {
                     result.success = false;
-                    result.msg = $"未找到要重新的任务:【{tasksQz.Name}】,请先选择添加计划！";
+                    result.msg = $"未找到要恢复的任务:【{sysSchedule.Name}】";
                     return result;
                 }
-
-                //await this._scheduler.Result.ResumeJob(jobKey);
-
-                ITrigger trigger;
-                if (tasksQz.Cron != null && CronExpression.IsValidExpression(tasksQz.Cron) && tasksQz.TriggerType > 0)
-                {
-                    trigger = CreateCronTrigger(tasksQz);
-                }
-                else
-                {
-                    trigger = CreateSimpleTrigger(tasksQz);
-                }
-
-               ((CronTriggerImpl)trigger).MisfireInstruction = MisfireInstruction.CronTrigger.DoNothing;
-
-                TriggerKey triggerKey = new TriggerKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
-                await _scheduler.Result.RescheduleJob(triggerKey, trigger);
-
-
+                await this._scheduler.Result.ResumeJob(jobKey);
                 result.success = true;
-                result.msg = $"恢复计划任务:【{tasksQz.Name}】成功";
+                result.msg = $"恢复任务:【{sysSchedule.Name}】成功";
                 return result;
             }
             catch (Exception)
@@ -271,7 +255,121 @@ namespace Blog.Core.Tasks
                 throw;
             }
         }
+        /// <summary>
+        /// 暂停指定的计划任务
+        /// </summary>
+        /// <param name="sysSchedule"></param>
+        /// <returns></returns>
+        public async Task<MessageModel<string>> PauseJob(TasksQz sysSchedule)
+        {
+            var result = new MessageModel<string>();
+            try
+            {
+                JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
+                if (!await _scheduler.Result.CheckExists(jobKey))
+                {
+                    result.success = false;
+                    result.msg = $"未找到要暂停的任务:【{sysSchedule.Name}】";
+                    return result;
+                }
+                await this._scheduler.Result.PauseJob(jobKey);
+                result.success = true;
+                result.msg = $"暂停任务:【{sysSchedule.Name}】成功";
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        #region 状态状态帮助方法
+        public async Task<List<TaskInfoDto>> GetTaskStaus(TasksQz sysSchedule)
+        {
 
+            var ls = new List<TaskInfoDto>();
+            var noTask = new List<TaskInfoDto>{ new TaskInfoDto {
+                jobId = sysSchedule.Id.ObjToString(),
+                jobGroup = sysSchedule.JobGroup,
+                triggerId = "",
+                triggerGroup = "",
+                triggerStatus = "不存在"
+            } };
+            JobKey jobKey = new JobKey(sysSchedule.Id.ToString(), sysSchedule.JobGroup);
+            IJobDetail job = await this._scheduler.Result.GetJobDetail(jobKey);
+            if (job == null)
+            {
+                return noTask;
+            }
+            //info.Append(string.Format("任务ID:{0}\r\n任务名称:{1}\r\n", job.Key.Name, job.Description)); 
+            var triggers = await this._scheduler.Result.GetTriggersOfJob(jobKey);
+            if (triggers == null || triggers.Count == 0)
+            {
+                return noTask;
+            }
+            foreach (var trigger in triggers)
+            {
+                var triggerStaus = await this._scheduler.Result.GetTriggerState(trigger.Key);
+                string state = GetTriggerState(triggerStaus.ObjToString());
+                ls.Add(new TaskInfoDto
+                {
+                    jobId = job.Key.Name,
+                    jobGroup = job.Key.Group,
+                    triggerId = trigger.Key.Name,
+                    triggerGroup = trigger.Key.Group,
+                    triggerStatus = state
+                });
+                //info.Append(string.Format("触发器ID:{0}\r\n触发器名称:{1}\r\n状态:{2}\r\n", item.Key.Name, item.Description, state));
+
+            }
+            return ls;
+        }
+        public string GetTriggerState(string key)
+        {
+            string state = null;
+            if (key != null)
+                key = key.ToUpper();
+            switch (key)
+            {
+                case "1":
+                    state = "暂停";
+                    break;
+                case "2":
+                    state = "完成";
+                    break;
+                case "3":
+                    state = "出错";
+                    break;
+                case "4":
+                    state = "阻塞";
+                    break;
+                case "0":
+                    state = "正常";
+                    break;
+                case "-1":
+                    state = "不存在";
+                    break;
+                case "BLOCKED":
+                    state = "阻塞";
+                    break;
+                case "COMPLETE":
+                    state = "完成";
+                    break;
+                case "ERROR":
+                    state = "出错";
+                    break;
+                case "NONE":
+                    state = "不存在";
+                    break;
+                case "NORMAL":
+                    state = "正常";
+                    break;
+                case "PAUSED":
+                    state = "暂停";
+                    break;
+            }
+            return state;
+        }
+        #endregion
         #region 创建触发器帮助方法
 
         /// <summary>
@@ -283,15 +381,16 @@ namespace Blog.Core.Tasks
         /// <returns></returns>
         private ITrigger CreateSimpleTrigger(TasksQz sysSchedule)
         {
-            if (sysSchedule.RunTimes > 0)
+            if (sysSchedule.CycleRunTimes > 0)
             {
                 ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity(sysSchedule.Id.ToString(), sysSchedule.JobGroup)
                 .StartAt(sysSchedule.BeginTime.Value)
-                .EndAt(sysSchedule.EndTime.Value)
-                .WithSimpleSchedule(x =>
-                x.WithIntervalInSeconds(sysSchedule.IntervalSecond)
-                .WithRepeatCount(sysSchedule.RunTimes)).ForJob(sysSchedule.Id.ToString(), sysSchedule.JobGroup).Build();
+                .WithSimpleSchedule(x => x
+                    .WithIntervalInSeconds(sysSchedule.IntervalSecond)
+                    .WithRepeatCount(sysSchedule.CycleRunTimes - 1))
+                .EndAt(sysSchedule.EndTime.Value) 
+                .Build();
                 return trigger;
             }
             else
@@ -299,10 +398,12 @@ namespace Blog.Core.Tasks
                 ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity(sysSchedule.Id.ToString(), sysSchedule.JobGroup)
                 .StartAt(sysSchedule.BeginTime.Value)
-                .EndAt(sysSchedule.EndTime.Value)
-                .WithSimpleSchedule(x =>
-                x.WithIntervalInSeconds(sysSchedule.IntervalSecond)
-                .RepeatForever()).ForJob(sysSchedule.Id.ToString(), sysSchedule.JobGroup).Build();
+                .WithSimpleSchedule(x => x
+                    .WithIntervalInSeconds(sysSchedule.IntervalSecond)
+                    .RepeatForever()
+                )
+                .EndAt(sysSchedule.EndTime.Value) 
+                .Build();
                 return trigger;
             }
             // 触发作业立即运行，然后每10秒重复一次，无限循环

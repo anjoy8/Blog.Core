@@ -45,6 +45,8 @@
 	<ItemGroup>
 	
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+	
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

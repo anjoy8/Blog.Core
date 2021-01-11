@@ -11,6 +11,7 @@
     "BeginTime": "\/Date(1546272000000+0800)\/",
     "EndTime": "\/Date(1640966400000+0800)\/",
     "IntervalSecond": 0,
+	"CycleRunTimes": 0,
     "IsStart": true,
     "JobParams": 1,
     "IsDeleted": false,
