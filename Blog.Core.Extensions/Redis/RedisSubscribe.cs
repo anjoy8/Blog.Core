@@ -1,12 +1,20 @@
-﻿using InitQ.Abstractions;
+﻿using Blog.Core.IServices;
+using InitQ.Abstractions;
 using InitQ.Attributes;
 using System;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Common.Redis
+namespace Blog.Core.Extensions.Redis
 {
     public class RedisSubscribe : IRedisSubscribe
     {
+        private readonly IBlogArticleServices _blogArticleServices;
+
+        public RedisSubscribe(IBlogArticleServices blogArticleServices)
+        {
+            _blogArticleServices = blogArticleServices;
+        }
+
         [Subscribe(RedisMqKey.Loging)]
         private async Task SubRedisLoging(string msg)
         {

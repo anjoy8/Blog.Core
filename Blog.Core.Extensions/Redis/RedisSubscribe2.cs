@@ -3,7 +3,7 @@ using InitQ.Attributes;
 using System;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Common.Redis
+namespace Blog.Core.Extensions.Redis
 {
     public class RedisSubscribe2 : IRedisSubscribe
     {
