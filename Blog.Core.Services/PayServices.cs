@@ -6,6 +6,7 @@ using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
 using Blog.Core.Services.BASE;
 using CCB_B2CPay_Util;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,12 +21,14 @@ namespace Blog.Core.Services
     public partial class PayServices : BaseServices<RootEntityTkey<int>>, IPayServices
     {
         IBaseRepository<RootEntityTkey<int>> _dal;
+        IHttpContextAccessor _httpContextAccessor;
         ILogger<PayServices> _logger;
-        public PayServices(IBaseRepository<RootEntityTkey<int>> dal, ILogger<PayServices> logger)
+        public PayServices(IBaseRepository<RootEntityTkey<int>> dal, ILogger<PayServices> logger , IHttpContextAccessor  httpContextAccessor)
         {
             this._dal = dal;
             base.BaseDal = dal;
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<MessageModel<PayReturnResultModel>> Pay(PayNeedModel payModel)
@@ -38,6 +41,8 @@ namespace Blog.Core.Services
             string returnData = string.Empty;
             try
             {
+
+                _logger.LogInformation($"原始GET参数->{_httpContextAccessor.HttpContext.Request.QueryString}"); 
                 //被扫支付 
                 string host = "https://ibsbjstar.ccb.com.cn/CCBIS/B2CMainPlat_00_BEPAY?";
                 ////商户信息
@@ -51,7 +56,8 @@ namespace Blog.Core.Services
 
                 Dictionary<string, string> dic = new Dictionary<string, string>();
 
-                //dic.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
+                //支付信息
+                dic.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
                 dic.Add("POSID", StaticPayInfo.POSID);// => self::POSID, // 柜台号
                 dic.Add("BRANCHID", StaticPayInfo.BRANCHID);// => self::BRANCHID, // 分行号 
                 dic.Add("TXCODE", "PAY100");// => 'PAY100', // 交易码
@@ -92,31 +98,29 @@ namespace Blog.Core.Services
                 //请求 
                 _logger.LogInformation($"请求地址->{url}");
                 _logger.LogInformation($"请求参数->{param}");
+                PayResultModel payResult;
                 try
                 {
                     returnData = await GetNetData.PostAsync(url);
-                    string lines = StringHelper.GetCusLine(returnData, 15);
+                    //转换数据 
+                    try
+                    {
+                        payResult = JsonHelper.ParseFormByJson<PayResultModel>(returnData);
+                    }
+                    catch
+                    {
+                        payResult = new PayResultModel { RESULT = "N", ERRMSG = "参数错误", ORDERID = payModel.ORDERID, AMOUNT = payModel.AMOUNT};
+                        returnData = StringHelper.GetCusLine(returnData, 15); 
+                    }
+                    _logger.LogInformation($"响应数据->{returnData}");
                 }
                 catch (Exception ex)
                 {
                     _logger.LogInformation($"异常信息:{ex.Message}");
                     _logger.LogInformation($"异常堆栈:{ex.StackTrace}");
                     messageModel = await  PayCheck(payModel,1);
-                    return messageModel;
-
-                }
-                _logger.LogInformation($"响应数据->{returnData}");
-                //转换数据
-                PayResultModel payResult;
-                try
-                {
-                    payResult = JsonHelper.ParseFormByJson<PayResultModel>(returnData);
-                }
-                catch
-                {
-                    payResult = new PayResultModel { RESULT = "N",ERRMSG= "参数错误" };
-                }
-
+                    return messageModel; 
+                } 
                 switch (payResult.RESULT)
                 {
                     case "Y":
@@ -184,6 +188,8 @@ namespace Blog.Core.Services
             messageModel.response = new PayRefundReturnResultModel();
             try
             {
+                _logger.LogInformation($"原始GET参数->{_httpContextAccessor.HttpContext.Request.QueryString}"); 
+
                 string REQUEST_SN = StringHelper.GetGuidToLongID().ToString().Substring(0, 16);//请求序列码
                 string CUST_ID = StaticPayInfo.MERCHANTID;//商户号
                 string USER_ID = StaticPayInfo.USER_ID;//操作员号
@@ -206,8 +212,7 @@ namespace Blog.Core.Services
                 sRequestMsg = "requestXml=" + sRequestMsg;
 
                 _logger.LogInformation("请求地址：" + sUrl);
-                _logger.LogInformation("请求报文：" + sRequestMsg);
-
+                _logger.LogInformation("请求报文：" + sRequestMsg); 
                 HttpWebRequest request = (System.Net.HttpWebRequest)HttpWebRequest.Create(sUrl);
                 request.Method = "POST";
 
@@ -263,6 +268,7 @@ namespace Blog.Core.Services
             }
             finally
             {
+                _logger.LogInformation($"返回数据->{JsonHelper.GetJSON<MessageModel<PayRefundReturnResultModel>>(messageModel)}");
                 _logger.LogInformation("退款结束");
             }
             return messageModel;
@@ -346,7 +352,7 @@ namespace Blog.Core.Services
                 }
                 catch
                 {
-                    payResult = new PayResultModel { RESULT = "N", ERRMSG = "参数错误" };
+                    payResult = new PayResultModel { RESULT = "N", ERRMSG = "参数错误", ORDERID = payModel.ORDERID, AMOUNT = payModel.AMOUNT }; 
                 }
 
                 switch (payResult.RESULT)
@@ -403,6 +409,7 @@ namespace Blog.Core.Services
             }
             finally
             {
+                _logger.LogInformation($"返回数据->{JsonHelper.GetJSON<MessageModel<PayReturnResultModel>>(messageModel)}");
                 _logger.LogInformation("轮序结束");
             }
             return messageModel;
