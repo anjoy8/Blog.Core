@@ -109,6 +109,16 @@ namespace Blog.Core.Extensions
                     ConsoleHelper.WriteSuccessLine($"IpRateLimiting: True");
                 }
 
+                // CORS跨域
+                if (!Appsettings.app("Startup", "Cors", "EnableAllIPs").ObjToBool())
+                {
+                    Console.WriteLine($"EnableAllIPs For CORS: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"EnableAllIPs For EnableAllIPs: True");
+                }
+
                 // redis消息队列
                 if (!Appsettings.app("Startup", "RedisMq", "Enabled").ObjToBool())
                 {
