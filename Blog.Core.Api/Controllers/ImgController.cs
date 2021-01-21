@@ -113,7 +113,7 @@ namespace Blog.Core.Controllers
 
         [HttpGet]
         [Route("/images/Down/Bmd")]
-        [AllowAnonymous]
+        [Authorize(Permissions.Name)]
         public FileStreamResult DownBmd([FromServices]IWebHostEnvironment environment, string filename)
         {
             if (string.IsNullOrEmpty(filename))
