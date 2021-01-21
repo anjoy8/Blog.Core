@@ -26,7 +26,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("/images/Down/Pic")]
-        public FileStreamResult DownImg([FromServices]IWebHostEnvironment environment)
+        public FileStreamResult DownImg([FromServices] IWebHostEnvironment environment)
         {
             string foldername = "";
             string filepath = Path.Combine(environment.WebRootPath, foldername, "测试下载中文名称的图片.png");
@@ -49,7 +49,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("/images/Upload/Pic")]
-        public async Task<MessageModel<string>> InsertPicture([FromServices]IWebHostEnvironment environment)
+        public async Task<MessageModel<string>> InsertPicture([FromServices] IWebHostEnvironment environment)
         {
             var data = new MessageModel<string>();
             string path = string.Empty;
@@ -79,7 +79,7 @@ namespace Blog.Core.Controllers
                 {
                     //foreach (var file in files)
                     var file = files.FirstOrDefault();
-                    string strpath = Path.Combine(foldername, DateTime.Now.ToString("MMddHHmmss") + file.FileName);
+                    string strpath = Path.Combine(foldername, DateTime.Now.ToString("MMddHHmmss") + Path.GetFileName(file.FileName));
                     path = Path.Combine(environment.WebRootPath, strpath);
 
                     using (var stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
@@ -113,25 +113,32 @@ namespace Blog.Core.Controllers
 
         [HttpGet]
         [Route("/images/Down/Bmd")]
-        [Authorize(Permissions.Name)]
-        public FileStreamResult DownBmd([FromServices]IWebHostEnvironment environment, string filename)
+        [AllowAnonymous]
+        public FileStreamResult DownBmd([FromServices] IWebHostEnvironment environment, string filename)
         {
             if (string.IsNullOrEmpty(filename))
             {
                 return null;
             }
             // 前端 blob 接收，具体查看前端admin代码
-            string filepath = Path.Combine(environment.WebRootPath, filename);
-            var stream = System.IO.File.OpenRead(filepath);
-            //string fileExt = ".bmd";
-            //获取文件的ContentType
-            var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
-            //var memi = provider.Mappings[fileExt];
-            var fileName = Path.GetFileName(filepath);
+            string filepath = Path.Combine(environment.WebRootPath, Path.GetFileName(filename));
+            if (System.IO.File.Exists(filepath))
+            {
+                var stream = System.IO.File.OpenRead(filepath);
+                //string fileExt = ".bmd";
+                //获取文件的ContentType
+                var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+                //var memi = provider.Mappings[fileExt];
+                var fileName = Path.GetFileName(filepath);
 
-            HttpContext.Response.Headers.Add("fileName", fileName);
+                HttpContext.Response.Headers.Add("fileName", fileName);
 
-            return File(stream, "application/octet-stream", fileName);
+                return File(stream, "application/octet-stream", fileName);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         // POST: api/Img
