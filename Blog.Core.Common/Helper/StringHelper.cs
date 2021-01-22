@@ -46,7 +46,7 @@ namespace Blog.Core.Common.Helper
         /// </summary>
         /// <param name="dic"></param>
         /// <returns></returns>
-        public static string GetPars(Dictionary<string, string> dic)
+        public static string GetPars(Dictionary<string, object> dic)
         {
 
             StringBuilder sb = new StringBuilder();

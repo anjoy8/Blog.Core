@@ -60,6 +60,7 @@ namespace Blog.Core.Model.Models
         /// 执行间隔时间, 秒为单位
         /// </summary>
         public int IntervalSecond { get; set; }
+        /// <summary>
         /// 循环执行次数
         /// </summary>
         public int CycleRunTimes { get; set; }

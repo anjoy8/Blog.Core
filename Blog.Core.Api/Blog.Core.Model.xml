@@ -761,7 +761,11 @@
             执行间隔时间, 秒为单位
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:Blog.Core.Model.Models.TasksQz.CycleRunTimes" -->
+        <member name="P:Blog.Core.Model.Models.TasksQz.CycleRunTimes">
+            <summary>
+            循环执行次数
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.TasksQz.IsStart">
             <summary>
             是否启动
