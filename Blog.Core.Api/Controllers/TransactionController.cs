@@ -115,7 +115,11 @@ namespace Blog.Core.Controllers
         {
         }
 
-        // DELETE: api/ApiWithActions/5
+        /// <summary>
+        /// 测试事务在AOP中的使用
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<bool> Delete(int id)
         {

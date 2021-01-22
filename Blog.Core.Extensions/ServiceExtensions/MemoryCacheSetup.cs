@@ -1,4 +1,4 @@
-﻿using Blog.Core.Common.MemoryCache;
+﻿using Blog.Core.Common;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using System;

@@ -1,6 +1,7 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -18,13 +19,16 @@ namespace Blog.Core.Middlewares
         /// 
         /// </summary>
         private readonly RequestDelegate _next;
+        private readonly ILogger<RequRespLogMildd> _logger;
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="next"></param>
-        public RequRespLogMildd(RequestDelegate next)
+        public RequRespLogMildd(RequestDelegate next, ILogger<RequRespLogMildd> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
 
@@ -57,10 +61,10 @@ namespace Blog.Core.Middlewares
                             await ms.CopyToAsync(originalBody);
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        // 记录异常
-                        //ErrorLogData(context.Response, ex);
+                        // 记录异常                        
+                        _logger.LogError(ex.Message + "" + ex.InnerException);
                     }
                     finally
                     {

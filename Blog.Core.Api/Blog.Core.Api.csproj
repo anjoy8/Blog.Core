@@ -4,10 +4,11 @@
 
 		<OutputType>Exe</OutputType>
 
-		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<TargetFramework>net5.0</TargetFramework>
 		<!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
 		<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,7 +20,9 @@
 		<DocumentationFile>..\Blog.Core\Blog.Core.xml</DocumentationFile>
 		<NoWarn>1701;1702;1591</NoWarn>
 	</PropertyGroup>
-
+        <PropertyGroup> 
+          <ServerGarbageCollection>false</ServerGarbageCollection> 
+        </PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="Extensions\**" />
 		<Compile Remove="Hubs\**" />
@@ -42,17 +45,15 @@
 	<ItemGroup>
 	
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Blog.Core.Extensions\Blog.Core.Extensions.csproj" />
-		<ProjectReference Include="..\Blog.Core.IRepository\Blog.Core.IRepository.csproj" />
-		<ProjectReference Include="..\Blog.Core.IServices\Blog.Core.IServices.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\.editorconfig" Link=".editorconfig" />
 		<None Include="wwwroot\BlogCore.Data.json\BlogArticle.tsv" />
 		<None Include="wwwroot\BlogCore.Data.json\Modules.tsv" />
 		<None Include="wwwroot\BlogCore.Data.json\Permission.tsv" />
@@ -76,6 +77,9 @@
 
 	<ItemGroup>
 	  <None Update="Dockerfile">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="StopContainerImg.sh">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

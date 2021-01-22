@@ -6,7 +6,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 按钮跟权限关联表
     /// </summary>
-    public class RoleModulePermission : RootEntity
+    public class RoleModulePermission : RoleModulePermissionRoot<int>
     {
         public RoleModulePermission()
         {
@@ -21,19 +21,7 @@ namespace Blog.Core.Model.Models
         /// </summary>
         [SugarColumn(IsNullable = true)]
         public bool? IsDeleted { get; set; }
-        /// <summary>
-        /// 角色ID
-        /// </summary>
-        public int RoleId { get; set; }
-        /// <summary>
-        /// 菜单ID
-        /// </summary>
-        public int ModuleId { get; set; }
-        /// <summary>
-        /// api ID
-        /// </summary>
-        [SugarColumn(IsNullable = true)]
-        public int? PermissionId { get; set; }
+       
         /// <summary>
         /// 创建ID
         /// </summary>

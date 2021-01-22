@@ -1,4 +1,5 @@
 ﻿using Blog.Core.Common;
+using Blog.Core.Extensions;
 using Castle.DynamicProxy;
 using System;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace Blog.Core.AOP
     public class BlogRedisCacheAOP : CacheAOPbase
     {
         //通过注入的方式，把缓存操作接口通过构造函数注入
-        private readonly IRedisCacheManager _cache;
-        public BlogRedisCacheAOP(IRedisCacheManager cache)
+        private readonly IRedisBasketRepository _cache;
+        public BlogRedisCacheAOP(IRedisBasketRepository cache)
         {
             _cache = cache;
         }
@@ -36,7 +37,7 @@ namespace Blog.Core.AOP
                 //获取自定义缓存键
                 var cacheKey = CustomCacheKey(invocation);
                 //注意是 string 类型，方法GetValue
-                var cacheValue = _cache.GetValue(cacheKey);
+                var cacheValue = _cache.GetValue(cacheKey).Result;
                 if (cacheValue != null)
                 {
                     //将当前获取到的缓存值，赋值给当前执行方法
@@ -75,7 +76,7 @@ namespace Blog.Core.AOP
                     }
                     if (response == null) response = string.Empty;
 
-                    _cache.Set(cacheKey, response, TimeSpan.FromMinutes(qCachingAttribute.AbsoluteExpiration));
+                    _cache.Set(cacheKey, response, TimeSpan.FromMinutes(qCachingAttribute.AbsoluteExpiration)).Wait();
                 }
             }
             else

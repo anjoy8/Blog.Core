@@ -44,6 +44,7 @@ using System;
 using System.Threading.Tasks;
 using Blog.Core.Common;
 using Blog.Core.IRepository;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
@@ -56,8 +57,8 @@ namespace Blog.Core.Services
 	public class <#=tableName#>Services : BaseServices<<#=tableName#>>, I<#=tableName#>Services
     {
 	
-        I<#=tableName#>Repository dal;
-        public <#=tableName#>Services(I<#=tableName#>Repository dal)
+        IBaseRepository<<#=tableName#>> dal;
+        public <#=tableName#>Services(IBaseRepository<<#=tableName#>> dal)
         {
             this.dal = dal;
             base.baseDal = dal;
@@ -91,6 +92,7 @@ using System.Threading.Tasks;
 using Blog.Core.Common;
 using Blog.Core.IRepository;
 using Blog.Core.IRepository.UnitOfWork;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Services.BASE;
@@ -102,8 +104,8 @@ namespace Blog.Core.Services
 	public class <#=row["TABLE_NAME"].ToString()#>Services : BaseServices<<#=row["TABLE_NAME"].ToString()#>>, I<#=row["TABLE_NAME"].ToString() #>Services
     {
 	
-        I<#=row["TABLE_NAME"].ToString() #>Repository dal;
-        public <#=row["TABLE_NAME"].ToString() #>Services(I<#=row["TABLE_NAME"].ToString() #>Repository dal)
+        IBaseRepository<<#=row["TABLE_NAME"].ToString() #>> dal;
+        public <#=row["TABLE_NAME"].ToString() #>Services(IBaseRepository<<#=row["TABLE_NAME"].ToString() #>> dal)
         {
             this.dal = dal;
             base.baseDal = dal;
@@ -129,6 +131,7 @@ using System.Threading.Tasks;
 using Blog.Core.Common;
 using Blog.Core.IRepository;
 using Blog.Core.IRepository.UnitOfWork;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Services.BASE;

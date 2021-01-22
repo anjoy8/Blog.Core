@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
@@ -21,7 +22,6 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/Blog")]
-    [Authorize]
     public class BlogController : Controller
     {
         readonly IBlogArticleServices _blogArticleServices;
@@ -48,9 +48,6 @@ namespace Blog.Core.Controllers
         /// <param name="key"></param>
         /// <returns></returns>
         [HttpGet]
-        [AllowAnonymous]
-        //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        //[ResponseCache(Duration = 600)]
         public async Task<MessageModel<PageModel<BlogArticle>>> Get(int id, int page = 1, string bcategory = "技术博文", string key = "")
         {
             int intPageSize = 6;
@@ -100,6 +97,7 @@ namespace Blog.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        //[Authorize(Policy = "Scope_BlogModule_Policy")]
         [Authorize]
         public async Task<MessageModel<BlogViewModels>> Get(int id)
         {
@@ -119,7 +117,6 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("DetailNuxtNoPer")]
-        [AllowAnonymous]
         public async Task<MessageModel<BlogViewModels>> DetailNuxtNoPer(int id)
         {
             _logger.LogInformation("xxxxxxxxxxxxxxxxxxx");
@@ -133,23 +130,26 @@ namespace Blog.Core.Controllers
 
         [HttpGet]
         [Route("GoUrl")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GoUrl(int id)
+        public async Task<IActionResult> GoUrl(int id = 0)
         {
             var response = await _blogArticleServices.QueryById(id);
             if (response != null && response.bsubmitter.IsNotEmptyOrNull())
             {
-                response.btraffic += 1;
-                await _blogArticleServices.Update(response);
-                return Redirect(response.bsubmitter);
+                string Url = @"^http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$";
+                if (Regex.IsMatch(response.bsubmitter, Url))
+                {
+                    response.btraffic += 1;
+                    await _blogArticleServices.Update(response);
+                    return Redirect(response.bsubmitter);
+                }
+
             }
 
-            return null;
+            return Ok();
         }
 
         [HttpGet]
         [Route("GetBlogsByTypesForMVP")]
-        [AllowAnonymous]
         public async Task<MessageModel<List<BlogArticle>>> GetBlogsByTypesForMVP(string types = "", int id = 0)
         {
             if (types.IsNotEmptyOrNull())
@@ -168,7 +168,6 @@ namespace Blog.Core.Controllers
 
         [HttpGet]
         [Route("GetBlogByIdForMVP")]
-        [AllowAnonymous]
         public async Task<MessageModel<BlogArticle>> GetBlogByIdForMVP(int id = 0)
         {
             if (id > 0)
@@ -196,7 +195,6 @@ namespace Blog.Core.Controllers
         //和上边的版本控制以及路由地址都是一样的
 
         [CustomRoute(ApiVersions.V2, "Blogtest")]
-        [AllowAnonymous]
         public MessageModel<string> V2_Blogtest()
         {
             return new MessageModel<string>()
@@ -213,6 +211,8 @@ namespace Blog.Core.Controllers
         /// <param name="blogArticle"></param>
         /// <returns></returns>
         [HttpPost]
+        //[Authorize(Policy = "Scope_BlogModule_Policy")]
+        [Authorize]
         public async Task<MessageModel<string>> Post([FromBody] BlogArticle blogArticle)
         {
             var data = new MessageModel<string>();
@@ -331,7 +331,6 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("ApacheTestUpdate")]
-        [AllowAnonymous]
         public async Task<MessageModel<bool>> ApacheTestUpdate()
         {
             return new MessageModel<bool>()

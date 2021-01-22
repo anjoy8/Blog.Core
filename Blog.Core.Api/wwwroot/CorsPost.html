@@ -15,13 +15,13 @@
         $(document).ready(function () {
             $("#jsonp").click(function () {
 
-                $.getJSON("/api/Login/jsonp?callBack=?", function (data) {
+                $.getJSON("http://localhost:8081/api/Login/jsonp?callBack=?", function (data) {
                     $("#data-jsonp").html("数据: " + data.value);
                 });
             });
 
             $("#cors").click(function () {
-                $.get("/api/Login/Token", function (data, status) {
+                $.get("http://localhost:8081/api/Login/Token", function (data, status) {
                     console.log(data);
                     $("#status-cors").html("状态: " + status);
                     $("#data-cors").html("数据: " + data? data.token:"失败");
@@ -43,7 +43,7 @@
                 };
                 $.ajax({
                     type: 'post',
-                    url: '/api/Values',
+                    url: 'http://localhost:8081/api/Values',
                     contentType: 'application/json',
                     data: JSON.stringify(postdata),
                     success: function (data, status) {

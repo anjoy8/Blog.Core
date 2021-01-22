@@ -1,10 +1,10 @@
 [
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "Name": "Admin",
     "Description": "普通管理",
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -14,11 +14,11 @@
     "Id": 1
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "Name": "System",
     "Description": "系统管理",
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -28,11 +28,11 @@
     "Id": 2
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "Name": "Tibug",
     "Description": "tibug系统管理",
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -42,11 +42,11 @@
     "Id": 3
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "Name": "SuperAdmin",
     "Description": "超级管理",
     "OrderSort": 0,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": 23,
     "CreateBy": "blogadmin",
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -56,11 +56,11 @@
     "Id": 4
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "AdminTest",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": 18,
     "CreateBy": "提bug账号",
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -70,11 +70,11 @@
     "Id": 5
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "Name": "AdminTest",
     "Description": "测试管理",
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": 23,
     "CreateBy": "后台总管理员",
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -84,11 +84,11 @@
     "Id": 6
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "Name": "AdminTest2",
     "Description": "测试管理2",
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": 23,
     "CreateBy": "后台总管理员",
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -98,11 +98,11 @@
     "Id": 7
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -112,11 +112,11 @@
     "Id": 8
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -126,11 +126,11 @@
     "Id": 9
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -140,11 +140,11 @@
     "Id": 10
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -154,11 +154,11 @@
     "Id": 11
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -168,11 +168,11 @@
     "Id": 12
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -182,11 +182,11 @@
     "Id": 13
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -196,11 +196,11 @@
     "Id": 14
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -210,11 +210,11 @@
     "Id": 15
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -224,11 +224,11 @@
     "Id": 16
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -238,11 +238,11 @@
     "Id": 17
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -252,11 +252,11 @@
     "Id": 18
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -266,11 +266,11 @@
     "Id": 19
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -280,11 +280,11 @@
     "Id": 20
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -294,11 +294,11 @@
     "Id": 21
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -308,11 +308,11 @@
     "Id": 22
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -322,11 +322,11 @@
     "Id": 23
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -340,7 +340,7 @@
     "Name": "sss",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -354,7 +354,7 @@
     "Name": "213",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -368,7 +368,7 @@
     "Name": "抬头填",
     "Description": null,
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": null,
     "CreateBy": null,
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -378,11 +378,11 @@
     "Id": 27
   },
   {
-    "IsDeleted": "0",
+    "IsDeleted": 0,
     "Name": "hello1",
     "Description": "测试 常用 get post put 请求",
     "OrderSort": 1,
-    "Enabled": "1",
+    "Enabled": 1,
     "CreateId": 12,
     "CreateBy": "后台总管理员",
     "CreateTime": "\/Date(1546272000000+0800)\/",
@@ -392,11 +392,11 @@
     "Id": 28
   },
   {
-    "IsDeleted": "1",
+    "IsDeleted": 1,
     "Name": "55",
     "Description": "555",
     "OrderSort": 1,
-    "Enabled": "0",
+    "Enabled": 0,
     "CreateId": 39,
     "CreateBy": "Kawhi",
     "CreateTime": "\/Date(1546272000000+0800)\/",

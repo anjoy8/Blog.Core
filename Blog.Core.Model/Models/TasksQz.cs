@@ -1,12 +1,14 @@
-﻿using SqlSugar;
+﻿using Blog.Core.Model.ViewModels;
+using SqlSugar;
 using System;
+using System.Collections.Generic;
 
 namespace Blog.Core.Model.Models
 {
     /// <summary>
     /// 任务计划表
     /// </summary>
-    public class TasksQz : RootEntity
+    public class TasksQz : RootEntityTkey<int>
     {
         /// <summary>
         /// 任务名称
@@ -58,6 +60,9 @@ namespace Blog.Core.Model.Models
         /// 执行间隔时间, 秒为单位
         /// </summary>
         public int IntervalSecond { get; set; }
+        /// 循环执行次数
+        /// </summary>
+        public int CycleRunTimes { get; set; }
         /// <summary>
         /// 是否启动
         /// </summary>
@@ -75,5 +80,10 @@ namespace Blog.Core.Model.Models
         /// </summary>
         [SugarColumn(IsNullable = true)]
         public DateTime CreateTime { get; set; } = DateTime.Now;
+        /// <summary>
+        /// 任务内存中的状态
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<TaskInfoDto> Triggers { get; set; }
     }
 }

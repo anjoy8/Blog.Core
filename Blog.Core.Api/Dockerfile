@@ -1,4 +1,9 @@
-FROM swr.cn-south-1.myhuaweicloud.com/mcr/aspnet:3.1-alpine
+#FROM swr.cn-south-1.myhuaweicloud.com/mcr/aspnet:5.0-alpine
+#FROM mcr.microsoft.com/dotnet/core/aspnet:5.0-buster-slim
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo 'Asia/Shanghai' >/etc/timezone
+
 #RUN apk add --no-cache ca-certificates python3 bash openssh git openssl-dev uwsgi uwsgi-python3
 #RUN apk add --no-cache --virtual .build-deps python3-dev gcc musl-dev libffi-dev make \
         #&& pip3 install --no-cache-dir --trusted-host mirrors.aliyun.com -i http://mirrors.aliyun.com/pypi/simple/ \
@@ -9,7 +14,7 @@ FROM swr.cn-south-1.myhuaweicloud.com/mcr/aspnet:3.1-alpine
                 #Flask-SQLAlchemy==2.3.2 \
                 #Flask-WTF==0.14.2 \
                 #SQLAlchemy==1.2.7 \
-                #simplejson==3.16.0 \
+                #simplejson==5.06.0 \
                 #six==1.11.0 \
                 #celery==4.2.1 \
                 #xlrd==1.1.0 \

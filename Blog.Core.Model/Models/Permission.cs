@@ -7,7 +7,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 路由菜单表
     /// </summary>
-    public class Permission : RootEntity
+    public class Permission : PermissionRoot<int>
     {
         public Permission()
         {
@@ -46,19 +46,6 @@ namespace Blog.Core.Model.Models
         /// </summary>
         [SugarColumn(ColumnDataType = "nvarchar", Length = 100, IsNullable = true)]
         public string Func { get; set; }
-
-
-
-        /// <summary>
-        /// 上一级菜单（0表示上一级无菜单）
-        /// </summary>
-        public int Pid { get; set; }
-
-
-        /// <summary>
-        /// 接口api
-        /// </summary>
-        public int Mid { get; set; }
 
         /// <summary>
         /// 排序
@@ -116,10 +103,6 @@ namespace Blog.Core.Model.Models
         public bool? IsDeleted { get; set; }
 
 
-
-
-        [SugarColumn(IsIgnore = true)]
-        public List<int> PidArr { get; set; }
         [SugarColumn(IsIgnore = true)]
         public List<string> PnameArr { get; set; } = new List<string>();
         [SugarColumn(IsIgnore = true)]

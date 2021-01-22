@@ -7,8 +7,10 @@ using Blog.Core.Common;
 using Blog.Core.Common.AppConfig;
 using Blog.Core.Common.DB;
 using Blog.Core.Common.LogHelper;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model.Seed;
+using Blog.Core.Repository.Base;
 using Blog.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -31,7 +33,7 @@ namespace Blog.Core.Tests
         {
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
 
-            IServiceCollection services = new ServiceCollection();
+            IServiceCollection services = new ServiceCollection().AddLogging();
             services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<SqlSugar.ISqlSugarClient>(o =>
@@ -88,12 +90,12 @@ namespace Blog.Core.Tests
         /// </summary>
         public static MutiDBOperate GetMainConnectionDb()
         {
-            var mainConnetctDb = BaseDBConfig.MutiConnectionString.Item1.Find(x => x.ConnId == MainDb.CurrentDbConnId);
-            if (BaseDBConfig.MutiConnectionString.Item1.Count > 0)
+            var mainConnetctDb = BaseDBConfig.MutiConnectionString.allDbs.Find(x => x.ConnId == MainDb.CurrentDbConnId);
+            if (BaseDBConfig.MutiConnectionString.allDbs.Count > 0)
             {
                 if (mainConnetctDb == null)
                 {
-                    mainConnetctDb = BaseDBConfig.MutiConnectionString.Item1[0];
+                    mainConnetctDb = BaseDBConfig.MutiConnectionString.allDbs[0];
                 }
             }
             else
@@ -113,7 +115,6 @@ namespace Blog.Core.Tests
 
             services.AddSingleton(new Appsettings(basePath));
             services.AddSingleton(new LogLock(basePath));
-            services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
             services.AddScoped<DBSeed>();
             services.AddScoped<MyContext>();
 
@@ -164,6 +165,9 @@ namespace Blog.Core.Tests
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
 
             //指定已扫描程序集中的类型注册为提供所有其实现的接口。
+
+            builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();//注册仓储
+
 
             var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
             var assemblysServices = Assembly.LoadFrom(servicesDllFile);

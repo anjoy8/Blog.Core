@@ -1,7 +1,6 @@
 ﻿using Blog.Core.IServices;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace Blog.Core.Filter
 {
@@ -29,14 +28,7 @@ namespace Blog.Core.Filter
 
         private void DeleteSubscriptionFiles()
         {
-            try
-            {
-                // ...
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error Delete Subscription Files");
-            }
+           
         }
     }
 }

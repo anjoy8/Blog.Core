@@ -50,8 +50,7 @@ namespace Blog.Core.Common.HttpRestSharp
             IRestRequest queest = new RestRequest();
             queest.Method = Method.POST;
             queest.AddHeader("Accept", "application/json");
-            queest.RequestFormat = DataFormat.Json;
-            queest.AddBody(body); // 可以使用 JsonSerializer
+            queest.AddJsonBody(body); // 可以使用 JsonSerializer
             var result = client.Execute(queest);
             if (result.StatusCode != HttpStatusCode.OK)
             {
