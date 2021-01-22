@@ -54,7 +54,7 @@ namespace Blog.Core.Services
                 //        "&QRCODE=134737690209713400&AMOUNT=0.01&TXCODE=PAY100&PROINFO=&REMARK1=&REMARK2=&SMERID=&SMERNAME=&SMERTYPEID=" +
                 //        "&SMERTYPE=&TRADECODE=&TRADENAME=&SMEPROTYPE=&PRONAME=";
 
-                Dictionary<string, string> dic = new Dictionary<string, string>();
+                Dictionary<string, object> dic = new Dictionary<string, object>();
 
                 //支付信息
                 dic.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
@@ -81,7 +81,7 @@ namespace Blog.Core.Services
                 //dic.Add("goods_tag", "");// => '', // 订单优惠标记 
 
                 //商户信息
-                Dictionary<string, string> dicInfo = new Dictionary<string, string>();
+                Dictionary<string, object> dicInfo = new Dictionary<string, object>();
                 dicInfo.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
                 dicInfo.Add("POSID", StaticPayInfo.POSID);// => self::POSID, // 柜台号
                 dicInfo.Add("BRANCHID", StaticPayInfo.BRANCHID);// => self::BRANCHID, // 分行号
@@ -101,7 +101,7 @@ namespace Blog.Core.Services
                 PayResultModel payResult;
                 try
                 {
-                    returnData = await GetNetData.PostAsync(url);
+                    returnData = await HttpHelper.PostAsync(url);
                     //转换数据 
                     try
                     {
@@ -124,7 +124,7 @@ namespace Blog.Core.Services
                 switch (payResult.RESULT)
                 {
                     case "Y":
-                        Dictionary<string, string> dicCheckPars = new Dictionary<string, string>();
+                        Dictionary<string, object> dicCheckPars = new Dictionary<string, object>();
                         dicCheckPars.Add("RESULT", payResult.RESULT);
                         dicCheckPars.Add("ORDERID", payResult.ORDERID);
                         dicCheckPars.Add("AMOUNT", payResult.AMOUNT);
@@ -286,7 +286,7 @@ namespace Blog.Core.Services
             {
                 string host = "https://ibsbjstar.ccb.com.cn/CCBIS/B2CMainPlat_00_BEPAY?";
 
-                Dictionary<string, string> dic = new Dictionary<string, string>();
+                Dictionary<string, object> dic = new Dictionary<string, object>();
 
                 dic.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
                 dic.Add("POSID", StaticPayInfo.POSID);// => self::POSID, // 柜台号
@@ -315,7 +315,7 @@ namespace Blog.Core.Services
                 //dic.Add("goods_tag", "");// => '', // 订单优惠标记
 
                 //商户信息
-                Dictionary<string, string> dicInfo = new Dictionary<string, string>();
+                Dictionary<string, object> dicInfo = new Dictionary<string, object>();
                 dicInfo.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
                 dicInfo.Add("POSID", StaticPayInfo.POSID);// => self::POSID, // 柜台号
                 dicInfo.Add("BRANCHID", StaticPayInfo.BRANCHID);// => self::BRANCHID, // 分行号
@@ -335,7 +335,7 @@ namespace Blog.Core.Services
                 PayResultModel payResult;
                 try
                 {
-                    returnData = await GetNetData.PostAsync(url);
+                    returnData = await HttpHelper.PostAsync(url);
                     _logger.LogInformation($"响应数据->{returnData}");
                 }
                 catch (Exception ex)
@@ -358,7 +358,7 @@ namespace Blog.Core.Services
                 switch (payResult.RESULT)
                 {
                     case "Y":
-                        Dictionary<string, string> dicCheckPars = new Dictionary<string, string>();
+                        Dictionary<string, object> dicCheckPars = new Dictionary<string, object>();
                         dicCheckPars.Add("RESULT", payResult.RESULT);
                         dicCheckPars.Add("ORDERID", payResult.ORDERID);
                         dicCheckPars.Add("AMOUNT", payResult.AMOUNT);

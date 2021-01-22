@@ -275,21 +275,42 @@
             <param name="logger"></param>
             <param name="payServices"></param>
         </member>
-        <member name="M:Blog.Core.Controllers.PayController.Pay(Blog.Core.Model.ViewModels.PayNeedModel)">
+        <member name="M:Blog.Core.Controllers.PayController.PayGet(Blog.Core.Model.ViewModels.PayNeedModel)">
             <summary>
-            支付
+            被扫支付
             </summary>
             <param name="payModel"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PayController.PayCheck(Blog.Core.Model.ViewModels.PayNeedModel)">
+        <member name="M:Blog.Core.Controllers.PayController.PayPost(Blog.Core.Model.ViewModels.PayNeedModel)">
+            <summary>
+            被扫支付
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayCheckGet(Blog.Core.Model.ViewModels.PayNeedModel)">
             <summary>
             支付结果查询-轮询
             </summary>
             <param name="payModel"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PayController.PayRefund(Blog.Core.Model.ViewModels.PayRefundNeedModel)">
+        <member name="M:Blog.Core.Controllers.PayController.PayCheckPost(Blog.Core.Model.ViewModels.PayNeedModel)">
+            <summary>
+            支付结果查询-轮询
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayRefundGet(Blog.Core.Model.ViewModels.PayRefundNeedModel)">
+            <summary>
+            退款
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayRefundPost(Blog.Core.Model.ViewModels.PayRefundNeedModel)">
             <summary>
             退款
             </summary>

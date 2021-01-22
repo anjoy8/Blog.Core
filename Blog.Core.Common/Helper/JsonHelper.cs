@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Blog.Core.Common.Helper
 {
@@ -16,6 +17,7 @@ namespace Blog.Core.Common.Helper
             string result = String.Empty;
             try
             {
+                JsonSerializer.Serialize("");
                 System.Runtime.Serialization.Json.DataContractJsonSerializer serializer =
                 new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(T));
                 using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
