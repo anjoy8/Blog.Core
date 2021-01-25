@@ -139,6 +139,16 @@ namespace Blog.Core.Extensions
                     ConsoleHelper.WriteSuccessLine($"RabbitMQ: True");
                 }
 
+                // Consul 注册服务
+                if (!Appsettings.app("Middleware", "Consul", "Enabled").ObjToBool())
+                {
+                    Console.WriteLine($"Consul service: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"Consul service: True");
+                }
+
                 // EventBus 事件总线
                 if (!Appsettings.app("EventBus", "Enabled").ObjToBool())
                 {
