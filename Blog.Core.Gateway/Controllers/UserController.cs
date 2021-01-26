@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace Blog.Core.Gateway.Controllers
 {
-    [Authorize]
+    [Authorize(Permissions.GWName)]
     [Route("/gateway/[controller]/[action]")]
     public class UserController : ControllerBase
     {
@@ -20,13 +20,24 @@ namespace Blog.Core.Gateway.Controllers
         }
 
         [HttpGet]
-        public MessageModel<List<Claim>> MyClaims()
+        public MessageModel<List<ClaimDto>> MyClaims()
         {
-            return new MessageModel<List<Claim>>()
+            return new MessageModel<List<ClaimDto>>()
             {
                 success = true,
-                response = _user.GetClaimsIdentity().ToList()
+                response = (_user.GetClaimsIdentity().ToList()).Select(d =>
+                    new ClaimDto
+                    {
+                        Type = d.Type,
+                        Value = d.Value
+                    }
+                ).ToList()
             };
         }
+    }
+    public class ClaimDto
+    {
+        public string Type { get; set; }
+        public string Value { get; set; }
     }
 }

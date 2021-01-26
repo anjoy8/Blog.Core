@@ -39,8 +39,10 @@ namespace Blog.Core.AdminMvc
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("GW", policy => policy.RequireRole("GW").Build());
+                options.AddPolicy("GW", policy => policy.RequireRole("AdminTest").Build());
             });
+
+            services.AddCustomSwaggerSetup();
 
             services.AddControllers();
 
@@ -48,7 +50,7 @@ namespace Blog.Core.AdminMvc
 
             services.AddCorsSetup();
 
-            services.AddOcelot().AddConsul();
+            services.AddCustomOcelotSetup();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +63,10 @@ namespace Blog.Core.AdminMvc
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCustomSwaggerMildd();
 
             app.UseCors(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
 
@@ -70,7 +75,7 @@ namespace Blog.Core.AdminMvc
                 endpoints.MapControllers();
             });
 
-            app.UseOcelotMildd().Wait();
+            app.UseCustomOcelotMildd().Wait();
         }
     }
 }
