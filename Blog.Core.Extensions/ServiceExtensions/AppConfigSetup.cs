@@ -109,6 +109,16 @@ namespace Blog.Core.Extensions
                     ConsoleHelper.WriteSuccessLine($"IpRateLimiting: True");
                 }
 
+                // 性能分析
+                if (!Appsettings.app("Startup", "MiniProfiler", "Enabled").ObjToBool())
+                {
+                    Console.WriteLine($"MiniProfiler: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"MiniProfiler: True");
+                }
+
                 // redis消息队列
                 if (!Appsettings.app("Startup", "RedisMq", "Enabled").ObjToBool())
                 {

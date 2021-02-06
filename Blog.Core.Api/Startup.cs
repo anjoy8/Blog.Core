@@ -188,8 +188,7 @@ namespace Blog.Core
 
             // 开启异常中间件，要放到最后
             //app.UseExceptionHandlerMidd();
-            // 性能分析
-            app.UseMiniProfiler();
+            
 
             app.UseEndpoints(endpoints =>
             {
