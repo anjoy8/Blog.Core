@@ -5,17 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="AESUtil.cs" />
-    <Compile Remove="BigInteger.cs" />
     <Compile Remove="LogHelper\ILoggerHelper.cs" />
     <Compile Remove="LogHelper\LogHelper.cs" />
-    <Compile Remove="RSAExtensions.cs" />
-    <Compile Remove="RSAHelper_Java.cs" />
-    <Compile Remove="RSAHelper_Net.cs" />
-    <Compile Remove="RSATest.cs" />
-    <Compile Remove="RSATools.cs" />
-    <Compile Remove="RSA_PEM.cs" />
-    <Compile Remove="ZlRsaUtil.cs" />
   </ItemGroup>
 
   <ItemGroup>
