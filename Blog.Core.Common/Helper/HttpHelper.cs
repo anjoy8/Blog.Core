@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Core.Common.Helper
 {
-    public class GetNetData
+    public class HttpHelper
     {
         public static string Get(string serviceAddress)
         { 

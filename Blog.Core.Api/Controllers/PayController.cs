@@ -28,17 +28,28 @@ namespace Blog.Core.Controllers
             _payServices = payServices;
         }
         /// <summary>
-        /// 支付
+        /// 被扫支付
         /// </summary>
         /// <param name="payModel"></param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpGet]
-        [HttpPost]
+        [HttpGet] 
         [Route("Pay")]
-        public async Task<MessageModel<PayReturnResultModel>> Pay(PayNeedModel payModel)
+        public async Task<MessageModel<PayReturnResultModel>> PayGet([FromQuery]PayNeedModel payModel)
         {
             return await _payServices.Pay(payModel);  
+        }
+        /// <summary>
+        /// 被扫支付
+        /// </summary>
+        /// <param name="payModel"></param>
+        /// <returns></returns>
+        [AllowAnonymous] 
+        [HttpPost]
+        [Route("Pay")]
+        public async Task<MessageModel<PayReturnResultModel>> PayPost([FromBody]PayNeedModel payModel)
+        {
+            return await _payServices.Pay(payModel);
         }
         /// <summary>
         /// 支付结果查询-轮询
@@ -46,10 +57,21 @@ namespace Blog.Core.Controllers
         /// <param name="payModel"></param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpGet]
+        [HttpGet] 
+        [Route("PayCheck")]
+        public async Task<MessageModel<PayReturnResultModel>> PayCheckGet([FromQuery]PayNeedModel payModel)
+        {
+            return await _payServices.PayCheck(payModel, 1);
+        }
+        /// <summary>
+        /// 支付结果查询-轮询
+        /// </summary>
+        /// <param name="payModel"></param>
+        /// <returns></returns>
+        [AllowAnonymous] 
         [HttpPost]
         [Route("PayCheck")]
-        public async Task<MessageModel<PayReturnResultModel>> PayCheck(PayNeedModel payModel)
+        public async Task<MessageModel<PayReturnResultModel>> PayCheckPost([FromBody]PayNeedModel payModel)
         {
             return await _payServices.PayCheck(payModel, 1);
         }
@@ -59,16 +81,27 @@ namespace Blog.Core.Controllers
         /// <param name="payModel"></param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpGet]
+        [HttpGet] 
+        [Route("PayRefund")]
+        public async Task<MessageModel<PayRefundReturnResultModel>> PayRefundGet([FromQuery]PayRefundNeedModel payModel)
+        {
+            return await _payServices.PayRefund(payModel);
+        }
+        /// <summary>
+        /// 退款
+        /// </summary>
+        /// <param name="payModel"></param>
+        /// <returns></returns>
+        [AllowAnonymous] 
         [HttpPost]
         [Route("PayRefund")]
-        public async Task<MessageModel<PayRefundReturnResultModel>> PayRefund(PayRefundNeedModel payModel)
+        public async Task<MessageModel<PayRefundReturnResultModel>> PayRefundPost([FromBody]PayRefundNeedModel payModel)
         {
             return await _payServices.PayRefund(payModel);
         }
 
-        
-        
+
+
 
 
     }

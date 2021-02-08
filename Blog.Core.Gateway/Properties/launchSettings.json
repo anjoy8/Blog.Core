@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "Blog.Core.AdminMvc": {
+    "Blog.Core.Gateway": {
       "commandName": "Project",
       "launchBrowser": true,
       "applicationUrl": "http://localhost:9000",
