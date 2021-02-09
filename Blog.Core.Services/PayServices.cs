@@ -1,11 +1,11 @@
-﻿using Blog.Core.Common.Helper;
+﻿using Blog.Core.Common;
+using Blog.Core.Common.Helper;
 using Blog.Core.Common.StaticHelper;
 using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
 using Blog.Core.Services.BASE;
-using CCB_B2CPay_Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
