@@ -13,6 +13,7 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/Pay")]
+    [Authorize(Permissions.Name)]
     public class PayController : Controller
     { 
         private readonly ILogger<PayController> _logger;
@@ -32,7 +33,6 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <param name="payModel"></param>
         /// <returns></returns>
-        [AllowAnonymous]
         [HttpGet] 
         [Route("Pay")]
         public async Task<MessageModel<PayReturnResultModel>> PayGet([FromQuery]PayNeedModel payModel)
@@ -44,7 +44,6 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <param name="payModel"></param>
         /// <returns></returns>
-        [AllowAnonymous] 
         [HttpPost]
         [Route("Pay")]
         public async Task<MessageModel<PayReturnResultModel>> PayPost([FromBody]PayNeedModel payModel)
@@ -56,7 +55,6 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <param name="payModel"></param>
         /// <returns></returns>
-        [AllowAnonymous]
         [HttpGet] 
         [Route("PayCheck")]
         public async Task<MessageModel<PayReturnResultModel>> PayCheckGet([FromQuery]PayNeedModel payModel)
@@ -68,7 +66,6 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <param name="payModel"></param>
         /// <returns></returns>
-        [AllowAnonymous] 
         [HttpPost]
         [Route("PayCheck")]
         public async Task<MessageModel<PayReturnResultModel>> PayCheckPost([FromBody]PayNeedModel payModel)
@@ -80,7 +77,6 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <param name="payModel"></param>
         /// <returns></returns>
-        [AllowAnonymous]
         [HttpGet] 
         [Route("PayRefund")]
         public async Task<MessageModel<PayRefundReturnResultModel>> PayRefundGet([FromQuery]PayRefundNeedModel payModel)
@@ -92,7 +88,6 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <param name="payModel"></param>
         /// <returns></returns>
-        [AllowAnonymous] 
         [HttpPost]
         [Route("PayRefund")]
         public async Task<MessageModel<PayRefundReturnResultModel>> PayRefundPost([FromBody]PayRefundNeedModel payModel)
