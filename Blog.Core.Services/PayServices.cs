@@ -285,8 +285,11 @@ namespace Blog.Core.Services
             string returnData = string.Empty;
             try
             {
+                //设置最大轮询次数,跟建行保持一致
                 int theLastTime = 6;
                 if (times > theLastTime) throw new Exception($"轮询次数超过最大次数{theLastTime}");
+
+
                 string host = "https://ibsbjstar.ccb.com.cn/CCBIS/B2CMainPlat_00_BEPAY?";
 
                 Dictionary<string, object> dic = new Dictionary<string, object>();
