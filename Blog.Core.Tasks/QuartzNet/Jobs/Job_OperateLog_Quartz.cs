@@ -18,14 +18,12 @@ namespace Blog.Core.Tasks
 {
     public class Job_OperateLog_Quartz : JobBase, IJob
     {
-        private readonly IOperateLogServices _operateLogServices;
-        private readonly ITasksQzServices _tasksQzServices;
+        private readonly IOperateLogServices _operateLogServices; 
         private readonly IWebHostEnvironment _environment;
 
-        public Job_OperateLog_Quartz(IOperateLogServices operateLogServices, ITasksQzServices tasksQzServices, IWebHostEnvironment environment)
+        public Job_OperateLog_Quartz(IOperateLogServices operateLogServices, ITasksQzServices tasksQzServices, IWebHostEnvironment environment) : base(tasksQzServices)
         {
-            _operateLogServices = operateLogServices;
-            _tasksQzServices = tasksQzServices;
+            _operateLogServices = operateLogServices; 
             _environment = environment;
         }
         public async Task Execute(IJobExecutionContext context)

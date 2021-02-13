@@ -263,6 +263,60 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Blog.Core.Controllers.PayController">
+            <summary>
+            建行聚合支付类
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.#ctor(Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.PayController},Blog.Core.IServices.IPayServices)">
+            <summary>
+            构造函数
+            </summary> 
+            <param name="logger"></param>
+            <param name="payServices"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayGet(Blog.Core.Model.ViewModels.PayNeedModel)">
+            <summary>
+            被扫支付
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayPost(Blog.Core.Model.ViewModels.PayNeedModel)">
+            <summary>
+            被扫支付
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayCheckGet(Blog.Core.Model.ViewModels.PayNeedModel)">
+            <summary>
+            支付结果查询-轮询
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayCheckPost(Blog.Core.Model.ViewModels.PayNeedModel)">
+            <summary>
+            支付结果查询-轮询
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayRefundGet(Blog.Core.Model.ViewModels.PayRefundNeedModel)">
+            <summary>
+            退款
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayRefundPost(Blog.Core.Model.ViewModels.PayRefundNeedModel)">
+            <summary>
+            退款
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.PermissionController">
             <summary>
             菜单管理
@@ -402,6 +456,13 @@
             <param name="tasksQz"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.Delete(System.Int32)">
+            <summary>
+            删除一个任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Controllers.TasksQzController.StartJob(System.Int32)">
             <summary>
             启动计划任务
@@ -412,6 +473,20 @@
         <member name="M:Blog.Core.Controllers.TasksQzController.StopJob(System.Int32)">
             <summary>
             停止一个计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>        
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.PauseJob(System.Int32)">
+            <summary>
+            暂停一个计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>        
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.ResumeJob(System.Int32)">
+            <summary>
+            恢复一个计划任务
             </summary>
             <param name="jobId"></param>
             <returns></returns>        
@@ -610,6 +685,21 @@
             <summary>
             Get方法
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.RedisMq(Blog.Core.Extensions.IRedisBasketRepository)">
+            <summary>
+            测试Redis消息队列
+            </summary>
+            <param name="_redisBasketRepository"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.EventBusTry(Blog.Core.EventBus.IEventBus,System.String)">
+            <summary>
+            测试RabbitMQ事件总线
+            </summary>
+            <param name="_eventBus"></param>
+            <param name="blogId"></param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get(System.Int32)">

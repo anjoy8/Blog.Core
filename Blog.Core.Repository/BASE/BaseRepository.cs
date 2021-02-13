@@ -3,6 +3,7 @@ using Blog.Core.Common.DB;
 using Blog.Core.IRepository.Base;
 using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.Model;
+using Blog.Core.Model.Models;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -272,6 +273,32 @@ namespace Blog.Core.Repository.Base
         public async Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression)
         {
             return await _db.Queryable<TEntity>().WhereIF(whereExpression != null, whereExpression).ToListAsync();
+        }
+
+        /// <summary>
+        /// 功能描述:按照特定列查询数据列表
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public async Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression)
+        {
+            return await _db.Queryable<TEntity>().Select(expression).ToListAsync();
+        }
+
+        /// <summary>
+        /// 功能描述:按照特定列查询数据列表带条件排序
+        /// 作　　者:Blog.Core
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="whereExpression">过滤条件</param>
+        /// <param name="expression">查询实体条件</param>
+        /// <param name="strOrderByFileds">排序条件</param>
+        /// <returns></returns>
+        public async Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression, Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds)
+        {
+            return await _db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds).WhereIF(whereExpression != null, whereExpression).Select(expression).ToListAsync();
         }
 
         /// <summary>

@@ -101,6 +101,45 @@
             返回数据集合
             </summary>
         </member>
+        <member name="M:Blog.Core.Model.MessageModel`1.Success(System.String)">
+            <summary>
+            返回成功
+            </summary>
+            <param name="msg">消息</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.MessageModel`1.Success(System.String,`0)">
+            <summary>
+            返回成功
+            </summary>
+            <param name="msg">消息</param>
+            <param name="response">数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.MessageModel`1.Fail(System.String)">
+            <summary>
+            返回失败
+            </summary>
+            <param name="msg">消息</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.MessageModel`1.Fail(System.String,`0)">
+            <summary>
+            返回失败
+            </summary>
+            <param name="msg">消息</param>
+            <param name="response">数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.MessageModel`1.Message(System.Boolean,System.String,`0)">
+            <summary>
+            返回消息
+            </summary>
+            <param name="success">失败/成功</param>
+            <param name="msg">消息</param>
+            <param name="response">数据</param>
+            <returns></returns>
+        </member>
         <member name="P:Blog.Core.Model.Models.Advertisement.ImgUrl">
             <summary>
             广告图片
@@ -722,6 +761,11 @@
             执行间隔时间, 秒为单位
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.CycleRunTimes">
+            <summary>
+            循环执行次数
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.TasksQz.IsStart">
             <summary>
             是否启动
@@ -735,6 +779,11 @@
         <member name="P:Blog.Core.Model.Models.TasksQz.CreateTime">
             <summary>
             创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.Triggers">
+            <summary>
+            任务内存中的状态
             </summary>
         </member>
         <member name="T:Blog.Core.Model.Models.Topic">
@@ -1381,6 +1430,394 @@
             
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.MERCHANTID">
+            <summary>
+            商户号
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.POSID">
+            <summary>
+            柜台号
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.BRANCHID">
+            <summary>
+            分行号
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.GROUPMCH">
+            <summary>
+            集团商户信息
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.TXCODE">
+            <summary>
+            交易码
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.MERFLAG">
+            <summary>
+            商户类型
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.TERMNO1">
+            <summary>
+            终端编号 1
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.TERMNO2">
+            <summary>
+            终端编号 2
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.ORDERID">
+            <summary>
+            订单号
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.QRCODE">
+            <summary>
+            码信息（一维码、二维码）
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.AMOUNT">
+            <summary>
+            订单金额，单位：元
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.PROINFO">
+            <summary>
+            商品名称
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.REMARK1">
+            <summary>
+            备注 1
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.REMARK2">
+            <summary>
+            备注 2
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.FZINFO1">
+            <summary>
+            分账信息一
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.FZINFO2">
+            <summary>
+            分账信息二
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.SUB_APPID">
+            <summary>
+            子商户公众账号 ID
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.RETURN_FIELD">
+            <summary>
+            返回信息位图
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.USERPARAM">
+            <summary>
+            实名支付
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.detail">
+            <summary>
+            商品详情
+            </summary>  
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.goods_tag">
+            <summary>
+            订单优惠标记
+            </summary>                           
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.pubKey">
+            <summary>
+            公钥
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.url">
+            <summary>
+            请求地址
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayModel.deleteEmpty">
+            <summary>
+            是否删除空值
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.PayNeedModel">
+            <summary>
+            退款参数
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayNeedModel.ORDERID">
+            <summary>
+            订单ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayNeedModel.PROINFO">
+            <summary>
+            商品名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayNeedModel.AMOUNT">
+            <summary>
+            支付金额(小数点最多两位)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayNeedModel.QRCODE">
+            <summary>
+            二维码/条码信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayNeedModel.REMARK1">
+            <summary>
+            备注信息1
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayNeedModel.REMARK2">
+            <summary>
+            备注信息2
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.PayRefundNeedModel">
+            <summary>
+            订单参数
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundNeedModel.ORDER">
+            <summary>
+            订单号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundNeedModel.MONEY">
+            <summary>
+            退款金额
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundNeedModel.REFUND_CODE">
+            <summary>
+            退款流水号(可选)
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.PayRefundReturnModel">
+            <summary>
+            退款返回消息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnModel.REQUEST_SN">
+            <summary>
+            序列号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnModel.CUST_ID">
+            <summary>
+            商户号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnModel.TX_CODE">
+            <summary>
+            交易码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnModel.RETURN_CODE">
+            <summary>
+            返回码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnModel.RETURN_MSG">
+            <summary>
+            返回码说明
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnModel.LANGUAGE">
+            <summary>
+            语言
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnModel.TX_INFO">
+            <summary>
+            订单信息
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.PayRefundReturnOrderInfoModel">
+            <summary>
+            订单信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnOrderInfoModel.ORDER_NUM">
+            <summary>
+            订单号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnOrderInfoModel.PAY_AMOUNT">
+            <summary>
+            支付金额
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnOrderInfoModel.AMOUNT">
+            <summary>
+            退款金额
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnOrderInfoModel.REM1">
+            <summary>
+            备注1
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnOrderInfoModel.REM2">
+            <summary>
+            备注2
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.PayRefundReturnResultModel">
+            <summary>
+            退款返回结果消息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnResultModel.ORDER_NUM">
+            <summary>
+            订单号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnResultModel.PAY_AMOUNT">
+            <summary>
+            支付金额
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnResultModel.AMOUNT">
+            <summary>
+            退款金额
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnResultModel.REQUEST_SN">
+            <summary>
+            序列号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnResultModel.CUST_ID">
+            <summary>
+            商户号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnResultModel.TX_CODE">
+            <summary>
+            交易码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnResultModel.RETURN_CODE">
+            <summary>
+            返回码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnResultModel.RETURN_MSG">
+            <summary>
+            返回码说明
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayRefundReturnResultModel.LANGUAGE">
+            <summary>
+            语言
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.PayResultModel">
+            <summary>
+            支付结果dto
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayResultModel.RESULT">
+            <summary>
+            支付结果
+            Y：成功
+            N：失败
+            U：不确定
+            Q：待轮询 
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayResultModel.ORDERID">
+            <summary>
+            订单ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayResultModel.AMOUNT">
+            <summary>
+            支付金额
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayResultModel.QRCODETYPE">
+            <summary>
+            二维码类型
+            1：龙支付
+            2：微信
+            3：支付宝
+            4：银联 
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayResultModel.WAITTIME">
+            <summary>
+            等待时间-轮询等待时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayResultModel.TRACEID">
+            <summary>
+            全局事件跟踪号-建行交易流水号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayResultModel.ERRCODE">
+            <summary>
+            错误码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayResultModel.ERRMSG">
+            <summary>
+            错误信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayResultModel.SIGN">
+            <summary>
+            验证签名-防止伪造攻击
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.PayReturnResultModel">
+            <summary>
+            返回支付结果
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayReturnResultModel.ORDERID">
+            <summary>
+            发起的订单ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayReturnResultModel.AMOUNT">
+            <summary>
+            返回支付的金额
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayReturnResultModel.QRCODETYPE">
+            <summary>
+            返回支付的类型 1：龙支付 2：微信 3：支付宝 4：银联
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayReturnResultModel.TRACEID">
+            <summary>
+            返回建行的流水号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayReturnResultModel.ERRCODE">
+            <summary>
+            错误代码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.PayReturnResultModel.ERRMSG">
+            <summary>
+            错误信息
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.ViewModels.ServerViewModel">
             <summary>
             服务器VM
@@ -1424,6 +1861,46 @@
         <member name="T:Blog.Core.Model.ViewModels.SidebarMenuViewModel">
             <summary>
             菜单展示model
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.TaskInfoDto">
+            <summary>
+            调度任务触发器信息实体
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TaskInfoDto.jobId">
+            <summary>
+            任务ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TaskInfoDto.jobName">
+            <summary>
+            任务名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TaskInfoDto.jobGroup">
+            <summary>
+            任务分组
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TaskInfoDto.triggerId">
+            <summary>
+            触发器ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TaskInfoDto.triggerName">
+            <summary>
+            触发器名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TaskInfoDto.triggerGroup">
+            <summary>
+            触发器分组
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TaskInfoDto.triggerStatus">
+            <summary>
+            触发器状态
             </summary>
         </member>
         <member name="T:Blog.Core.Model.ViewModels.TestRestSharpGetDto">

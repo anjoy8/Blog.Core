@@ -11,13 +11,11 @@ namespace Blog.Core.Tasks
 {
     public class Job_Blogs_Quartz : JobBase, IJob
     {
-        private readonly IBlogArticleServices _blogArticleServices;
-        private readonly ITasksQzServices _tasksQzServices;
+        private readonly IBlogArticleServices _blogArticleServices;  
 
-        public Job_Blogs_Quartz(IBlogArticleServices blogArticleServices, ITasksQzServices tasksQzServices)
+        public Job_Blogs_Quartz(IBlogArticleServices blogArticleServices, ITasksQzServices tasksQzServices):base(tasksQzServices)
         {
-            _blogArticleServices = blogArticleServices;
-            _tasksQzServices = tasksQzServices;
+            _blogArticleServices = blogArticleServices; 
         }
         public async Task Execute(IJobExecutionContext context)
         {
@@ -64,7 +62,4 @@ namespace Blog.Core.Tasks
             await Console.Out.WriteLineAsync("博客总数量" + list.Count.ToString());
         }
     }
-
-
-
 }

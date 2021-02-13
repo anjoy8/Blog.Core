@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace Blog.Core.Extensions
 {
@@ -18,9 +17,12 @@ namespace Blog.Core.Extensions
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
-            List<Type> tsDIAutofac = new List<Type>();
-            tsDIAutofac.AddRange(Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "Blog.Core.Services.dll")).GetTypes().ToList());
-            tsDIAutofac.AddRange(Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "Blog.Core.Repository.dll")).GetTypes().ToList());
+            //List<Type> tsDIAutofac = new List<Type>();
+            //tsDIAutofac.AddRange(Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "Blog.Core.Services.dll")).GetTypes().ToList());
+            //tsDIAutofac.AddRange(Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "Blog.Core.Repository.dll")).GetTypes().ToList());
+
+            var autofacContaniers = (app.ApplicationServices.GetAutofacRoot())?.ComponentRegistry?.Registrations;
+
 
             app.Map("/allservices", builder => builder.Run(async context =>
             {
@@ -37,15 +39,15 @@ namespace Blog.Core.Extensions
                     await context.Response.WriteAsync($"<td>{svc.ImplementationType?.Name}</td>");
                     await context.Response.WriteAsync("</tr>");
                 }
-                foreach (var item in tsDIAutofac.Where(s => !s.IsInterface))
+                foreach (var item in autofacContaniers.ToList())
                 {
-                    var interfaceType = item.GetInterfaces();
+                    var interfaceType = item.Services;
                     foreach (var typeArray in interfaceType)
                     {
                         await context.Response.WriteAsync("<tr>");
-                        await context.Response.WriteAsync($"<td>{typeArray?.FullName}</td>");
-                        await context.Response.WriteAsync($"<td>Scoped</td>");
-                        await context.Response.WriteAsync($"<td>{item?.Name}</td>");
+                        await context.Response.WriteAsync($"<td>{typeArray?.Description}</td>");
+                        await context.Response.WriteAsync($"<td>{item.Lifetime}</td>");
+                        await context.Response.WriteAsync($"<td>{item?.Target.Activator.ObjToString().Replace("(ReflectionActivator)", "")}</td>");
                         await context.Response.WriteAsync("</tr>");
                     }
                 }

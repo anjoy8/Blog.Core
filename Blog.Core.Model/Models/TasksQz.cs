@@ -1,5 +1,7 @@
-﻿using SqlSugar;
+﻿using Blog.Core.Model.ViewModels;
+using SqlSugar;
 using System;
+using System.Collections.Generic;
 
 namespace Blog.Core.Model.Models
 {
@@ -59,6 +61,10 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public int IntervalSecond { get; set; }
         /// <summary>
+        /// 循环执行次数
+        /// </summary>
+        public int CycleRunTimes { get; set; }
+        /// <summary>
         /// 是否启动
         /// </summary>
         public bool IsStart { get; set; } = false;
@@ -75,5 +81,10 @@ namespace Blog.Core.Model.Models
         /// </summary>
         [SugarColumn(IsNullable = true)]
         public DateTime CreateTime { get; set; } = DateTime.Now;
+        /// <summary>
+        /// 任务内存中的状态
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public List<TaskInfoDto> Triggers { get; set; }
     }
 }

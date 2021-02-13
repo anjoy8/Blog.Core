@@ -30,9 +30,9 @@ namespace Blog.Core.Tasks
                 return job;
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                throw;
             }
         }
 
