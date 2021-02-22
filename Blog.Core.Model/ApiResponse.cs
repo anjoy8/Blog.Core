@@ -1,11 +1,10 @@
-﻿using Blog.Core.Model;
-
-namespace Blog.Core.AuthHelper.Policys
+﻿
+namespace Blog.Core.Model
 {
     public class ApiResponse
     {
-        public int Status { get; set; } = 404;
-        public string Value { get; set; } = "No Found";
+        public int Status { get; set; } = 200;
+        public string Value { get; set; } = "";
         public MessageModel<string> MessageModel = new MessageModel<string>() { };
 
         public ApiResponse(StatusCode apiCode, string msg = null)
@@ -24,6 +23,12 @@ namespace Blog.Core.AuthHelper.Policys
                         Value = "很抱歉，您的访问权限等级不够，联系管理员!";
                     }
                     break;
+                case StatusCode.CODE404:
+                    {
+                        Status = 404;
+                        Value = "资源不存在!";
+                    }
+                    break;
                 case StatusCode.CODE500:
                     {
                         Status = 500;
@@ -36,13 +41,14 @@ namespace Blog.Core.AuthHelper.Policys
             {
                 status = Status,
                 msg = Value,
-                success = false
+                success = apiCode != StatusCode.CODE200
             };
         }
     }
 
     public enum StatusCode
     {
+        CODE200,
         CODE401,
         CODE403,
         CODE404,
