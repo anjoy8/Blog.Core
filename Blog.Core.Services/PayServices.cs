@@ -1,11 +1,11 @@
-﻿using Blog.Core.Common.Helper;
+﻿using Blog.Core.Common;
+using Blog.Core.Common.Helper;
 using Blog.Core.Common.StaticHelper;
 using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
 using Blog.Core.Services.BASE;
-using CCB_B2CPay_Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
@@ -277,6 +277,7 @@ namespace Blog.Core.Services
         public async Task<MessageModel<PayReturnResultModel>> PayCheck(PayNeedModel payModel, int times)
         {
             _logger.LogInformation("轮询开始");
+
             MessageModel<PayReturnResultModel> messageModel = new MessageModel<PayReturnResultModel>();
             messageModel.response = new PayReturnResultModel();
             string url = string.Empty;
@@ -284,11 +285,9 @@ namespace Blog.Core.Services
             string returnData = string.Empty;
             try
             {
+                //设置最大轮询次数,跟建行保持一致
                 int theLastTime = 6;
-                if (times > theLastTime)
-                {
-                    throw new Exception($"轮询次数超过最大次数{theLastTime}");
-                }
+                if (times > theLastTime) throw new Exception($"轮询次数超过最大次数{theLastTime}");
 
                 string host = "https://ibsbjstar.ccb.com.cn/CCBIS/B2CMainPlat_00_BEPAY?";
 

@@ -109,6 +109,16 @@ namespace Blog.Core.Extensions
                     ConsoleHelper.WriteSuccessLine($"IpRateLimiting: True");
                 }
 
+                // 性能分析
+                if (!Appsettings.app("Startup", "MiniProfiler", "Enabled").ObjToBool())
+                {
+                    Console.WriteLine($"MiniProfiler: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"MiniProfiler: True");
+                }
+              
                 // CORS跨域
                 if (!Appsettings.app("Startup", "Cors", "EnableAllIPs").ObjToBool())
                 {
@@ -116,7 +126,7 @@ namespace Blog.Core.Extensions
                 }
                 else
                 {
-                    ConsoleHelper.WriteSuccessLine($"EnableAllIPs For EnableAllIPs: True");
+                    ConsoleHelper.WriteSuccessLine($"EnableAllIPs For CORS: True");
                 }
 
                 // redis消息队列
