@@ -10,7 +10,7 @@ namespace Blog.Core.Extensions
     /// </summary>
     public static class MiniProfilerMildd
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(QuartzJobMildd));
+        private static readonly ILog log = LogManager.GetLogger(typeof(MiniProfilerMildd));
         public static void UseMiniProfilerMildd(this IApplicationBuilder app)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));

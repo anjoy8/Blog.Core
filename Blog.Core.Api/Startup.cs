@@ -185,10 +185,11 @@ namespace Blog.Core
             app.UseAuthentication();
             // 然后是授权中间件
             app.UseAuthorization();
-
+            //开启性能分析
+            app.UseMiniProfilerMildd();
             // 开启异常中间件，要放到最后
             //app.UseExceptionHandlerMidd();
-            
+
 
             app.UseEndpoints(endpoints =>
             {
