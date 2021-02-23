@@ -33,7 +33,7 @@ namespace Blog.Core.Tests
         {
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
 
-            IServiceCollection services = new ServiceCollection();
+            IServiceCollection services = new ServiceCollection().AddLogging();
             services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<SqlSugar.ISqlSugarClient>(o =>

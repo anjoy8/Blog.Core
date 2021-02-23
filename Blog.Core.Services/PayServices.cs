@@ -23,7 +23,7 @@ namespace Blog.Core.Services
         IBaseRepository<RootEntityTkey<int>> _dal;
         IHttpContextAccessor _httpContextAccessor;
         ILogger<PayServices> _logger;
-        public PayServices(IBaseRepository<RootEntityTkey<int>> dal, ILogger<PayServices> logger , IHttpContextAccessor  httpContextAccessor)
+        public PayServices(IBaseRepository<RootEntityTkey<int>> dal, ILogger<PayServices> logger, IHttpContextAccessor httpContextAccessor)
         {
             this._dal = dal;
             base.BaseDal = dal;
@@ -36,13 +36,13 @@ namespace Blog.Core.Services
             _logger.LogInformation("支付开始");
             MessageModel<PayReturnResultModel> messageModel = new MessageModel<PayReturnResultModel>();
             messageModel.response = new PayReturnResultModel();
-            string url =string.Empty;
+            string url = string.Empty;
             string param = string.Empty;
             string returnData = string.Empty;
             try
             {
 
-                _logger.LogInformation($"原始GET参数->{_httpContextAccessor.HttpContext.Request.QueryString}"); 
+                _logger.LogInformation($"原始GET参数->{_httpContextAccessor.HttpContext.Request.QueryString}");
                 //被扫支付 
                 string host = "https://ibsbjstar.ccb.com.cn/CCBIS/B2CMainPlat_00_BEPAY?";
                 ////商户信息
@@ -85,12 +85,12 @@ namespace Blog.Core.Services
                 dicInfo.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
                 dicInfo.Add("POSID", StaticPayInfo.POSID);// => self::POSID, // 柜台号
                 dicInfo.Add("BRANCHID", StaticPayInfo.BRANCHID);// => self::BRANCHID, // 分行号
-                var Info = StringHelper.GetPars(dicInfo); 
+                var Info = StringHelper.GetPars(dicInfo);
 
-                
+
                 //获取拼接请求串
                 param = StringHelper.GetPars(dic);
-                
+
                 //加密
                 var paramEncryption = new CCBPayUtil().makeCCBParam(param, StaticPayInfo.pubKey);
                 //拼接请求串
@@ -109,8 +109,8 @@ namespace Blog.Core.Services
                     }
                     catch
                     {
-                        payResult = new PayResultModel { RESULT = "N", ERRMSG = "参数错误", ORDERID = payModel.ORDERID, AMOUNT = payModel.AMOUNT};
-                        returnData = StringHelper.GetCusLine(returnData, 15); 
+                        payResult = new PayResultModel { RESULT = "N", ERRMSG = "参数错误", ORDERID = payModel.ORDERID, AMOUNT = payModel.AMOUNT };
+                        returnData = StringHelper.GetCusLine(returnData, 15);
                     }
                     _logger.LogInformation($"响应数据->{returnData}");
                 }
@@ -118,9 +118,9 @@ namespace Blog.Core.Services
                 {
                     _logger.LogInformation($"异常信息:{ex.Message}");
                     _logger.LogInformation($"异常堆栈:{ex.StackTrace}");
-                    messageModel = await  PayCheck(payModel,1);
-                    return messageModel; 
-                } 
+                    messageModel = await PayCheck(payModel, 1);
+                    return messageModel;
+                }
                 switch (payResult.RESULT)
                 {
                     case "Y":
@@ -152,11 +152,11 @@ namespace Blog.Core.Services
                         if (waittime <= 0) waittime = 5;//如果需要等待默认等待5秒后再次查询
                         Thread.Sleep(waittime * 1000);
                         //轮询查询
-                        messageModel = await PayCheck(payModel,1);
+                        messageModel = await PayCheck(payModel, 1);
                         break;
                     default:
                         messageModel.success = false;
-                        messageModel.msg = "支付失败"; 
+                        messageModel.msg = "支付失败";
                         break;
                 }
                 messageModel.response.ORDERID = payResult.ORDERID;
@@ -181,14 +181,14 @@ namespace Blog.Core.Services
             }
             return messageModel;
         }
-        public async Task<MessageModel<PayRefundReturnResultModel>> PayRefund(PayRefundNeedModel payModel) 
+        public async Task<MessageModel<PayRefundReturnResultModel>> PayRefund(PayRefundNeedModel payModel)
         {
             _logger.LogInformation("退款开始");
             MessageModel<PayRefundReturnResultModel> messageModel = new MessageModel<PayRefundReturnResultModel>();
             messageModel.response = new PayRefundReturnResultModel();
             try
             {
-                _logger.LogInformation($"原始GET参数->{_httpContextAccessor.HttpContext.Request.QueryString}"); 
+                _logger.LogInformation($"原始GET参数->{_httpContextAccessor.HttpContext.Request.QueryString}");
 
                 string REQUEST_SN = StringHelper.GetGuidToLongID().ToString().Substring(0, 16);//请求序列码
                 string CUST_ID = StaticPayInfo.MERCHANTID;//商户号
@@ -212,7 +212,7 @@ namespace Blog.Core.Services
                 sRequestMsg = "requestXml=" + sRequestMsg;
 
                 _logger.LogInformation("请求地址：" + sUrl);
-                _logger.LogInformation("请求报文：" + sRequestMsg); 
+                _logger.LogInformation("请求报文：" + sRequestMsg);
                 HttpWebRequest request = (System.Net.HttpWebRequest)HttpWebRequest.Create(sUrl);
                 request.Method = "POST";
 
@@ -256,7 +256,7 @@ namespace Blog.Core.Services
 
                 messageModel.response.AMOUNT = Xmlresult.TX_INFO?.AMOUNT;
                 messageModel.response.PAY_AMOUNT = Xmlresult.TX_INFO?.PAY_AMOUNT;
-                messageModel.response.ORDER_NUM = Xmlresult.TX_INFO?.ORDER_NUM; 
+                messageModel.response.ORDER_NUM = Xmlresult.TX_INFO?.ORDER_NUM;
             }
             catch (Exception ex)
             {
@@ -272,12 +272,12 @@ namespace Blog.Core.Services
                 _logger.LogInformation("退款结束");
             }
             return messageModel;
-        
+
         }
-        public async Task<MessageModel<PayReturnResultModel>> PayCheck(PayNeedModel payModel,int times)
+        public async Task<MessageModel<PayReturnResultModel>> PayCheck(PayNeedModel payModel, int times)
         {
-            
-            _logger.LogInformation("轮序开始");
+            _logger.LogInformation("轮询开始");
+
             MessageModel<PayReturnResultModel> messageModel = new MessageModel<PayReturnResultModel>();
             messageModel.response = new PayReturnResultModel();
             string url = string.Empty;
@@ -288,7 +288,6 @@ namespace Blog.Core.Services
                 //设置最大轮询次数,跟建行保持一致
                 int theLastTime = 6;
                 if (times > theLastTime) throw new Exception($"轮询次数超过最大次数{theLastTime}");
-
 
                 string host = "https://ibsbjstar.ccb.com.cn/CCBIS/B2CMainPlat_00_BEPAY?";
 
@@ -325,7 +324,7 @@ namespace Blog.Core.Services
                 dicInfo.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
                 dicInfo.Add("POSID", StaticPayInfo.POSID);// => self::POSID, // 柜台号
                 dicInfo.Add("BRANCHID", StaticPayInfo.BRANCHID);// => self::BRANCHID, // 分行号
-                var Info = StringHelper.GetPars(dicInfo);  
+                var Info = StringHelper.GetPars(dicInfo);
 
                 //var newDic = dic.OrderBy(t => t.Key).ToDictionary(o => o.Key, p => p.Value);
                 //参数信息
@@ -348,17 +347,17 @@ namespace Blog.Core.Services
                 {
                     _logger.LogInformation($"异常信息:{ex.Message}");
                     _logger.LogInformation($"异常堆栈:{ex.StackTrace}");
-                    return  await PayCheck(payModel, ++times); 
+                    return await PayCheck(payModel, ++times);
                 }
-               
-                
+
+
                 try
                 {
                     payResult = JsonHelper.ParseFormByJson<PayResultModel>(returnData);
                 }
                 catch
                 {
-                    payResult = new PayResultModel { RESULT = "N", ERRMSG = "参数错误", ORDERID = payModel.ORDERID, AMOUNT = payModel.AMOUNT }; 
+                    payResult = new PayResultModel { RESULT = "N", ERRMSG = "参数错误", ORDERID = payModel.ORDERID, AMOUNT = payModel.AMOUNT };
                 }
 
                 switch (payResult.RESULT)
@@ -370,7 +369,7 @@ namespace Blog.Core.Services
                         dicCheckPars.Add("AMOUNT", payResult.AMOUNT);
                         dicCheckPars.Add("WAITTIME", payResult.WAITTIME);
                         string strCheckPars = StringHelper.GetPars(dicCheckPars);
-                        if (NotifyCheck(strCheckPars, payResult.SIGN, StaticPayInfo.pubKey)) 
+                        if (NotifyCheck(strCheckPars, payResult.SIGN, StaticPayInfo.pubKey))
                         {
                             messageModel.success = true;
                             messageModel.msg = "支付成功";
@@ -379,7 +378,7 @@ namespace Blog.Core.Services
                         {
                             messageModel.success = false;
                             messageModel.msg = "签名失败";
-                        } 
+                        }
                         break;
                     case "N":
                         messageModel.success = false;
@@ -420,8 +419,9 @@ namespace Blog.Core.Services
             }
             return messageModel;
         }
-        
-        public bool NotifyCheck(string strSrc,string sign,string pubKey) {
+
+        public bool NotifyCheck(string strSrc, string sign, string pubKey)
+        {
 
             return new CCBPayUtil().verifyNotifySign(strSrc, sign, pubKey);
         }

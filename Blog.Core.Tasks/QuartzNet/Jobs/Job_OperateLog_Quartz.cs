@@ -75,7 +75,23 @@ namespace Blog.Core.Tasks
             if (operateLogs.Count > 0)
             {
                 var logsIds = await _operateLogServices.Add(operateLogs);
-            } 
+            }
+
+            if (jobid > 0)
+            {
+                var model = await _tasksQzServices.QueryById(jobid);
+                if (model != null)
+                {
+                    var list = await _operateLogServices.Query(d => d.IsDeleted == false);
+                    model.RunTimes += 1;
+                    var separator = "<br>";
+                    model.Remark =
+                        $"【{DateTime.Now}】执行任务【Id：{context.JobDetail.Key.Name}，组别：{context.JobDetail.Key.Group}】【执行成功】:异常数{list.Count}{separator}"
+                        + string.Join(separator, StringHelper.GetTopDataBySeparator(model.Remark, separator, 9));
+
+                    await _tasksQzServices.Update(model);
+                }
+            }
         }
     }
 
