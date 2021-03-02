@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.HttpRestSharp;
 using Blog.Core.Common.WebApiClients.HttpApis;
+using Blog.Core.EventBus;
+using Blog.Core.EventBus.EventHandling;
+using Blog.Core.Extensions;
 using Blog.Core.Filter;
 using Blog.Core.IServices;
 using Blog.Core.Model;
@@ -13,13 +12,18 @@ using Blog.Core.Model.Models;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Controllers
 {
     /// <summary>
     /// Values控制器
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     //[Authorize]
     //[Authorize(Roles = "Admin,Client")]
@@ -50,7 +54,14 @@ namespace Blog.Core.Controllers
         /// <param name="passwordLibServices"></param>
         /// <param name="blogApi"></param>
         /// <param name="doubanApi"></param>
-        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love, IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices, IBlogApi blogApi, IDoubanApi doubanApi)
+        public ValuesController(IBlogArticleServices blogArticleServices
+            , IMapper mapper
+            , IAdvertisementServices advertisementServices
+            , Love love
+            , IRoleModulePermissionServices roleModulePermissionServices
+            , IUser user, IPasswordLibServices passwordLibServices
+            , IBlogApi blogApi
+            , IDoubanApi doubanApi)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
@@ -65,6 +76,8 @@ namespace Blog.Core.Controllers
             _blogApi = blogApi;
             _doubanApi = doubanApi;
             // 测试AOP加载顺序，配合 return
+            _blogArticleServices = blogArticleServices;
+            // 测试redis消息队列
             _blogArticleServices = blogArticleServices;
         }
         /// <summary>
@@ -83,6 +96,18 @@ namespace Blog.Core.Controllers
              */
             var queryBySql = await _blogArticleServices.QuerySql("SELECT bsubmitter,btitle,bcontent,bCreateTime FROM BlogArticle WHERE bID>5");
 
+            /*
+             *  测试按照指定列查询
+             */
+            var queryByColums = await _blogArticleServices
+                .Query<BlogViewModels>(it => new BlogViewModels() { btitle = it.btitle });
+
+            /*
+            *  测试按照指定列查询带多条件和排序方法
+            */
+            Expression<Func<BlogArticle, bool>> registerInfoWhere = a => a.btitle == "xxx" && a.bRemark=="XXX";
+            var queryByColumsByMultiTerms = await _blogArticleServices
+                .Query<BlogArticle>(it => new BlogArticle() { btitle = it.btitle }, registerInfoWhere, "bID Desc");
 
             /*
              *  测试 sql 更新
@@ -119,11 +144,37 @@ namespace Blog.Core.Controllers
             // 测试service层返回异常
             _advertisementServices.ReturnExp();
 
-            Love love = null;
-            love.SayLoveU();
-
             return data;
         }
+
+        /// <summary>
+        /// 测试Redis消息队列
+        /// </summary>
+        /// <param name="_redisBasketRepository"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task RedisMq([FromServices] IRedisBasketRepository _redisBasketRepository)
+        {
+            var msg = $"这里是一条日志{DateTime.Now}";
+            await _redisBasketRepository.ListLeftPushAsync(RedisMqKey.Loging, msg);
+        }
+
+        /// <summary>
+        /// 测试RabbitMQ事件总线
+        /// </summary>
+        /// <param name="_eventBus"></param>
+        /// <param name="blogId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public void EventBusTry([FromServices] IEventBus _eventBus, string blogId = "1")
+        {
+            var blogDeletedEvent = new BlogDeletedIntegrationEvent(blogId);
+
+            _eventBus.Publish(blogDeletedEvent);
+        }
+
         /// <summary>
         /// Get(int id)方法
         /// </summary>
@@ -148,7 +199,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("/api/values/RequiredPara")]
-        public string RequiredP([Required]string id)
+        public string RequiredP([Required] string id)
         {
             return id;
         }
@@ -202,7 +253,7 @@ namespace Blog.Core.Controllers
         /// <param name="id">独立参数</param>
         [HttpPost]
         [AllowAnonymous]
-        public object Post([FromBody]  BlogArticle blogArticle, int id)
+        public object Post([FromBody] BlogArticle blogArticle, int id)
         {
             return Ok(new { success = true, data = blogArticle, id = id });
         }
@@ -227,9 +278,9 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet("RestsharpGet")]
         [AllowAnonymous]
-        public TestRestSharpGetDto RestsharpGet()
+        public MessageModel<BlogViewModels> RestsharpGet()
         {
-            return HttpHelper.GetApi<TestRestSharpGetDto>("http://apk.neters.club/", "api/Blog/DetailNuxtNoPer", "id=1");
+            return HttpHelper.GetApi<MessageModel<BlogViewModels>>("http://apk.neters.club/", "api/Blog/DetailNuxtNoPer", "id=1");
         }
         /// <summary>
         /// 测试http请求 RestSharp Post
@@ -250,11 +301,13 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<object> TestMutiDBAPI()
         {
-            // 从主库（Sqlite）中，操作blogs
+            // 从主库中，操作blogs
             var blogs = await _blogArticleServices.Query(d => d.bID == 1);
+            var addBlog = await _blogArticleServices.Add(new BlogArticle() { });
 
-            // 从从库（Sqlserver）中，获取pwds
+            // 从从库中，操作pwds
             var pwds = await _passwordLibServices.Query(d => d.PLID > 0);
+            var addPwd = await _passwordLibServices.Add(new PasswordLib() { });
 
             return new
             {

@@ -17,7 +17,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
+using System.Text;
 
 namespace Blog.Core
 {
@@ -39,13 +41,17 @@ namespace Blog.Core
         public void ConfigureServices(IServiceCollection services)
         {
             // 以下code可能与文章中不一样,对代码做了封装,具体查看右侧 Extensions 文件夹.
-            services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
             services.AddSingleton(new Appsettings(Configuration));
             services.AddSingleton(new LogLock(Env.ContentRootPath));
 
             Permissions.IsUseIds4 = Appsettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
 
+            // 确保从认证中心返回的ClaimType不被更改，不使用Map映射
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             services.AddMemoryCacheSetup();
+            services.AddRedisCacheSetup();
+
             services.AddSqlsugarSetup();
             services.AddDbSetup();
             services.AddAutoMapperSetup();
@@ -54,8 +60,12 @@ namespace Blog.Core
             services.AddSwaggerSetup();
             services.AddJobSetup();
             services.AddHttpContextSetup();
-            services.AddAppConfigSetup();
+            services.AddAppConfigSetup(Env);
             services.AddHttpApi();
+            services.AddRedisInitMqSetup();
+
+            services.AddRabbitMQSetup();
+            services.AddEventBusSetup();
 
             // 授权+认证 (jwt or ids4)
             services.AddAuthorizationSetup();
@@ -86,6 +96,11 @@ namespace Blog.Core
                 // 全局路由前缀，统一修改路由
                 o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
             })
+            // 这种写法也可以
+            //.AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            //})
             //全局配置Json序列化处理
             .AddNewtonsoftJson(options =>
             {
@@ -95,9 +110,15 @@ namespace Blog.Core
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 //设置时间格式
                 //options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
+                //忽略Model中为null的属性
+                //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                //设置本地时间而非UTC时间
+                options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
             });
 
             _services = services;
+            //支持编码大全 例如:支持 System.Text.Encoding.GetEncoding("GB2312")  System.Text.Encoding.GetEncoding("GB18030") 
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
         // 注意在Program.CreateHostBuilder，添加Autofac服务工厂
@@ -113,6 +134,8 @@ namespace Blog.Core
             app.UseIpLimitMildd();
             // 记录请求与返回数据 
             app.UseReuestResponseLog();
+            // 用户访问记录(必须放到外层，不然如果遇到异常，会报错，因为不能返回流)
+            app.UseRecordAccessLogsMildd();
             // signalr 
             app.UseSignalRSendMildd();
             // 记录ip请求
@@ -139,7 +162,7 @@ namespace Blog.Core
             // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
 
             // CORS跨域
-            app.UseCors("LimitRequests");
+            app.UseCors(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
             // 跳转https
             //app.UseHttpsRedirection();
             // 使用静态文件
@@ -152,16 +175,21 @@ namespace Blog.Core
             app.UseRouting();
             // 这种自定义授权中间件，可以尝试，但不推荐
             // app.UseJwtTokenAuth();
+
+            // 测试用户，用来通过鉴权
+            if (Configuration.GetValue<bool>("AppSettings:UseLoadTest"))
+            {
+                app.UseMiddleware<ByPassAuthMidd>();
+            }
             // 先开启认证
             app.UseAuthentication();
             // 然后是授权中间件
             app.UseAuthorization();
+            //开启性能分析
+            app.UseMiniProfilerMildd();
             // 开启异常中间件，要放到最后
             //app.UseExceptionHandlerMidd();
-            // 性能分析
-            app.UseMiniProfiler();
-            // 用户访问记录
-            app.UseRecordAccessLogsMildd();
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -176,8 +204,11 @@ namespace Blog.Core
             app.UseSeedDataMildd(myContext, Env.WebRootPath);
             // 开启QuartzNetJob调度服务
             app.UseQuartzJobMildd(tasksQzServices, schedulerCenter);
-            //服务注册
+            // 服务注册
             app.UseConsulMildd(Configuration, lifetime);
+            // 事件总线，订阅服务
+            app.ConfigureEventBus();
+
         }
 
     }

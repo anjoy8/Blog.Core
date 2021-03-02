@@ -6,7 +6,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 接口API地址信息表
     /// </summary>
-    public class Modules : RootEntity
+    public class Modules : ModulesRoot<int>
     {
         public Modules()
         {
@@ -21,11 +21,7 @@ namespace Blog.Core.Model.Models
         /// </summary>
         [SugarColumn(IsNullable = true)]
         public bool? IsDeleted { get; set; }
-        /// <summary>
-        /// 父ID
-        /// </summary>
-        [SugarColumn(IsNullable = true)]
-        public int? ParentId { get; set; }
+
         /// <summary>
         /// 名称
         /// </summary>

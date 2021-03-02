@@ -1,4 +1,4 @@
-﻿using Blog.Core.AuthHelper.Policys;
+﻿using Blog.Core.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

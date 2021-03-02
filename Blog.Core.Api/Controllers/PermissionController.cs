@@ -194,7 +194,7 @@ namespace Blog.Core.Controllers
             return new MessageModel<List<Permission>>()
             {
                 msg = "获取成功",
-                success = permissions.Count >= 0,
+                success = true,
                 response = permissions
             };
         }
@@ -241,53 +241,48 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<string>();
 
-            try
+
+            if (assignView.rid > 0)
             {
-                if (assignView.rid > 0)
+                data.success = true;
+
+                var roleModulePermissions = await _roleModulePermissionServices.Query(d => d.RoleId == assignView.rid);
+
+                var remove = roleModulePermissions.Where(d => !assignView.pids.Contains(d.PermissionId.ObjToInt())).Select(c => (object)c.Id);
+                data.success &= remove.Any() ? await _roleModulePermissionServices.DeleteByIds(remove.ToArray()) : true;
+
+                foreach (var item in assignView.pids)
                 {
-                    data.success = true;
-
-                    var roleModulePermissions = await _roleModulePermissionServices.Query(d => d.RoleId == assignView.rid);
-
-                    var remove = roleModulePermissions.Where(d => !assignView.pids.Contains(d.PermissionId.ObjToInt())).Select(c => (object)c.Id);
-                    data.success &= remove.Any() ? await _roleModulePermissionServices.DeleteByIds(remove.ToArray()) : true;
-
-                    foreach (var item in assignView.pids)
+                    var rmpitem = roleModulePermissions.Where(d => d.PermissionId == item);
+                    if (!rmpitem.Any())
                     {
-                        var rmpitem = roleModulePermissions.Where(d => d.PermissionId == item);
-                        if (!rmpitem.Any())
+                        var moduleid = (await _permissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
+                        RoleModulePermission roleModulePermission = new RoleModulePermission()
                         {
-                            var moduleid = (await _permissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
-                            RoleModulePermission roleModulePermission = new RoleModulePermission()
-                            {
-                                IsDeleted = false,
-                                RoleId = assignView.rid,
-                                ModuleId = moduleid.ObjToInt(),
-                                PermissionId = item,
-                            };
+                            IsDeleted = false,
+                            RoleId = assignView.rid,
+                            ModuleId = moduleid.ObjToInt(),
+                            PermissionId = item,
+                        };
 
 
-                            roleModulePermission.CreateId = _user.ID;
-                            roleModulePermission.CreateBy = _user.Name;
+                        roleModulePermission.CreateId = _user.ID;
+                        roleModulePermission.CreateBy = _user.Name;
 
-                            data.success &= (await _roleModulePermissionServices.Add(roleModulePermission)) > 0;
+                        data.success &= (await _roleModulePermissionServices.Add(roleModulePermission)) > 0;
 
-                        }
                     }
-
-                    if (data.success)
-                    {
-                        _requirement.Permissions.Clear();
-                        data.response = "";
-                        data.msg = "保存成功";
-                    }
-
                 }
+
+                if (data.success)
+                {
+                    _requirement.Permissions.Clear();
+                    data.response = "";
+                    data.msg = "保存成功";
+                }
+
             }
-            catch (Exception)
-            {
-                data.success = false;
-            }
+
 
             return data;
         }
@@ -486,6 +481,7 @@ namespace Blog.Core.Controllers
             if (permission != null && permission.Id > 0)
             {
                 data.success = await _permissionServices.Update(permission);
+                await _roleModulePermissionServices.UpdateModuleId(permission.Id, permission.Mid);
                 if (data.success)
                 {
                     data.msg = "更新成功";

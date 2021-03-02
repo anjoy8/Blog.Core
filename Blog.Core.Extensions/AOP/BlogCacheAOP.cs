@@ -1,5 +1,4 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.Common.MemoryCache;
 using Castle.DynamicProxy;
 using System.Linq;
 
@@ -23,7 +22,8 @@ namespace Blog.Core.AOP
             var method = invocation.MethodInvocationTarget ?? invocation.Method;
             //对当前方法的特性验证
             //如果需要验证
-            if (method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingAttribute)) is CachingAttribute qCachingAttribute)
+            var CachingAttribute = method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingAttribute));
+            if (CachingAttribute is CachingAttribute qCachingAttribute)
             {
                 //获取自定义缓存键
                 var cacheKey = CustomCacheKey(invocation);
@@ -40,7 +40,7 @@ namespace Blog.Core.AOP
                 //存入缓存
                 if (!string.IsNullOrWhiteSpace(cacheKey))
                 {
-                    _cache.Set(cacheKey, invocation.ReturnValue);
+                    _cache.Set(cacheKey, invocation.ReturnValue, qCachingAttribute.AbsoluteExpiration);
                 }
             }
             else

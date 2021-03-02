@@ -1,19 +1,17 @@
-using Blog.Core.Common;
+using Autofac;
 using Blog.Core.Controllers;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
-using Moq;
-using Xunit;
-using System;
 using Microsoft.Extensions.Logging;
-using Autofac;
+using Moq;
+using System;
+using Xunit;
 
 namespace Blog.Core.Tests
 {
     public class BlogController_Should
     {
         Mock<IBlogArticleServices> mockBlogSev = new Mock<IBlogArticleServices>();
-        Mock<IRedisCacheManager> mockRedisMag = new Mock<IRedisCacheManager>();
         Mock<ILogger<BlogController>> mockLogger = new Mock<ILogger<BlogController>>();
         BlogController blogController;
 

@@ -7,7 +7,7 @@ namespace Blog.Core.Model
         /// <summary>
         /// ID
         /// </summary>
-        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
+        [SugarColumn(IsNullable = false, IsPrimaryKey = true)]
         public int Id { get; set; }
 
       

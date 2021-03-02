@@ -21,15 +21,10 @@ namespace Blog.Core.Model.Seed
         public static bool CreateControllers(SqlSugarClient sqlSugarClient, string ConnId = null, bool isMuti = false, string[] tableNames = null)
         {
 
-            try
-            {
-                Create_Controller_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Api.Controllers", "Blog.Core.Api.Controllers", tableNames, "", isMuti);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+
+            Create_Controller_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Api.Controllers", "Blog.Core.Api.Controllers", tableNames, "", isMuti);
+            return true;
+
 
         }
 
@@ -44,15 +39,10 @@ namespace Blog.Core.Model.Seed
         public static bool CreateModels(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
 
-            try
-            {
-                Create_Model_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Model", "Blog.Core.Model.Models", tableNames, "", isMuti);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+
+            Create_Model_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Model", "Blog.Core.Model.Models", tableNames, "", isMuti);
+            return true;
+
 
         }
 
@@ -67,15 +57,10 @@ namespace Blog.Core.Model.Seed
         public static bool CreateIRepositorys(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
 
-            try
-            {
-                Create_IRepository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IRepository", "Blog.Core.IRepository", tableNames, "", isMuti);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+
+            Create_IRepository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IRepository", "Blog.Core.IRepository", tableNames, "", isMuti);
+            return true;
+
 
         }
 
@@ -92,15 +77,9 @@ namespace Blog.Core.Model.Seed
         public static bool CreateIServices(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
 
-            try
-            {
-                Create_IServices_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IServices", "Blog.Core.IServices", tableNames, "", isMuti);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+
+            Create_IServices_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IServices", "Blog.Core.IServices", tableNames, "", isMuti);
+            return true;
 
         }
 
@@ -117,16 +96,9 @@ namespace Blog.Core.Model.Seed
         public static bool CreateRepository(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
 
-            try
-            {
-                Create_Repository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Repository", "Blog.Core.Repository", tableNames, "", isMuti);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
 
+            Create_Repository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Repository", "Blog.Core.Repository", tableNames, "", isMuti);
+            return true;
         }
 
 
@@ -142,15 +114,9 @@ namespace Blog.Core.Model.Seed
         public static bool CreateServices(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
 
-            try
-            {
-                Create_Services_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Services", "Blog.Core.Services", tableNames, "", isMuti);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+
+            Create_Services_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Services", "Blog.Core.Services", tableNames, "", isMuti);
+            return true;
 
         }
 
@@ -597,17 +563,18 @@ namespace " + strNameSpace + @"
             var ls = IDbFirst.IsCreateDefaultValue().IsCreateAttribute()
 
                   .SettingClassTemplate(p => p =
-@"using Blog.Core.IRepository" + (isMuti ? "." + ConnId + "" : "") + @";
+@"
 using Blog.Core.IServices" + (isMuti ? "." + ConnId + "" : "") + @";
 using Blog.Core.Model.Models" + (isMuti ? "." + ConnId + "" : "") + @";
 using Blog.Core.Services.BASE;
+using Blog.Core.IRepository.Base;
 
 namespace " + strNameSpace + @"
 {
-    public partial class {ClassName}Services : BaseServices<{ClassName}>, I{ClassName}Services" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
+    public class {ClassName}Services : BaseServices<{ClassName}>, I{ClassName}Services" + (string.IsNullOrEmpty(strInterface) ? "" : (" , " + strInterface)) + @"
     {
-        private readonly I{ClassName}Repository _dal;
-        public {ClassName}Services(I{ClassName}Repository dal)
+        private readonly IBaseRepository<{ClassName}> _dal;
+        public {ClassName}Services(IBaseRepository<{ClassName}> dal)
         {
             this._dal = dal;
             base.BaseDal = dal;

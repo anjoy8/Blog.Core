@@ -1,17 +1,7 @@
-﻿<!--<script async="async" id="mini-profiler" src="/profiler/includes.min.js?v=4.1.0+c940f0f28d"
-        data-version="4.1.0+c940f0f28d" data-path="/profiler/"
-        data-current-id="" data-ids="" data-position="Left"
-        data-authorized="true" data-max-traces="15" data-toggle-shortcut="Alt+P"
-        data-trivial-milliseconds="2.0" data-ignored-duplicate-execute-types="Open,OpenAsync,Close,CloseAsync">
-</script>-->
-
+﻿
 <!--1、版本号要与nuget包一致；2、id不能为空-->
-<script async="async" id="mini-profiler" src="/profiler/includes.min.js?v=4.1.0+c940f0f28d"
-        data-version="4.1.0+c940f0f28d" data-path="/profiler/"
-        data-current-id="4ec7c742-49d4-4eaf-8281-3c1e0efa8888" data-ids="4ec7c742-49d4-4eaf-8281-3c1e0efa8888"
-        data-position="Left"
-        data-authorized="true" data-max-traces="5" data-toggle-shortcut="Alt+P"
-        data-trivial-milliseconds="2.0" data-ignored-duplicate-execute-types="Open,OpenAsync,Close,CloseAsync">
+<script async id="mini-profiler" src="/mini-profiler-resources/includes.min.js?v=4.2.1+b27bea37e9" data-version="4.2.1+b27bea37e9" data-path="/mini-profiler-resources/" data-current-id="144b1192-acd3-4fe2-bbc5-6f1e1c6d53df" data-ids="87a1341b-995d-4d1d-aaba-8f2bfcfc9ca9,144b1192-acd3-4fe2-bbc5-6f1e1c6d53df" data-position="Left" data-scheme="Light" data-authorized="true" data-max-traces="15" data-toggle-shortcut="Alt+P" data-trivial-milliseconds="2.0" data-ignored-duplicate-execute-types="Open,OpenAsync,Close,CloseAsync">
+
 </script>
 
 <!-- HTML for static distribution bundle build -->
@@ -19,17 +9,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!--极速模式-->
+    <meta name="renderer" content="webkit" /> 
+    <meta name="force-rendering" content="webkit" />
     <title>%(DocumentTitle)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./swagger-ui.css">
     <link rel="icon" type="image/png" href="./logo/favicon-32x32.png" sizes="32x32" />
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
     <style>
 
         html {
             box-sizing: border-box;
-            overflow: -moz-scrollbars-vertical;
             overflow-y: scroll;
         }
 
@@ -45,7 +36,9 @@
         }
 
         .qqgroup {
-            float: right;
+            position: absolute;
+            top: 67px;
+            right: 10px;
         }
 
         .info {
@@ -86,6 +79,11 @@
         </defs>
     </svg>
     <div id="swagger-ui"></div>
+    <div id="footer" style="text-align: center;margin-bottom: 10px;">
+        Copyright © 2018-2020 老张的哲学
+
+        <br><span id="poweredby">Powered by .NET 5.0.0 on Docker & CentOS 7.6</span>
+    </div>
     <!-- Workaround for https://github.com/swagger-api/swagger-editor/issues/1371 -->
     <script>
         if (window.navigator.userAgent.indexOf("Edge") > -1) {
@@ -116,21 +114,12 @@
             // Apply OAuth config
             ui.initOAuth(oauthConfigObject);
 
+            $(".link img").attr("src", "./logo/favicon-32x32.png");
 
-            int = setInterval(function () {
-                getData();
-            }, 1000);
-            $("img").attr("src", "./logo/favicon-32x32.png");
-        }
-        function getData() {
-
-            if ($(".qqgroup").length <= 0) {
-                $('.info').after("<div class='qqgroup'><img src='https://images.cnblogs.com/cnblogs_com/laozhang-is-phi/1284763/o_WeChat%20Screenshot_20191021142452.png' alt='QQ二维码' style='width: 450px;'><div style=\"margin-left: 16px;color: #4990e2;\"><a href=\"../allservices\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"link\">查看所有注册的服务</a></div></div><div style='clear: both;'></div>");
-                console.log(2);
-                clearInterval(int);
-            }
+            $('#swagger-ui').after("<div class='qqgroup'><img src='https://img.neters.club/doc/wechatgongzhonghao.png' alt='QQ二维码' style='width: 150px;'><div style=\"color: #4990e2;\"><a href=\"../allservices\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"link\">1、查看所有依赖注册的服务</a></div></div><div style='clear: both;'></div>");
 
         }
+
 
     </script>
 </body>

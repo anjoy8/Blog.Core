@@ -152,27 +152,28 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>() { success = true, msg = "" };
             if (_env.IsDevelopment())
             {
-                try
+            
+                JsonSerializerSettings microsoftDateFormatSettings = new JsonSerializerSettings
                 {
-                    // 取出数据，序列化，自己可以处理判空
-                    var rolesJson = JsonConvert.SerializeObject(await _roleServices.Query(d => d.IsDeleted == false));
-                    FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Role_New.tsv"), rolesJson, Encoding.UTF8);
+                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat
+                };
+
+                // 取出数据，序列化，自己可以处理判空
+                var rolesJson = JsonConvert.SerializeObject(await _roleServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Role_New.tsv"), rolesJson, Encoding.UTF8);
 
 
-                    var permissionsJson = JsonConvert.SerializeObject(await _permissionServices.Query(d => d.IsDeleted == false));
-                    FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Permission_New.tsv"), permissionsJson, Encoding.UTF8);
+                var permissionsJson = JsonConvert.SerializeObject(await _permissionServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Permission_New.tsv"), permissionsJson, Encoding.UTF8);
 
 
-                    var modulesJson = JsonConvert.SerializeObject(await _moduleServices.Query(d => d.IsDeleted == false));
-                    FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Modules_New.tsv"), modulesJson, Encoding.UTF8);
+                var modulesJson = JsonConvert.SerializeObject(await _moduleServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Modules_New.tsv"), modulesJson, Encoding.UTF8);
 
 
-                    var rmpsJson = JsonConvert.SerializeObject(await _roleModulePermissionServices.Query(d => d.IsDeleted == false));
-                    FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "RoleModulePermission_New.tsv"), rmpsJson, Encoding.UTF8);
-                }
-                catch (Exception)
-                {
-                }
+                var rmpsJson = JsonConvert.SerializeObject(await _roleModulePermissionServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "RoleModulePermission_New.tsv"), rmpsJson, Encoding.UTF8);
+
 
 
                 data.success = true;

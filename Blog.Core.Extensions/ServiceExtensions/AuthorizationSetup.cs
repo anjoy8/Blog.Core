@@ -73,18 +73,19 @@ namespace Blog.Core.Extensions
 
 
             // 4、基于Scope策略授权
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Scope_BlogModule_Policy", builder =>
-                {
-                    //客户端Scope中包含blog.core.api.BlogModule才能访问
-                    builder.RequireScope("blog.core.api.BlogModule");
-                });
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("Scope_BlogModule_Policy", builder =>
+            //    {
+            //        //客户端Scope中包含blog.core.api.BlogModule才能访问
+            //        // 同时引用nuget包：IdentityServer4.AccessTokenValidation
+            //        builder.RequireScope("blog.core.api.BlogModule");
+            //    });
 
-                // 其他 Scope 策略
-                // ...
+            //    // 其他 Scope 策略
+            //    // ...
 
-            });
+            //});
 
             // 这里冗余写了一次,因为很多人看不到
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

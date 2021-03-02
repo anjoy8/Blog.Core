@@ -1,4 +1,5 @@
-﻿using Blog.Core.Common.Helper;
+﻿using Blog.Core.Common;
+using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -106,11 +107,15 @@ namespace Blog.Core.AuthHelper
                 if (defaultAuthenticate != null)
                 {
                     var result = await httpContext.AuthenticateAsync(defaultAuthenticate.Name);
+
+                    // 是否开启测试环境
+                    var isTestCurrent = Appsettings.app(new string[] { "AppSettings", "UseLoadTest" }).ObjToBool();
+
                     //result?.Principal不为空即登录成功
-                    if (result?.Principal != null)
+                    if (result?.Principal != null || isTestCurrent)
                     {
 
-                        httpContext.User = result.Principal;
+                        if (!isTestCurrent) httpContext.User = result.Principal;
 
                         // 获取当前用户的角色信息
                         var currentUserRoles = new List<string>();

@@ -11,13 +11,11 @@ namespace Blog.Core.Tasks
 {
     public class Job_Blogs_Quartz : JobBase, IJob
     {
-        private readonly IBlogArticleServices _blogArticleServices;
-        private readonly ITasksQzServices _tasksQzServices;
+        private readonly IBlogArticleServices _blogArticleServices;  
 
-        public Job_Blogs_Quartz(IBlogArticleServices blogArticleServices, ITasksQzServices tasksQzServices)
+        public Job_Blogs_Quartz(IBlogArticleServices blogArticleServices, ITasksQzServices tasksQzServices):base(tasksQzServices)
         {
-            _blogArticleServices = blogArticleServices;
-            _tasksQzServices = tasksQzServices;
+            _blogArticleServices = blogArticleServices; 
         }
         public async Task Execute(IJobExecutionContext context)
         {
@@ -54,7 +52,7 @@ namespace Blog.Core.Tasks
                     model.RunTimes += 1;
                     var separator = "<br>";
                     model.Remark =
-                        $"【{DateTime.Now}】执行任务【Id：{context.JobDetail.Key.Name}，组别：{context.JobDetail.Key.Group}】【执行成功】{separator}"
+                        $"【{DateTime.Now}】执行任务【Id：{context.JobDetail.Key.Name}，组别：{context.JobDetail.Key.Group}】【执行成功】:博客数{list.Count}{separator}"
                         + string.Join(separator, StringHelper.GetTopDataBySeparator(model.Remark, separator, 9));
 
                     await _tasksQzServices.Update(model);
@@ -64,7 +62,4 @@ namespace Blog.Core.Tasks
             await Console.Out.WriteLineAsync("博客总数量" + list.Count.ToString());
         }
     }
-
-
-
 }
