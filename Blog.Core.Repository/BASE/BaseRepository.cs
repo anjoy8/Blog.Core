@@ -43,7 +43,7 @@ namespace Blog.Core.Repository.Base
             }
         }
 
-        internal ISqlSugarClient Db
+        public ISqlSugarClient Db
         {
             get { return _db; }
         }
