@@ -167,7 +167,7 @@ namespace " + strNameSpace + @"
                     key = """";
                 }
     
-                Expression<Func<{ClassName}, bool>> whereExpression = a => a.id > 0;
+                Expression<Func<{ClassName}, bool>> whereExpression = a => true;
     
                 return new MessageModel<PageModel<{ClassName}>>()
                 {
@@ -179,7 +179,7 @@ namespace " + strNameSpace + @"
             }
 
             [HttpGet(""{id}"")]
-            public async Task<MessageModel<{ClassName}>> Get(int id = 0)
+            public async Task<MessageModel<{ClassName}>> Get(string id)
             {
                 return new MessageModel<{ClassName}>()
                 {
@@ -195,13 +195,11 @@ namespace " + strNameSpace + @"
                 var data = new MessageModel<string>();
 
                 var id = await _{ClassName}Services.Add(request);
-                data.success = id > 0;
-
                 if (data.success)
                 {
                     data.response = id.ObjToString();
                     data.msg = ""添加成功"";
-                }
+                } 
 
                 return data;
             }
@@ -210,38 +208,25 @@ namespace " + strNameSpace + @"
             public async Task<MessageModel<string>> Put([FromBody] {ClassName} request)
             {
                 var data = new MessageModel<string>();
-                if (request.id > 0)
+                data.success = await _{ClassName}Services.Update(request);
+                if (data.success)
                 {
-                    data.success = await _{ClassName}Services.Update(request);
-                    if (data.success)
-                    {
-                        data.msg = ""更新成功"";
-                        data.response = request?.id.ObjToString();
-                    }
+                    data.msg = ""更新成功"";
+                    data.response = request?.id.ObjToString();
                 }
 
                 return data;
             }
 
             [HttpDelete(""{id}"")]
-            public async Task<MessageModel<string>> Delete(int id = 0)
+            public async Task<MessageModel<string>> Delete(string id)
             {
                 var data = new MessageModel<string>();
-                if (id > 0)
+                data.success = await _{ClassName}Services.DeleteById(id);
+                if (data.success)
                 {
-                    var detail = await _{ClassName}Services.QueryById(id);
-
-                    detail.IsDeleted = true;
-
-                        if (detail != null)
-                        {
-                            data.success = await _{ClassName}Services.Update(detail);
-                            if (data.success)
-                            {
-                                data.msg = ""删除成功"";
-                                data.response = detail?.id.ObjToString();
-                            }
-                        }
+                    data.msg = ""删除成功"";
+                    data.response = id;
                 }
 
                 return data;
