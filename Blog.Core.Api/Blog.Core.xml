@@ -88,14 +88,29 @@
         </member>
         <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFiles">
             <summary>
-            获取 整体框架 文件
+            获取 整体框架 文件(主库)(一般可用第一次生成)
             </summary>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFilesByTableNames(System.String[],System.String)">
             <summary>
-            根据数据库表名 生成整体框架
-            仅针对通过CodeFirst生成表的情况
+            获取仓储层和服务层(需指定表名和数据库)
+            </summary>
+            <param name="ConnID">数据库链接名称</param>
+            <param name="tableNames">需要生成的表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFilesByTableNamesForEntity(System.String[],System.String)">
+            <summary>
+            获取实体(需指定表名和数据库)
+            </summary>
+            <param name="ConnID">数据库链接名称</param>
+            <param name="tableNames">需要生成的表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFilesByTableNamesForController(System.String[],System.String)">
+            <summary>
+            获取控制器(需指定表名和数据库)
             </summary>
             <param name="ConnID">数据库链接名称</param>
             <param name="tableNames">需要生成的表名</param>
@@ -103,7 +118,7 @@
         </member>
         <member name="M:Blog.Core.Controllers.DbFirstController.GetAllFrameFilesByTableNames(System.String[],System.String)">
             <summary>
-            DbFrist 根据数据库表名 生成整体框架,包含Model层
+            DbFrist 根据数据库表名 生成整体框架,包含Model层(一般可用第一次生成)
             </summary>
             <param name="ConnID">数据库链接名称</param>
             <param name="tableNames">需要生成的表名</param>
