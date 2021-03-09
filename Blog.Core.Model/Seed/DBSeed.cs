@@ -73,12 +73,19 @@ namespace Blog.Core.Model.Seed
 
                 Console.WriteLine();
 
-
                 // 创建数据库
                 Console.WriteLine($"Create Database(The Db Id:{MyContext.ConnId})...");
-                myContext.Db.DbMaintenance.CreateDatabase();
-                ConsoleHelper.WriteSuccessLine($"Database created successfully!");
 
+                if (MyContext.DbType != SqlSugar.DbType.Oracle)
+                {
+                    myContext.Db.DbMaintenance.CreateDatabase();
+                    ConsoleHelper.WriteSuccessLine($"Database created successfully!");
+                }
+                else
+                {
+                    //Oracle 数据库不支持该操作
+                    ConsoleHelper.WriteSuccessLine($"Oracle 数据库不支持该操作，可手动创建Oracle数据库!");
+                }
 
                 // 创建数据库表，遍历指定命名空间下的class，
                 // 注意不要把其他命名空间下的也添加进来。
