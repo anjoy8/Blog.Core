@@ -9,11 +9,7 @@ namespace Blog.Core.Tasks
 {
     public class JobBase
     {
-        public readonly ITasksQzServices _tasksQzServices;
-        public JobBase(ITasksQzServices tasksQzServices)
-        {
-            _tasksQzServices = tasksQzServices;
-        }
+        public ITasksQzServices _tasksQzServices;
         /// <summary>
         /// 执行指定任务
         /// </summary>
@@ -43,22 +39,23 @@ namespace Blog.Core.Tasks
                 JobExecutionException e2 = new JobExecutionException(ex);
                 //true  是立即重新执行任务 
                 e2.RefireImmediately = true;
-                //SerilogServer.WriteErrorLog(context.Trigger.Key.Name.Replace("-", ""), $"{context.Trigger.Key.Name}任务运行异常", ex);
-
                 jobHistory += $"，【{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}】【执行失败:{ex.Message}】";
             }
             finally
             {
                 taskSeconds = Math.Round(stopwatch.Elapsed.TotalSeconds, 3);
                 jobHistory += $"，【{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}】【执行结束】(耗时:{taskSeconds}秒)";
-                var model = await _tasksQzServices.QueryById(jobid);
-                if (model != null)
+                if(_tasksQzServices!=null)
                 {
-                    model.RunTimes += 1;
-                    var separator = "<br>";
-                    model.Remark =
-                        $"{jobHistory}{separator}" + string.Join(separator, StringHelper.GetTopDataBySeparator(model.Remark, separator, 9));
-                    await _tasksQzServices.Update(model);
+                    var model = await _tasksQzServices.QueryById(jobid);
+                    if (model != null)
+                    {
+                        model.RunTimes += 1;
+                        var separator = "<br>";
+                        model.Remark =
+                            $"{jobHistory}{separator}" + string.Join(separator, StringHelper.GetTopDataBySeparator(model.Remark, separator, 9));
+                        await _tasksQzServices.Update(model);
+                    }
                 }
             }
 
