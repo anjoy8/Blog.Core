@@ -18,7 +18,7 @@ namespace Blog.Core.Repository.MongoRepository
 
         public async Task AddAsync(TEntity entity)
         {
-            await _context.Db.GetCollection<TEntity>(nameof(TEntity))
+            await _context.Db.GetCollection<TEntity>(typeof(TEntity).Name)
                .InsertOneAsync(entity);
         }
 
@@ -26,14 +26,14 @@ namespace Blog.Core.Repository.MongoRepository
         {
             var filter = Builders<TEntity>.Filter.Eq("Id", Id);
 
-            return await _context.Db.GetCollection<TEntity>(nameof(TEntity))
+            return await _context.Db.GetCollection<TEntity>(typeof(TEntity).Name)
                 .Find(filter)
                 .FirstOrDefaultAsync();
         }
 
         public async Task<List<TEntity>> GetListAsync()
         {
-            return await _context.Db.GetCollection<TEntity>(nameof(TEntity))
+            return await _context.Db.GetCollection<TEntity>(typeof(TEntity).Name)
                 .Find(new BsonDocument())
                 .ToListAsync();
         }
