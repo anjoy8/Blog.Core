@@ -1818,6 +1818,26 @@
             错误信息
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.ViewModels.QuartzReflectionViewModel">
+            <summary>
+            实现IJob的类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.QuartzReflectionViewModel.nameSpace">
+            <summary>
+            命名空间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.QuartzReflectionViewModel.nameClass">
+            <summary>
+            类名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.QuartzReflectionViewModel.remark">
+            <summary>
+            备注
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.ViewModels.ServerViewModel">
             <summary>
             服务器VM

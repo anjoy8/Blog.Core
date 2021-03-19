@@ -1,12 +1,12 @@
 ﻿[
   {
     "Code": "\/",
-    "Name": "QQ欢迎页",
+    "Name": "首页",
     "IsButton": 0,
     "Pid": 0,
     "Mid": 0,
     "OrderSort": 0,
-    "Icon": "fa-qq",
+    "Icon": "fa-home",
     "Description": "33",
     "Enabled": 1,
     "CreateId": 18,
@@ -1730,5 +1730,26 @@
     "IsDeleted": 0,
     "Id": 85,
     "IsHide": 0
+  },
+  {
+    "Code": " ",
+    "Name": "获取任务名称",
+    "IsButton": 1,
+    "Pid": 76,
+    "Mid": 46,
+    "OrderSort": 0,
+    "Icon": null,
+    "Description": "获取任务名称按钮",
+    "Enabled": 1,
+    "CreateId": 12,
+    "CreateBy": "后台总管理员",
+    "Func": "",
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "IsDeleted": 0,
+    "Id": 86,
+    "IsHide": 1
   }
 ]
