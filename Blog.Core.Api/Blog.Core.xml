@@ -513,6 +513,12 @@
             <param name="jobId"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.GetTaskNameSpace">
+            <summary>
+            获取任务命名空间
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.TopicController">
             <summary>
             类别管理【无权限】
