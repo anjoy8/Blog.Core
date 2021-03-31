@@ -21,25 +21,24 @@ namespace Blog.Core.Tasks
         private readonly IOperateLogServices _operateLogServices; 
         private readonly IWebHostEnvironment _environment;
 
-        public Job_OperateLog_Quartz(IOperateLogServices operateLogServices, ITasksQzServices tasksQzServices, IWebHostEnvironment environment)
+        public Job_OperateLog_Quartz(IOperateLogServices operateLogServices, ITasksQzServices tasksQzServices, IWebHostEnvironment environment) : base(tasksQzServices)
         {
             _operateLogServices = operateLogServices; 
             _environment = environment;
-            _tasksQzServices = tasksQzServices;
         }
         public async Task Execute(IJobExecutionContext context)
         {
-            var executeLog = await ExecuteJob(context, async () => await Run(context));
-        }
-        public async Task Run(IJobExecutionContext context)
-        {
-
             // 可以直接获取 JobDetail 的值
             var jobKey = context.JobDetail.Key;
             var jobId = jobKey.Name;
+
+            var executeLog = await ExecuteJob(context, async () => await Run(context, jobId.ObjToInt()));
+
             // 也可以通过数据库配置，获取传递过来的参数
             JobDataMap data = context.JobDetail.JobDataMap;
-
+        }
+        public async Task Run(IJobExecutionContext context, int jobid)
+        {
             List<LogInfo> excLogs = new List<LogInfo>();
             var exclogContent = LogLock.ReadLog(Path.Combine(_environment.ContentRootPath, "Log"), $"GlobalExceptionLogs_{DateTime.Now.ToString("yyyMMdd")}.log", Encoding.UTF8);
 
@@ -76,6 +75,22 @@ namespace Blog.Core.Tasks
             if (operateLogs.Count > 0)
             {
                 var logsIds = await _operateLogServices.Add(operateLogs);
+            }
+
+            if (jobid > 0)
+            {
+                var model = await _tasksQzServices.QueryById(jobid);
+                if (model != null)
+                {
+                    var list = await _operateLogServices.Query(d => d.IsDeleted == false);
+                    model.RunTimes += 1;
+                    var separator = "<br>";
+                    model.Remark =
+                        $"【{DateTime.Now}】执行任务【Id：{context.JobDetail.Key.Name}，组别：{context.JobDetail.Key.Group}】【执行成功】:异常数{list.Count}{separator}"
+                        + string.Join(separator, StringHelper.GetTopDataBySeparator(model.Remark, separator, 9));
+
+                    await _tasksQzServices.Update(model);
+                }
             }
         }
     }
