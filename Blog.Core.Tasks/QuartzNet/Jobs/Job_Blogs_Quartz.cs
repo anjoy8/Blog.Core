@@ -11,11 +11,11 @@ namespace Blog.Core.Tasks
 {
     public class Job_Blogs_Quartz : JobBase, IJob
     {
-        private readonly IBlogArticleServices _blogArticleServices;  
+        private readonly IBlogArticleServices _blogArticleServices;
 
-        public Job_Blogs_Quartz(IBlogArticleServices blogArticleServices, ITasksQzServices tasksQzServices):base(tasksQzServices)
+        public Job_Blogs_Quartz(IBlogArticleServices blogArticleServices, ITasksQzServices tasksQzServices) : base(tasksQzServices)
         {
-            _blogArticleServices = blogArticleServices; 
+            _blogArticleServices = blogArticleServices;
         }
         public async Task Execute(IJobExecutionContext context)
         {
@@ -25,7 +25,7 @@ namespace Blog.Core.Tasks
             var jobKey = context.JobDetail.Key;
             var jobId = jobKey.Name;
 
-            var executeLog = await ExecuteJob(context, async () => await Run(context, jobId.ObjToInt()));
+            var executeLog = await ExecuteJob(context, async () => await Run(context));
 
             // 也可以通过数据库配置，获取传递过来的参数
             JobDataMap data = context.JobDetail.JobDataMap;
@@ -40,6 +40,14 @@ namespace Blog.Core.Tasks
             //}
 
         }
+        public async Task Run(IJobExecutionContext context)
+        {
+            var list = await _blogArticleServices.Query();
+            // 也可以通过数据库配置，获取传递过来的参数
+            JobDataMap data = context.JobDetail.JobDataMap;
+            //int jobId = data.GetInt("JobParam");
+        }
+
         public async Task Run(IJobExecutionContext context, int jobid)
         {
             var list = await _blogArticleServices.Query();
