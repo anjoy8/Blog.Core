@@ -3,6 +3,7 @@ using Blog.Core.Common.LogHelper;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 using Quartz;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,10 @@ namespace Blog.Core.Tasks
         private readonly IOperateLogServices _operateLogServices; 
         private readonly IWebHostEnvironment _environment;
 
-        public Job_OperateLog_Quartz(IOperateLogServices operateLogServices, ITasksQzServices tasksQzServices, IWebHostEnvironment environment)
+        public Job_OperateLog_Quartz(ITasksQzServices tasksQzServices, ILogger<JobBase> logger, IOperateLogServices operateLogServices, IWebHostEnvironment environment):base(tasksQzServices, logger)
         {
             _operateLogServices = operateLogServices; 
-            _environment = environment;
-            _tasksQzServices = tasksQzServices;
+            _environment = environment; 
         }
         public async Task Execute(IJobExecutionContext context)
         {

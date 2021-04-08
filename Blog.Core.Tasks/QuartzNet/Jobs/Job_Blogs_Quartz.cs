@@ -1,5 +1,6 @@
 ﻿using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
+using Microsoft.Extensions.Logging;
 using Quartz;
 using System;
 using System.Threading.Tasks;
@@ -13,10 +14,11 @@ namespace Blog.Core.Tasks
     {
         private readonly IBlogArticleServices _blogArticleServices;  
 
-        public Job_Blogs_Quartz(IBlogArticleServices blogArticleServices, ITasksQzServices tasksQzServices)
-        {
-            _blogArticleServices = blogArticleServices;
+        public Job_Blogs_Quartz(ITasksQzServices tasksQzServices, ILogger<JobBase> logger, IBlogArticleServices blogArticleServices):base(tasksQzServices, logger)
+        { 
             _tasksQzServices = tasksQzServices;
+            _logger = logger;
+            _blogArticleServices = blogArticleServices;
         }
         public async Task Execute(IJobExecutionContext context)
         {
