@@ -45,13 +45,14 @@ namespace Blog.Core.Tasks
             {
                 taskSeconds = Math.Round(stopwatch.Elapsed.TotalSeconds, 3);
                 jobHistory += $"，【{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}】【执行结束】(耗时:{taskSeconds}秒)";
-                if(_tasksQzServices!=null)
+                if (_tasksQzServices != null)
                 {
                     var model = await _tasksQzServices.QueryById(jobid);
                     if (model != null)
                     {
                         model.RunTimes += 1;
                         var separator = "<br>";
+                        // 这里注意数据库字段的长度问题，超过限制，会造成数据库remark不更新问题。
                         model.Remark =
                             $"{jobHistory}{separator}" + string.Join(separator, StringHelper.GetTopDataBySeparator(model.Remark, separator, 9));
                         await _tasksQzServices.Update(model);
