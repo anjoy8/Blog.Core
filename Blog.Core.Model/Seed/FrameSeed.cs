@@ -20,12 +20,8 @@ namespace Blog.Core.Model.Seed
         /// <returns></returns>
         public static bool CreateControllers(SqlSugarClient sqlSugarClient, string ConnId = null, bool isMuti = false, string[] tableNames = null)
         {
-
-
             Create_Controller_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Api.Controllers", "Blog.Core.Api.Controllers", tableNames, "", isMuti);
             return true;
-
-
         }
 
         /// <summary>
@@ -38,12 +34,8 @@ namespace Blog.Core.Model.Seed
         /// <returns></returns>
         public static bool CreateModels(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
-
-
             Create_Model_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Model", "Blog.Core.Model.Models", tableNames, "", isMuti);
             return true;
-
-
         }
 
         /// <summary>
@@ -56,12 +48,8 @@ namespace Blog.Core.Model.Seed
         /// <returns></returns>
         public static bool CreateIRepositorys(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
-
-
             Create_IRepository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IRepository", "Blog.Core.IRepository", tableNames, "", isMuti);
             return true;
-
-
         }
 
 
@@ -76,11 +64,8 @@ namespace Blog.Core.Model.Seed
         /// <returns></returns>
         public static bool CreateIServices(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
-
-
             Create_IServices_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.IServices", "Blog.Core.IServices", tableNames, "", isMuti);
             return true;
-
         }
 
 
@@ -95,8 +80,6 @@ namespace Blog.Core.Model.Seed
         /// <returns></returns>
         public static bool CreateRepository(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
-
-
             Create_Repository_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Repository", "Blog.Core.Repository", tableNames, "", isMuti);
             return true;
         }
@@ -113,11 +96,8 @@ namespace Blog.Core.Model.Seed
         /// <returns></returns>
         public static bool CreateServices(SqlSugarClient sqlSugarClient, string ConnId, bool isMuti = false, string[] tableNames = null)
         {
-
-
             Create_Services_ClassFileByDBTalbe(sqlSugarClient, ConnId, $@"C:\my-file\Blog.Core.Services", "Blog.Core.Services", tableNames, "", isMuti);
             return true;
-
         }
 
 
@@ -168,10 +148,10 @@ namespace " + strNameSpace + @"
 	[ApiController]
     [Authorize(Permissions.Name)]
      public class {ClassName}Controller : ControllerBase
-        {
-             /// <summary>
-             /// 服务器接口，因为是模板生成，所以首字母是大写的，自己可以重构下
-             /// </summary>
+    {
+            /// <summary>
+            /// 服务器接口，因为是模板生成，所以首字母是大写的，自己可以重构下
+            /// </summary>
             private readonly I{ClassName}Services _{ClassName}Services;
     
             public {ClassName}Controller(I{ClassName}Services {ClassName}Services)
@@ -187,7 +167,7 @@ namespace " + strNameSpace + @"
                     key = """";
                 }
     
-                Expression<Func<{ClassName}, bool>> whereExpression = a => a.id > 0;
+                Expression<Func<{ClassName}, bool>> whereExpression = a => true;
     
                 return new MessageModel<PageModel<{ClassName}>>()
                 {
@@ -196,77 +176,62 @@ namespace " + strNameSpace + @"
                     response = await _{ClassName}Services.QueryPage(whereExpression, page, intPageSize)
                 };
 
-    }
-
-    [HttpGet(""{id}"")]
-    public async Task<MessageModel<{ClassName}>> Get(int id = 0)
-    {
-        return new MessageModel<{ClassName}>()
-        {
-            msg = ""获取成功"",
-            success = true,
-            response = await _{ClassName}Services.QueryById(id)
-        };
-    }
-
-    [HttpPost]
-    public async Task<MessageModel<string>> Post([FromBody] {ClassName} request)
-    {
-        var data = new MessageModel<string>();
-
-        var id = await _{ClassName}Services.Add(request);
-        data.success = id > 0;
-
-        if (data.success)
-        {
-            data.response = id.ObjToString();
-            data.msg = ""添加成功"";
-        }
-
-        return data;
-    }
-
-    [HttpPut]
-    public async Task<MessageModel<string>> Put([FromBody] {ClassName} request)
-    {
-        var data = new MessageModel<string>();
-        if (request.id > 0)
-        {
-            data.success = await _{ClassName}Services.Update(request);
-            if (data.success)
-            {
-                data.msg = ""更新成功"";
-                data.response = request?.id.ObjToString();
             }
-        }
 
-        return data;
-    }
-
-    [HttpDelete(""{id}"")]
-    public async Task<MessageModel<string>> Delete(int id = 0)
-    {
-        var data = new MessageModel<string>();
-        if (id > 0)
-        {
-            var detail = await _{ClassName}Services.QueryById(id);
-
-            detail.IsDeleted = true;
-
-                if (detail != null)
+            [HttpGet(""{id}"")]
+            public async Task<MessageModel<{ClassName}>> Get(string id)
+            {
+                return new MessageModel<{ClassName}>()
                 {
-                    data.success = await _{ClassName}Services.Update(detail);
-                    if (data.success)
-                    {
-                        data.msg = ""删除成功"";
-                        data.response = detail?.id.ObjToString();
-                    }
-                }
-        }
+                    msg = ""获取成功"",
+                    success = true,
+                    response = await _{ClassName}Services.QueryById(id)
+                };
+            }
 
-        return data;
+            [HttpPost]
+            public async Task<MessageModel<string>> Post([FromBody] {ClassName} request)
+            {
+                var data = new MessageModel<string>();
+
+                var id = await _{ClassName}Services.Add(request);
+                if (data.success)
+                {
+                    data.response = id.ObjToString();
+                    data.msg = ""添加成功"";
+                } 
+
+                return data;
+            }
+
+            [HttpPut]
+            public async Task<MessageModel<string>> Put([FromBody] {ClassName} request)
+            {
+                var data = new MessageModel<string>();
+                data.success = await _{ClassName}Services.Update(request);
+                if (data.success)
+                {
+                    data.msg = ""更新成功"";
+                    data.response = request?.id.ObjToString();
+                }
+
+                return data;
+            }
+
+            [HttpDelete(""{id}"")]
+            public async Task<MessageModel<string>> Delete(string id)
+            {
+                var data = new MessageModel<string>();
+                data.success = await _{ClassName}Services.DeleteById(id);
+                if (data.success)
+                {
+                    data.msg = ""删除成功"";
+                    data.response = id;
+                }
+
+                return data;
+            }
     }
-}
 }")
 
                   .ToClassStringList(strNameSpace);
@@ -331,13 +296,13 @@ namespace " + strNameSpace + @"
     [SugarTable( ""{ClassName}"", """ + ConnId + @""")]" + (blnSerializable ? "\n    [Serializable]" : "") + @"
     public class {ClassName}" + (string.IsNullOrEmpty(strInterface) ? "" : (" : " + strInterface)) + @"
     {
-        public {ClassName}()
-        {
-        }
-        {PropertyName}
+           public {ClassName}()
+           {
+           }
+{PropertyName}
     }
 }")
-                  .SettingPropertyDescriptionTemplate(p => p = string.Empty)
+                  //.SettingPropertyDescriptionTemplate(p => p = string.Empty)
                   .SettingPropertyTemplate(p => p =
 @"{SugarColumn}
            public {PropertyType} {PropertyName} { get; set; }")
