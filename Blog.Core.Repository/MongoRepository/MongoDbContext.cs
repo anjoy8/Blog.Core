@@ -11,7 +11,7 @@ namespace Blog.Core.Repository.MongoRepository
 
         public MongoDbContext()
         {
-            var client = new MongoClient(Appsettings.app(new string[] { "Mongo", "ConnectString" }));
+            var client = new MongoClient(Appsettings.app(new string[] { "Mongo", "ConnectionString" }));
             if (client != null)
                 _database = client.GetDatabase(Appsettings.app(new string[] { "Mongo", "Database" }));
         }
