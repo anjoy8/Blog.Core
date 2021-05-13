@@ -66,6 +66,7 @@ namespace Blog.Core.Extensions
             builder.RegisterAssemblyTypes(assemblysServices)
                       .AsImplementedInterfaces()
                       .InstancePerDependency()
+                      .PropertiesAutowired()
                       .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
                       .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。
 
@@ -73,6 +74,7 @@ namespace Blog.Core.Extensions
             var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
             builder.RegisterAssemblyTypes(assemblysRepository)
                    .AsImplementedInterfaces()
+                   .PropertiesAutowired()
                    .InstancePerDependency();
 
             #endregion

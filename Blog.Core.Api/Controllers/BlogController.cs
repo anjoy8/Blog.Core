@@ -22,9 +22,9 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/Blog")]
-    public class BlogController : Controller
+    public class BlogController : ControllerBase
     {
-        readonly IBlogArticleServices _blogArticleServices;
+        public IBlogArticleServices _blogArticleServices { get; set; }
         private readonly ILogger<BlogController> _logger;
 
         /// <summary>
@@ -34,7 +34,6 @@ namespace Blog.Core.Controllers
         /// <param name="logger"></param>
         public BlogController(IBlogArticleServices blogArticleServices, ILogger<BlogController> logger)
         {
-            _blogArticleServices = blogArticleServices;
             _logger = logger;
         }
 
@@ -57,6 +56,8 @@ namespace Blog.Core.Controllers
             }
 
             Expression<Func<BlogArticle, bool>> whereExpression = a => (a.bcategory == bcategory && a.IsDeleted == false) && ((a.btitle != null && a.btitle.Contains(key)) || (a.bcontent != null && a.bcontent.Contains(key)));
+            
+            var testId = await _blogArticleServices.GetBlogDetails(1);
 
             var pageModelBlog = await _blogArticleServices.QueryPage(whereExpression, page, intPageSize, " bID desc ");
 
