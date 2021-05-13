@@ -1,8 +1,5 @@
-﻿using Blog.Core.Common.Helper;
-using Blog.Core.IServices;
-using Microsoft.Extensions.Logging;
+﻿using Blog.Core.IServices;
 using Quartz;
-using System;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -12,13 +9,12 @@ namespace Blog.Core.Tasks
 {
     public class Job_Blogs_Quartz : JobBase, IJob
     {
-        private readonly IBlogArticleServices _blogArticleServices;  
+        private readonly IBlogArticleServices _blogArticleServices;
 
-        public Job_Blogs_Quartz(ITasksQzServices tasksQzServices, ILogger<JobBase> logger, IBlogArticleServices blogArticleServices):base(tasksQzServices, logger)
-        { 
-            _tasksQzServices = tasksQzServices;
-            _logger = logger;
+        public Job_Blogs_Quartz(IBlogArticleServices blogArticleServices, ITasksQzServices tasksQzServices)
+        {
             _blogArticleServices = blogArticleServices;
+            _tasksQzServices = tasksQzServices;
         }
         public async Task Execute(IJobExecutionContext context)
         {

@@ -3,7 +3,7 @@ echo "if u install template error,pls use:>>dotnet new -i .template.config\Blog.
 
 
 color 3
-dotnet new -i Blog.Core.Webapi.Template::2.5.2
+dotnet new -i Blog.Core.Webapi.Template::2.5.3
 
 set /p OP=Please set your project name(for example:Baidu.Api):
 

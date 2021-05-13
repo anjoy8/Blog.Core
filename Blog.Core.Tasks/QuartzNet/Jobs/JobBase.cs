@@ -1,22 +1,15 @@
-﻿using Blog.Core.IServices;
-using Microsoft.Extensions.Logging;
+﻿using Blog.Core.Common.Helper;
+using Blog.Core.IServices;
 using Quartz;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Tasks
 {
     public class JobBase
     {
-        protected ITasksQzServices _tasksQzServices;
-        protected ILogger<JobBase> _logger;
-        public JobBase(ITasksQzServices tasksQzServices, ILogger<JobBase> logger)
-        {
-            _tasksQzServices = tasksQzServices;
-            _logger = logger;
-        }
+        public ITasksQzServices _tasksQzServices;
         /// <summary>
         /// 执行指定任务
         /// </summary>
@@ -50,33 +43,23 @@ namespace Blog.Core.Tasks
             }
             finally
             {
-                try
+                taskSeconds = Math.Round(stopwatch.Elapsed.TotalSeconds, 3);
+                jobHistory += $"，【{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}】【执行结束】(耗时:{taskSeconds}秒)";
+                if (_tasksQzServices != null)
                 {
-                    taskSeconds = Math.Round(stopwatch.Elapsed.TotalSeconds, 3);
-                    jobHistory += $"，【{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}】【执行结束】(耗时:{taskSeconds}秒)";
-                    if (_tasksQzServices != null)
+                    var model = await _tasksQzServices.QueryById(jobid);
+                    if (model != null)
                     {
-                        var model = await _tasksQzServices.QueryById(jobid);
-                        if (model != null)
-                        {
-                            model.RunTimes += 1;
-                            var separator = "<br>";
-                            model.Remark =
-                                $"{jobHistory}{separator}" + string.Join(separator, model.Remark.ObjToString().Split(separator).ToList().Take(9).ToArray());
-                            await _tasksQzServices.Update(model);
-                        }
+                        model.RunTimes += 1;
+                        var separator = "<br>";
+                        // 这里注意数据库字段的长度问题，超过限制，会造成数据库remark不更新问题。
+                        model.Remark =
+                            $"{jobHistory}{separator}" + string.Join(separator, StringHelper.GetTopDataBySeparator(model.Remark, separator, 9));
+                        await _tasksQzServices.Update(model);
                     }
                 }
-                catch (Exception ex)
-                {
-                    jobHistory += ex.Message;
-                }
-                finally
-                {
-                    if(_logger!=null)
-                        _logger.LogInformation(jobHistory);
-                }
-            } 
+            }
+
             Console.Out.WriteLine(jobHistory);
             return jobHistory;
         }
