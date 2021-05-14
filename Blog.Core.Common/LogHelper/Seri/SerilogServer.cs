@@ -19,7 +19,7 @@ namespace Blog.Core.Common.LogHelper
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
                 //.WriteTo.File(Path.Combine($"log/Serilog/{filename}/", ".log"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message}{NewLine}{Exception}")
-                .WriteTo.File(Path.Combine("log", defaultFolder, $"{filename}.log"),
+                .WriteTo.File(Path.Combine("Log", defaultFolder, $"{filename}.log"),
                 rollingInterval: RollingInterval.Infinite,
                 outputTemplate: "{Message}{NewLine}{Exception}")
                 .CreateLogger();
