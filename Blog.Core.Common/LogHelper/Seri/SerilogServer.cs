@@ -13,13 +13,15 @@ namespace Blog.Core.Common.LogHelper
         /// <param name="filename"></param>
         /// <param name="message"></param>
         /// <param name="info"></param>
-        public static void WriteLog(string filename, string[] dataParas, bool IsHeader = true)
+        public static void WriteLog(string filename, string[] dataParas, bool IsHeader = true, string defaultFolder = "")
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
                 //.WriteTo.File(Path.Combine($"log/Serilog/{filename}/", ".log"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message}{NewLine}{Exception}")
-                .WriteTo.File(Path.Combine($"log/Serilog/", $"{filename}.log"), rollingInterval: RollingInterval.Infinite, outputTemplate: "{Message}{NewLine}{Exception}")
+                .WriteTo.File(Path.Combine("log", defaultFolder, $"{filename}.log"),
+                rollingInterval: RollingInterval.Infinite,
+                outputTemplate: "{Message}{NewLine}{Exception}")
                 .CreateLogger();
 
             var now = DateTime.Now;

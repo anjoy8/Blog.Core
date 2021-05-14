@@ -102,10 +102,12 @@ namespace Blog.Core.Middlewares
 
                         // 自定义log输出
                         var requestInfo = JsonConvert.SerializeObject(userAccessModel);
-                        Parallel.For(0, 1, e =>
-                        {
-                            LogLock.OutSql2Log("RecordAccessLogs", new string[] { requestInfo + "," }, false);
-                        });
+                        //Parallel.For(0, 1, e =>
+                        //{
+                        //    LogLock.OutSql2Log("RecordAccessLogs", new string[] { requestInfo + "," }, false);
+                        //});
+
+                        SerilogServer.WriteLog("RecordAccessLogs", new string[] { requestInfo + "," }, false);
 
                         return Task.CompletedTask;
                     });
