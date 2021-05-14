@@ -1,6 +1,8 @@
 ﻿using Blog.Core.Common;
+using Blog.Core.Common.Helper;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.LogHelper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -25,17 +27,19 @@ namespace Blog.Core.Middlewares
         private readonly RequestDelegate _next;
         private readonly IUser _user;
         private readonly ILogger<RecordAccessLogsMildd> _logger;
+        private readonly IWebHostEnvironment _environment;
         private Stopwatch _stopwatch;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="next"></param>
-        public RecordAccessLogsMildd(RequestDelegate next, IUser user, ILogger<RecordAccessLogsMildd> logger)
+        public RecordAccessLogsMildd(RequestDelegate next, IUser user, ILogger<RecordAccessLogsMildd> logger, IWebHostEnvironment environment)
         {
             _next = next;
             _user = user;
             _logger = logger;
+            _environment = environment;
             _stopwatch = new Stopwatch();
         }
 
@@ -107,7 +111,9 @@ namespace Blog.Core.Middlewares
                         //    LogLock.OutSql2Log("RecordAccessLogs", new string[] { requestInfo + "," }, false);
                         //});
 
-                        SerilogServer.WriteLog("RecordAccessLogs", new string[] { requestInfo + "," }, false);
+                        var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RecordAccessLogs");
+                        SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false);
+                       
 
                         return Task.CompletedTask;
                     });

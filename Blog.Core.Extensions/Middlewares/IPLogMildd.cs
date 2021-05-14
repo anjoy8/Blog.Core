@@ -1,5 +1,7 @@
 ﻿using Blog.Core.Common;
+using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
@@ -17,13 +19,16 @@ namespace Blog.Core.Middlewares
         /// 
         /// </summary>
         private readonly RequestDelegate _next;
+        private readonly IWebHostEnvironment _environment;
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="next"></param>
-        public IPLogMildd(RequestDelegate next)
+        public IPLogMildd(RequestDelegate next, IWebHostEnvironment environment)
         {
             _next = next;
+            _environment = environment;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -53,11 +58,12 @@ namespace Blog.Core.Middlewares
                             // 自定义log输出
                             //Parallel.For(0, 1, e =>
                             //{
-                            //    LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
+                            LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
                             //});
 
                             // 这种方案也行，用的是Serilog
-                            SerilogServer.WriteLog("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
+                            var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RequestIpInfoLog");
+                            SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false);
 
                             request.Body.Position = 0;
                         }
