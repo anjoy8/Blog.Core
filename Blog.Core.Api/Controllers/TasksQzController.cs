@@ -508,7 +508,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<string>> ExecuteJob(string jobId)
+        public async Task<MessageModel<string>> ExecuteJob(int jobId)
         {
             var data = new MessageModel<string>();
 

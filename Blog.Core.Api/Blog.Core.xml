@@ -519,6 +519,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.ExecuteJob(System.Int32)">
+            <summary>
+            立即执行任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.TopicController">
             <summary>
             类别管理【无权限】

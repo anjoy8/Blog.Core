@@ -454,7 +454,7 @@ namespace Blog.Core.Tasks
             var result = new MessageModel<string>();
             try
             {
-                JobKey jobKey = new JobKey(tasksQz.Id, tasksQz.JobGroup);
+                JobKey jobKey = new JobKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
                 
                 //判断任务是否存在，存在则 触发一次，不存在则先添加一个任务，触发以后再 停止任务
                 if (!await _scheduler.Result.CheckExists(jobKey))
