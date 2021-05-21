@@ -501,6 +501,28 @@ namespace Blog.Core.Controllers
             var implementTypes = types.Where(x => x.IsClass).Select(item => new QuartzReflectionViewModel { nameSpace = item.Namespace, nameClass = item.Name, remark = "" }).ToList();
             return MessageModel<List<QuartzReflectionViewModel>>.Success("获取成功", implementTypes);
         }
+        
+        /// <summary>
+        /// 立即执行任务
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<MessageModel<string>> ExecuteJob(int jobId)
+        {
+            var data = new MessageModel<string>();
+
+            var model = await _tasksQzServices.QueryById(jobId);
+            if (model != null)
+            {
+                return await _schedulerCenter.ExecuteJobAsync(model);
+            }
+            else
+            {
+                data.msg = "任务不存在";
+            }
+            return data;
+        }
 
     }
 }
