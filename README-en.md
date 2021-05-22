@@ -1,50 +1,107 @@
 [ENGLISH](https://github.com/anjoy8/Blog.Core/blob/master/README-en.md) | [中文版](https://github.com/anjoy8/Blog.Core/blob/master/README.md)
 
 
-![Logo](https://github.com/anjoy8/Blog.Core/blob/master/Blog.Core/wwwroot/logocore.png)
 
 
-Build your own front and rear end separation from scratch ". NET Core2.1 Api + Vue 2.0" framework, currently version 2.2, each version see branch.
-It's just. Netcore back-end section, Front end section, see my other engineering vue
+[![sdk](https://img.shields.io/badge/sdk-5.0.1-d.svg)](#)  [![Build status](https://github.com/anjoy8/blog.core/workflows/.NET%20Core/badge.svg)](https://github.com/anjoy8/Blog.Core/actions)  [![Build Status](https://dev.azure.com/laozhangisphi/anjoy8/_apis/build/status/anjoy8.Blog.Core?branchName=master)](https://dev.azure.com/laozhangisphi/anjoy8/_build?definitionId=1)  [![codecov](https://codecov.io/gh/anjoy8/Blog.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/anjoy8/Blog.Core)  [![License MIT](https://img.shields.io/badge/license-Apache-blue.svg?style=flat-square)](https://github.com/anjoy8/Blog.Core/blob/master/LICENSE) [![star this repo](http://githubbadges.com/star.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges)  [![fork this repo](http://githubbadges.com/fork.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges/fork)  [![Cnblogs](https://img.shields.io/badge/博客园-老张的哲学-brightgreen.svg)](https://www.cnblogs.com/laozhang-is-phi/)
 
-Https://github.com/anjoy8/Blog.Vue 
 
-# Give a star!⭐️
+&nbsp;
+&nbsp;
 
-If you like this project or it helps you, please give star~ (hard Star)
 
-*********************************************************
-# Tips: 
-1. Blog.Core.FrameWork project is a simple implementation of generating files using T4 templates.
-If there is an error, you can contact me,
-QQ Group: 867095512
-If you don't want to deal with this error, you can uninstall the project first without affecting the overall operation.
+<div style="text-align: center;">
+<a href="https://mvp.microsoft.com/zh-cn/PublicProfile/5003704?fullName=anson%20zhang" >
+  <img src="http://apk.neters.club/MVP_Logo_Horizontal_Preferred_Cyan300_CMYK_72ppi.png" alt="MVP"   >
+</a>
 
-2. when the project is executed after downloading, the Redis server needs to be installed, installation and use of the description address:
-https://www.cnblogs.com/laozhang-is-phi/p/9554210.html#autoid-5-0-0
+<a href="https://dotnetfoundation.org/member/Profile" >
+  <img src="https://vueadmin.neters.club/images/1125120255netfoundation.png" alt=".netfoundation" width="220" >
+</a>
+</div>
 
-3. the system new automated Generation database, and the ability to generate seed data, In the Progrm.cs in the Blog.core layer, cancel the Dbseed.seedasync (mycontext). Wait ();
-The comment can be.
 
-4. If you do not want to use Codefirst and seed data, you can use the database table structure SQL file to execute in the database,
+Blog.Core is an enterprise-class back-to-back separation framework for.NET Core5.0 API + Vue 2.x + RBAC.
+Website: http://apk.neters.club/.doc/
+Has been used by several companies: [click to view list] (https://github.com/anjoy8/Blog.Core/issues/75)
 
-In the Wwwroot folder under the Blog.core project.
-*********************************************************
+Project single deployment, concurrent at 400~500, all normal (do not guarantee their own various error writing).
+The effect is even better if the load is matched.
 
-### Modify Database connection string
-1, in the Blog.Core.Repository layer under the Sugar folder under the BaseDBConfig.cs, configure their own strings
-``` 
-public static string connectionstring = File.exists (@ "D:my-filedbCountPsw1.txt")? 
-File.readalltext (@ "D:my-filedbCountPsw1.txt"). Trim ():  "server=.;
-Uid=sa;pwd=sa;database=blogdb ";
 
-```
-2, in the Blog.Core.FrameWork layer of the dbhelper.ttinclude, configure their own strings
-``` 
-public static readonly String connectionstring = File.exists (@ "D:my-filedbCountPsw2.txt")? 
-File.readalltext (@ "D:my-filedbCountPsw2.txt"). Trim ():  "server=.;
-Uid=sa;pwd=sa;database=blogdb ";
-```
+
+&nbsp;
+
+### Features and Progress
+
+Framework module:
+- [x] adopts the form of 'warehousing + service + interface' to encapsulate the framework;
+- [X] async/await development;
+- [x] access to domestic database ORM component - SQLSUGAR, encapsulate database operation;
+- [x] support free switching multiple database, MySql/used/Sqlite/Oracle/Postgresql/reach/NPC Jin Cang dreams;
+- [x] realize project startup, automatically generate seed data ✨;
+- [X] five types of logging, audit/exception/request response/service operation/SQL logging, etc.
+- [x] Support for project transaction processing (use CAP if you want to distribute) ✨;
+- [x] Design 4 types of AOP facets programming, including: logging, caching, auditing, transaction ✨;
+- [x] Support T4 code template, automatically generate code for each layer;
+- [x] or use DbFirst one key to create their own project four layer files (support multiple libraries);
+- [x] encapsulation ` Blog. Core. Webapi. Template ` project Template, a key ✨ rebuild their projects;
+- [x] with multiple front-end cases for reference and reference: blog.vue, blog.admin, nuxt.tbug, blog.mvp. Blazor ✨;
+- [x] Uniform Integrated IdentityServer4 Authentication ✨;
+
+Component module:
+- [x] provides Redis for caching;
+- [x] API file with Swagger;
+- [x] Use Miniprofiler for interface performance analysis ✨;
+- [x] uses Automapper to handle object mapping;
+- [x] uses Autofac as a dependency injection container and provides batch service injection ✨;
+- [x] supports CORS cross-domain;
+- [x] encapsulates JWT custom policy authorization;
+- [x] uses the Log4Net logging framework and integrates the native iLogger interface for logging;
+- [x] using Signalr duplex communication ✨;
+- [x] Added iprateLimiting for API current limiting;
+- [X] Use Quartz.net for task scheduling (currently single machine multi-task, cluster scheduling is not currently supported);
+- [x] Support for database 'read/write separation' and multi-library operations ✨;
+- [x] Added Redis Message Queuing ✨;
+- [x] new RabbitMQ message queue ✨;
+- [x] New EventBus ✨;
+- [x] Debugging - Unified Aggregate Payment;
+- [] Plan - Data department authority;
+-[] plan -es search;
+
+Micro service module:
+- [x] can cooperate with Docker to achieve containerization;
+- [x] can cooperate with Jenkins to achieve CI/CD;
+- [x] enables service discovery with Consul;
+- [x] can cooperate with Ocelot to achieve gateway processing;
+- [x] can cooperate with NGINX to achieve load balancing;
+- [x] can cooperate with IDS4 certification center;
+
+
+&nbsp;
+
+## Give a star! ⭐ ️
+If you like this project or it helps you, please send it to STAR ~
+If your project from the project, please explain a little bit down [https://github.com/anjoy8/Blog.Core/issues/75] (https://github.com/anjoy8/Blog.Core/issues/75), Open source is not easy ✨.
+
+
+
+&nbsp;
+
+## Official document 📕
+
+Still in the process of sorting out, but the basic operations, including how to get started, configure data, connect to DB, and so on
+
+[the official documentation] (http://apk.neters.club/.doc/)
+[Official account important articles + video address](https://mvp.neters.club/)
+
+
+
+
+&nbsp;
+
+
+
 
 *****************************************************
 
