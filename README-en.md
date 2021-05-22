@@ -35,7 +35,7 @@ The effect is even better if the load is matched.
 ### Features and Progress
 
 Framework module:
-- [x] adopts the form of 'warehousing + service + interface' to encapsulate the framework;
+- [x] adopts the form of 'repository + service + interface' to encapsulate the framework;
 - [X] async/await development;
 - [x] access to domestic database ORM component - SQLSUGAR, encapsulate database operation;
 - [x] support free switching multiple database, MySql/used/Sqlite/Oracle/Postgresql/reach/NPC Jin Cang dreams;
