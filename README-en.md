@@ -66,8 +66,8 @@ Component module:
 - [x] new RabbitMQ message queue ✨;
 - [x] New EventBus ✨;
 - [x] Debugging - Unified Aggregate Payment;
-- [] Plan - Data department authority;
--[] plan -es search;
+- [ ] Plan - Data department authority;
+- [ ] plan -es search;
 
 Micro service module:
 - [x] can cooperate with Docker to achieve containerization;
