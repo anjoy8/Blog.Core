@@ -6,7 +6,7 @@ namespace Blog.Core.Controllers
 {
     public class BaseApiCpntroller : Controller
     {
-
+        [NonAction]
         public MessageModel<T> Success<T>(T data, string msg = "成功")
         {
             return new MessageModel<T>()
@@ -16,7 +16,7 @@ namespace Blog.Core.Controllers
                 response = data,
             };
         }
-
+        [NonAction]
         public MessageModel Success(string msg = "成功")
         {
             return new MessageModel()
@@ -26,7 +26,7 @@ namespace Blog.Core.Controllers
                 response = null,
             };
         }
-
+        [NonAction]
         public MessageModel<string> Failed(string msg = "失败", int status = 500)
         {
             return new MessageModel<string>()
@@ -37,7 +37,7 @@ namespace Blog.Core.Controllers
                 response = null,
             };
         }
-
+        [NonAction]
         public MessageModel<T> Failed<T>(string msg = "失败", int status = 500)
         {
             return new MessageModel<T>()
@@ -48,7 +48,7 @@ namespace Blog.Core.Controllers
                 response = default,
             };
         }
-
+        [NonAction]
         public MessageModel<PageModel<T>> SuccessPage<T>(int page, int dataCount, List<T> data, int pageCount, string msg = "获取成功")
         {
 
@@ -65,7 +65,7 @@ namespace Blog.Core.Controllers
                 }
             };
         }
-
+        [NonAction]
         public MessageModel<PageModel<T>> SuccessPage<T>(PageModel<T> pageModel, string msg = "获取成功")
         {
 
