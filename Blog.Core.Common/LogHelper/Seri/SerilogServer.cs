@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 
@@ -22,6 +23,15 @@ namespace Blog.Core.Common.LogHelper
                 .WriteTo.File(Path.Combine("Log", defaultFolder, $"{filename}.log"),
                 rollingInterval: RollingInterval.Infinite,
                 outputTemplate: "{Message}{NewLine}{Exception}")
+
+                // 将日志托送到远程ES
+                // docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -d --name ES01 elasticsearch:7.2.0
+                //.Enrich.FromLogContext()
+                //.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://x.xxx.xx.xx:9200/"))
+                //{
+                //    AutoRegisterTemplate = true,
+                //})
+
                 .CreateLogger();
 
             var now = DateTime.Now;
