@@ -15,7 +15,7 @@ namespace Blog.Core
         {
             int reval = 0;
             if (thisValue == null) return 0;
-            if (thisValue != null && thisValue != DBNull.Value && int.TryParse(thisValue.ToString(), out reval))
+            if (thisValue != DBNull.Value && int.TryParse(thisValue.ToString(), out reval))
             {
                 return reval;
             }
