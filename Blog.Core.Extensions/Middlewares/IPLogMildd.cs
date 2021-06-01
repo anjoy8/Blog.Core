@@ -58,7 +58,7 @@ namespace Blog.Core.Middlewares
                             // 自定义log输出
                             //Parallel.For(0, 1, e =>
                             //{
-                            LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
+                            //   LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
                             //});
 
                             // 这种方案也行，用的是Serilog
