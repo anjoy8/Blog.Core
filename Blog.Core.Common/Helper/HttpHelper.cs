@@ -50,7 +50,7 @@ namespace Blog.Core.Common.Helper
             }
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             string encoding = response.ContentEncoding;
-            if (encoding == null || encoding.Length < 1)
+            if (encoding.Length < 1)
             {
                 encoding = "UTF-8"; //默认编码  
             }
@@ -75,7 +75,7 @@ namespace Blog.Core.Common.Helper
             }
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             string encoding = response.ContentEncoding;
-            if (encoding == null || encoding.Length < 1)
+            if (encoding.Length < 1)
             {
                 encoding = "UTF-8"; //默认编码  
             }
