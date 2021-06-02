@@ -63,7 +63,6 @@ namespace Blog.Core.Services
         /// <summary>
         /// 获取博客列表
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         [Caching(AbsoluteExpiration = 10)]
         public async Task<List<BlogArticle>> GetBlogs()
