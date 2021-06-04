@@ -90,13 +90,23 @@ namespace Blog.Core.Extensions
                 }
 
                 // 数据库Sql执行AOP
-                if (!Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
+                if (!Appsettings.app(new string[] { "AppSettings", "SqlAOP", "OutToLogFile", "Enabled" }).ObjToBool())
                 {
-                    Console.WriteLine($"DB Sql AOP: False");
+                    Console.WriteLine($"DB Sql AOP To LogFile: False");
                 }
                 else
                 {
-                    ConsoleHelper.WriteSuccessLine($"DB Sql AOP: True");
+                    ConsoleHelper.WriteSuccessLine($"DB Sql AOP To LogFile: True");
+                }
+
+                // Sql执行日志输出到控制台
+                if (!Appsettings.app(new string[] { "AppSettings", "SqlAOP", "OutToConsole", "Enabled" }).ObjToBool())
+                {
+                    Console.WriteLine($"DB Sql AOP To Console: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"DB Sql AOP To Console: True");
                 }
 
                 // SingnalR发送数据

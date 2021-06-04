@@ -30,9 +30,9 @@ namespace Blog.Core.Controllers
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="blogArticleServices"></param>
         /// <param name="logger"></param>
-        public BlogController(IBlogArticleServices blogArticleServices, ILogger<BlogController> logger)
+        /// 
+        public BlogController(ILogger<BlogController> logger)
         {
             _logger = logger;
         }
@@ -56,8 +56,6 @@ namespace Blog.Core.Controllers
             }
 
             Expression<Func<BlogArticle, bool>> whereExpression = a => (a.bcategory == bcategory && a.IsDeleted == false) && ((a.btitle != null && a.btitle.Contains(key)) || (a.bcontent != null && a.bcontent.Contains(key)));
-
-            var testId = await _blogArticleServices.GetBlogDetails(1);
 
             var pageModelBlog = await _blogArticleServices.QueryPage(whereExpression, page, intPageSize, " bID desc ");
 

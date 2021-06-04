@@ -27,7 +27,7 @@ namespace Blog.Core.Tests
 
             var container = dI_Test.DICollections();
             blogArticleServices = container.Resolve<IBlogArticleServices>();
-            blogController = new BlogController(blogArticleServices, mockLogger.Object);
+            blogController = new BlogController(mockLogger.Object);
         }
 
         [Fact]
