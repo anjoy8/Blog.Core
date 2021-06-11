@@ -20,6 +20,7 @@ namespace Blog.Core.Middlewares
         /// </summary>
         private readonly RequestDelegate _next;
         private readonly IWebHostEnvironment _environment;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(IPLogMildd));
 
         /// <summary>
         /// 
@@ -61,9 +62,20 @@ namespace Blog.Core.Middlewares
                             //   LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
                             //});
 
-                            // 这种方案也行，用的是Serilog
-                            var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RequestIpInfoLog");
-                            SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false);
+                            try
+                            {
+                                var testLogMatchRequestInfo = JsonConvert.DeserializeObject<RequestInfo>(requestInfo);
+                                if (testLogMatchRequestInfo != null)
+                                {
+                                    var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RequestIpInfoLog");
+                                    SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                log.Error(requestInfo + "\r\n" + e.GetBaseException().ToString());
+                            }
+
 
                             request.Body.Position = 0;
                         }
