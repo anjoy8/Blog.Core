@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Elasticsearch;
 using System;
@@ -35,17 +35,20 @@ namespace Blog.Core.Common.LogHelper
                 .CreateLogger();
 
             var now = DateTime.Now;
-            string logContent = String.Join("\r\n", dataParas);
-            if (IsHeader)
+            string logJudge = String.Join("-", dataParas);
+            if (logJudge != null && logJudge.Length > 20)
             {
-                logContent = (
-                   "--------------------------------\r\n" +
-                   DateTime.Now + "|\r\n" +
-                   String.Join("\r\n", dataParas) + "\r\n"
-                   );
+                string logContent = String.Join("\r\n", dataParas);
+                if (IsHeader)
+                {
+                    logContent = (
+                       "--------------------------------\r\n" +
+                       DateTime.Now + "|\r\n" +
+                       String.Join("\r\n", dataParas) + "\r\n"
+                       );
+                }
+                Log.Information(logContent);
             }
-
-            Log.Information(logContent);
             Log.CloseAndFlush();
         }
         /// <summary>
