@@ -6,7 +6,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 角色表
     /// </summary>
-    public class Role : RootEntity
+    public class Role : RootEntityTkey<int>
     {
         public Role()
         {

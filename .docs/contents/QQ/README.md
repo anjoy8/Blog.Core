@@ -1,11 +1,18 @@
-## QQ 群
+## 开源社区
 
-<img src="http://apk.neters.club/images/NETCore-VUE.png" alt="群1" width="200" >
-<img src="http://apk.neters.club/images/NETCore-VUE-2.png" alt="群2" width="200" >
+<img src="http://apk.neters.club/.doc/bcvphomelogo.png" alt="bcvp" width="200" >   
+
+[https://github.com/BaseCoreVueProject/Home](https://github.com/BaseCoreVueProject/Home)  
+
+Base netCore (Vue) Project Team，  
+基于Net/Core 和Vue（react/ng），快速搭建 MVC & SPA 及微服务应用   
+如果你有关于dotNet/core 的，不错的，可以正常运行，且一年内维护的，均可以加入。  
+唯一宗旨：我们来自社区，服务社区，反哺社区。   
+
 
 
 ## 微信公众号
 
-<img src="http://apk.neters.club/images/wechat.png" alt="公众号" width="600" >
+<img src="https://img.neters.club/doc/WeChat%20Screenshot_20200624194936.png" alt="公众号" width="600" >
 
 

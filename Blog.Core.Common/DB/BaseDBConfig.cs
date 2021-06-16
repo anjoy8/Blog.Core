@@ -10,7 +10,7 @@ namespace Blog.Core.Common.DB
         /* 之前的单库操作已经删除，如果想要之前的代码，可以查看我的GitHub的历史记录
          * 目前是多库操作，默认加载的是appsettings.json设置为true的第一个db连接。
          */
-        public static (List<MutiDBOperate>, List<MutiDBOperate>) MutiConnectionString => MutiInitConn();
+        public static (List<MutiDBOperate> allDbs, List<MutiDBOperate> slaveDbs) MutiConnectionString => MutiInitConn();
         private static string DifDBConnOfSecurity(params string[] conn)
         {
             foreach (var item in conn)
@@ -75,23 +75,29 @@ namespace Blog.Core.Common.DB
             //}
         }
 
+        /// <summary>
+        /// 定制Db字符串
+        /// 目的是保证安全：优先从本地txt文件获取，若没有文件则从appsettings.json中获取
+        /// </summary>
+        /// <param name="mutiDBOperate"></param>
+        /// <returns></returns>
         private static MutiDBOperate SpecialDbString(MutiDBOperate mutiDBOperate)
         {
             if (mutiDBOperate.DbType == DataBaseType.Sqlite)
             {
                 mutiDBOperate.Connection = $"DataSource=" + Path.Combine(Environment.CurrentDirectory, mutiDBOperate.Connection);
             }
-            //else if (mutiDBOperate.DbType == DataBaseType.SqlServer)
-            //{
-            //    mutiDBOperate.Conn = DifDBConnOfSecurity(@"D:\my-file\dbCountPsw1.txt", @"c:\my-file\dbCountPsw1.txt", mutiDBOperate.Conn);
-            //}
+            else if (mutiDBOperate.DbType == DataBaseType.SqlServer)
+            {
+                mutiDBOperate.Connection = DifDBConnOfSecurity(@"D:\my-file\dbCountPsw1_SqlserverConn.txt", mutiDBOperate.Connection);
+            }
             else if (mutiDBOperate.DbType == DataBaseType.MySql)
             {
-                mutiDBOperate.Connection = DifDBConnOfSecurity(@"D:\my-file\dbCountPsw1_MySqlConn.txt", @"c:\my-file\dbCountPsw1_MySqlConn.txt", mutiDBOperate.Connection);
+                mutiDBOperate.Connection = DifDBConnOfSecurity(@"D:\my-file\dbCountPsw1_MySqlConn.txt", mutiDBOperate.Connection);
             }
             else if (mutiDBOperate.DbType == DataBaseType.Oracle)
             {
-                mutiDBOperate.Connection = DifDBConnOfSecurity(@"D:\my-file\dbCountPsw1_OracleConn.txt", @"c:\my-file\dbCountPsw1_OracleConn.txt", mutiDBOperate.Connection);
+                mutiDBOperate.Connection = DifDBConnOfSecurity(@"D:\my-file\dbCountPsw1_OracleConn.txt", mutiDBOperate.Connection);
             }
 
             return mutiDBOperate;
@@ -105,7 +111,9 @@ namespace Blog.Core.Common.DB
         SqlServer = 1,
         Sqlite = 2,
         Oracle = 3,
-        PostgreSQL = 4
+        PostgreSQL = 4,
+        Dm = 5,
+        Kdbndp = 6,
     }
     public class MutiDBOperate
     {

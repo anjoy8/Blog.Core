@@ -1,0 +1,87 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+
+		<OutputType>Exe</OutputType>
+
+		<TargetFramework>net5.0</TargetFramework>
+		<!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
+		<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>..\Blog.Core.Api\Blog.Core.xml</DocumentationFile>
+		<NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>..\Blog.Core\Blog.Core.xml</DocumentationFile>
+		<NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
+        <PropertyGroup> 
+          <ServerGarbageCollection>false</ServerGarbageCollection> 
+        </PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Extensions\**" />
+		<Compile Remove="Hubs\**" />
+		<Compile Remove="Middlewares\**" />
+		<Content Remove="Extensions\**" />
+		<Content Remove="Hubs\**" />
+		<Content Remove="Middlewares\**" />
+		<EmbeddedResource Remove="Extensions\**" />
+		<EmbeddedResource Remove="Hubs\**" />
+		<EmbeddedResource Remove="Middlewares\**" />
+		<None Remove="Extensions\**" />
+		<None Remove="Hubs\**" />
+		<None Remove="Middlewares\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="index.html" />
+	</ItemGroup>
+
+	<ItemGroup>
+	
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+	
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Blog.Core.Extensions\Blog.Core.Extensions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="wwwroot\BlogCore.Data.json\BlogArticle.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\Modules.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\Permission.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\Role.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\RoleModulePermission.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\sysUserInfo.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\Topic.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\TopicDetail.tsv" />
+		<None Include="wwwroot\BlogCore.Data.json\UserRole.tsv" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="index.html" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Dockerfile">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="StopContainerImg.sh">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+</Project>

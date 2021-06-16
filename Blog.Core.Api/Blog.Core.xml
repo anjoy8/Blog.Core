@@ -1,0 +1,881 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Blog.Core.Api</name>
+    </assembly>
+    <members>
+        <member name="T:Blog.Core.Controllers.BlogController">
+            <summary>
+            博客管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="logger"></param>
+            
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            获取博客列表【无权限】
+            </summary>
+            <param name="id"></param>
+            <param name="page"></param>
+            <param name="bcategory"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32)">
+            <summary>
+            获取博客详情
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.DetailNuxtNoPer(System.Int32)">
+            <summary>
+            获取详情【无权限】
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.V2_Blogtest">
+            <summary>
+            获取博客测试信息 v2版本
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.Post(Blog.Core.Model.Models.BlogArticle)">
+            <summary>
+            添加博客【无权限】
+            </summary>
+            <param name="blogArticle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.AddForMVP(Blog.Core.Model.Models.BlogArticle)">
+            <summary>
+            
+            </summary>
+            <param name="blogArticle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.Put(Blog.Core.Model.Models.BlogArticle)">
+            <summary>
+            更新博客信息
+            </summary>
+            <param name="BlogArticle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.Delete(System.Int32)">
+            <summary>
+            删除博客
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.BlogController.ApacheTestUpdate">
+            <summary>
+            apache jemeter 压力测试
+            更新接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.#ctor(SqlSugar.ISqlSugarClient,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFiles">
+            <summary>
+            获取 整体框架 文件(主库)(一般可用第一次生成)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFilesByTableNames(System.String[],System.String)">
+            <summary>
+            获取仓储层和服务层(需指定表名和数据库)
+            </summary>
+            <param name="ConnID">数据库链接名称</param>
+            <param name="tableNames">需要生成的表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFilesByTableNamesForEntity(System.String[],System.String)">
+            <summary>
+            获取实体(需指定表名和数据库)
+            </summary>
+            <param name="ConnID">数据库链接名称</param>
+            <param name="tableNames">需要生成的表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFilesByTableNamesForController(System.String[],System.String)">
+            <summary>
+            获取控制器(需指定表名和数据库)
+            </summary>
+            <param name="ConnID">数据库链接名称</param>
+            <param name="tableNames">需要生成的表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetAllFrameFilesByTableNames(System.String[],System.String)">
+            <summary>
+            DbFrist 根据数据库表名 生成整体框架,包含Model层(一般可用第一次生成)
+            </summary>
+            <param name="ConnID">数据库链接名称</param>
+            <param name="tableNames">需要生成的表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.MigrateController.DataMigrateFromOld2New">
+            <summary>
+            获取权限部分Map数据（从库）
+            迁移到新库（主库）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.MigrateController.SaveData2TsvAsync">
+            <summary>
+            权限数据库导出tsv
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.HealthCheckController">
+            <summary>
+            健康检查
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.HealthCheckController.Get">
+            <summary>
+            健康检查接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.ImgController">
+            <summary>
+            图片管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.ImgController.DownImg(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            下载图片（支持中文字符）
+            </summary>
+            <param name="environment"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ImgController.InsertPicture(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            上传图片,多文件，可以使用 postman 测试，
+            如果是单文件，可以 参数写 IFormFile file1
+            </summary>
+            <param name="environment"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.LoginController">
+            <summary>
+            登录管理【无权限】
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.LoginController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.AuthHelper.PermissionRequirement,Blog.Core.IServices.IRoleModulePermissionServices)">
+            <summary>
+            构造函数注入
+            </summary>
+            <param name="sysUserInfoServices"></param>
+            <param name="userRoleServices"></param>
+            <param name="roleServices"></param>
+            <param name="requirement"></param>
+            <param name="roleModulePermissionServices"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.LoginController.GetJwtStr(System.String,System.String)">
+            <summary>
+            获取JWT的方法1
+            </summary>
+            <param name="name"></param>
+            <param name="pass"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.LoginController.GetJwtStrForNuxt(System.String,System.String)">
+            <summary>
+            获取JWT的方法2：给Nuxt提供
+            </summary>
+            <param name="name"></param>
+            <param name="pass"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.LoginController.GetJwtToken3(System.String,System.String)">
+            <summary>
+            获取JWT的方法3：整个系统主要方法
+            </summary>
+            <param name="name"></param>
+            <param name="pass"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.LoginController.RefreshToken(System.String)">
+            <summary>
+            请求刷新Token（以旧换新）
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.LoginController.Getjsonp(System.String,System.Int64,System.String,System.Int32,System.Int32)">
+            <summary>
+            获取JWT的方法4：给 JSONP 测试
+            </summary>
+            <param name="callBack"></param>
+            <param name="id"></param>
+            <param name="sub"></param>
+            <param name="expiresSliding"></param>
+            <param name="expiresAbsoulute"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.LoginController.Md5Password(System.String)">
+            <summary>
+            测试 MD5 加密字符串
+            </summary>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.ModuleController">
+            <summary>
+            接口管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.ModuleController.Get(System.Int32,System.String)">
+            <summary>
+            获取全部接口api
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ModuleController.Post(Blog.Core.Model.Models.Modules)">
+            <summary>
+            添加一条接口信息
+            </summary>
+            <param name="module"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ModuleController.Put(Blog.Core.Model.Models.Modules)">
+            <summary>
+            更新接口信息
+            </summary>
+            <param name="module"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ModuleController.Delete(System.Int32)">
+            <summary>
+            删除一条接口
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.MonitorController.Server">
+            <summary>
+            服务器配置信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.MonitorController.Get">
+            <summary>
+            SignalR send data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.PayController">
+            <summary>
+            建行聚合支付类
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.#ctor(Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.PayController},Blog.Core.IServices.IPayServices)">
+            <summary>
+            构造函数
+            </summary> 
+            <param name="logger"></param>
+            <param name="payServices"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayGet(Blog.Core.Model.ViewModels.PayNeedModel)">
+            <summary>
+            被扫支付
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayPost(Blog.Core.Model.ViewModels.PayNeedModel)">
+            <summary>
+            被扫支付
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayCheckGet(Blog.Core.Model.ViewModels.PayNeedModel)">
+            <summary>
+            支付结果查询-轮询
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayCheckPost(Blog.Core.Model.ViewModels.PayNeedModel)">
+            <summary>
+            支付结果查询-轮询
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayRefundGet(Blog.Core.Model.ViewModels.PayRefundNeedModel)">
+            <summary>
+            退款
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PayController.PayRefundPost(Blog.Core.Model.ViewModels.PayRefundNeedModel)">
+            <summary>
+            退款
+            </summary>
+            <param name="payModel"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.PermissionController">
+            <summary>
+            菜单管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,Microsoft.AspNetCore.Http.IHttpContextAccessor,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.AuthHelper.PermissionRequirement)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="permissionServices"></param>
+            <param name="moduleServices"></param>
+            <param name="roleModulePermissionServices"></param>
+            <param name="userRoleServices"></param>
+            <param name="httpContext"></param>
+            <param name="user"></param>
+            <param name="requirement"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.Get(System.Int32,System.String)">
+            <summary>
+            获取菜单
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.GetTreeTable(System.Int32,System.String)">
+            <summary>
+            查询树形 Table
+            </summary>
+            <param name="f">父节点</param>
+            <param name="key">关键字</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.Post(Blog.Core.Model.Models.Permission)">
+            <summary>
+            添加一个菜单
+            </summary>
+            <param name="permission"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.Assign(Blog.Core.Controllers.AssignView)">
+            <summary>
+            保存菜单权限分配
+            </summary>
+            <param name="assignView"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.GetPermissionTree(System.Int32,System.Boolean)">
+            <summary>
+            获取菜单树
+            </summary>
+            <param name="pid"></param>
+            <param name="needbtn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBar(System.Int32)">
+            <summary>
+            获取路由树
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.GetPermissionIdByRoleId(System.Int32)">
+            <summary>
+            通过角色获取菜单【无权限】
+            </summary>
+            <param name="rid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.Put(Blog.Core.Model.Models.Permission)">
+            <summary>
+            更新菜单
+            </summary>
+            <param name="permission"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.Delete(System.Int32)">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.RoleController">
+            <summary>
+            角色管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.RoleController.Get(System.Int32,System.String)">
+            <summary>
+            获取全部角色
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.RoleController.Post(Blog.Core.Model.Models.Role)">
+            <summary>
+            添加角色
+            </summary>
+            <param name="role"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.RoleController.Put(Blog.Core.Model.Models.Role)">
+            <summary>
+            更新角色
+            </summary>
+            <param name="role"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.RoleController.Delete(System.Int32)">
+            <summary>
+            删除角色
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.Get(System.Int32,System.String)">
+            <summary>
+            分页获取
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.Post(Blog.Core.Model.Models.TasksQz)">
+            <summary>
+            添加计划任务
+            </summary>
+            <param name="tasksQz"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.Put(Blog.Core.Model.Models.TasksQz)">
+            <summary>
+            修改计划任务
+            </summary>
+            <param name="tasksQz"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.Delete(System.Int32)">
+            <summary>
+            删除一个任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.StartJob(System.Int32)">
+            <summary>
+            启动计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.StopJob(System.Int32)">
+            <summary>
+            停止一个计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>        
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.PauseJob(System.Int32)">
+            <summary>
+            暂停一个计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>        
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.ResumeJob(System.Int32)">
+            <summary>
+            恢复一个计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>        
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.ReCovery(System.Int32)">
+            <summary>
+            重启一个计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.GetTaskNameSpace">
+            <summary>
+            获取任务命名空间
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.ExecuteJob(System.Int32)">
+            <summary>
+            立即执行任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.TopicController">
+            <summary>
+            类别管理【无权限】
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.TopicController.#ctor(Blog.Core.IServices.ITopicServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="topicServices"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.TopicController.Get">
+            <summary>
+            获取Tibug所有分类
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.TopicDetailController">
+            <summary>
+            Tibug 管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.TopicDetailController.#ctor(Blog.Core.IServices.ITopicServices,Blog.Core.IServices.ITopicDetailServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="topicServices"></param>
+            <param name="topicDetailServices"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.TopicDetailController.Get(System.Int32,System.String,System.String,System.Int32)">
+            <summary>
+            获取Bug数据列表（带分页）
+            【无权限】
+            </summary>
+            <param name="page">页数</param>
+            <param name="tname">专题类型</param>
+            <param name="key">关键字</param>
+            <param name="intPageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TopicDetailController.Get(System.Int32)">
+            <summary>
+            获取详情【无权限】
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TopicDetailController.Post(Blog.Core.Model.Models.TopicDetail)">
+            <summary>
+            添加一个 BUG 【无权限】
+            </summary>
+            <param name="topicDetail"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TopicDetailController.Update(Blog.Core.Model.Models.TopicDetail)">
+            <summary>
+            更新 bug
+            </summary>
+            <param name="topicDetail"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TopicDetailController.Delete(System.Int32)">
+            <summary>
+            删除 bug
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TransactionController.Delete(System.Int32)">
+            <summary>
+            测试事务在AOP中的使用
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.UserController">
+            <summary>
+            用户管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="unitOfWork"></param>
+            <param name="sysUserInfoServices"></param>
+            <param name="userRoleServices"></param>
+            <param name="roleServices"></param>
+            <param name="user"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.Get(System.Int32,System.String)">
+            <summary>
+            获取全部用户
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.GetInfoByToken(System.String)">
+            <summary>
+            获取用户详情根据token
+            【无权限】
+            </summary>
+            <param name="token">令牌</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.Models.sysUserInfo)">
+            <summary>
+            添加一个用户
+            </summary>
+            <param name="sysUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.Put(Blog.Core.Model.Models.sysUserInfo)">
+            <summary>
+            更新用户与角色
+            </summary>
+            <param name="sysUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.Delete(System.Int32)">
+            <summary>
+            删除用户
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.UserRoleController">
+            <summary>
+            用户角色关系
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserRoleController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sysUserInfoServices"></param>
+            <param name="userRoleServices"></param>
+            <param name="roleServices"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserRoleController.AddUser(System.String,System.String)">
+            <summary>
+            新建用户
+            </summary>
+            <param name="loginName"></param>
+            <param name="loginPwd"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserRoleController.AddRole(System.String)">
+            <summary>
+            新建Role
+            </summary>
+            <param name="roleName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserRoleController.AddUserRole(System.Int32,System.Int32)">
+            <summary>
+            新建用户角色关系
+            </summary>
+            <param name="uid"></param>
+            <param name="rid"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.ValuesController">
+            <summary>
+            Values控制器
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi,Blog.Core.Common.WebApiClients.HttpApis.IDoubanApi)">
+            <summary>
+            ValuesController
+            </summary>
+            <param name="blogArticleServices"></param>
+            <param name="mapper"></param>
+            <param name="advertisementServices"></param>
+            <param name="love"></param>
+            <param name="roleModulePermissionServices"></param>
+            <param name="user"></param>
+            <param name="passwordLibServices"></param>
+            <param name="blogApi"></param>
+            <param name="doubanApi"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Get">
+            <summary>
+            Get方法
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.RedisMq(Blog.Core.Extensions.IRedisBasketRepository)">
+            <summary>
+            测试Redis消息队列
+            </summary>
+            <param name="_redisBasketRepository"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.EventBusTry(Blog.Core.EventBus.IEventBus,System.String)">
+            <summary>
+            测试RabbitMQ事件总线
+            </summary>
+            <param name="_eventBus"></param>
+            <param name="blogId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Get(System.Int32)">
+            <summary>
+            Get(int id)方法
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.RequiredP(System.String)">
+            <summary>
+            测试参数是必填项
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.GetUserInfo(System.String)">
+            <summary>
+            通过 HttpContext 获取用户信息
+            </summary>
+            <param name="ClaimType">声明类型，默认 jti </param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Source">
+            <summary>
+            to redirect by route template name.
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Destination">
+            <summary>
+            route with template name.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Post(Blog.Core.Model.Models.BlogArticle,System.Int32)">
+            <summary>
+            测试 post 一个对象 + 独立参数
+            </summary>
+            <param name="blogArticle">model实体类参数</param>
+            <param name="id">独立参数</param>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.TestPostPara(System.String)">
+            <summary>
+            测试 post 参数
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.RestsharpGet">
+            <summary>
+            测试http请求 RestSharp Get
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.RestsharpPost">
+            <summary>
+            测试http请求 RestSharp Post
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.TestMutiDBAPI">
+            <summary>
+            测试多库连接
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.WebApiClientGetAsync">
+            <summary>
+            测试http请求 WebApiClient Get
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Put(System.Int32,System.String)">
+            <summary>
+            Put方法
+            </summary>
+            <param name="id"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.Delete(System.Int32)">
+            <summary>
+            Delete方法
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="T:Blog.Core.SwaggerHelper.CustomRouteAttribute">
+            <summary>
+            自定义路由 /api/{version}/[controler]/[action]
+            </summary>
+        </member>
+        <member name="P:Blog.Core.SwaggerHelper.CustomRouteAttribute.GroupName">
+            <summary>
+            分组名称,是来实现接口 IApiDescriptionGroupNameProvider
+            </summary>
+        </member>
+        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(System.String)">
+            <summary>
+            自定义路由构造函数，继承基类路由
+            </summary>
+            <param name="actionName"></param>
+        </member>
+        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(Blog.Core.Extensions.CustomApiVersion.ApiVersions,System.String)">
+            <summary>
+            自定义版本+路由构造函数，继承基类路由
+            </summary>
+            <param name="actionName"></param>
+            <param name="version"></param>
+        </member>
+        <member name="T:Blog.Core.Filter.GlobalRouteAuthorizeConvention">
+            <summary>
+            Summary:全局路由权限公约
+            Remarks:目的是针对不同的路由，采用不同的授权过滤器
+            如果 controller 上不加 [Authorize] 特性，默认都是 Permission 策略
+            否则，如果想特例其他授权机制的话，需要在 controller 上带上  [Authorize]，然后再action上自定义授权即可，比如 [Authorize(Roles = "Admin")]
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Filter.GlobalAuthorizeFilter">
+            <summary>
+            全局权限过滤器【无效】
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Filter.GlobalExceptionsFilter">
+            <summary>
+            全局异常错误日志
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Filter.GlobalExceptionsFilter.WriteLog(System.String,System.Exception)">
+            <summary>
+            自定义返回格式
+            </summary>
+            <param name="throwMsg"></param>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Blog.Core.Filter.JsonErrorResponse.Message">
+            <summary>
+            生产环境的消息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Filter.JsonErrorResponse.DevelopmentMessage">
+            <summary>
+            开发环境的消息
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Filter.GlobalRoutePrefixFilter">
+            <summary>
+            全局路由前缀公约
+            </summary>
+        </member>
+    </members>
+</doc>

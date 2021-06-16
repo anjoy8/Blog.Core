@@ -1,0 +1,21 @@
+﻿[
+  {
+    "Name": "博客管理",
+    "JobGroup": "博客测试组",
+    "TriggerType": 1, 
+    "Cron": "0 */10 * * * ?",
+    "AssemblyName": "Blog.Core.Tasks",
+    "ClassName": "Job_Blogs_Quartz",
+    "Remark": "",
+    "RunTimes": 0,
+    "BeginTime": "\/Date(1546272000000+0800)\/",
+    "EndTime": "\/Date(1640966400000+0800)\/",
+    "IntervalSecond": 0,
+	"CycleRunTimes": 0,
+    "IsStart": true,
+    "JobParams": 1,
+    "IsDeleted": false,
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "Id": 1
+  }
+]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Blog.Core.Common.Helper
 {
@@ -16,6 +17,7 @@ namespace Blog.Core.Common.Helper
             string result = String.Empty;
             try
             {
+                JsonSerializer.Serialize("");
                 System.Runtime.Serialization.Json.DataContractJsonSerializer serializer =
                 new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(T));
                 using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
@@ -24,9 +26,9 @@ namespace Blog.Core.Common.Helper
                     result = System.Text.Encoding.UTF8.GetString(ms.ToArray());
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
             return result;
         }
@@ -52,9 +54,8 @@ namespace Blog.Core.Common.Helper
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
             }
 
             return st.ToString();
@@ -93,9 +94,8 @@ namespace Blog.Core.Common.Helper
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
             }
 
             return st.ToString();

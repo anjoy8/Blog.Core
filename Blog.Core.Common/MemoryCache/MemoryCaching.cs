@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System;
 
-namespace Blog.Core.Common.MemoryCache
+namespace Blog.Core.Common
 {
     /// <summary>
     /// 实例化缓存接口ICaching
@@ -21,9 +21,9 @@ namespace Blog.Core.Common.MemoryCache
             return _cache.Get(cacheKey);
         }
 
-        public void Set(string cacheKey, object cacheValue)
+        public void Set(string cacheKey, object cacheValue,int timeSpan)
         {
-            _cache.Set(cacheKey, cacheValue, TimeSpan.FromSeconds(7200));
+            _cache.Set(cacheKey, cacheValue, TimeSpan.FromSeconds(timeSpan * 60));
         }
     }
 

@@ -1,5 +1,5 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.IRepository;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
@@ -12,10 +12,10 @@ namespace Blog.Core.Services
 {
     public class GuestbookServices : BaseServices<Guestbook>, IGuestbookServices
     {
-        private readonly IGuestbookRepository _dal;
+        private readonly IBaseRepository<Guestbook> _dal;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IPasswordLibRepository _passwordLibRepository;
-        public GuestbookServices(IUnitOfWork unitOfWork, IGuestbookRepository dal, IPasswordLibRepository passwordLibRepository)
+        private readonly IBaseRepository<PasswordLib> _passwordLibRepository;
+        public GuestbookServices(IUnitOfWork unitOfWork, IBaseRepository<Guestbook> dal, IBaseRepository<PasswordLib> passwordLibRepository)
         {
             this._dal = dal;
             base.BaseDal = dal;

@@ -14,6 +14,12 @@ namespace Blog.Core.Common.LogHelper
         public int count { get; set; }
     }
 
+    public class ActiveUserVM
+    {
+        public string user { get; set; }
+        public int count { get; set; }
+    }
+
     public class RequestApiWeekView
     {
         public List<string> columns { get; set; }
