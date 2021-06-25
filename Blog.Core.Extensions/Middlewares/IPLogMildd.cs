@@ -68,7 +68,7 @@ namespace Blog.Core.Middlewares
                                 if (testLogMatchRequestInfo != null)
                                 {
                                     var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RequestIpInfoLog");
-                                    SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false);
+                                    SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false, "", true);
                                 }
                             }
                             catch (Exception e)

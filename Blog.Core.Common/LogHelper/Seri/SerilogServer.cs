@@ -1,3 +1,4 @@
+using Blog.Core.Common.Helper;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Elasticsearch;
@@ -14,7 +15,7 @@ namespace Blog.Core.Common.LogHelper
         /// <param name="filename"></param>
         /// <param name="message"></param>
         /// <param name="info"></param>
-        public static void WriteLog(string filename, string[] dataParas, bool IsHeader = true, string defaultFolder = "")
+        public static void WriteLog(string filename, string[] dataParas, bool IsHeader = true, string defaultFolder = "", bool isJudgeJsonFormat = false)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -35,10 +36,16 @@ namespace Blog.Core.Common.LogHelper
                 .CreateLogger();
 
             var now = DateTime.Now;
-            string logJudge = String.Join("-", dataParas);
-            if (logJudge != null && logJudge.Length > 20)
+            string logContent = String.Join("\r\n", dataParas);
+            var isJsonFormat = true;
+            if (isJudgeJsonFormat)
             {
-                string logContent = String.Join("\r\n", dataParas);
+                var judCont = logContent.Substring(0, logContent.LastIndexOf(","));
+                isJsonFormat = JsonHelper.IsJson(judCont);
+            }
+
+            if (isJsonFormat)
+            {
                 if (IsHeader)
                 {
                     logContent = (
@@ -48,6 +55,10 @@ namespace Blog.Core.Common.LogHelper
                        );
                 }
                 Log.Information(logContent);
+            }
+            else
+            {
+                ConsoleHelper.WriteErrorLine(logContent + now.ObjToString());
             }
             Log.CloseAndFlush();
         }
