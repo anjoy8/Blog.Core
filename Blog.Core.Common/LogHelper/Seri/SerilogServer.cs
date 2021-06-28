@@ -58,7 +58,7 @@ namespace Blog.Core.Common.LogHelper
             }
             else
             {
-                ConsoleHelper.WriteErrorLine(logContent + now.ObjToString());
+                Console.WriteLine("【JSON格式异常：】"+logContent + now.ObjToString());
             }
             Log.CloseAndFlush();
         }
