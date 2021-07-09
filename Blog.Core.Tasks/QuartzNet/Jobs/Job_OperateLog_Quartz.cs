@@ -21,7 +21,7 @@ namespace Blog.Core.Tasks
         private readonly IOperateLogServices _operateLogServices; 
         private readonly IWebHostEnvironment _environment;
 
-        public Job_OperateLog_Quartz(ITasksQzServices tasksQzServices, ILogger<JobBase> logger, IOperateLogServices operateLogServices, IWebHostEnvironment environment):base(tasksQzServices, logger)
+        public Job_OperateLog_Quartz(ITasksQzServices tasksQzServices, ILogger<JobBase> logger, IOperateLogServices operateLogServices, IWebHostEnvironment environment)
         {
             _operateLogServices = operateLogServices; 
             _environment = environment; 
