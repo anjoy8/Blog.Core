@@ -318,11 +318,17 @@ namespace Blog.Core.Common.LogHelper
                     jsonBuilder.Append(item.count);
                     jsonBuilder.Append("\",");
                 }
-                jsonBuilder.Remove(jsonBuilder.Length - 1, 1);
+                if (apiweeksCurrentWeek.Count > 0)
+                {
+                    jsonBuilder.Remove(jsonBuilder.Length - 1, 1);
+                }
                 jsonBuilder.Append("},");
             }
 
-            jsonBuilder.Remove(jsonBuilder.Length - 1, 1);
+            if (weeks.Count > 0)
+            {
+                jsonBuilder.Remove(jsonBuilder.Length - 1, 1);
+            }
             jsonBuilder.Append("]");
 
             //columns.AddRange(apiWeeks.OrderByDescending(d => d.count).Take(8).Select(d => d.url).ToList());

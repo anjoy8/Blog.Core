@@ -140,6 +140,26 @@
             <param name="response">数据</param>
             <returns></returns>
         </member>
+        <member name="P:Blog.Core.Model.MessageModel.status">
+            <summary>
+            状态码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel.success">
+            <summary>
+            操作是否成功
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel.msg">
+            <summary>
+            返回信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel.response">
+            <summary>
+            返回数据集合
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Advertisement.ImgUrl">
             <summary>
             广告图片

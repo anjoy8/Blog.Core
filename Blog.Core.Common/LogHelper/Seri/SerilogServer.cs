@@ -1,5 +1,7 @@
-﻿using Serilog;
+using Blog.Core.Common.Helper;
+using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 
@@ -13,27 +15,51 @@ namespace Blog.Core.Common.LogHelper
         /// <param name="filename"></param>
         /// <param name="message"></param>
         /// <param name="info"></param>
-        public static void WriteLog(string filename, string[] dataParas, bool IsHeader = true)
+        public static void WriteLog(string filename, string[] dataParas, bool IsHeader = true, string defaultFolder = "", bool isJudgeJsonFormat = false)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
                 //.WriteTo.File(Path.Combine($"log/Serilog/{filename}/", ".log"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message}{NewLine}{Exception}")
-                .WriteTo.File(Path.Combine($"log/Serilog/", $"{filename}.log"), rollingInterval: RollingInterval.Infinite, outputTemplate: "{Message}{NewLine}{Exception}")
+                .WriteTo.File(Path.Combine("Log", defaultFolder, $"{filename}.log"),
+                rollingInterval: RollingInterval.Infinite,
+                outputTemplate: "{Message}{NewLine}{Exception}")
+
+                // 将日志托送到远程ES
+                // docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -d --name ES01 elasticsearch:7.2.0
+                //.Enrich.FromLogContext()
+                //.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://x.xxx.xx.xx:9200/"))
+                //{
+                //    AutoRegisterTemplate = true,
+                //})
+
                 .CreateLogger();
 
             var now = DateTime.Now;
             string logContent = String.Join("\r\n", dataParas);
-            if (IsHeader)
+            var isJsonFormat = true;
+            if (isJudgeJsonFormat)
             {
-                logContent = (
-                   "--------------------------------\r\n" +
-                   DateTime.Now + "|\r\n" +
-                   String.Join("\r\n", dataParas) + "\r\n"
-                   );
+                var judCont = logContent.Substring(0, logContent.LastIndexOf(","));
+                isJsonFormat = JsonHelper.IsJson(judCont);
             }
 
-            Log.Information(logContent);
+            if (isJsonFormat)
+            {
+                if (IsHeader)
+                {
+                    logContent = (
+                       "--------------------------------\r\n" +
+                       DateTime.Now + "|\r\n" +
+                       String.Join("\r\n", dataParas) + "\r\n"
+                       );
+                }
+                Log.Information(logContent);
+            }
+            else
+            {
+                Console.WriteLine("【JSON格式异常：】"+logContent + now.ObjToString());
+            }
             Log.CloseAndFlush();
         }
         /// <summary>

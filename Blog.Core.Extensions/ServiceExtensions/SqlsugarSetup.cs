@@ -1,5 +1,6 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.DB;
+using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
@@ -54,14 +55,21 @@ namespace Blog.Core.Extensions
                             {
                                 if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
                                 {
-                                    Parallel.For(0, 1, e =>
+                                    if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "OutToLogFile", "Enabled" }).ObjToBool())
                                     {
-                                        MiniProfiler.Current.CustomTiming("SQL：", GetParas(p) + "【SQL语句】：" + sql);
-                                        LogLock.OutSql2Log("SqlLog", new string[] { GetParas(p), "【SQL语句】：" + sql });
+                                        Parallel.For(0, 1, e =>
+                                        {
+                                            MiniProfiler.Current.CustomTiming("SQL：", GetParas(p) + "【SQL语句】：" + sql);
+                                            LogLock.OutSql2Log("SqlLog", new string[] { GetParas(p), "【SQL语句】：" + sql });
 
-                                    });
+                                        });
+                                    }
+                                    if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "OutToConsole", "Enabled" }).ObjToBool())
+                                    {
+                                        ConsoleHelper.WriteColorLine(string.Join("\r\n", new string[] { "--------", "【SQL语句】：" + GetWholeSql(p, sql) }), ConsoleColor.DarkCyan);
+                                    }
                                 }
-                            }
+                            },
                         },
                         MoreSettings = new ConnMoreSettings()
                         {
@@ -87,6 +95,16 @@ namespace Blog.Core.Extensions
                 });
                 return new SqlSugarClient(listConfig);
             });
+        }
+
+        private static string GetWholeSql(SugarParameter[] paramArr, string sql)
+        {
+            foreach (var param in paramArr)
+            {
+                sql.Replace(param.ParameterName, param.Value.ObjToString());
+            }
+
+            return sql;
         }
 
         private static string GetParas(SugarParameter[] pars)
