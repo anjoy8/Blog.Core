@@ -21,10 +21,11 @@ namespace Blog.Core.Tasks
         private readonly IOperateLogServices _operateLogServices; 
         private readonly IWebHostEnvironment _environment;
 
-        public Job_OperateLog_Quartz(ITasksQzServices tasksQzServices, ILogger<JobBase> logger, IOperateLogServices operateLogServices, IWebHostEnvironment environment)
+        public Job_OperateLog_Quartz(IOperateLogServices operateLogServices, ITasksQzServices tasksQzServices, IWebHostEnvironment environment)
         {
             _operateLogServices = operateLogServices; 
-            _environment = environment; 
+            _environment = environment;
+            _tasksQzServices = tasksQzServices;
         }
         public async Task Execute(IJobExecutionContext context)
         {
