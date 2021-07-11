@@ -66,6 +66,13 @@ namespace Blog.Core.Tasks
         /// <returns></returns>
         string GetTriggerState(string key);
 
+        /// <summary>
+        /// 立即执行 一个任务
+        /// </summary>
+        /// <param name="tasksQz"></param>
+        /// <returns></returns>
+        Task<MessageModel<string>> ExecuteJobAsync(TasksQz tasksQz);
+
     }
 
 }

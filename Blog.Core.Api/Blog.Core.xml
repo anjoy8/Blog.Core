@@ -9,12 +9,12 @@
             博客管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IBlogArticleServices,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
+        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
             <summary>
             构造函数
             </summary>
-            <param name="blogArticleServices"></param>
             <param name="logger"></param>
+            
         </member>
         <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32,System.String,System.String)">
             <summary>
@@ -517,6 +517,13 @@
             <summary>
             获取任务命名空间
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.ExecuteJob(System.Int32)">
+            <summary>
+            立即执行任务
+            </summary>
+            <param name="jobId"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.TopicController">

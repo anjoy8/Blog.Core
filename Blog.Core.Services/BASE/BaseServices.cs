@@ -269,7 +269,6 @@ namespace Blog.Core.Services.BASE
         /// <param name="whereExpression">条件表达式</param>
         /// <param name="intPageIndex">页码（下标0）</param>
         /// <param name="intPageSize">页大小</param>
-        /// <param name="intTotalCount">数据总量</param>
         /// <param name="strOrderByFileds">排序字段，如name asc,age desc</param>
         /// <returns>数据列表</returns>
         public async Task<List<TEntity>> Query(
@@ -292,7 +291,6 @@ namespace Blog.Core.Services.BASE
         /// <param name="strWhere">条件</param>
         /// <param name="intPageIndex">页码（下标0）</param>
         /// <param name="intPageSize">页大小</param>
-        /// <param name="intTotalCount">数据总量</param>
         /// <param name="strOrderByFileds">排序字段，如name asc,age desc</param>
         /// <returns>数据列表</returns>
         public async Task<List<TEntity>> Query(

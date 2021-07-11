@@ -5,7 +5,7 @@
         /// <summary>
         /// UrlEncode编码
         /// </summary>
-        /// <param name="data">url</param>
+        /// <param name="url">url</param>
         /// <returns></returns>
         public static string UrlEncode(string url) {
             return System.Web.HttpUtility.UrlEncode(url, System.Text.Encoding.UTF8); 

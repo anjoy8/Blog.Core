@@ -102,9 +102,9 @@ namespace Blog.Core.Common.Helper
         /// <param name="resourceStr"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static string GetCusLine(string resourceStr,int length) {
+        public static string GetCusLine(string resourceStr, int length) {
             string[] arrStr = resourceStr.Split("\r\n");
-            return string.Join("", (from q in arrStr select q).Skip(arrStr.Length - length+1).Take(length).ToArray());  
+            return string.Join("", (from q in arrStr select q).Skip(arrStr.Length - length + 1).Take(length).ToArray());  
         }
 
     }

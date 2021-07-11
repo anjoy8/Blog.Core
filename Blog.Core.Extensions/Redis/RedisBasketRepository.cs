@@ -154,7 +154,6 @@ namespace Blog.Core.Extensions
         /// <summary>
         /// 移除并返回存储在该键列表的第一个元素   
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="db"></param>
         /// <returns></returns>
