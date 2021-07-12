@@ -18,6 +18,10 @@
         /// </summary>
         public string msg { get; set; } = "";
         /// <summary>
+        /// 开发者信息
+        /// </summary>
+        public string msgDev { get; set; }
+        /// <summary>
         /// 返回数据集合
         /// </summary>
         public T response { get; set; }
