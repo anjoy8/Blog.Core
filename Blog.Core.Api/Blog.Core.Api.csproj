@@ -46,6 +46,16 @@
 	
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
 	
+		<PackageReference Include="nacos-sdk-csharp-unofficial" Version="0.8.5" />
+	
+		<PackageReference Include="nacos-sdk-csharp-unofficial.AspNetCore" Version="0.8.5" />
+	
+		<PackageReference Include="nacos-sdk-csharp-unofficial.Extensions.Configuration" Version="0.8.5" />
+	
+		<PackageReference Include="nacos-sdk-csharp-unofficial.IniParser" Version="0.8.5" />
+	
+		<PackageReference Include="nacos-sdk-csharp.AspNetCore" Version="1.1.0" />
+	
 		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
 	</ItemGroup>
 
@@ -83,5 +93,7 @@
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
