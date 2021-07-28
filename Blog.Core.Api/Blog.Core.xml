@@ -815,7 +815,7 @@
         </member>
         <member name="T:Blog.Core.Api.Controllers.NacosController">
             <summary>
-            nacos 
+            服务管理 
             </summary>
         </member>
         <member name="F:Blog.Core.Api.Controllers.NacosController.NacosNamingService">

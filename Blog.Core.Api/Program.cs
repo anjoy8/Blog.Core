@@ -19,11 +19,13 @@ namespace Blog.Core
              {
                  webBuilder
                  .UseStartup<Startup>()
-                 .ConfigureAppConfiguration((hostingContext, config) => {
-                      config.Sources.Clear();
-                      config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
-                            .AddJsonFile($"appsettings{ GetAppSettingsConfigName() }json", optional: true, reloadOnChange: false);
-                  })
+                 .ConfigureAppConfiguration((hostingContext, config) =>
+                 {
+                     config.Sources.Clear();
+                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+                           //.AddJsonFile($"appsettings{ GetAppSettingsConfigName() }json", optional: true, reloadOnChange: false)
+                           ;
+                 })
                  .UseUrls("http://*:8081")
                  .ConfigureLogging((hostingContext, builder) =>
                  {

@@ -4,19 +4,16 @@ using Blog.Core.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nacos.V2;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Api.Controllers
 {
     /// <summary>
-    /// nacos 
+    /// 服务管理 
     /// </summary>
     [Produces("application/json")]
-    [Route("api/Login")]
-    [AllowAnonymous]
+    [Route("api/[Controller]/[action]")]
+    [Authorize(Permissions.Name)]
     public class NacosController : BaseApiCpntroller
     {
 
