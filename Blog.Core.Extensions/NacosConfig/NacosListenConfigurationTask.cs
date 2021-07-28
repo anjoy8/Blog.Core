@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Blog.Core.Common.Helper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Nacos.V2;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Nacos.V2;
-using Blog.Core.Common.Helper;
 
-namespace Blog.Core.Api
+namespace Blog.Core.Extensions.NacosConfig
 {
     /// <summary>
     /// Nacos配置文件变更事件
@@ -72,8 +72,6 @@ namespace Blog.Core.Api
         /// <param name="configInfo"></param>
         public void ReceiveConfigInfo(string configInfo)
         {
-
-            // Serilog.Log.Information($"Nacos配置文件更新!!! {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}  [{configInfo}]");
             var _configurationBuilder = new ConfigurationBuilder();
             _configurationBuilder.Sources.Clear();
             var buffer = System.Text.Encoding.Default.GetBytes(configInfo);

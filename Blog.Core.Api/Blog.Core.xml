@@ -813,6 +813,40 @@
             </summary>
             <param name="id"></param>
         </member>
+        <member name="T:Blog.Core.Api.Controllers.NacosController">
+            <summary>
+            nacos 
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Api.Controllers.NacosController.NacosNamingService">
+            <summary>
+            INacosNamingService
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.#ctor(Nacos.V2.INacosNamingService)">
+            <summary>
+            
+            </summary>
+            <param name="nacosNamingService"></param>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.GetStatus">
+            <summary>
+            获取Nacos 状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.Register">
+            <summary>
+            服务上线
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.Deregister">
+            <summary>
+            服务下线
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.SwaggerHelper.CustomRouteAttribute">
             <summary>
             自定义路由 /api/{version}/[controler]/[action]
@@ -876,85 +910,6 @@
             <summary>
             全局路由前缀公约
             </summary>
-        </member>
-        <member name="T:Blog.Core.Api.NacosListenConfigurationTask">
-            <summary>
-            Nacos配置文件变更事件
-            </summary>
-        </member>
-        <member name="F:Blog.Core.Api.NacosListenConfigurationTask.nacosConfigListener">
-            <summary>
-            Nacos 配置文件监听事件
-            </summary>
-        </member>
-        <member name="M:Blog.Core.Api.NacosListenConfigurationTask.#ctor(Nacos.V2.INacosConfigService,System.IServiceProvider)">
-            <summary>
-            重载方法
-            </summary>
-            <param name="configClient"></param>
-            <param name="serviceProvider"></param>
-        </member>
-        <member name="M:Blog.Core.Api.NacosListenConfigurationTask.ExecuteAsync(System.Threading.CancellationToken)">
-            <summary>
-            执行
-            </summary>
-            <param name="stoppingToken"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Api.NacosListenConfigurationTask.StopAsync(System.Threading.CancellationToken)">
-            <summary>
-            停止
-            </summary>
-            <param name="cancellationToken"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Blog.Core.Api.NacosConfigListener">
-            <summary>
-            配置监听事件
-            </summary>
-        </member>
-        <member name="M:Blog.Core.Api.NacosConfigListener.ReceiveConfigInfo(System.String)">
-            <summary>
-            收到配置文件变更
-            </summary>
-            <param name="configInfo"></param>
-        </member>
-        <member name="T:Blog.Core.Api.NacosListenNamingTask">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Blog.Core.Api.NacosListenNamingTask.eventListener">
-            <summary>
-            监听事件
-            </summary>
-        </member>
-        <member name="M:Blog.Core.Api.NacosListenNamingTask.#ctor(Nacos.V2.INacosNamingService,System.IServiceProvider,Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            
-            </summary>
-            <param name="nacosNamingService"></param>
-            <param name="serviceProvider"></param>
-            <param name="configuration"></param>
-        </member>
-        <member name="M:Blog.Core.Api.NacosListenNamingTask.ExecuteAsync(System.Threading.CancellationToken)">
-            <summary>
-            订阅服务变化 
-            </summary>
-            <param name="stoppingToken"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Blog.Core.Api.NamingServiceEventListener">
-            <summary>
-            服务变更事件监听
-            </summary>
-        </member>
-        <member name="M:Blog.Core.Api.NamingServiceEventListener.OnEvent(Nacos.V2.IEvent)">
-            <summary>
-            监听事件
-            </summary>
-            <param name="event"></param>
-            <returns></returns>
         </member>
         <member name="M:Blog.Core.Program.GetAppSettingsConfigName">
             <summary>

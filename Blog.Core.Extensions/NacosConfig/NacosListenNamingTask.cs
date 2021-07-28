@@ -1,12 +1,11 @@
 ﻿using Blog.Core.Common.Helper;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Nacos.V2;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Api
+namespace Blog.Core.Extensions.NacosConfig
 {
     /// <summary>
     /// 
@@ -14,10 +13,7 @@ namespace Blog.Core.Api
     public class NacosListenNamingTask : BackgroundService
     {
         private readonly INacosNamingService _nacosNamingService;
-        IServiceProvider _serviceProvider;
-        IConfiguration _configuration;
 
-     
         /// <summary>
         /// 监听事件
         /// </summary>
@@ -29,12 +25,9 @@ namespace Blog.Core.Api
         /// <param name="nacosNamingService"></param>
         /// <param name="serviceProvider"></param>
         /// <param name="configuration"></param>
-        public NacosListenNamingTask(INacosNamingService nacosNamingService, IServiceProvider serviceProvider, IConfiguration configuration)
+        public NacosListenNamingTask(INacosNamingService nacosNamingService)
         {
             _nacosNamingService = nacosNamingService;
-            _serviceProvider = serviceProvider;
-            _configuration = configuration;
-  
         }
 
         /// <summary>
@@ -95,7 +88,7 @@ namespace Blog.Core.Api
 
                 //_redisCachqManager.DisposeRedisConnection();
 
-             
+
                 Serilog.Log.Information($"收到服务变更事件!!! {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}  [{e}]");
             }
 

@@ -31,7 +31,7 @@ namespace Blog.Core.Tests
         [Fact]
         public void DI_Connet_Test()
         {
-            var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
+            var basePath = AppContext.BaseDirectory;
 
             IServiceCollection services = new ServiceCollection().AddLogging();
             services.AddAutoMapper(typeof(Startup));
@@ -108,7 +108,7 @@ namespace Blog.Core.Tests
 
         public IContainer DICollections()
         {
-            var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
+            var basePath = AppContext.BaseDirectory;
 
             IServiceCollection services = new ServiceCollection();
             services.AddAutoMapper(typeof(Startup));

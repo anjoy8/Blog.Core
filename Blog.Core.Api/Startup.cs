@@ -1,7 +1,5 @@
 ﻿using Autofac;
-using Blog.Core.Api;
 using Blog.Core.Common;
-using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Extensions;
 using Blog.Core.Filter;
@@ -19,12 +17,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Nacos.V2.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
@@ -48,43 +42,10 @@ namespace Blog.Core
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // 在实际生产工作中 本地开发是不需要注册nacos的 所以根据环境变量去判断 
-            // 比如 开发环境 dev  测试环境 test  生产 prod  只有这几种环境变量的时候才需要去注册nacos
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != null
-               && Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "")
-            {
-                // 从当前配置取文件去注册naocs
-                services.AddNacosV2Config(x =>
-                {
-                    x.ServerAddresses = JsonConfigSettings.NacosServerAddresses;
-                    x.EndPoint = "";
-                    x.Namespace = JsonConfigSettings.NacosNamespace;
-                    x.DefaultTimeOut = JsonConfigSettings.NacosDefaultTimeOut;
-                    x.ListenInterval = JsonConfigSettings.ListenInterval;
-                    // swich to use http or rpc
-                    x.ConfigUseRpc = false;
-                });
-                services.AddNacosV2Naming(x =>
-                {
-                    x.ServerAddresses = JsonConfigSettings.NacosServerAddresses;
-                    x.EndPoint = "";
-                    x.Namespace = JsonConfigSettings.NacosNamespace;
-                    x.DefaultTimeOut = JsonConfigSettings.NacosDefaultTimeOut;
-                    x.ListenInterval = JsonConfigSettings.ListenInterval;
-                    // swich to use http or rpc
-                    x.NamingUseRpc = false;
-                });
-                services.AddHostedService<NacosListenNamingTask>(); //增加服务注入，删除事件
-                // 监听nacos中的配置中心 如果有新配置变更 执行相关逻辑
-                services.AddHostedService<NacosListenConfigurationTask>();//增加配置文件监听事件
-            }
-
-            services.AddSingleton<IConfigurationManager>(new Blog.Core.Common.Helper.ConfigurationManager((ConfigurationRoot)this.Configuration));
-            services.AddSingleton<IConfiguration>(Configuration);
-
             // 以下code可能与文章中不一样,对代码做了封装,具体查看右侧 Extensions 文件夹.
             services.AddSingleton(new Appsettings(Configuration));
             services.AddSingleton(new LogLock(Env.ContentRootPath));
+
 
             Permissions.IsUseIds4 = Appsettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
 
@@ -109,6 +70,8 @@ namespace Blog.Core
             services.AddRabbitMQSetup();
             services.AddEventBusSetup();
 
+            services.AddNacosSetup(Configuration);
+           
             // 授权+认证 (jwt or ids4)
             services.AddAuthorizationSetup();
             if (Permissions.IsUseIds4)

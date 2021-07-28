@@ -19,6 +19,12 @@
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="6.0.1" />
+
+    <PackageReference Include="nacos-sdk-csharp-unofficial" Version="0.8.5" />
+    <PackageReference Include="nacos-sdk-csharp-unofficial.AspNetCore" Version="0.8.5" />
+    <PackageReference Include="nacos-sdk-csharp-unofficial.Extensions.Configuration" Version="0.8.5" />
+    <PackageReference Include="nacos-sdk-csharp-unofficial.IniParser" Version="0.8.5" />
+    <PackageReference Include="nacos-sdk-csharp.AspNetCore" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
