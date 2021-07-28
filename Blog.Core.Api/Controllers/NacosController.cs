@@ -38,6 +38,26 @@ namespace Blog.Core.Api.Controllers
 
         #endregion
 
+
+        /// <summary>
+        /// 系统实例是否启动完成
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+
+        public async Task<MessageModel<string>> checkSystemStartFinish()
+        {
+            //********************* 用当前接口做基本健康检查 确定 基础服务 数据库 缓存都已正常启动*****
+            // 然后再进行服务上线
+            var data = new MessageModel<string>();
+            // ***************  此处请求一下db 跟redis连接等 项目中简介 保证项目已全部启动
+            data.success = true;
+            data.msg = "SUCCESS";
+            return data;
+
+        }
+
+
         /// <summary>
         /// 获取Nacos 状态
         /// </summary>
