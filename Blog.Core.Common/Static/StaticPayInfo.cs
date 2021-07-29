@@ -1,6 +1,6 @@
 ﻿
 
-namespace Blog.Core.Common.StaticHelper
+namespace Blog.Core.Common.Static
 {
     public static class StaticPayInfo
     {

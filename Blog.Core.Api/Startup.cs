@@ -1,12 +1,12 @@
 ﻿using Autofac;
 using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
+using Blog.Core.Common.Seed;
 using Blog.Core.Extensions;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
 using Blog.Core.Middlewares;
-using Blog.Core.Model.Seed;
 using Blog.Core.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

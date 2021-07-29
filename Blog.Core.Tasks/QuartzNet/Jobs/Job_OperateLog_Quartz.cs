@@ -2,7 +2,6 @@
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Logging;
 using Quartz;
 using System;
 using System.Collections.Generic;

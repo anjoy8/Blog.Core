@@ -1,5 +1,4 @@
-﻿using Blog.Core.Common;
-using Blog.Core.Common.DB;
+﻿using Blog.Core.Common.DB;
 using Blog.Core.Common.Helper;
 using Blog.Core.Model.Models;
 using Newtonsoft.Json;
@@ -11,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Model.Seed
+namespace Blog.Core.Common.Seed
 {
     public class DBSeed
     {
