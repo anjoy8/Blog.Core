@@ -16,15 +16,16 @@
   <img src="http://apk.neters.club/MVP_Logo_Horizontal_Preferred_Cyan300_CMYK_72ppi.png" alt="MVP"   >
 </a>
 
-<a href="https://dotnetfoundation.org/member/Profile" >
-  <img src="https://vueadmin.neters.club/images/1125120255netfoundation.png" alt=".netfoundation" width="220" >
-</a>
+ 
 </div>
 
 
 Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x + RBAC】权限框架。    
-官网：http://apk.neters.club/.doc/   
-已被多家公司所使用：[点击查看列表](https://github.com/anjoy8/Blog.Core/issues/75)      
+官网：http://apk.neters.club/.doc/    
+
+  
+  
+**已被多家公司所使用(70+🐱‍🚀)：[点击查看列表](https://github.com/anjoy8/Blog.Core/issues/75)**   
   
 项目单体部署，并发在400~500，一切正常(不保证自己的各种错误写法)。  
 如果搭配负载，效果更好。
@@ -32,6 +33,12 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 
 
 &nbsp;
+
+#### 联系我
+如果你对BCVP框架感兴趣，并有一定的框架设计经验，，欢迎加入架构师交流群，只要交流心得都可以进入，如果单纯提问问题的就算了哈。
+  
+<img src="https://raw.githubusercontent.com/anjoy8/ancba/master/doc/wechat.png" width="300px;" />
+
 
 ### 功能与进度
 

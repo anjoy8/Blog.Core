@@ -46,6 +46,7 @@ namespace Blog.Core
             services.AddSingleton(new Appsettings(Configuration));
             services.AddSingleton(new LogLock(Env.ContentRootPath));
 
+
             Permissions.IsUseIds4 = Appsettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
 
             // 确保从认证中心返回的ClaimType不被更改，不使用Map映射
@@ -69,6 +70,8 @@ namespace Blog.Core
             services.AddRabbitMQSetup();
             services.AddEventBusSetup();
 
+            services.AddNacosSetup(Configuration);
+           
             // 授权+认证 (jwt or ids4)
             services.AddAuthorizationSetup();
             if (Permissions.IsUseIds4)

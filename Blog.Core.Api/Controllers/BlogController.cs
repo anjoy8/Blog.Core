@@ -89,7 +89,7 @@ namespace Blog.Core.Controllers
         [Authorize]
         public async Task<MessageModel<BlogViewModels>> Get(int id)
         {
-            return Success<BlogViewModels>(await _blogArticleServices.GetBlogDetails(id));
+            return Success(await _blogArticleServices.GetBlogDetails(id));
         }
 
 
@@ -103,7 +103,7 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<BlogViewModels>> DetailNuxtNoPer(int id)
         {
             _logger.LogInformation("xxxxxxxxxxxxxxxxxxx");
-            return Success<BlogViewModels>(await _blogArticleServices.GetBlogDetails(id));
+            return Success(await _blogArticleServices.GetBlogDetails(id));
         }
 
         [HttpGet]
@@ -247,7 +247,7 @@ namespace Blog.Core.Controllers
             {
                 var blogArticle = await _blogArticleServices.QueryById(id);
                 blogArticle.IsDeleted = true;
-                return await _blogArticleServices.Update(blogArticle) ? Success<string>(blogArticle?.bID.ObjToString(), "删除成功") : Failed("删除失败");
+                return await _blogArticleServices.Update(blogArticle) ? Success(blogArticle?.bID.ObjToString(), "删除成功") : Failed("删除失败");
             }
             return Failed("入参无效");
         }
