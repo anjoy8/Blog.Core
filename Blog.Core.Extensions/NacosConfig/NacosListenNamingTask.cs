@@ -50,6 +50,7 @@ namespace Blog.Core.Extensions.NacosConfig
                 Metadata = JsonConfigSettings.NacosMetadata
             };
             await _nacosNamingService.RegisterInstance(JsonConfigSettings.NacosServiceName, Nacos.V2.Common.Constants.DEFAULT_GROUP, instance);
+            ConsoleHelper.WriteSuccessLine($"Nacos connect: Success!");
         }
 
         // 程序停止
