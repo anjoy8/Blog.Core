@@ -43,7 +43,7 @@ namespace Blog.Core.Extensions.NacosConfig
             }
             catch (Exception ex)
             {
-                Serilog.Log.Information($"Nacos配置文件获取异常!!! " + ex.ToString());
+                
             }
         }
 

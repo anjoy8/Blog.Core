@@ -1,7 +1,8 @@
 using Blog.Core.Common.Helper;
+using Blog.Core.Serilog.Es;
+using Blog.Core.Serilog.Es.Formatters;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 
@@ -18,6 +19,8 @@ namespace Blog.Core.Common.LogHelper
         public static void WriteLog(string filename, string[] dataParas, bool IsHeader = true, string defaultFolder = "", bool isJudgeJsonFormat = false)
         {
             Log.Logger = new LoggerConfiguration()
+                // TCPSink 集成Serilog 使用tcp的方式向elk 输出log日志  LogstashJsonFormatter 这个是按照自定义格式化输出内容
+                .WriteTo.TCPSink(new LogstashJsonFormatter())
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
                 //.WriteTo.File(Path.Combine($"log/Serilog/{filename}/", ".log"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message}{NewLine}{Exception}")
@@ -54,7 +57,11 @@ namespace Blog.Core.Common.LogHelper
                        String.Join("\r\n", dataParas) + "\r\n"
                        );
                 }
+                // 展示elk支持输出4种日志级别
                 Log.Information(logContent);
+                Log.Warning(logContent);
+                Log.Error(logContent);
+                Log.Debug(logContent);
             }
             else
             {
