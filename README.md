@@ -73,14 +73,16 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 - [x] 新增 Redis 消息队列 ✨;
 - [x] 新增 RabbitMQ 消息队列 ✨;
 - [x] 新增 EventBus 事件总线 ✨;
-- [x] 调试中 - 统一聚合支付;
+- [x] 新增 - 统一聚合支付;
+- [x] 新增 - Nacos注册中心配置;
+- [x] 新增 - ES 搜索配置;
 - [ ] 计划 - 数据部门权限;
-- [ ] 计划 - ES 搜索;
 
 微服务模块：
 - [x] 可配合 Docker 实现容器化；
 - [x] 可配合 Jenkins 实现CI / CD；
 - [x] 可配合 Consul 实现服务发现；
+- [x] 可配合 Nacos 实现服务发现；
 - [x] 可配合 Ocelot 实现网关处理；
 - [x] 可配合 Nginx  实现负载均衡；
 - [x] 可配合 Ids4   实现认证中心；
