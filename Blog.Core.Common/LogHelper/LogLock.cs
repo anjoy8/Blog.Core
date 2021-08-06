@@ -150,6 +150,37 @@ namespace Blog.Core.Common.LogHelper
             return s;
         }
 
+        private static List<RequestInfo> GetRequestInfo(ReadType readType)
+        {
+            List<RequestInfo> requestInfos = new();
+            var accessLogs = ReadLog(Path.Combine(_contentRoot, "Log"), "RequestIpInfoLog_", Encoding.UTF8, readType).ObjToString();
+            try
+            {
+                return JsonConvert.DeserializeObject<List<RequestInfo>>("[" + accessLogs + "]");
+            }
+            catch (Exception)
+            {
+                var accLogArr = accessLogs.Split("\r\n");
+                foreach (var item in accLogArr)
+                {
+                    if (item.ObjToString() != "")
+                    {
+                        try
+                        {
+                            var accItem = JsonConvert.DeserializeObject<RequestInfo>(item.TrimEnd(','));
+                            requestInfos.Add(accItem);
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                }
+
+            }
+
+            return requestInfos;
+        }
+
 
         public static List<LogInfo> GetLogData()
         {
@@ -232,7 +263,7 @@ namespace Blog.Core.Common.LogHelper
 
             try
             {
-                var Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log"), "RequestIpInfoLog_", Encoding.UTF8, ReadType.PrefixLatest) + "]");
+                var Logs = GetRequestInfo(ReadType.PrefixLatest);
 
                 Logs = Logs.Where(d => d.Datetime.ObjToDate() >= DateTime.Today).ToList();
 
@@ -276,7 +307,7 @@ namespace Blog.Core.Common.LogHelper
 
             try
             {
-                Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log"), "RequestIpInfoLog_", Encoding.UTF8, ReadType.Prefix) + "]");
+                Logs = GetRequestInfo(ReadType.Prefix);
 
                 apiWeeks = (from n in Logs
                             group n by new { n.Week, n.Url } into g
@@ -347,8 +378,8 @@ namespace Blog.Core.Common.LogHelper
             List<ApiDate> apiDates = new List<ApiDate>();
             try
             {
-                Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log"), "RequestIpInfoLog_", Encoding.UTF8, ReadType.Prefix) + "]");
-
+                Logs = GetRequestInfo(ReadType.Prefix);
+              
                 apiDates = (from n in Logs
                             group n by new { n.Date } into g
                             select new ApiDate
@@ -377,7 +408,7 @@ namespace Blog.Core.Common.LogHelper
             List<ApiDate> apiDates = new List<ApiDate>();
             try
             {
-                Logs = JsonConvert.DeserializeObject<List<RequestInfo>>("[" + ReadLog(Path.Combine(_contentRoot, "Log"), "RequestIpInfoLog_", Encoding.UTF8, ReadType.Prefix) + "]");
+                Logs = GetRequestInfo(ReadType.Prefix);
 
                 apiDates = (from n in Logs
                             where n.Datetime.ObjToDate() >= DateTime.Today
