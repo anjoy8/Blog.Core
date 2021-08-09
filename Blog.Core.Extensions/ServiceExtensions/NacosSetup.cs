@@ -9,7 +9,7 @@ using System;
 namespace Blog.Core.Extensions
 {
     /// <summary>
-    /// Memory缓存 启动服务
+    /// Nacos
     /// </summary>
     public static class NacosSetup
     {
