@@ -176,12 +176,20 @@ namespace Blog.Core.Controllers
         [Authorize]
         public async Task<MessageModel<string>> Post([FromBody] BlogArticle blogArticle)
         {
-            blogArticle.bCreateTime = DateTime.Now;
-            blogArticle.bUpdateTime = DateTime.Now;
-            blogArticle.IsDeleted = false;
-            blogArticle.bcategory = "技术博文";
-            var id = (await _blogArticleServices.Add(blogArticle));
-            return id > 0 ? Success<string>(id.ObjToString()) : Failed("添加失败");
+            if (blogArticle.btitle.Length > 5 && blogArticle.bcontent.Length > 50)
+            {
+
+                blogArticle.bCreateTime = DateTime.Now;
+                blogArticle.bUpdateTime = DateTime.Now;
+                blogArticle.IsDeleted = false;
+                blogArticle.bcategory = "技术博文";
+                var id = (await _blogArticleServices.Add(blogArticle));
+                return id > 0 ? Success<string>(id.ObjToString()) : Failed("添加失败");
+            }
+            else
+            {
+                return Failed("文章标题不能少于5个字符，内容不能少于50个字符！");
+            }
         }
 
 
