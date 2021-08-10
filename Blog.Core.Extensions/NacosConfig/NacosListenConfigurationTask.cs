@@ -41,9 +41,8 @@ namespace Blog.Core.Extensions.NacosConfig
                 // Add listener
                 await _configClient.AddListener("blog.Core.Api.json", "DEFAULT_GROUP", nacosConfigListener);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                
             }
         }
 

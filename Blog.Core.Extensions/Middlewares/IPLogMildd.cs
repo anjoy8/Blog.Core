@@ -1,5 +1,4 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
