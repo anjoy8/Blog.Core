@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+ 
 
 namespace Blog.Core.Controllers
 {
@@ -61,10 +62,11 @@ namespace Blog.Core.Controllers
         [Route("Token")]
         public async Task<MessageModel<string>> GetJwtStr(string name, string pass)
         {
+            
             string jwtStr = string.Empty;
             bool suc = false;
             //这里就是用户登陆以后，通过数据库去调取数据，分配权限的操作
-
+          
             var user = await _sysUserInfoServices.GetUserRoleNameStr(name, MD5Helper.MD5Encrypt32(pass));
             if (user != null)
             {

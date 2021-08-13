@@ -813,6 +813,46 @@
             </summary>
             <param name="id"></param>
         </member>
+        <member name="T:Blog.Core.Api.Controllers.NacosController">
+            <summary>
+            服务管理 
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Api.Controllers.NacosController.NacosNamingService">
+            <summary>
+            INacosNamingService
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.#ctor(Nacos.V2.INacosNamingService)">
+            <summary>
+            
+            </summary>
+            <param name="nacosNamingService"></param>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.CheckSystemStartFinish">
+            <summary>
+            系统实例是否启动完成
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.GetStatus">
+            <summary>
+            获取Nacos 状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.Register">
+            <summary>
+            服务上线
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.Deregister">
+            <summary>
+            服务下线
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.SwaggerHelper.CustomRouteAttribute">
             <summary>
             自定义路由 /api/{version}/[controler]/[action]
@@ -876,6 +916,12 @@
             <summary>
             全局路由前缀公约
             </summary>
+        </member>
+        <member name="M:Blog.Core.Program.GetAppSettingsConfigName">
+            <summary>
+            根据环境变量定向配置文件名称
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

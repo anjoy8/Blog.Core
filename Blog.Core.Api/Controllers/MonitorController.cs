@@ -105,13 +105,43 @@ namespace Blog.Core.Controllers
             };
         }
 
+        private List<UserAccessModel> GetAccessLogsToday(IWebHostEnvironment environment)
+        {
+            List<UserAccessModel> userAccessModels = new();
+            var accessLogs = LogLock.ReadLog(
+                Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.PrefixLatest
+                ).ObjToString();
+            try
+            {
+                return JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + accessLogs + "]");
+            }
+            catch (Exception)
+            {
+                var accLogArr = accessLogs.Split("\n");
+                foreach (var item in accLogArr)
+                {
+                    if (item.ObjToString() != "")
+                    {
+                        try
+                        {
+                            var accItem = JsonConvert.DeserializeObject<UserAccessModel>(item.TrimEnd(','));
+                            userAccessModels.Add(accItem);
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                }
+
+            }
+
+            return userAccessModels;
+        }
+
         [HttpGet]
         public MessageModel<WelcomeInitData> GetActiveUsers([FromServices] IWebHostEnvironment environment)
         {
-            var accessLogsToday = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(
-                Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.PrefixLatest
-                ) + "]")
-                .Where(d => d.BeginTime.ObjToDate() >= DateTime.Today);
+            var accessLogsToday = GetAccessLogsToday(environment).Where(d => d.BeginTime.ObjToDate() >= DateTime.Today);
 
             var Logs = accessLogsToday.OrderByDescending(d => d.BeginTime).Take(50).ToList();
 

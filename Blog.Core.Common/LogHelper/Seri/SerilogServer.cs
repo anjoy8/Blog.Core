@@ -1,6 +1,8 @@
+using Blog.Core.Common.Helper;
+using Blog.Core.Serilog.Es;
+using Blog.Core.Serilog.Es.Formatters;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.Elasticsearch;
 using System;
 using System.IO;
 
@@ -14,9 +16,11 @@ namespace Blog.Core.Common.LogHelper
         /// <param name="filename"></param>
         /// <param name="message"></param>
         /// <param name="info"></param>
-        public static void WriteLog(string filename, string[] dataParas, bool IsHeader = true, string defaultFolder = "")
+        public static void WriteLog(string filename, string[] dataParas, bool IsHeader = true, string defaultFolder = "", bool isJudgeJsonFormat = false)
         {
             Log.Logger = new LoggerConfiguration()
+                // TCPSink 集成Serilog 使用tcp的方式向elk 输出log日志  LogstashJsonFormatter 这个是按照自定义格式化输出内容
+                .WriteTo.TCPSink(new LogstashJsonFormatter())
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
                 //.WriteTo.File(Path.Combine($"log/Serilog/{filename}/", ".log"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message}{NewLine}{Exception}")
@@ -35,10 +39,16 @@ namespace Blog.Core.Common.LogHelper
                 .CreateLogger();
 
             var now = DateTime.Now;
-            string logJudge = String.Join("-", dataParas);
-            if (logJudge != null && logJudge.Length > 20)
+            string logContent = String.Join("\r\n", dataParas);
+            var isJsonFormat = true;
+            if (isJudgeJsonFormat)
             {
-                string logContent = String.Join("\r\n", dataParas);
+                var judCont = logContent.Substring(0, logContent.LastIndexOf(","));
+                isJsonFormat = JsonHelper.IsJson(judCont);
+            }
+
+            if (isJsonFormat)
+            {
                 if (IsHeader)
                 {
                     logContent = (
@@ -47,7 +57,15 @@ namespace Blog.Core.Common.LogHelper
                        String.Join("\r\n", dataParas) + "\r\n"
                        );
                 }
+                // 展示elk支持输出4种日志级别
                 Log.Information(logContent);
+                Log.Warning(logContent);
+                Log.Error(logContent);
+                Log.Debug(logContent);
+            }
+            else
+            {
+                Console.WriteLine("【JSON格式异常：】"+logContent + now.ObjToString());
             }
             Log.CloseAndFlush();
         }

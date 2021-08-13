@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Core.ConsoleApp", "Blo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Core.Gateway", "Blog.Core.Gateway\Blog.Core.Gateway.csproj", "{A11C0DF2-1E13-4EED-BA49-44A57136B189}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Core.Serilog.Es", "Blog.Core.Serilog.Es\Blog.Core.Serilog.Es.csproj", "{52AFAB53-D1CA-4014-8B63-3550FDCDA6E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,10 @@ Global
 		{A11C0DF2-1E13-4EED-BA49-44A57136B189}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A11C0DF2-1E13-4EED-BA49-44A57136B189}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A11C0DF2-1E13-4EED-BA49-44A57136B189}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52AFAB53-D1CA-4014-8B63-3550FDCDA6E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52AFAB53-D1CA-4014-8B63-3550FDCDA6E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52AFAB53-D1CA-4014-8B63-3550FDCDA6E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52AFAB53-D1CA-4014-8B63-3550FDCDA6E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

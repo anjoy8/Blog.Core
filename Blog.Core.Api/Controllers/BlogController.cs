@@ -89,7 +89,7 @@ namespace Blog.Core.Controllers
         [Authorize]
         public async Task<MessageModel<BlogViewModels>> Get(int id)
         {
-            return Success<BlogViewModels>(await _blogArticleServices.GetBlogDetails(id));
+            return Success(await _blogArticleServices.GetBlogDetails(id));
         }
 
 
@@ -103,7 +103,7 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<BlogViewModels>> DetailNuxtNoPer(int id)
         {
             _logger.LogInformation("xxxxxxxxxxxxxxxxxxx");
-            return Success<BlogViewModels>(await _blogArticleServices.GetBlogDetails(id));
+            return Success(await _blogArticleServices.GetBlogDetails(id));
         }
 
         [HttpGet]
@@ -176,12 +176,20 @@ namespace Blog.Core.Controllers
         [Authorize]
         public async Task<MessageModel<string>> Post([FromBody] BlogArticle blogArticle)
         {
-            blogArticle.bCreateTime = DateTime.Now;
-            blogArticle.bUpdateTime = DateTime.Now;
-            blogArticle.IsDeleted = false;
-            blogArticle.bcategory = "技术博文";
-            var id = (await _blogArticleServices.Add(blogArticle));
-            return id > 0 ? Success<string>(id.ObjToString()) : Failed("添加失败");
+            if (blogArticle.btitle.Length > 5 && blogArticle.bcontent.Length > 50)
+            {
+
+                blogArticle.bCreateTime = DateTime.Now;
+                blogArticle.bUpdateTime = DateTime.Now;
+                blogArticle.IsDeleted = false;
+                blogArticle.bcategory = "技术博文";
+                var id = (await _blogArticleServices.Add(blogArticle));
+                return id > 0 ? Success<string>(id.ObjToString()) : Failed("添加失败");
+            }
+            else
+            {
+                return Failed("文章标题不能少于5个字符，内容不能少于50个字符！");
+            }
         }
 
 
@@ -247,7 +255,7 @@ namespace Blog.Core.Controllers
             {
                 var blogArticle = await _blogArticleServices.QueryById(id);
                 blogArticle.IsDeleted = true;
-                return await _blogArticleServices.Update(blogArticle) ? Success<string>(blogArticle?.bID.ObjToString(), "删除成功") : Failed("删除失败");
+                return await _blogArticleServices.Update(blogArticle) ? Success(blogArticle?.bID.ObjToString(), "删除成功") : Failed("删除失败");
             }
             return Failed("入参无效");
         }
