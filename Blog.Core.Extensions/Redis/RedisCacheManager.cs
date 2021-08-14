@@ -137,8 +137,16 @@ namespace Blog.Core.Extensions
         {
             if (value != null)
             {
-                //序列化，将object值生成RedisValue
-                redisConnection.GetDatabase().StringSet(key, SerializeHelper.Serialize(value), cacheTime);
+                if (value is string cacheValue)
+                {
+                    // 字符串无需序列化
+                    redisConnection.GetDatabase().StringSet(key, cacheValue, cacheTime);
+                }
+                else
+                {
+                    //序列化，将object值生成RedisValue
+                    redisConnection.GetDatabase().StringSet(key, SerializeHelper.Serialize(value), cacheTime);
+                }
             }
         }
 
