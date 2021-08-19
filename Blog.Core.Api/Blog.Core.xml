@@ -829,6 +829,12 @@
             </summary>
             <param name="nacosNamingService"></param>
         </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.checkSystemStartFinish">
+            <summary>
+            系统实例是否启动完成
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Api.Controllers.NacosController.GetStatus">
             <summary>
             获取Nacos 状态
