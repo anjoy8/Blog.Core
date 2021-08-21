@@ -813,6 +813,11 @@
             </summary>
             <param name="id"></param>
         </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.GetConfigByAppllo(System.String)">
+            <summary>
+            此处的key格式为 xx:xx:x
+            </summary>
+        </member>
         <member name="T:Blog.Core.Api.Controllers.NacosController">
             <summary>
             服务管理 
