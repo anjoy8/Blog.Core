@@ -68,6 +68,7 @@ namespace Blog.Core
             services.AddRedisInitMqSetup();
 
             services.AddRabbitMQSetup();
+            services.AddKafkaSetup(Configuration);
             services.AddEventBusSetup();
 
             services.AddNacosSetup(Configuration);
