@@ -5,6 +5,12 @@ Blog.Core 是一个开箱即用的企业级权限管理应用框架。
 采用最新的前后端完全分离技术【 ASP.NET Core Api 5.0 + Vue 2.x 】。  
 并结合 `IdentityServer4` ，可快速解决多客户端和多资源服务的统一认证与鉴权的问题。   
   
+## 其他资料
+
+博客园，早期架构搭建：[博客园](https://www.cnblogs.com/laozhang-is-phi/p/9495618.html)  
+公众号，后期调整：[文章](https://mvp.neters.club/MVP_aspnetcore_2020/2020)  
+视频：[B站](https://www.bilibili.com/video/BV1vC4y1p7Za)    
+
 
 ### 为什么选择 ASPNET.Core
 1、【开源】`ASPNET.NET Core` 是由 `Microsoft` 和 `.NET` 社区在 `GitHub` 上开源并维护的一个跨平台（支持 Windows、macOS 和 Linux）的新一代高性能框架，
