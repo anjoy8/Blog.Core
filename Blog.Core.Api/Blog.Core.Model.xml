@@ -96,6 +96,11 @@
             返回信息
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.MessageModel`1.msgDev">
+            <summary>
+            开发者信息
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.MessageModel`1.response">
             <summary>
             返回数据集合
@@ -139,6 +144,26 @@
             <param name="msg">消息</param>
             <param name="response">数据</param>
             <returns></returns>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel.status">
+            <summary>
+            状态码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel.success">
+            <summary>
+            操作是否成功
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel.msg">
+            <summary>
+            返回信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel.response">
+            <summary>
+            返回数据集合
+            </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.Advertisement.ImgUrl">
             <summary>
@@ -1816,6 +1841,26 @@
         <member name="P:Blog.Core.Model.ViewModels.PayReturnResultModel.ERRMSG">
             <summary>
             错误信息
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.QuartzReflectionViewModel">
+            <summary>
+            实现IJob的类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.QuartzReflectionViewModel.nameSpace">
+            <summary>
+            命名空间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.QuartzReflectionViewModel.nameClass">
+            <summary>
+            类名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.QuartzReflectionViewModel.remark">
+            <summary>
+            备注
             </summary>
         </member>
         <member name="T:Blog.Core.Model.ViewModels.ServerViewModel">

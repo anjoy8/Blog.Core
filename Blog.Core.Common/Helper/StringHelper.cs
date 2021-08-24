@@ -61,6 +61,25 @@ namespace Blog.Core.Common.Helper
             return urlPars;
         }
         /// <summary>
+        /// 根据字段拼接get参数
+        /// </summary>
+        /// <param name="dic"></param>
+        /// <returns></returns>
+        public static string GetPars(Dictionary<string, string> dic)
+        {
+
+            StringBuilder sb = new StringBuilder();
+            string urlPars = null;
+            bool isEnter = false;
+            foreach (var item in dic)
+            {
+                sb.Append($"{(isEnter ? "&" : "")}{item.Key}={item.Value}");
+                isEnter = true;
+            }
+            urlPars = sb.ToString();
+            return urlPars;
+        }
+        /// <summary>
         /// 获取一个GUID
         /// </summary>
         /// <param name="format">格式-默认为N</param>
@@ -83,9 +102,9 @@ namespace Blog.Core.Common.Helper
         /// <param name="resourceStr"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static string GetCusLine(string resourceStr,int length) {
+        public static string GetCusLine(string resourceStr, int length) {
             string[] arrStr = resourceStr.Split("\r\n");
-            return string.Join("", (from q in arrStr select q).Skip(arrStr.Length - length+1).Take(length).ToArray());  
+            return string.Join("", (from q in arrStr select q).Skip(arrStr.Length - length + 1).Take(length).ToArray());  
         }
 
     }

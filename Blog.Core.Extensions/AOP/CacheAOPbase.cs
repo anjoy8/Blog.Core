@@ -44,7 +44,7 @@ namespace Blog.Core.AOP
         /// <returns></returns>
         protected static string GetArgumentValue(object arg)
         {
-            if (arg is DateTime || arg is DateTime?)
+            if (arg is DateTime)
                 return ((DateTime)arg).ToString("yyyyMMddHHmmss");
 
             if (!arg.IsNotEmptyOrNull())
@@ -108,7 +108,7 @@ namespace Blog.Core.AOP
                 case ExpressionType.GreaterThanOrEqual:
                     return ">=";
                 default:
-                    throw new Exception(string.Format("不支持{0}此种运算符查找！" + expressiontype));
+                    throw new Exception($"不支持{expressiontype}此种运算符查找！");
             }
         }
 
@@ -135,7 +135,7 @@ namespace Blog.Core.AOP
                 case "LongCount":
                     return Len(MethodCall, value, expressiontype.Value);
                 default:
-                    throw new Exception(string.Format("不支持{0}方法的查找！", MethodName));
+                    throw new Exception($"不支持{MethodName}方法的查找！");
             }
         }
 
@@ -155,7 +155,7 @@ namespace Blog.Core.AOP
             string Name = Argument2.Member.Name;
             string Operator = Convert.ToBoolean(isTrue) ? "in" : " not in";
             string CompName = string.Join(",", SetInPara);
-            string Result = string.Format("{0} {1} ({2})", Name, Operator, CompName);
+            string Result = $"{Name} {Operator} ({CompName})";
             return Result;
         }
         private static string Like(MethodCallExpression expression)
@@ -165,9 +165,9 @@ namespace Blog.Core.AOP
             LambdaExpression lambda = Expression.Lambda(Temp);
             Delegate fn = lambda.Compile();
             var tempValue = Expression.Constant(fn.DynamicInvoke(null), Temp.Type);
-            string Value = string.Format("%{0}%", tempValue);
+            string Value = $"%{tempValue}%";
             string Name = (expression.Object as MemberExpression).Member.Name;
-            string Result = string.Format("{0} like {1}", Name, Value);
+            string Result = $"{Name} like {Value}";
             return Result;
         }
 
@@ -176,7 +176,7 @@ namespace Blog.Core.AOP
         {
             object Name = (expression.Arguments[0] as MemberExpression).Member.Name;
             string Operator = GetOperator(expressiontype);
-            string Result = string.Format("len({0}){1}{2}", Name, Operator, value.ToString());
+            string Result = $"len({Name}){Operator}{value.ToString()}";
             return Result;
         }
 

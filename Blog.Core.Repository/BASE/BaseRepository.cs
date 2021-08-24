@@ -43,7 +43,7 @@ namespace Blog.Core.Repository.Base
             }
         }
 
-        internal ISqlSugarClient Db
+        public ISqlSugarClient Db
         {
             get { return _db; }
         }
@@ -403,7 +403,6 @@ namespace Blog.Core.Repository.Base
         /// <param name="whereExpression">条件表达式</param>
         /// <param name="intPageIndex">页码（下标0）</param>
         /// <param name="intPageSize">页大小</param>
-        /// <param name="intTotalCount">数据总量</param>
         /// <param name="strOrderByFileds">排序字段，如name asc,age desc</param>
         /// <returns>数据列表</returns>
         public async Task<List<TEntity>> Query(
@@ -423,7 +422,6 @@ namespace Blog.Core.Repository.Base
         /// <param name="strWhere">条件</param>
         /// <param name="intPageIndex">页码（下标0）</param>
         /// <param name="intPageSize">页大小</param>
-        /// <param name="intTotalCount">数据总量</param>
         /// <param name="strOrderByFileds">排序字段，如name asc,age desc</param>
         /// <returns>数据列表</returns>
         public async Task<List<TEntity>> Query(

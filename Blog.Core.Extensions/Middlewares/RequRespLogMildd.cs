@@ -91,11 +91,12 @@ namespace Blog.Core.Middlewares
 
             if (!string.IsNullOrEmpty(content))
             {
-                Parallel.For(0, 1, e =>
-                {
-                    LogLock.OutSql2Log("RequestResponseLog", new string[] { "Request Data:", content });
+                //Parallel.For(0, 1, e =>
+                //{
+                //    LogLock.OutSql2Log("RequestResponseLog", new string[] { "Request Data:", content });
 
-                });
+                //});
+                SerilogServer.WriteLog("RequestResponseLog", new string[] { "Request Data:", content });
 
                 request.Body.Position = 0;
             }
@@ -112,11 +113,12 @@ namespace Blog.Core.Middlewares
 
             if (!string.IsNullOrEmpty(ResponseBody))
             {
-                Parallel.For(0, 1, e =>
-                {
-                    LogLock.OutSql2Log("RequestResponseLog", new string[] { "Response Data:", ResponseBody });
+                //Parallel.For(0, 1, e =>
+                //{
+                //    LogLock.OutSql2Log("RequestResponseLog", new string[] { "Response Data:", ResponseBody });
 
-                });
+                //});
+                SerilogServer.WriteLog("RequestResponseLog", new string[] { "Response Data:", ResponseBody });
             }
         }
     }

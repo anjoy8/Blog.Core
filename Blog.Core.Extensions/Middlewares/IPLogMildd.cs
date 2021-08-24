@@ -1,5 +1,6 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
@@ -17,13 +18,17 @@ namespace Blog.Core.Middlewares
         /// 
         /// </summary>
         private readonly RequestDelegate _next;
+        private readonly IWebHostEnvironment _environment;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(IPLogMildd));
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="next"></param>
-        public IPLogMildd(RequestDelegate next)
+        public IPLogMildd(RequestDelegate next, IWebHostEnvironment environment)
         {
             _next = next;
+            _environment = environment;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -56,8 +61,20 @@ namespace Blog.Core.Middlewares
                                 LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
                             });
 
-                            // 这种方案也行，用的是Serilog
-                            //SerilogServer.WriteLog("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
+                            //try
+                            //{
+                            //    var testLogMatchRequestInfo = JsonConvert.DeserializeObject<RequestInfo>(requestInfo);
+                            //    if (testLogMatchRequestInfo != null)
+                            //    {
+                            //        var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RequestIpInfoLog");
+                            //        SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false, "", true);
+                            //    }
+                            //}
+                            //catch (Exception e)
+                            //{
+                            //    log.Error(requestInfo + "\r\n" + e.GetBaseException().ToString());
+                            //}
+
 
                             request.Body.Position = 0;
                         }

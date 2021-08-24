@@ -111,7 +111,9 @@ namespace Blog.Core.Common.DB
         SqlServer = 1,
         Sqlite = 2,
         Oracle = 3,
-        PostgreSQL = 4
+        PostgreSQL = 4,
+        Dm = 5,
+        Kdbndp = 6,
     }
     public class MutiDBOperate
     {

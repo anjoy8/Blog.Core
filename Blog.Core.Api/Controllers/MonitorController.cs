@@ -26,7 +26,7 @@ namespace Blog.Core.Controllers
     [Route("api/[Controller]/[action]")]
     [ApiController]
     [AllowAnonymous]
-    public class MonitorController : Controller
+    public class MonitorController : BaseApiCpntroller
     {
         private readonly IHubContext<ChatHub> _hubContext;
         private readonly IWebHostEnvironment _env;
@@ -48,21 +48,16 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public MessageModel<ServerViewModel> Server()
         {
-            return new MessageModel<ServerViewModel>()
+            return Success(new ServerViewModel()
             {
-                msg = "获取成功",
-                success = true,
-                response = new ServerViewModel()
-                {
-                    EnvironmentName = _env.EnvironmentName,
-                    OSArchitecture = RuntimeInformation.OSArchitecture.ObjToString(),
-                    ContentRootPath = _env.ContentRootPath,
-                    WebRootPath = _env.WebRootPath,
-                    FrameworkDescription = RuntimeInformation.FrameworkDescription,
-                    MemoryFootprint = (Process.GetCurrentProcess().WorkingSet64 / 1048576).ToString("N2") + " MB",
-                    WorkingTime = DateHelper.TimeSubTract(DateTime.Now, Process.GetCurrentProcess().StartTime)
-                }
-            };
+                EnvironmentName = _env.EnvironmentName,
+                OSArchitecture = RuntimeInformation.OSArchitecture.ObjToString(),
+                ContentRootPath = _env.ContentRootPath,
+                WebRootPath = _env.WebRootPath,
+                FrameworkDescription = RuntimeInformation.FrameworkDescription,
+                MemoryFootprint = (Process.GetCurrentProcess().WorkingSet64 / 1048576).ToString("N2") + " MB",
+                WorkingTime = DateHelper.TimeSubTract(DateTime.Now, Process.GetCurrentProcess().StartTime)
+            });
         }
 
 
@@ -77,12 +72,7 @@ namespace Blog.Core.Controllers
 
             _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
 
-            return new MessageModel<List<LogInfo>>()
-            {
-                msg = "获取成功",
-                success = true,
-                response = null
-            };
+            return Success<List<LogInfo>>(null);
         }
 
 
@@ -90,12 +80,7 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public MessageModel<RequestApiWeekView> GetRequestApiinfoByWeek()
         {
-            return new MessageModel<RequestApiWeekView>()
-            {
-                msg = "获取成功",
-                success = true,
-                response = LogLock.RequestApiinfoByWeek()
-            };
+            return Success(LogLock.RequestApiinfoByWeek());
         }
 
         [HttpGet]
@@ -120,13 +105,43 @@ namespace Blog.Core.Controllers
             };
         }
 
-        [HttpGet]
-        public MessageModel<WelcomeInitData> GetActiveUsers([FromServices]IWebHostEnvironment environment)
+        private List<UserAccessModel> GetAccessLogsToday(IWebHostEnvironment environment)
         {
-            var accessLogsToday = JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + LogLock.ReadLog(
+            List<UserAccessModel> userAccessModels = new();
+            var accessLogs = LogLock.ReadLog(
                 Path.Combine(environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.PrefixLatest
-                ) + "]")
-                .Where(d => d.BeginTime.ObjToDate() >= DateTime.Today);
+                ).ObjToString();
+            try
+            {
+                return JsonConvert.DeserializeObject<List<UserAccessModel>>("[" + accessLogs + "]");
+            }
+            catch (Exception)
+            {
+                var accLogArr = accessLogs.Split("\n");
+                foreach (var item in accLogArr)
+                {
+                    if (item.ObjToString() != "")
+                    {
+                        try
+                        {
+                            var accItem = JsonConvert.DeserializeObject<UserAccessModel>(item.TrimEnd(','));
+                            userAccessModels.Add(accItem);
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                }
+
+            }
+
+            return userAccessModels;
+        }
+
+        [HttpGet]
+        public MessageModel<WelcomeInitData> GetActiveUsers([FromServices] IWebHostEnvironment environment)
+        {
+            var accessLogsToday = GetAccessLogsToday(environment).Where(d => d.BeginTime.ObjToDate() >= DateTime.Today);
 
             var Logs = accessLogsToday.OrderByDescending(d => d.BeginTime).Take(50).ToList();
 

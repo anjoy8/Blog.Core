@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+ 
 
 namespace Blog.Core.Controllers
 {
@@ -23,7 +24,7 @@ namespace Blog.Core.Controllers
     [Produces("application/json")]
     [Route("api/Login")]
     [AllowAnonymous]
-    public class LoginController : Controller
+    public class LoginController : BaseApiCpntroller
     {
         readonly ISysUserInfoServices _sysUserInfoServices;
         readonly IUserRoleServices _userRoleServices;
@@ -61,10 +62,11 @@ namespace Blog.Core.Controllers
         [Route("Token")]
         public async Task<MessageModel<string>> GetJwtStr(string name, string pass)
         {
+            
             string jwtStr = string.Empty;
             bool suc = false;
             //这里就是用户登陆以后，通过数据库去调取数据，分配权限的操作
-
+          
             var user = await _sysUserInfoServices.GetUserRoleNameStr(name, MD5Helper.MD5Encrypt32(pass));
             if (user != null)
             {
@@ -146,13 +148,7 @@ namespace Blog.Core.Controllers
             string jwtStr = string.Empty;
 
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(pass))
-            {
-                return new MessageModel<TokenInfoViewModel>()
-                {
-                    success = false,
-                    msg = "用户名或密码不能为空",
-                };
-            }
+                return Failed<TokenInfoViewModel>("用户名或密码不能为空");
 
             pass = MD5Helper.MD5Encrypt32(pass);
 
@@ -186,20 +182,11 @@ namespace Blog.Core.Controllers
                 }
 
                 var token = JwtToken.BuildJwtToken(claims.ToArray(), _requirement);
-                return new MessageModel<TokenInfoViewModel>()
-                {
-                    success = true,
-                    msg = "获取成功",
-                    response = token
-                };
+                return Success(token, "获取成功");
             }
             else
             {
-                return new MessageModel<TokenInfoViewModel>()
-                {
-                    success = false,
-                    msg = "认证失败",
-                };
+                return Failed<TokenInfoViewModel>("认证失败");
             }
         }
 
@@ -215,13 +202,7 @@ namespace Blog.Core.Controllers
             string jwtStr = string.Empty;
 
             if (string.IsNullOrEmpty(token))
-            {
-                return new MessageModel<TokenInfoViewModel>()
-                {
-                    success = false,
-                    msg = "token无效，请重新登录！",
-                };
-            }
+                return Failed<TokenInfoViewModel>("token无效，请重新登录！");
             var tokenModel = JwtHelper.SerializeJwt(token);
             if (tokenModel != null && tokenModel.Uid > 0)
             {
@@ -241,20 +222,10 @@ namespace Blog.Core.Controllers
                     identity.AddClaims(claims);
 
                     var refreshToken = JwtToken.BuildJwtToken(claims.ToArray(), _requirement);
-                    return new MessageModel<TokenInfoViewModel>()
-                    {
-                        success = true,
-                        msg = "获取成功",
-                        response = refreshToken
-                    };
+                    return Success(refreshToken, "获取成功");
                 }
             }
-
-            return new MessageModel<TokenInfoViewModel>()
-            {
-                success = false,
-                msg = "认证失败！",
-            };
+            return Failed<TokenInfoViewModel>("认证失败！");
         }
 
         /// <summary>

@@ -13,9 +13,9 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": ""
       },
-      "applicationUrl": "http://localhost:8081"
+      "applicationUrl": "http://localhost:9291"
     },
     "IIS Express": {
       "commandName": "IISExpress",

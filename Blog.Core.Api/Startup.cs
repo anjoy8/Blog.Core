@@ -11,9 +11,11 @@ using Blog.Core.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -44,6 +46,7 @@ namespace Blog.Core
             services.AddSingleton(new Appsettings(Configuration));
             services.AddSingleton(new LogLock(Env.ContentRootPath));
 
+
             Permissions.IsUseIds4 = Appsettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
 
             // 确保从认证中心返回的ClaimType不被更改，不使用Map映射
@@ -65,8 +68,11 @@ namespace Blog.Core
             services.AddRedisInitMqSetup();
 
             services.AddRabbitMQSetup();
+            services.AddKafkaSetup(Configuration);
             services.AddEventBusSetup();
 
+            services.AddNacosSetup(Configuration);
+           
             // 授权+认证 (jwt or ids4)
             services.AddAuthorizationSetup();
             if (Permissions.IsUseIds4)
@@ -116,6 +122,8 @@ namespace Blog.Core
                 options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
             });
 
+            services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
+
             _services = services;
             //支持编码大全 例如:支持 System.Text.Encoding.GetEncoding("GB2312")  System.Text.Encoding.GetEncoding("GB18030") 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -125,6 +133,7 @@ namespace Blog.Core
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule(new AutofacModuleRegister());
+            builder.RegisterModule<AutofacPropertityModuleReg>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

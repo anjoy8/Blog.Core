@@ -9,12 +9,12 @@
             博客管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Blog.Core.IServices.IBlogArticleServices,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
+        <member name="M:Blog.Core.Controllers.BlogController.#ctor(Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.BlogController})">
             <summary>
             构造函数
             </summary>
-            <param name="blogArticleServices"></param>
             <param name="logger"></param>
+            
         </member>
         <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32,System.Int32,System.String,System.String)">
             <summary>
@@ -88,14 +88,29 @@
         </member>
         <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFiles">
             <summary>
-            获取 整体框架 文件
+            获取 整体框架 文件(主库)(一般可用第一次生成)
             </summary>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFilesByTableNames(System.String[],System.String)">
             <summary>
-            根据数据库表名 生成整体框架
-            仅针对通过CodeFirst生成表的情况
+            获取仓储层和服务层(需指定表名和数据库)
+            </summary>
+            <param name="ConnID">数据库链接名称</param>
+            <param name="tableNames">需要生成的表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFilesByTableNamesForEntity(System.String[],System.String)">
+            <summary>
+            获取实体(需指定表名和数据库)
+            </summary>
+            <param name="ConnID">数据库链接名称</param>
+            <param name="tableNames">需要生成的表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.DbFirstController.GetFrameFilesByTableNamesForController(System.String[],System.String)">
+            <summary>
+            获取控制器(需指定表名和数据库)
             </summary>
             <param name="ConnID">数据库链接名称</param>
             <param name="tableNames">需要生成的表名</param>
@@ -103,7 +118,7 @@
         </member>
         <member name="M:Blog.Core.Controllers.DbFirstController.GetAllFrameFilesByTableNames(System.String[],System.String)">
             <summary>
-            DbFrist 根据数据库表名 生成整体框架,包含Model层
+            DbFrist 根据数据库表名 生成整体框架,包含Model层(一般可用第一次生成)
             </summary>
             <param name="ConnID">数据库链接名称</param>
             <param name="tableNames">需要生成的表名</param>
@@ -498,6 +513,19 @@
             <param name="jobId"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.GetTaskNameSpace">
+            <summary>
+            获取任务命名空间
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.ExecuteJob(System.Int32)">
+            <summary>
+            立即执行任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.TopicController">
             <summary>
             类别管理【无权限】
@@ -785,6 +813,56 @@
             </summary>
             <param name="id"></param>
         </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.GetAllConfigByAppllo(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            测试接入Apollo获取配置信息
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.GetConfigByAppllo(System.String)">
+            <summary>
+            通过此处的key格式为 xx:xx:x
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.NacosController">
+            <summary>
+            服务管理 
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Api.Controllers.NacosController.NacosNamingService">
+            <summary>
+            INacosNamingService
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.#ctor(Nacos.V2.INacosNamingService)">
+            <summary>
+            
+            </summary>
+            <param name="nacosNamingService"></param>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.CheckSystemStartFinish">
+            <summary>
+            系统实例是否启动完成
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.GetStatus">
+            <summary>
+            获取Nacos 状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.Register">
+            <summary>
+            服务上线
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.NacosController.Deregister">
+            <summary>
+            服务下线
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.SwaggerHelper.CustomRouteAttribute">
             <summary>
             自定义路由 /api/{version}/[controler]/[action]
@@ -848,6 +926,12 @@
             <summary>
             全局路由前缀公约
             </summary>
+        </member>
+        <member name="M:Blog.Core.Program.GetAppSettingsConfigName">
+            <summary>
+            根据环境变量定向配置文件名称
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

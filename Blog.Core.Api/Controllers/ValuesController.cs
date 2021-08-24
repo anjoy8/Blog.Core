@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.HttpRestSharp;
 using Blog.Core.Common.WebApiClients.HttpApis;
@@ -12,6 +13,7 @@ using Blog.Core.Model.Models;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -349,5 +351,26 @@ namespace Blog.Core.Controllers
         public void Delete(int id)
         {
         }
+
+        #region Apollo 配置
+        /// <summary>
+        /// 测试接入Apollo获取配置信息
+        /// </summary>
+        [HttpGet("/apollo")]
+        [AllowAnonymous]
+        public async Task<IEnumerable<KeyValuePair<string,string>>> GetAllConfigByAppllo([FromServices]IConfiguration configuration)
+        {
+            return await Task.FromResult(configuration.AsEnumerable());
+        }
+        /// <summary>
+        /// 通过此处的key格式为 xx:xx:x
+        /// </summary>
+        [HttpGet("/apollo/{key}")]
+        [AllowAnonymous]
+        public async Task<string> GetConfigByAppllo(string key)
+        {
+            return await Task.FromResult(Appsettings.app(key));
+        }
+        #endregion
     }
 }

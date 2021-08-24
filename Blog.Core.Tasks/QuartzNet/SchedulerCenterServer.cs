@@ -443,5 +443,49 @@ namespace Blog.Core.Tasks
         }
         #endregion
 
+
+        /// <summary>
+        /// 立即执行 一个任务
+        /// </summary>
+        /// <param name="tasksQz"></param>
+        /// <returns></returns>
+        public async Task<MessageModel<string>> ExecuteJobAsync(TasksQz tasksQz)
+        {
+            var result = new MessageModel<string>();
+            try
+            {
+                JobKey jobKey = new JobKey(tasksQz.Id.ToString(), tasksQz.JobGroup);
+                
+                //判断任务是否存在，存在则 触发一次，不存在则先添加一个任务，触发以后再 停止任务
+                if (!await _scheduler.Result.CheckExists(jobKey))
+                {
+                    //不存在 则 添加一个计划任务
+                    await AddScheduleJobAsync(tasksQz);
+                    
+                    //触发执行一次
+                    await _scheduler.Result.TriggerJob(jobKey);
+
+                    //停止任务
+                    await StopScheduleJobAsync(tasksQz);
+
+                    result.success = true;
+                    result.msg = $"立即执行计划任务:【{tasksQz.Name}】成功";
+                }
+                else
+                {
+                    await _scheduler.Result.TriggerJob(jobKey);
+                    result.success = true;
+                    result.msg = $"立即执行计划任务:【{tasksQz.Name}】成功";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.msg = $"立即执行计划任务失败:【{ex.Message}】";
+            }
+
+            return result;
+        }
+
+
     }
 }

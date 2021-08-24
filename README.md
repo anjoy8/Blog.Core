@@ -2,7 +2,7 @@
 
 # Blog.Core
 
-[English](readme-en.md) | 简体中文
+[English](README-en.md) | 简体中文
 
 [![sdk](https://img.shields.io/badge/sdk-5.0.1-d.svg)](#)  [![Build status](https://github.com/anjoy8/blog.core/workflows/.NET%20Core/badge.svg)](https://github.com/anjoy8/Blog.Core/actions)  [![Build Status](https://dev.azure.com/laozhangisphi/anjoy8/_apis/build/status/anjoy8.Blog.Core?branchName=master)](https://dev.azure.com/laozhangisphi/anjoy8/_build?definitionId=1)  [![codecov](https://codecov.io/gh/anjoy8/Blog.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/anjoy8/Blog.Core)  [![License MIT](https://img.shields.io/badge/license-Apache-blue.svg?style=flat-square)](https://github.com/anjoy8/Blog.Core/blob/master/LICENSE) [![star this repo](http://githubbadges.com/star.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges)  [![fork this repo](http://githubbadges.com/fork.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges/fork)  [![博客园](https://img.shields.io/badge/博客园-老张的哲学-brightgreen.svg)](https://www.cnblogs.com/laozhang-is-phi/)
 
@@ -16,17 +16,29 @@
   <img src="http://apk.neters.club/MVP_Logo_Horizontal_Preferred_Cyan300_CMYK_72ppi.png" alt="MVP"   >
 </a>
 
-<a href="https://dotnetfoundation.org/member/Profile" >
-  <img src="https://vueadmin.neters.club/images/1125120255netfoundation.png" alt=".netfoundation" width="220" >
-</a>
+ 
 </div>
 
 
 Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x + RBAC】权限框架。    
-官网：http://apk.neters.club/.doc/   
-已被多家公司所使用：[点击查看列表](https://github.com/anjoy8/Blog.Core/issues/75)    
+官网：http://apk.neters.club/.doc/    
+
+  
+  
+**已被多家公司所使用(70+🐱‍🚀)：[点击查看列表](https://github.com/anjoy8/Blog.Core/issues/75)**   
+  
+项目单体部署，并发在400~500，一切正常(不保证自己的各种错误写法)。  
+如果搭配负载，效果更好。
+  
+
 
 &nbsp;
+
+#### 联系我
+如果你对BCVP框架感兴趣，并有一定的框架设计经验，，欢迎加入架构师交流群，只要交流心得都可以进入，如果单纯提问问题的就算了哈。
+  
+<img src="https://raw.githubusercontent.com/anjoy8/ancba/master/doc/wechat.png" width="300px;" />
+
 
 ### 功能与进度
 
@@ -61,14 +73,18 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 - [x] 新增 Redis 消息队列 ✨;
 - [x] 新增 RabbitMQ 消息队列 ✨;
 - [x] 新增 EventBus 事件总线 ✨;
-- [x] 调试中 - 统一聚合支付;
+- [x] 新增 - 统一聚合支付;
+- [x] 新增 - Nacos注册中心配置;
+- [x] 新增 - ES 搜索配置;
+- [x] 新增 - Apollo 配置;
+- [x] 新增 Kafka 消息队列，并配合实现EventBus ✨;
 - [ ] 计划 - 数据部门权限;
-- [ ] 计划 - ES 搜索;
 
 微服务模块：
 - [x] 可配合 Docker 实现容器化；
 - [x] 可配合 Jenkins 实现CI / CD；
 - [x] 可配合 Consul 实现服务发现；
+- [x] 可配合 Nacos 实现服务发现；
 - [x] 可配合 Ocelot 实现网关处理；
 - [x] 可配合 Nginx  实现负载均衡；
 - [x] 可配合 Ids4   实现认证中心；
@@ -80,7 +96,20 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 如果你喜欢这个项目或者它帮助你, 请给 Star~   
 如果你的项目中借鉴了本项目，请稍微说明下[https://github.com/anjoy8/Blog.Core/issues/75](https://github.com/anjoy8/Blog.Core/issues/75)，开源不易✨。  
 
+## 贡献者们 
 
+Thanks goes to these wonderful people ([✨](https://github.com/anjoy8/Blog.Core/graphs/contributors)):（排名暂时按提交顺序）
+
+<!-- prettier-ignore-start -->
+| [<img src="https://avatars3.githubusercontent.com/u/28941816?s=460&v=3" width="100px;"/><br /><sub> anjoy8</sub>](https://github.com/anjoy8) <br /> 💻📖 💡  | [<img src="https://avatars0.githubusercontent.com/u/36782822?s=460&v=3" width="100px;"/><br /><sub> hudingwen</sub>](https://github.com/hudingwen) <br /> 💻 👀  | [<img src="https://avatars0.githubusercontent.com/u/32299016?s=460&v=3" width="100px;"/><br /><sub>binyly </sub>](https://github.com/binyly) <br />💻 👀 📖 👍 | [<img src="https://avatars0.githubusercontent.com/u/48714336?s=460&v=3" width="100px;"/><br /><sub>wuare </sub>](https://github.com/wuare) <br /> 💻😀 | [<img src="https://avatars3.githubusercontent.com/u/54385223?s=460&v=3" width="100px;"/><br /><sub>skang0401 </sub>](https://github.com/skang0401) <br /> 📖| [<img src="https://avatars1.githubusercontent.com/u/24422140?s=460&v=3" width="100px;"/><br /><sub>Jamnine</sub>](https://github.com/Jamnine) <br />💻 🌍|
+| :---: | :---: | :---: | :---: | :---: | :---: |
+|[<img src="https://avatars1.githubusercontent.com/u/19725014?s=460&v=3" width="118px;"/><br /><sub>aion1998 </sub>](https://github.com/aion1998) <br />👍|[<img src="https://avatars1.githubusercontent.com/u/54570786?s=460&v=3" width="118px;"/><br /><sub>RLei123 </sub>](https://github.com/RLei123) <br />😄|[<img src="https://avatars1.githubusercontent.com/u/33676184?s=460&v=3" width="118px;"/><br /><sub>cluyun </sub>](https://github.com/cluyun) <br />🍬|[<img src="https://avatars3.githubusercontent.com/u/33139361?s=460&v=3" width="118px;"/><br /><sub>blue20171027 </sub>](https://github.com/blue20171027) <br />✈|[<img src="https://avatars0.githubusercontent.com/u/15273487?s=460&v=3" width="118px;"/><br /><sub>anewboyz </sub>](https://github.com/anewboyz) <br />💻|[<img src="https://avatars3.githubusercontent.com/u/16607609?s=460&v=3" width="118px;"/><br /><sub>jxd728 </sub>](https://github.com/jxd728) <br />🌍|
+|[<img src="https://avatars0.githubusercontent.com/u/25163291?s=460&v=3" width="118px;"/><br /><sub>wmchuang </sub>](https://github.com/wmchuang) <br />🍟|[<img src="https://avatars2.githubusercontent.com/u/23184470?s=400&v=3" width="118px;"/><br /><sub>liuzhenyulive </sub>](https://github.com/liuzhenyulive) <br />💻|[<img src="https://avatars1.githubusercontent.com/u/34571008?s=400&v=3" width="118px;"/><br /><sub>JsonBy </sub>](https://github.com/JsonBy) <br />💻 💡 🤔|[<img src="https://avatars2.githubusercontent.com/u/34576675?s=400&v=3" width="118px;"/><br /><sub>hsxian </sub>](https://github.com/hsxian) <br />🎉|[<img src="https://avatars0.githubusercontent.com/u/58431215?s=400&v=4" width="118px;"/><br /><sub>cuno92 </sub>](https://github.com/cuno92) <br />📖|[<img src="https://avatars0.githubusercontent.com/u/22249987?s=400&v=3" width="118px;"/><br /><sub>317447880 </sub>](https://github.com/317447880) <br />💻|
+|[<img src="https://avatars0.githubusercontent.com/u/55371978?s=400&v=3" width="118px;"/><br /><sub>Shuisen </sub>](https://github.com/Shuisen) <br />💻|[<img src="https://avatars0.githubusercontent.com/u/45479028?s=400&v=3" width="118px;"/><br /><sub>www5255977 </sub>](https://github.com/www5255977) <br />🌍|[<img src="https://avatars0.githubusercontent.com/u/49057777?s=400&v=3" width="118px;"/><br /><sub>867824092 </sub>](https://github.com/867824092) <br />🍳|
+<!-- prettier-ignore-end -->
+
+This project follows the [all-contributors](https://github.com/anjoy8/Blog.Core/graphs/contributors) specification.
+Contributions of any kind are welcome!
 
 &nbsp;
 
