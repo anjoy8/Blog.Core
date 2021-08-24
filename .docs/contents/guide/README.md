@@ -12,6 +12,14 @@ Blog.Core 是一个开箱即用的企业级权限管理应用框架。
 视频：[B站](https://www.bilibili.com/video/BV1vC4y1p7Za)    
 
 
+## 配套站点
+
+本资源服务器，配合多个项目，构建前后端权限一体化平台，前端用 `VUE` 框架。  
+前端-客户端：[预览](https://vueadmin.neters.club/)、[源码](https://github.com/anjoy8/Blog.Admin)     
+前端-管理后台：[预览](http://vueblog.neters.club/)、[源码](https://github.com/anjoy8/Blog.Vue)     
+认证平台：[预览](https://ids.neters.club/)、[源码](https://github.com/anjoy8/Blog.IdentityServer)       
+
+
 ### 为什么选择 ASPNET.Core
 1、【开源】`ASPNET.NET Core` 是由 `Microsoft` 和 `.NET` 社区在 `GitHub` 上开源并维护的一个跨平台（支持 Windows、macOS 和 Linux）的新一代高性能框架，
 拥有十分广泛的社区与支持者，可用于构建web应用、物联网IOT应用和移动端应用。  
