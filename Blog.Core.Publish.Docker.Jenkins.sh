@@ -17,4 +17,4 @@ chmod 777 StopContainerImg.sh
 ./StopContainerImg.sh apkcontainer laozhangisphi/apkimg
 
 docker build -t laozhangisphi/apkimg .
-docker run --name=apkcontainer -d -v /data/blogcore/appsettings.json:/app/appsettings.json -v /data/blogcore/Log/:/app/Log -v /etc/localtime:/etc/localtime -it -p 8081:8081 laozhangisphi/apkimg
+docker run --name=apkcontainer -d -v /data/blogcore/appsettings.json:/app/appsettings.json -v /data/blogcore/Log/:/app/Log -v /etc/localtime:/etc/localtime -it -p 9291:9291 laozhangisphi/apkimg

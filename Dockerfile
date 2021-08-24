@@ -1,7 +1,7 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 #这种模式是直接在构建镜像的内部编译发布dotnet项目。
-#注意下容器内输出端口是8081
+#注意下容器内输出端口是9291
 #如果你想先手动dotnet build成可执行的二进制文件，然后再构建镜像，请看.Api层下的dockerfile。
 
 
@@ -31,5 +31,5 @@ RUN dotnet publish "Blog.Core.Api.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-EXPOSE 8081 
+EXPOSE 9291 
 ENTRYPOINT ["dotnet", "Blog.Core.Api.dll"]
