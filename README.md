@@ -77,6 +77,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 - [x] 新增 - Nacos注册中心配置;
 - [x] 新增 - ES 搜索配置;
 - [x] 新增 - Apollo 配置;
+- [x] 新增 Kafka 消息队列，并配合实现EventBus ✨;
 - [ ] 计划 - 数据部门权限;
 
 微服务模块：
