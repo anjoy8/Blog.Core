@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		Blog.Core.Publish.Linux.sh = Blog.Core.Publish.Linux.sh
 		codecov.yml = codecov.yml
 		CreateYourProject.bat = CreateYourProject.bat
+		DockerBuild.bat = DockerBuild.bat
+		Dockerfile = Dockerfile
 		nuget.config = nuget.config
 		README.md = README.md
 	EndProjectSection
@@ -53,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Core.ConsoleApp", "Blo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Core.Gateway", "Blog.Core.Gateway\Blog.Core.Gateway.csproj", "{A11C0DF2-1E13-4EED-BA49-44A57136B189}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Core.Serilog.Es", "Blog.Core.Serilog.Es\Blog.Core.Serilog.Es.csproj", "{52AFAB53-D1CA-4014-8B63-3550FDCDA6E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Core.Serilog.Es", "Blog.Core.Serilog.Es\Blog.Core.Serilog.Es.csproj", "{52AFAB53-D1CA-4014-8B63-3550FDCDA6E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

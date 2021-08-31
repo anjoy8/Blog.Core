@@ -1,4 +1,5 @@
 ﻿using Autofac.Extensions.DependencyInjection;
+using Blog.Core.Extensions.Apollo;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -25,8 +26,10 @@ namespace Blog.Core
                      config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
                            //.AddJsonFile($"appsettings{ GetAppSettingsConfigName() }json", optional: true, reloadOnChange: false)
                            ;
+                     //接入Apollo配置中心
+                     config.AddConfigurationApollo("appsettings.apollo.json");
                  })
-                 .UseUrls("http://*:8081")
+                 .UseUrls("http://*:9291")
                  .ConfigureLogging((hostingContext, builder) =>
                  {
                      // 1.过滤掉系统默认的一些日志

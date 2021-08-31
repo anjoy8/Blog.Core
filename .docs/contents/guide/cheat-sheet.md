@@ -158,7 +158,7 @@ services.AddIpPolicyRateLimitSetup(Configuration);
 
 ```
   
-然后在 `IdentityServer4`  项目中，做指定的修改，配置 `8081` 的回调地址：  
+然后在 `IdentityServer4`  项目中，做指定的修改，配置 `9291` 的回调地址：  
 
 ```
  new Client {
@@ -171,7 +171,7 @@ services.AddIpPolicyRateLimitSetup(Configuration);
      {
          "http://vueadmin.neters.club/callback",
          // 这里要配置回调地址
-         "http://localhost:8081/oauth2-redirect.html" 
+         "http://localhost:9291/oauth2-redirect.html" 
      },
      PostLogoutRedirectUris = { "http://vueadmin.neters.club" },
      AllowedCorsOrigins =     { "http://vueadmin.neters.club" },

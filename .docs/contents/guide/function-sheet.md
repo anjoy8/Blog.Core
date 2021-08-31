@@ -212,7 +212,7 @@ http {
     #access_log  logs/host.access.log  main;
     location / {
       root html;
-      proxy_pass http://localhost:8081;
+      proxy_pass http://localhost:9291;
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection keep-alive;
@@ -253,7 +253,7 @@ http {
     location /api/ {
       rewrite ^.+apb/?(.*)$ /$1 break;
       include uwsgi_params;
-      proxy_pass http://localhost:8081;
+      proxy_pass http://localhost:9291;
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       #proxy_set_header Connection "upgrade";
@@ -265,7 +265,7 @@ http {
     location /api2/ {
       rewrite ^.+apb/?(.*)$ /$1 break;
       include uwsgi_params;
-      proxy_pass http://localhost:8081;
+      proxy_pass http://localhost:9291;
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
@@ -276,7 +276,7 @@ http {
 
     location /images/ {
       include uwsgi_params;
-      proxy_pass http://localhost:8081;
+      proxy_pass http://localhost:9291;
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
       #proxy_set_header Connection "upgrade";
@@ -361,7 +361,7 @@ http {
     location /api {
       rewrite ^.+apb/?(.*)$ /$1 break;
       include uwsgi_params;
-      proxy_pass http://localhost:8081;
+      proxy_pass http://localhost:9291;
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
@@ -369,7 +369,7 @@ http {
 
     location /images {
       include uwsgi_params;
-      proxy_pass http://localhost:8081;
+      proxy_pass http://localhost:9291;
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
