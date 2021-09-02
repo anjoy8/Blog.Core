@@ -101,7 +101,6 @@ namespace Blog.Core.Common.Helper
             }
             catch (Exception ex)
             {
-                Serilog.Log.Information($"配置文件管理器异常:,{ ex.ToString() }");
                 value = defaultValue;
             }
 

@@ -1,5 +1,4 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -57,24 +56,24 @@ namespace Blog.Core.Middlewares
                         if (!string.IsNullOrEmpty(requestInfo))
                         {
                             // 自定义log输出
-                            //Parallel.For(0, 1, e =>
-                            //{
-                            //   LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
-                            //});
+                            Parallel.For(0, 1, e =>
+                            {
+                                LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
+                            });
 
-                            try
-                            {
-                                var testLogMatchRequestInfo = JsonConvert.DeserializeObject<RequestInfo>(requestInfo);
-                                if (testLogMatchRequestInfo != null)
-                                {
-                                    var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RequestIpInfoLog");
-                                    SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false, "", true);
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                log.Error(requestInfo + "\r\n" + e.GetBaseException().ToString());
-                            }
+                            //try
+                            //{
+                            //    var testLogMatchRequestInfo = JsonConvert.DeserializeObject<RequestInfo>(requestInfo);
+                            //    if (testLogMatchRequestInfo != null)
+                            //    {
+                            //        var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RequestIpInfoLog");
+                            //        SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false, "", true);
+                            //    }
+                            //}
+                            //catch (Exception e)
+                            //{
+                            //    log.Error(requestInfo + "\r\n" + e.GetBaseException().ToString());
+                            //}
 
 
                             request.Body.Position = 0;

@@ -45,7 +45,7 @@ namespace Blog.Core.Api.Controllers
         /// <returns></returns>
         [HttpGet]
 
-        public async Task<MessageModel<string>> checkSystemStartFinish()
+        public MessageModel<string> CheckSystemStartFinish()
         {
             //********************* 用当前接口做基本健康检查 确定 基础服务 数据库 缓存都已正常启动*****
             // 然后再进行服务上线

@@ -59,8 +59,16 @@ namespace Blog.Core.Extensions
         {
             if (value != null)
             {
-                //序列化，将object值生成RedisValue
-               await _database.StringSetAsync(key, SerializeHelper.Serialize(value), cacheTime);
+                if (value is string cacheValue)
+                {
+                    // 字符串无需序列化
+                    await _database.StringSetAsync(key, cacheValue, cacheTime);
+                }
+                else
+                {
+                    //序列化，将object值生成RedisValue
+                    await _database.StringSetAsync(key, SerializeHelper.Serialize(value), cacheTime);
+                }
             }
         }
 

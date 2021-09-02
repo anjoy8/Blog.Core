@@ -41,9 +41,8 @@ namespace Blog.Core.Extensions.NacosConfig
                 // Add listener
                 await _configClient.AddListener("blog.Core.Api.json", "DEFAULT_GROUP", nacosConfigListener);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Serilog.Log.Information($"Nacos配置文件获取异常!!! " + ex.ToString());
             }
         }
 

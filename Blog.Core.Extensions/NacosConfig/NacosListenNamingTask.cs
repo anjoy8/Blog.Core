@@ -50,6 +50,7 @@ namespace Blog.Core.Extensions.NacosConfig
                 Metadata = JsonConfigSettings.NacosMetadata
             };
             await _nacosNamingService.RegisterInstance(JsonConfigSettings.NacosServiceName, Nacos.V2.Common.Constants.DEFAULT_GROUP, instance);
+            ConsoleHelper.WriteSuccessLine($"Nacos connect: Success!");
         }
 
         // 程序停止
@@ -87,9 +88,6 @@ namespace Blog.Core.Extensions.NacosConfig
                 // 配置有变动后 刷新redis配置 刷新 mq配置
 
                 //_redisCachqManager.DisposeRedisConnection();
-
-
-                Serilog.Log.Information($"收到服务变更事件!!! {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}  [{e}]");
             }
 
             return Task.CompletedTask;
