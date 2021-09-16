@@ -112,7 +112,7 @@ namespace Blog.Core.Common.LogHelper
                     var allFiles = new DirectoryInfo(folderPath);
                     var selectFiles = allFiles.GetFiles().Where(fi => fi.Name.ToLower().Contains(fileName.ToLower())).ToList();
 
-                    selectFiles = takeOnlyTop > 0 ? selectFiles.Take(takeOnlyTop).ToList() : selectFiles;
+                    selectFiles = takeOnlyTop > 0 ? selectFiles.OrderByDescending(d => d.Name).Take(takeOnlyTop).ToList() : selectFiles;
 
                     foreach (var item in selectFiles)
                     {
