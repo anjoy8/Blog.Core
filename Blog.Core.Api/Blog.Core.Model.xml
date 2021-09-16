@@ -165,6 +165,56 @@
             返回数据集合
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Models.AccessTrendLog">
+            <summary>
+            用户访问趋势日志
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.User">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.IP">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.API">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.BeginTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.OPTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.RequestMethod">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.RequestData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.Agent">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.Createdate">
+            <summary>
+            创建时间
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Advertisement.ImgUrl">
             <summary>
             广告图片

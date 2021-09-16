@@ -82,7 +82,7 @@ namespace Blog.Core.Common.LogHelper
         /// <param name="encode">编码</param>
         /// <param name="readType">读取类型(0:精准,1:前缀模糊)</param>
         /// <returns></returns>
-        public static string ReadLog(string folderPath, string fileName, Encoding encode, ReadType readType = ReadType.Accurate)
+        public static string ReadLog(string folderPath, string fileName, Encoding encode, ReadType readType = ReadType.Accurate, int takeOnlyTop = -1)
         {
             string s = "";
             try
@@ -111,6 +111,8 @@ namespace Blog.Core.Common.LogHelper
                 {
                     var allFiles = new DirectoryInfo(folderPath);
                     var selectFiles = allFiles.GetFiles().Where(fi => fi.Name.ToLower().Contains(fileName.ToLower())).ToList();
+
+                    selectFiles = takeOnlyTop > 0 ? selectFiles.Take(takeOnlyTop).ToList() : selectFiles;
 
                     foreach (var item in selectFiles)
                     {
@@ -379,7 +381,7 @@ namespace Blog.Core.Common.LogHelper
             try
             {
                 Logs = GetRequestInfo(ReadType.Prefix);
-              
+
                 apiDates = (from n in Logs
                             group n by new { n.Date } into g
                             select new ApiDate
