@@ -46,7 +46,7 @@ namespace Blog.Core.Tasks
                 lastestLogDatetime = Convert.ToDateTime("2021-08-01");
             }
 
-            var accLogs = GetAccessLogs().Where(d => d.BeginTime.ObjToDate() >= lastestLogDatetime).ToList();
+            var accLogs = GetAccessLogs().Where(d => d.User != "" && d.BeginTime.ObjToDate() >= lastestLogDatetime).ToList();
 
             var accTrendLogs = new List<AccessTrendLog>() { };
             accLogs.ForEach(m =>
@@ -73,7 +73,7 @@ namespace Blog.Core.Tasks
         {
             List<UserAccessFromFIles> userAccessModels = new();
             var accessLogs = LogLock.ReadLog(
-                Path.Combine(_environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.Prefix,2
+                Path.Combine(_environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.Prefix, 2
                 ).ObjToString().TrimEnd(',');
 
             try
