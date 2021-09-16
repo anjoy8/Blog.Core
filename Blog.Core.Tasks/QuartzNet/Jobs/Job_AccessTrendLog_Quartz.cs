@@ -73,7 +73,7 @@ namespace Blog.Core.Tasks
         {
             List<UserAccessFromFIles> userAccessModels = new();
             var accessLogs = LogLock.ReadLog(
-                Path.Combine(_environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.Prefix
+                Path.Combine(_environment.ContentRootPath, "Log"), "RecordAccessLogs_", Encoding.UTF8, ReadType.Prefix,2
                 ).ObjToString().TrimEnd(',');
 
             try
