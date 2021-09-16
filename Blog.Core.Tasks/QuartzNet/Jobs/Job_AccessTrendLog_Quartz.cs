@@ -67,6 +67,21 @@ namespace Blog.Core.Tasks
             {
                 var logsIds = await _accessTrendLogServices.Add(accTrendLogs);
             }
+
+            var accessLogsToday = await _accessTrendLogServices.Query();
+            var activeUsers = (from n in accessLogsToday
+                               group n by new { n.User } into g
+                               select new ActiveUserVM
+                               {
+                                   user = g.Key.User,
+                                   count = g.Count(),
+                               }).ToList();
+            activeUsers = activeUsers.OrderByDescending(d => d.count).Take(10).ToList();
+
+            Parallel.For(0, 1, e =>
+            {
+                LogLock.OutSql2Log("ACCESSTRENDLOG", new string[] { JsonConvert.SerializeObject(activeUsers) }, false, true);
+            });
         }
 
         private List<UserAccessFromFIles> GetAccessLogs()

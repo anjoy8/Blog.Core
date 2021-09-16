@@ -22,7 +22,7 @@ namespace Blog.Core.Common.LogHelper
             _contentRoot = contentPath;
         }
 
-        public static void OutSql2Log(string prefix, string[] dataParas, bool IsHeader = true)
+        public static void OutSql2Log(string prefix, string[] dataParas, bool IsHeader = true, bool isWrt = false)
         {
             try
             {
@@ -55,8 +55,15 @@ namespace Blog.Core.Common.LogHelper
                 //{
                 //    logContent = logContent.Substring(0, 500) + "\r\n";
                 //}
+                if (isWrt)
+                {
+                    File.WriteAllText(logFilePath, logContent);
 
-                File.AppendAllText(logFilePath, logContent);
+                }
+                else
+                {
+                    File.AppendAllText(logFilePath, logContent);
+                }
                 WritedCount++;
             }
             catch (Exception e)
