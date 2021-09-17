@@ -40,47 +40,51 @@ namespace Blog.Core.Tasks
             // 也可以通过数据库配置，获取传递过来的参数
             JobDataMap data = context.JobDetail.JobDataMap;
 
-            var lastestLogDatetime = (await _accessTrendLogServices.Query(null, d => d.Createdate, false)).FirstOrDefault()?.Createdate;
+            var lastestLogDatetime = (await _accessTrendLogServices.Query(null, d => d.UpdateTime, false)).FirstOrDefault()?.UpdateTime;
             if (lastestLogDatetime == null)
             {
-                lastestLogDatetime = Convert.ToDateTime("2021-08-01");
+                lastestLogDatetime = Convert.ToDateTime("2021-09-01");
             }
 
             var accLogs = GetAccessLogs().Where(d => d.User != "" && d.BeginTime.ObjToDate() >= lastestLogDatetime).ToList();
+            var logUpdate = DateTime.Now;
 
-            var accTrendLogs = new List<AccessTrendLog>() { };
-            accLogs.ForEach(m =>
-            {
-                accTrendLogs.Add(new AccessTrendLog()
-                {
-                    User = m.User,
-                    API = m.API,
-                    BeginTime = m.BeginTime,
-                    Createdate = DateTime.Now,
-                    IP = m.IP,
-                    RequestMethod = m.RequestMethod?.Length > 50 ? m.RequestMethod.Substring(0, 50) : m.RequestMethod
-                });
-            });
-
-
-            if (accTrendLogs.Count > 0)
-            {
-                var logsIds = await _accessTrendLogServices.Add(accTrendLogs);
-            }
-
-            var accessLogsToday = await _accessTrendLogServices.Query();
-            var activeUsers = (from n in accessLogsToday
+            var activeUsers = (from n in accLogs
                                group n by new { n.User } into g
                                select new ActiveUserVM
                                {
                                    user = g.Key.User,
                                    count = g.Count(),
                                }).ToList();
-            activeUsers = activeUsers.OrderByDescending(d => d.count).Take(10).ToList();
+
+            foreach (var item in activeUsers)
+            {
+                var user = (await _accessTrendLogServices.Query(d => d.User != "" && d.User == item.user)).FirstOrDefault();
+                if (user != null)
+                {
+                    user.Count += item.count;
+                    user.UpdateTime = logUpdate;
+                }
+                await _accessTrendLogServices.Update(user);
+            }
+
+            // 重新拉取
+            var actUsers = await _accessTrendLogServices.Query(d => d.User != "", d => d.Count, false);
+            actUsers = actUsers.Take(10).ToList();
+
+            List<ActiveUserVM> activeUserVMs = new();
+            foreach (var item in actUsers)
+            {
+                activeUserVMs.Add(new ActiveUserVM()
+                {
+                    user = item.User,
+                    count = item.Count
+                });
+            }
 
             Parallel.For(0, 1, e =>
             {
-                LogLock.OutSql2Log("ACCESSTRENDLOG", new string[] { JsonConvert.SerializeObject(activeUsers) }, false, true);
+                LogLock.OutSql2Log("ACCESSTRENDLOG", new string[] { JsonConvert.SerializeObject(activeUserVMs) }, false, true);
             });
         }
 

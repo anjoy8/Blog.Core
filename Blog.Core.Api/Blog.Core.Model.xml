@@ -172,47 +172,17 @@
         </member>
         <member name="P:Blog.Core.Model.Models.AccessTrendLog.User">
             <summary>
-            
+            用户
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.AccessTrendLog.IP">
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.Count">
             <summary>
-            
+            次数
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.AccessTrendLog.API">
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.UpdateTime">
             <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.AccessTrendLog.BeginTime">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.AccessTrendLog.OPTime">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.AccessTrendLog.RequestMethod">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.AccessTrendLog.RequestData">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.AccessTrendLog.Agent">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.AccessTrendLog.Createdate">
-            <summary>
-            创建时间
+            更新时间
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.Advertisement.ImgUrl">
