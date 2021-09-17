@@ -64,8 +64,17 @@ namespace Blog.Core.Tasks
                 {
                     user.Count += item.count;
                     user.UpdateTime = logUpdate;
+                    await _accessTrendLogServices.Update(user);
                 }
-                await _accessTrendLogServices.Update(user);
+                else
+                {
+                    await _accessTrendLogServices.Add(new AccessTrendLog()
+                    {
+                        Count = item.count,
+                        UpdateTime = logUpdate,
+                        User = item.user
+                    });
+                }
             }
 
             // 重新拉取
