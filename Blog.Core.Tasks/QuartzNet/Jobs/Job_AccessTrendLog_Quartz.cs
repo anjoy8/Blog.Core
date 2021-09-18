@@ -79,7 +79,7 @@ namespace Blog.Core.Tasks
 
             // 重新拉取
             var actUsers = await _accessTrendLogServices.Query(d => d.User != "", d => d.Count, false);
-            actUsers = actUsers.Take(10).ToList();
+            actUsers = actUsers.Take(15).ToList();
 
             List<ActiveUserVM> activeUserVMs = new();
             foreach (var item in actUsers)
