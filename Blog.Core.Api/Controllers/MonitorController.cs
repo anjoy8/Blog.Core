@@ -137,6 +137,38 @@ namespace Blog.Core.Controllers
 
             return userAccessModels;
         }
+        private List<ActiveUserVM> GetAccessLogsTrend(IWebHostEnvironment environment)
+        {
+            List<ActiveUserVM> userAccessModels = new();
+            var accessLogs = LogLock.ReadLog(
+                Path.Combine(environment.ContentRootPath, "Log"), "ACCESSTRENDLOG_", Encoding.UTF8, ReadType.PrefixLatest
+                ).ObjToString();
+            try
+            {
+                return JsonConvert.DeserializeObject<List<ActiveUserVM>>(accessLogs);
+            }
+            catch (Exception)
+            {
+                var accLogArr = accessLogs.Split("\n");
+                foreach (var item in accLogArr)
+                {
+                    if (item.ObjToString() != "")
+                    {
+                        try
+                        {
+                            var accItem = JsonConvert.DeserializeObject<ActiveUserVM>(item.TrimStart('[').TrimEnd(']'));
+                            userAccessModels.Add(accItem);
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                }
+
+            }
+
+            return userAccessModels;
+        }
 
         [HttpGet]
         public MessageModel<WelcomeInitData> GetActiveUsers([FromServices] IWebHostEnvironment environment)
@@ -169,7 +201,8 @@ namespace Blog.Core.Controllers
                     activeUsers = activeUsers,
                     activeUserCount = activeUsersCount,
                     errorCount = errorCountToday,
-                    logs = Logs
+                    logs = Logs,
+                    activeCount = GetAccessLogsTrend(environment)
                 }
             };
         }
@@ -223,6 +256,7 @@ namespace Blog.Core.Controllers
         public int activeUserCount { get; set; }
         public List<UserAccessModel> logs { get; set; }
         public int errorCount { get; set; }
+        public List<ActiveUserVM> activeCount { get; set; }
     }
 
 }
