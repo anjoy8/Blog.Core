@@ -861,6 +861,496 @@
             修改时间
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Models.WeChatCompany">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.CompanyID">
+            <summary>
+            公司ID
+            </summary> 
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.CompanyName">
+            <summary>
+            公司名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.CompanyIP">
+            <summary>
+            公司IP
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.CompanyRemark">
+            <summary>
+            公司备注
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.CompanyAPI">
+            <summary>
+            api地址
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.Enabled">
+            <summary>
+            是否激活
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.CreateId">
+            <summary>
+            创建者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.CreateBy">
+            <summary>
+            创建人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.ModifyId">
+            <summary>
+            修改者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.ModifyBy">
+            <summary>
+            修改人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatCompany.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.WeChatConfig">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.publicAccount">
+            <summary>
+            微信公众号唯一标识
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.publicNick">
+            <summary>
+            微信公众号名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.weChatAccount">
+            <summary>
+            微信账号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.weChatNick">
+            <summary>
+            微信名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.appid">
+            <summary>
+            应用ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.appsecret">
+            <summary>
+            应用秘钥
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.token">
+            <summary>
+            公众号推送token
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.interactiveToken">
+            <summary>
+            验证秘钥(验证消息是否真实)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.tokenExpiration">
+            <summary>
+            微信公众号token过期时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.remark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.Enabled">
+            <summary>
+            是否激活
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.CreateId">
+            <summary>
+            创建者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.CreateBy">
+            <summary>
+            创建人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.ModifyId">
+            <summary>
+            修改者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.ModifyBy">
+            <summary>
+            修改人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatConfig.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.WeChatPushLog">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.id">
+            <summary>
+            推送ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.PushLogFrom">
+            <summary>
+            来自谁
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.PushLogIP">
+            <summary>
+            推送IP
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.PushLogCompanyID">
+            <summary>
+            推送客户
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.PushLogToUserID">
+            <summary>
+            推送用户
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.PushLogTemplateID">
+            <summary>
+            推送模板ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.PushLogContent">
+            <summary>
+            推送内容
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.PushLogTime">
+            <summary>
+            推送时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.PushLogStatus">
+            <summary>
+            推送状态(Y/N)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.PushLogRemark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.PushLogOpenid">
+            <summary>
+            推送OpenID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.PushLogPublicAccount">
+            <summary>
+            推送微信公众号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.CreateId">
+            <summary>
+            创建者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.CreateBy">
+            <summary>
+            创建人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.ModifyId">
+            <summary>
+            修改者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.ModifyBy">
+            <summary>
+            修改人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatPushLog.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.WeChatQR">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.QRticket">
+            <summary>
+            主键id,ticket
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.QRbindCompanyID">
+            <summary>
+            需要绑定的公司
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.QRbindJobID">
+            <summary>
+            需要绑定的员工id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.QRbindJobNick">
+            <summary>
+            需要绑定的员工昵称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.QRcrateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.QRpublicAccount">
+            <summary>
+            关联的公众号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.QRisUsed">
+            <summary>
+            是否已使用
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.QRuseTime">
+            <summary>
+            使用时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.QRuseOpenid">
+            <summary>
+            关联的微信用户id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.CreateId">
+            <summary>
+            创建者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.CreateBy">
+            <summary>
+            创建人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.ModifyId">
+            <summary>
+            修改者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.ModifyBy">
+            <summary>
+            修改人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatQR.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.WeChatSub">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.SubFromPublicAccount">
+            <summary>
+            来自哪个公众号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.CompanyID">
+            <summary>
+            绑定公司id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.SubJobID">
+            <summary>
+            绑定员工id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.SubUserOpenID">
+            <summary>
+            绑定微信id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.SubUserUnionID">
+            <summary>
+            绑定微信联合id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.SubUserRegTime">
+            <summary>
+            绑定时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.SubUserRefTime">
+            <summary>
+            更新时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.SubUserRemark">
+            <summary>
+            备注
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.IsUnBind">
+            <summary>
+            是否已解绑
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.LastSubUserOpenID">
+            <summary>
+            上次绑定微信id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.CreateId">
+            <summary>
+            创建者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.CreateBy">
+            <summary>
+            创建人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.ModifyId">
+            <summary>
+            修改者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.ModifyBy">
+            <summary>
+            修改人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatSub.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.WeChatUploadFile">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.UploadFileID">
+            <summary>
+            文件ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.UploadFileName">
+            <summary>
+            文件名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.UploadFileSize">
+            <summary>
+            文件大小
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.UploadFileContentType">
+            <summary>
+            文件类型
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.UploadFileExtension">
+            <summary>
+            文件拓展名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.UploadFilePosition">
+            <summary>
+            文件位置
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.UploadFileTime">
+            <summary>
+            文件上传时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.UploadFileRemark">
+            <summary>
+            文件备注
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.CreateId">
+            <summary>
+            创建者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.CreateBy">
+            <summary>
+            创建人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.ModifyId">
+            <summary>
+            修改者id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.ModifyBy">
+            <summary>
+            修改人
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.WeChatUploadFile.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.RootEntity.Id">
             <summary>
             ID
@@ -995,6 +1485,33 @@
         <member name="P:Blog.Core.Model.PageModel`1.data">
             <summary>
             返回数据
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.PaginationModel">
+            <summary>
+            所需分页参数
+            作者:胡丁文
+            时间:2020-4-3 20:31:26
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PaginationModel.intPageIndex">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PaginationModel.intPageSize">
+            <summary>
+            每页大小
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PaginationModel.strOrderByFileds">
+            <summary>
+            排序字段(例如:id desc,time asc)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PaginationModel.conditions">
+            <summary>
+            查询条件( 例如:id = 1 and name = 小明)
             </summary>
         </member>
         <member name="F:Blog.Core.Model.ResponseEnum.NoPermissions">
@@ -1728,6 +2245,682 @@
         <member name="P:Blog.Core.Model.ViewModels.TopgbViewModels.btitle">
             <summary>博客标题
             
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatApiDto">
+            <summary>
+            微信接口消息DTO
+            作者:胡丁文
+            时间:2020-03-25
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.id">
+            <summary>
+            微信公众号ID(数据库查询)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.errcode">
+            <summary>
+            错误代码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.errmsg">
+            <summary>
+            错误信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.access_token">
+            <summary>
+            token
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.expires_in">
+            <summary>
+            过期时间(秒)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.total">
+            <summary>
+            用户关注数
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.count">
+            <summary>
+            获取用户数量
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.data">
+            <summary>
+            获取用户OpenIDs
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.next_openid">
+            <summary>
+            下一个关注用户
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.template_list">
+            <summary>
+            微信消息模板列表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.menu">
+            <summary>
+            微信菜单
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.ticket">
+            <summary>
+            二维码票据
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.expire_seconds">
+            <summary>
+            二维码过期时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.url">
+            <summary>
+            二维码地址
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.subscribe">
+            <summary>
+            关注状态
+            </summary> 
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.openid">
+            <summary>
+            用户微信ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.nickname">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.sex">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.language">
+            <summary>
+            语言
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.city">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.province">
+            <summary>
+            省份
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.country">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatApiDto.headimgurl">
+            <summary>
+            头像地址
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatCardMsgDataDto">
+            <summary>
+            微信推送消息Dto
+            作者:胡丁文
+            时间:2020-4-8 09:16:16
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDataDto.info">
+            <summary>
+            推送关键信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDataDto.cardMsg">
+            <summary>
+            推送卡片消息Dto
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatCardMsgDataOpenIDDto">
+            <summary>
+            微信推送消息Dto
+            作者:胡丁文
+            时间:2020-11-23 16:29:05
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDataOpenIDDto.info">
+            <summary>
+            推送关键信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDataOpenIDDto.cardMsg">
+            <summary>
+            推送卡片消息Dto
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto">
+            <summary>
+            消息模板dto(如何填写数据,请参考微信模板即可)
+            作者:胡丁文
+            时间:2020-4-1 09:32:16
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.template_id">
+            <summary>
+            消息模板
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.first">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.colorFirst">
+            <summary>
+            标题颜色(颜色代码都必须为#开头的16进制代码)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.keyword1">
+            <summary>
+            内容1
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.color1">
+            <summary>
+            内容1颜色
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.keyword2">
+            <summary>
+            内容2
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.color2">
+            <summary>
+            内容2颜色
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.keyword3">
+            <summary>
+            内容3
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.color3">
+            <summary>
+            内容3颜色
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.keyword4">
+            <summary>
+            内容4
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.color4">
+            <summary>
+            内容4颜色
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.keyword5">
+            <summary>
+            内容5
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.color5">
+            <summary>
+            内容5颜色
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.remark">
+            <summary>
+            备注信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.colorRemark">
+            <summary>
+            备注信息颜色
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatCardMsgDetailDto.url">
+            <summary>
+            跳转连接
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatMenuButtonDto">
+            <summary>
+            获取微信菜单DTO,用于存放具体菜单内容
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatMenuDto">
+            <summary>
+            获取微信菜单DTO
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatMenuDto.button">
+            <summary>
+            按钮列表(最多三个)
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatOpenIDsDto">
+            <summary>
+            微信OpenID列表Dto
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatPushCardMsgDetailDto">
+            <summary>
+            推送详细数据
+            作者:胡丁文
+            时间:2020-4-8 09:16:16
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatPushCardMsgDto">
+            <summary>
+            推送给微信所需Dto
+            作者:胡丁文
+            时间:2020-4-8 09:16:16
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushCardMsgDto.touser">
+            <summary>
+            推送微信用户ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushCardMsgDto.template_id">
+            <summary>
+            推送的模板ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushCardMsgDto.url">
+            <summary>
+            推送URL地址
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushCardMsgDto.data">
+            <summary>
+            推送的数据
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatPushCardMsgValueColorDto">
+            <summary>
+            微信keyword所需Dto
+            作者:胡丁文
+            时间:2020-4-8 09:18:08
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushCardMsgValueColorDto.value">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushCardMsgValueColorDto.color">
+            <summary>
+            文字颜色
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushLinkMsgContentDto.title">
+            <summary>
+            图文链接标题
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushLinkMsgContentDto.description">
+            <summary>
+            图文描述
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushLinkMsgContentDto.viewUrl">
+            <summary>
+            访问URL
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushLinkMsgContentDto.pictureUrl">
+            <summary>
+            图片URL
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushPictureContentDto.pictureMediaID">
+            <summary>
+            图片mediaID
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatPushTestDto">
+            <summary>
+            推送模拟消息Dto
+            作者:胡丁文
+            时间:2020-4-24 14:52:44
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTestDto.selectWeChat">
+            <summary>
+            当前选中的微信公众号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTestDto.selectOperate">
+            <summary>
+            当前选中的操作集合
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTestDto.selectBindOrSub">
+            <summary>
+            当前选中的绑定还是订阅
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTestDto.selectCompany">
+            <summary>
+            当前选中的微信客户
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTestDto.selectMsgType">
+            <summary>
+            当前选中的消息类型
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTestDto.selectUser">
+            <summary>
+            当前选中要发送的用户
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTestDto.textContent">
+            <summary>
+            文本消息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTestDto.pictureContent">
+            <summary>
+            图片消息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTestDto.voiceContent">
+            <summary>
+            语音消息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTestDto.videoContent">
+            <summary>
+            视频消息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTestDto.linkMsgContent">
+            <summary>
+            链接消息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushTextContentDto.text">
+            <summary>
+            文字消息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushVideoContentDto.title">
+            <summary>
+            视频标题
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushVideoContentDto.pictureMediaID">
+            <summary>
+            视频封面mediaID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushVideoContentDto.videoMediaID">
+            <summary>
+            视频mediaID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatPushVoiceContentDto.voiceMediaID">
+            <summary>
+            语音mediaID
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatQRActionDto">
+            <summary>
+            微信二维码预装发送信息dto
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatQRActionInfoDto">
+            <summary>
+            微信二维码预装具体消息
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatQRDto">
+            <summary>
+            微信二维码预装信息DTO
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatResponseUserInfo">
+            <summary>
+            返回给调用者的Dto
+            作者:胡丁文
+            时间:2020-4-8 09:52:06
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatResponseUserInfo.id">
+            <summary>
+            微信公众号ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatResponseUserInfo.companyCode">
+            <summary>
+            公司代码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatResponseUserInfo.usersData">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatTemplateList">
+            <summary>
+            微信消息模板Dto
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatUserInfo">
+            <summary>
+            微信推送所需信息(公司版本)
+            作者:胡丁文
+            时间:2020-4-8 09:04:36
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatUserInfo.id">
+            <summary>
+            微信公众号ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatUserInfo.companyCode">
+            <summary>
+            公司代码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatUserInfo.userID">
+            <summary>
+            用户id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatUserInfo.userNick">
+            <summary>
+            用户昵称
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatUserInfoOpenID">
+            <summary>
+            微信推送所需信息(OpenID版本)
+            作者:胡丁文
+            时间:2020-11-23 16:27:29
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatUserInfoOpenID.id">
+            <summary>
+            微信公众号ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatUserInfoOpenID.userID">
+            <summary>
+            微信OpenID
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatValidDto">
+            <summary>
+            微信验证Dto
+            作者:胡丁文
+            时间:2020-4-1 21:34:07
+            </summary> 
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatValidDto.publicAccount">
+            <summary>
+            微信公众号唯一标识
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatValidDto.echoStr">
+            <summary>
+            验证成功后返回给微信的字符串
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatValidDto.signature">
+            <summary>
+            签名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatValidDto.timestamp">
+            <summary>
+            时间戳
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatValidDto.nonce">
+            <summary>
+            随机数
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.WeChatXMLDto">
+            <summary>
+            微信XmlDto
+            作者:胡丁文
+            时间:2020-4-3 20:31:26
+            </summary> 
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.publicAccount">
+            <summary>
+            微信公众号唯一表示
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.ToUserName">
+            <summary>
+            微信开发者
+            </summary> 
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.FromUserName">
+            <summary>
+            来自谁
+            </summary> 
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.MsgType">
+            <summary>
+            消息类型
+            </summary> 
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Content">
+            <summary>
+            文字内容
+            </summary> 
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.MsgId">
+            <summary>
+            消息ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Event">
+            <summary>
+            消息事件
+            </summary> 
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.EventKey">
+            <summary>
+            事件key值
+            </summary> 
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.PicUrl">
+            <summary>
+            图片地址
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.MediaId">
+            <summary>
+            多媒体ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Format">
+            <summary>
+            格式
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Recognition">
+            <summary>
+            语音失败
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.ThumbMediaId">
+            <summary>
+            缩略媒体ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Location_X">
+            <summary>
+            地理位置维度
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Location_Y">
+            <summary>
+            地理位置经度
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Scale">
+            <summary>
+            地图缩放大小
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Label">
+            <summary>
+            地理位置信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Title">
+            <summary>
+            消息标题
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Description">
+            <summary>
+            消息描述
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Url">
+            <summary>
+            消息链接
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Ticket">
+            <summary>
+            二维码的ticket，可用来换取二维码图片
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Latitude">
+            <summary>
+            地理位置纬度
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Longitude">
+            <summary>
+            地理位置经度
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.WeChatXMLDto.Precision">
+            <summary>
+            地理位置精度
             </summary>
         </member>
     </members>

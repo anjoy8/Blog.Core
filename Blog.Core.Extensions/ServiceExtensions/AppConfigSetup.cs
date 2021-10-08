@@ -13,7 +13,7 @@ namespace Blog.Core.Extensions
     /// </summary>
     public static class AppConfigSetup
     {
-        public static void AddAppConfigSetup(this IServiceCollection services, IWebHostEnvironment env)
+        public static void AddAppConfigSetup(this IServiceCollection services, IHostEnvironment env)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 

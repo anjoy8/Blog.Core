@@ -13,19 +13,19 @@ namespace Blog.Core.Model.Models
             this.tdUpdatetime = DateTime.Now;
         }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tdLogo { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tdName { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string tdContent { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string tdDetail { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tdSectendDetail { get; set; }
 
         public bool tdIsDelete { get; set; } = false;
@@ -36,7 +36,7 @@ namespace Blog.Core.Model.Models
         public DateTime tdUpdatetime { get; set; }
         public int tdTop { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tdAuthor { get; set; }
 
 

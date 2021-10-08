@@ -62,6 +62,37 @@ namespace Blog.Core.Common.Helper
             byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(s);
         }
-
+        /// <summary>
+        /// Sha1加密
+        /// </summary>
+        /// <param name="str">要加密的字符串</param>
+        /// <returns>加密后的十六进制的哈希散列（字符串）</returns>
+        public static string Sha1(string str, string format = "x2")
+        {
+            var buffer = Encoding.UTF8.GetBytes(str);
+            var data = SHA1.Create().ComputeHash(buffer);
+            var sb = new StringBuilder();
+            foreach (var t in data)
+            {
+                sb.Append(t.ToString(format));
+            }
+            return sb.ToString();
+        }
+        /// <summary>
+        /// Sha256加密
+        /// </summary>
+        /// <param name="str">要加密的字符串</param>
+        /// <returns>加密后的十六进制的哈希散列（字符串）</returns>
+        public static string Sha256(string str, string format = "x2")
+        {
+            var buffer = Encoding.UTF8.GetBytes(str);
+            var data = SHA256.Create().ComputeHash(buffer);
+            var sb = new StringBuilder();
+            foreach (var t in data)
+            {
+                sb.Append(t.ToString(format));
+            }
+            return sb.ToString();
+        }
     }
 }

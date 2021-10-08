@@ -23,7 +23,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 创建者
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
+        [SugarColumn(Length = 50, IsNullable = true)]
         public string CreateBy { get; set; }
         /// <summary>
         /// 创建时间
@@ -38,7 +38,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 修改者
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
+        [SugarColumn(Length = 50, IsNullable = true)]
         public string ModifyBy { get; set; }
         /// <summary>
         ///修改时间
