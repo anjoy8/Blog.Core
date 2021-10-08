@@ -132,7 +132,7 @@ namespace Blog.Core.Controllers
         {
             if (types.IsNotEmptyOrNull())
             {
-                var blogs = await _blogArticleServices.Query(d => d.bcategory != null && types.Contains(d.bcategory) && d.IsDeleted == false);
+                var blogs = await _blogArticleServices.Query(d => d.bcategory != null && types.Contains(d.bcategory) && d.IsDeleted == false, d => d.bID, false);
                 return Success(blogs);
             }
             return Success(new List<BlogArticle>() { });

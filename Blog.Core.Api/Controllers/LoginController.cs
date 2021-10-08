@@ -204,7 +204,7 @@ namespace Blog.Core.Controllers
             if (string.IsNullOrEmpty(token))
                 return Failed<TokenInfoViewModel>("token无效，请重新登录！");
             var tokenModel = JwtHelper.SerializeJwt(token);
-            if (tokenModel != null && tokenModel.Uid > 0)
+            if (tokenModel != null && JwtHelper.customSafeVerify(token) && tokenModel.Uid > 0)
             {
                 var user = await _sysUserInfoServices.QueryById(tokenModel.Uid);
                 if (user != null)

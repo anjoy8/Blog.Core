@@ -7,6 +7,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 用户信息表
     /// </summary>
+    [SugarTable("SysUserInfo")]
     public class sysUserInfo : sysUserInfoRoot<int>
     {
         public sysUserInfo() { }

@@ -22,7 +22,7 @@ namespace Blog.Core.Common.LogHelper
             _contentRoot = contentPath;
         }
 
-        public static void OutSql2Log(string prefix, string[] dataParas, bool IsHeader = true)
+        public static void OutSql2Log(string prefix, string[] dataParas, bool IsHeader = true, bool isWrt = false)
         {
             try
             {
@@ -55,8 +55,15 @@ namespace Blog.Core.Common.LogHelper
                 //{
                 //    logContent = logContent.Substring(0, 500) + "\r\n";
                 //}
+                if (isWrt)
+                {
+                    File.WriteAllText(logFilePath, logContent);
 
-                File.AppendAllText(logFilePath, logContent);
+                }
+                else
+                {
+                    File.AppendAllText(logFilePath, logContent);
+                }
                 WritedCount++;
             }
             catch (Exception e)
@@ -82,7 +89,7 @@ namespace Blog.Core.Common.LogHelper
         /// <param name="encode">编码</param>
         /// <param name="readType">读取类型(0:精准,1:前缀模糊)</param>
         /// <returns></returns>
-        public static string ReadLog(string folderPath, string fileName, Encoding encode, ReadType readType = ReadType.Accurate)
+        public static string ReadLog(string folderPath, string fileName, Encoding encode, ReadType readType = ReadType.Accurate, int takeOnlyTop = -1)
         {
             string s = "";
             try
@@ -111,6 +118,8 @@ namespace Blog.Core.Common.LogHelper
                 {
                     var allFiles = new DirectoryInfo(folderPath);
                     var selectFiles = allFiles.GetFiles().Where(fi => fi.Name.ToLower().Contains(fileName.ToLower())).ToList();
+
+                    selectFiles = takeOnlyTop > 0 ? selectFiles.OrderByDescending(d => d.Name).Take(takeOnlyTop).ToList() : selectFiles;
 
                     foreach (var item in selectFiles)
                     {
@@ -379,7 +388,7 @@ namespace Blog.Core.Common.LogHelper
             try
             {
                 Logs = GetRequestInfo(ReadType.Prefix);
-              
+
                 apiDates = (from n in Logs
                             group n by new { n.Date } into g
                             select new ApiDate
