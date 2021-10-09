@@ -15,7 +15,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 主键id,ticket
         /// </summary>
-        [SugarColumn(Length = 200,IsPrimaryKey =true, IsNullable = false)]
+        [SugarColumn(Length = 200, IsPrimaryKey = true, IsNullable = false)]
         public string QRticket { get; set; }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 使用时间
         /// </summary>
-        [SugarColumn(Length = 100, IsNullable = true)]
+        [SugarColumn(IsNullable = true)]
         public DateTime? QRuseTime { get; set; }
 
         /// <summary>
