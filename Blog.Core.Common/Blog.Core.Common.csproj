@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Blog.Core.Model\Blog.Core.Model.csproj" />
     <ProjectReference Include="..\Blog.Core.Serilog.Es\Blog.Core.Serilog.Es.csproj" />
   </ItemGroup>
 

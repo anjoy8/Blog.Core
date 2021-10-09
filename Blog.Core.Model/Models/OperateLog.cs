@@ -17,27 +17,27 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 区域名
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string Area { get; set; }
         /// <summary>
         /// 区域控制器名
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string Controller { get; set; }
         /// <summary>
         /// Action名称
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string Action { get; set; }
         /// <summary>
         /// IP地址
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string IPAddress { get; set; }
         /// <summary>
         /// 描述
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string Description { get; set; }
         /// <summary>
         /// 登录时间
@@ -47,7 +47,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 登录名称
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string LoginName { get; set; }
         /// <summary>
         /// 用户ID

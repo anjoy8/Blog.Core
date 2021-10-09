@@ -254,9 +254,10 @@ namespace Blog.Core.Controllers
                 foreach (var item in assignView.pids)
                 {
                     var rmpitem = roleModulePermissions.Where(d => d.PermissionId == item);
+                    var moduleid = (await _permissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
                     if (!rmpitem.Any())
                     {
-                        var moduleid = (await _permissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
+
                         RoleModulePermission roleModulePermission = new RoleModulePermission()
                         {
                             IsDeleted = false,
@@ -271,6 +272,17 @@ namespace Blog.Core.Controllers
 
                         data.success &= (await _roleModulePermissionServices.Add(roleModulePermission)) > 0;
 
+                    }
+                    else
+                    {
+                        foreach (var role in rmpitem)
+                        {
+                            if (!role.ModuleId.Equals(moduleid))
+                            {
+                                role.ModuleId = moduleid.Value;
+                                await _roleModulePermissionServices.Update(role, new List<string> { "ModuleId" });
+                            }
+                        }
                     }
                 }
 
@@ -373,6 +385,7 @@ namespace Blog.Core.Controllers
                     if (pids.Any())
                     {
                         var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id))).OrderBy(c => c.OrderSort);
+                        var temp = rolePermissionMoudles.ToList().Find(t => t.Id == 87);
                         var permissionTrees = (from child in rolePermissionMoudles
                                                where child.IsDeleted == false
                                                orderby child.Id
@@ -410,7 +423,6 @@ namespace Blog.Core.Controllers
                         };
 
                         permissionTrees = permissionTrees.OrderBy(d => d.order).ToList();
-
                         RecursionHelper.LoopNaviBarAppendChildren(permissionTrees, rootRoot);
 
                         data.success = true;

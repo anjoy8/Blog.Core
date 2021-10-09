@@ -1,5 +1,5 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.Model.Seed;
+using Blog.Core.Common.Seed;
 using log4net;
 using Microsoft.AspNetCore.Builder;
 using System;
