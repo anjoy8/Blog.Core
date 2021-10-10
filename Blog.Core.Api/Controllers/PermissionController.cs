@@ -528,6 +528,42 @@ namespace Blog.Core.Controllers
 
             return data;
         }
+
+        /// <summary>
+        /// 导入多条菜单信息
+        /// </summary>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
+        // POST: api/User
+        [HttpPost]
+        public async Task<MessageModel<string>> BatchPost([FromBody] List<Permission> permissions)
+        {
+            var data = new MessageModel<string>();
+            string ids = string.Empty;
+            int sucCount = 0;
+
+            for (int i = 0; i < permissions.Count; i++)
+            {
+                var permission = permissions[i];
+                if (permission != null)
+                {
+                    permission.CreateId = _user.ID;
+                    permission.CreateBy = _user.Name;
+                    ids += (await _permissionServices.Add(permission));
+                    sucCount++;
+                }
+            }
+
+            data.success = ids.IsNotEmptyOrNull();
+            if (data.success)
+            {
+                data.response = ids;
+                data.msg = $"{sucCount}条数据添加成功";
+            }
+
+            return data;
+        }
+
     }
 
     public class AssignView

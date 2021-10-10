@@ -266,6 +266,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.ModuleController.BatchPost(System.Collections.Generic.List{Blog.Core.Model.Models.Modules})">
+            <summary>
+            导入多条接口信息
+            </summary>
+            <param name="modules"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Controllers.MonitorController.Server">
             <summary>
             服务器配置信息
@@ -413,6 +420,13 @@
             删除菜单
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.BatchPost(System.Collections.Generic.List{Blog.Core.Model.Models.Permission})">
+            <summary>
+            导入多条菜单信息
+            </summary>
+            <param name="permissions"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.RoleController">

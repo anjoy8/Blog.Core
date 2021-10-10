@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Blog.Core.Common.HttpContextUser;
@@ -21,7 +22,7 @@ namespace Blog.Core.Controllers
         readonly IModuleServices _moduleServices;
         readonly IUser _user;
 
-       
+
         public ModuleController(IModuleServices moduleServices, IUser user)
         {
             _moduleServices = moduleServices;
@@ -132,6 +133,41 @@ namespace Blog.Core.Controllers
                     data.msg = "删除成功";
                     data.response = userDetail?.Id.ObjToString();
                 }
+            }
+
+            return data;
+        }
+
+        /// <summary>
+        /// 导入多条接口信息
+        /// </summary>
+        /// <param name="modules"></param>
+        /// <returns></returns>
+        // POST: api/User
+        [HttpPost]
+        public async Task<MessageModel<string>> BatchPost([FromBody] List<Modules> modules)
+        {
+            var data = new MessageModel<string>();
+            string ids = string.Empty;
+            int sucCount = 0;
+
+            for (int i = 0; i < modules.Count; i++)
+            {
+                var module = modules[i];
+                if (module != null)
+                {
+                    module.CreateId = _user.ID;
+                    module.CreateBy = _user.Name;
+                    ids += (await _moduleServices.Add(module));
+                    sucCount++;
+                }
+            }
+
+            data.success = ids.IsNotEmptyOrNull();
+            if (data.success)
+            {
+                data.response = ids;
+                data.msg = $"{sucCount}条数据添加成功";
             }
 
             return data;
