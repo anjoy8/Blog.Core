@@ -93,6 +93,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 - [x] 新增 - ES 搜索配置;
 - [x] 新增 - Apollo 配置;
 - [x] 新增 Kafka 消息队列，并配合实现EventBus ✨;
+- [x] 新增 微信公众号管理，并集成到Blog.Admin后台 ✨;
 - [ ] 计划 - 数据部门权限;
 
 微服务模块：
