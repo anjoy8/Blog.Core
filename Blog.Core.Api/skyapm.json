@@ -1,0 +1,29 @@
+﻿{
+  "SkyWalking": {
+    "ServiceName": "blog-core-api",
+    "Namespace": "",
+    "HeaderVersions": [
+      "sw8"
+    ],
+    "Sampling": {
+      "SamplePer3Secs": -1,
+      "Percentage": -1.0
+    },
+    "Logging": {
+      "Level": "Information",
+      "FilePath": "logs/skyapm-{Date}.log"
+    },
+    "Transport": {
+      "Interval": 3000,
+      "ProtocolVersion": "v8",
+      "QueueSize": 30000,
+      "BatchSize": 3000,
+      "gRPC": {
+        "Servers": "elasticsearch:11800",
+        "Timeout": 10000,
+        "ConnectTimeout": 10000,
+        "ReportTimeout": 600000
+      }
+    }
+  }
+}
