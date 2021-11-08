@@ -2,7 +2,7 @@
 using SqlSugar;
 using System;
 
-namespace Blog.Core.Model.Seed
+namespace Blog.Core.Common.Seed
 {
     public class MyContext
     {

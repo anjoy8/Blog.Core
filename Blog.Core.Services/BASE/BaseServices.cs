@@ -1,4 +1,5 @@
-﻿using Blog.Core.IRepository.Base;
+﻿using Blog.Core.Common.Helper;
+using Blog.Core.IRepository.Base;
 using Blog.Core.IServices.BASE;
 using Blog.Core.Model;
 using SqlSugar;
@@ -316,6 +317,11 @@ namespace Blog.Core.Services.BASE
         public async Task<List<TResult>> QueryMuch<T, T2, T3, TResult>(Expression<Func<T, T2, T3, object[]>> joinExpression, Expression<Func<T, T2, T3, TResult>> selectExpression, Expression<Func<T, T2, T3, bool>> whereLambda = null) where T : class, new()
         {
             return await BaseDal.QueryMuch(joinExpression, selectExpression, whereLambda);
+        }
+        public async Task<PageModel<TEntity>> QueryPage(PaginationModel pagination)
+        {
+            var express = DynamicLinqFactory.CreateLambda<TEntity>(pagination.conditions);
+            return await QueryPage(express, pagination.intPageIndex, pagination.intPageSize, pagination.strOrderByFileds);
         }
     }
 

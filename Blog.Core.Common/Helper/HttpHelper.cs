@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -50,7 +51,7 @@ namespace Blog.Core.Common.Helper
             }
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             string encoding = response.ContentEncoding;
-            if (encoding.Length < 1)
+            if (string.IsNullOrWhiteSpace(encoding))
             {
                 encoding = "UTF-8"; //默认编码  
             }
@@ -75,14 +76,16 @@ namespace Blog.Core.Common.Helper
             }
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             string encoding = response.ContentEncoding;
-            if (encoding.Length < 1)
+            if (string.IsNullOrWhiteSpace(encoding))
             {
                 encoding = "UTF-8"; //默认编码  
             }
             StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encoding));
             string retString = await reader.ReadToEndAsync();
             return retString;
-        }
+        } 
+
+
     }
 
 

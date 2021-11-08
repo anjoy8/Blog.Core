@@ -1,6 +1,6 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.Helper;
-using Blog.Core.Common.StaticHelper;
+using Blog.Core.Common.Static;
 using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model;

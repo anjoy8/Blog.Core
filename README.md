@@ -29,16 +29,31 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
   
 项目单体部署，并发在400~500，一切正常(不保证自己的各种错误写法)。  
 如果搭配负载，效果更好。
+
+#### ❤ 真实用户反馈 ❤
+```
+1、A~CoderDong:
+应用场景：使用Blog.Core为基础骨架开发，搭建Client监控类守护进程项目，To C 客户群，
+并发情况：目前压测并发5k正常8秒处理完，并发10k可15秒处理完毕，异常不会丢失。
+生产配置：一台服务器（Linux环境 + 至强8核的16G内存 + mysql数据库 + 3台Nginx负载）
+
+```
   
 
 
 &nbsp;
 
-#### 联系我
-如果你对BCVP框架感兴趣，并有一定的框架设计经验，，欢迎加入架构师交流群，只要交流心得都可以进入，如果单纯提问问题的就算了哈。
-  
-<img src="https://raw.githubusercontent.com/anjoy8/ancba/master/doc/wechat.png" width="300px;" />
-
+#### Dokcer 快速启动
+如果想在服务器或者本地快速查看接口效果，直接Docker启动容器即可：
+```
+ # 可以挂载配置文件和日志文件
+ # 这里只是接口效果，想看前端效果，可以异步Blog.Admin查看后台管理系统
+ docker run --name=apkcontainer -d \
+  -v /data/appsettings.json:/app/appsettings.json \
+  -v /data/Log/:/app/Log \
+ -it -p 9291:9291 laozhangisphi/apkimg
+```
+ 
 
 ### 功能与进度
 
@@ -78,6 +93,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 - [x] 新增 - ES 搜索配置;
 - [x] 新增 - Apollo 配置;
 - [x] 新增 Kafka 消息队列，并配合实现EventBus ✨;
+- [x] 新增 微信公众号管理，并集成到Blog.Admin后台 ✨;
 - [ ] 计划 - 数据部门权限;
 
 微服务模块：

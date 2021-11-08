@@ -1,5 +1,4 @@
-﻿using Blog.Core.Common;
-using Blog.Core.Common.DB;
+﻿using Blog.Core.Common.DB;
 using Blog.Core.Common.Helper;
 using Blog.Core.Model.Models;
 using Newtonsoft.Json;
@@ -11,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Model.Seed
+namespace Blog.Core.Common.Seed
 {
     public class DBSeed
     {
@@ -90,10 +89,14 @@ namespace Blog.Core.Model.Seed
                 // 创建数据库表，遍历指定命名空间下的class，
                 // 注意不要把其他命名空间下的也添加进来。
                 Console.WriteLine("Create Tables...");
-                var modelTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
-                                 where t.IsClass && t.Namespace == "Blog.Core.Model.Models"
-                                 select t;
-                modelTypes.ToList().ForEach(t =>
+
+                var path = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
+                var referencedAssemblies = System.IO.Directory.GetFiles(path, "Blog.Core.Model.dll").Select(Assembly.LoadFrom).ToArray();
+                var modelTypes = referencedAssemblies
+                    .SelectMany(a => a.DefinedTypes)
+                    .Select(type => type.AsType())
+                    .Where(x => x.IsClass && x.Namespace != null && x.Namespace.Equals("Blog.Core.Model.Models")).ToList(); 
+                modelTypes.ForEach(t =>
                 {
                     // 这里只支持添加表，不支持删除
                     // 如果想要删除，数据库直接右键删除，或者联系SqlSugar作者；

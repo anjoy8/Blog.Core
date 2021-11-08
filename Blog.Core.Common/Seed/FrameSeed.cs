@@ -1,11 +1,10 @@
 using SqlSugar;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Blog.Core.Model.Seed
+namespace Blog.Core.Common.Seed
 {
     public class FrameSeed
     {
