@@ -4,7 +4,7 @@ cd Blog.Core.Api
 
 dotnet publish 
 echo "Successfully!!!! ^ please see the file ."
-cd bin/Debug/net5.0/publish/
+cd bin/Debug/net6.0/publish/
 
 #rm -f appsettings.json
 #\cp -rf /var/jenkins_home/workspace/SecurityConfig/Blog.Core/appsettings.json appsettings.json
