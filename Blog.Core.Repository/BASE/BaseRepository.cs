@@ -16,7 +16,7 @@ namespace Blog.Core.Repository.Base
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
     {
         private readonly IUnitOfWork _unitOfWork;
-        private SqlSugarClient _dbBase;
+        private SqlSugarScope _dbBase;
 
         private ISqlSugarClient _db
         {

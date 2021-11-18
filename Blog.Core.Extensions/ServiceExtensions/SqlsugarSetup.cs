@@ -93,7 +93,7 @@ namespace Blog.Core.Extensions
                     }
                    );
                 });
-                return new SqlSugarClient(listConfig);
+                return new SqlSugarScope(listConfig);
             });
         }
 

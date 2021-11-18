@@ -4,7 +4,7 @@ namespace Blog.Core.IRepository.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        SqlSugarClient GetDbClient();
+        SqlSugarScope GetDbClient();
 
         void BeginTran();
 
