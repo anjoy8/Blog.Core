@@ -38,7 +38,7 @@ namespace Blog.Core.Tests
 
             services.AddScoped<SqlSugar.ISqlSugarClient>(o =>
             {
-                return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
+                return new SqlSugar.SqlSugarScope(new SqlSugar.ConnectionConfig()
                 {
                     ConnectionString = GetMainConnectionDb().Connection,//必填, 数据库连接字符串
                     DbType = (SqlSugar.DbType)GetMainConnectionDb().DbType,//必填, 数据库类型
@@ -150,7 +150,7 @@ namespace Blog.Core.Tests
 
             services.AddScoped<SqlSugar.ISqlSugarClient>(o =>
             {
-                return new SqlSugar.SqlSugarClient(new SqlSugar.ConnectionConfig()
+                return new SqlSugar.SqlSugarScope(new SqlSugar.ConnectionConfig()
                 {
                     ConnectionString = GetMainConnectionDb().Connection,//必填, 数据库连接字符串
                     DbType = (SqlSugar.DbType)GetMainConnectionDb().DbType,//必填, 数据库类型

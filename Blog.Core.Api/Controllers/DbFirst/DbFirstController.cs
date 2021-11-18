@@ -15,7 +15,7 @@ namespace Blog.Core.Controllers
     //[Authorize(Permissions.Name)]
     public class DbFirstController : ControllerBase
     {
-        private readonly SqlSugarClient _sqlSugarClient;
+        private readonly SqlSugarScope _sqlSugarClient;
         private readonly IWebHostEnvironment Env;
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Blog.Core.Controllers
         /// </summary>
         public DbFirstController(ISqlSugarClient sqlSugarClient, IWebHostEnvironment env)
         {
-            _sqlSugarClient = sqlSugarClient as SqlSugarClient;
+            _sqlSugarClient = sqlSugarClient as SqlSugarScope;
             Env = env;
         }
 
