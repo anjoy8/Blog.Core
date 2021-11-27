@@ -17,5 +17,5 @@ steps:
   displayName: 'Use .NET Core sdk'
   inputs:
     packageType: sdk
-    version: 6.0
+    version: 6.0.0-rtm.21522.10
     installationPath: $(Agent.ToolsDirectory)/dotnet
