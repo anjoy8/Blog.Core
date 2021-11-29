@@ -20,7 +20,8 @@
 </div>
 
 
-Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x + RBAC】权限框架。    
+Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x + RBAC】权限框架。  
+其他版本看具体分支吧🎉  
 官网：http://apk.neters.club/.doc/    
 
   
