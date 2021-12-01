@@ -59,9 +59,9 @@ namespace Blog.Core.Common.LogHelper
                 }
                 // 展示elk支持输出4种日志级别
                 Log.Information(logContent);
-                Log.Warning(logContent);
-                Log.Error(logContent);
-                Log.Debug(logContent);
+                //Log.Warning(logContent);
+                //Log.Error(logContent);
+                //Log.Debug(logContent);
             }
             else
             {

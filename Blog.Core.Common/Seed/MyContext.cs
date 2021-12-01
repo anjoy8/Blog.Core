@@ -11,7 +11,7 @@ namespace Blog.Core.Common.Seed
         private static string _connectionString = connectObject.Connection;
         private static DbType _dbType = (DbType)connectObject.DbType;
         public static string ConnId = connectObject.ConnId;
-        private SqlSugarClient _db;
+        private SqlSugarScope _db;
 
         /// <summary>
         /// 连接字符串 
@@ -56,7 +56,7 @@ namespace Blog.Core.Common.Seed
         /// 数据连接对象 
         /// Blog.Core 
         /// </summary>
-        public SqlSugarClient Db
+        public SqlSugarScope Db
         {
             get { return _db; }
             private set { _db = value; }
@@ -71,7 +71,7 @@ namespace Blog.Core.Common.Seed
             if (string.IsNullOrEmpty(_connectionString))
                 throw new ArgumentNullException("数据库连接字符串为空");
 
-            _db = sqlSugarClient as SqlSugarClient;
+            _db = sqlSugarClient as SqlSugarScope;
 
         }
 
@@ -92,10 +92,10 @@ namespace Blog.Core.Common.Seed
         /// </summary>
         /// <param name="db">db</param>
         /// <returns>返回值</returns>
-        public SimpleClient<T> GetEntityDB<T>(SqlSugarClient db) where T : class, new()
-        {
-            return new SimpleClient<T>(db);
-        }
+        //public SimpleClient<T> GetEntityDB<T>(SqlSugarClient db) where T : class, new()
+        //{
+        //    return new SimpleClient<T>(db);
+        //}
 
 
 
@@ -197,9 +197,9 @@ namespace Blog.Core.Common.Seed
         /// </summary>
         /// <param name="config">config</param>
         /// <returns>返回值</returns>
-        public static SqlSugarClient GetCustomDB(ConnectionConfig config)
+        public static SqlSugarScope GetCustomDB(ConnectionConfig config)
         {
-            return new SqlSugarClient(config);
+            return new SqlSugarScope(config);
         }
         /// <summary>
         /// 功能描述:获取一个自定义的数据库处理对象
@@ -207,7 +207,7 @@ namespace Blog.Core.Common.Seed
         /// </summary>
         /// <param name="sugarClient">sugarClient</param>
         /// <returns>返回值</returns>
-        public static SimpleClient<T> GetCustomEntityDB<T>(SqlSugarClient sugarClient) where T : class, new()
+        public static SimpleClient<T> GetCustomEntityDB<T>(SqlSugarScope sugarClient) where T : class, new()
         {
             return new SimpleClient<T>(sugarClient);
         }
@@ -219,7 +219,7 @@ namespace Blog.Core.Common.Seed
         /// <returns>返回值</returns>
         public static SimpleClient<T> GetCustomEntityDB<T>(ConnectionConfig config) where T : class, new()
         {
-            SqlSugarClient sugarClient = GetCustomDB(config);
+            SqlSugarScope sugarClient = GetCustomDB(config);
             return GetCustomEntityDB<T>(sugarClient);
         }
         #endregion

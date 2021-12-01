@@ -20,10 +20,10 @@ namespace Blog.Core.Repository.UnitOfWork
         /// 获取DB，保证唯一性
         /// </summary>
         /// <returns></returns>
-        public SqlSugarClient GetDbClient()
+        public SqlSugarScope GetDbClient()
         {
             // 必须要as，后边会用到切换数据库操作
-            return _sqlSugarClient as SqlSugarClient;
+            return _sqlSugarClient as SqlSugarScope;
         }
 
         public void BeginTran()
