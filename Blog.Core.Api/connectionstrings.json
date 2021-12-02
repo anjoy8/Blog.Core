@@ -1,0 +1,9 @@
+{
+  "connectionstrings": {
+    "sqlserver": "Server=fangding.picp;Database=blogcorets;User Id=sa;Password=23456;",
+    "oracle": "oracle-connectionstring",
+    "postgresql": "Server=log4net.database.test;Port=5432;Database=log4net;User ID=log4net;Pooling=true;Password=Abcd!234;",
+    "mysql": "Server=log4net.database.test;Port=3306;Database=log4net;Uid=sa;Pwd=Abcd!234",
+    "mysqlOLD": "Server=log4net.database.test;Port=3306;Database=log4net;Uid=sa;Pwd=Abcd!234;allow user variables=true;SslMode=Required;maxpoolsize=100;Convert Zero Datetime=true;CharSet=utf8;CheckParameters=false;"
+  }
+}
