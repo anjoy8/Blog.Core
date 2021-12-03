@@ -140,7 +140,7 @@ namespace Blog.Core.Controllers
             //    response = permissions
             //};
 
-            return permissions.dataCount >= 0 ? Success(permissions, "获取成功") : Failed();
+            return permissions.dataCount >= 0 ? Success(permissions, "获取成功") : Failed<PageModel<Permission>>("获取失败");
 
         }
 
@@ -233,8 +233,6 @@ namespace Blog.Core.Controllers
 
 
             return id > 0 ? Success(id.ObjToString(), "添加成功") : Failed("添加失败");
-
-            return data;
         }
 
         /// <summary>
