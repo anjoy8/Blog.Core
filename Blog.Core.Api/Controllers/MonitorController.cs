@@ -26,7 +26,7 @@ namespace Blog.Core.Controllers
     [Route("api/[Controller]/[action]")]
     [ApiController]
     [AllowAnonymous]
-    public class MonitorController : BaseApiCpntroller
+    public class MonitorController : BaseApiController
     {
         private readonly IHubContext<ChatHub> _hubContext;
         private readonly IWebHostEnvironment _env;

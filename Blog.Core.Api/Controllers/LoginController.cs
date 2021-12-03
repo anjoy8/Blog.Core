@@ -24,7 +24,7 @@ namespace Blog.Core.Controllers
     [Produces("application/json")]
     [Route("api/Login")]
     [AllowAnonymous]
-    public class LoginController : BaseApiCpntroller
+    public class LoginController : BaseApiController
     {
         readonly ISysUserInfoServices _sysUserInfoServices;
         readonly IUserRoleServices _userRoleServices;

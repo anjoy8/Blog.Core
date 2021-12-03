@@ -22,7 +22,7 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/Blog")]
-    public class BlogController : BaseApiCpntroller
+    public class BlogController : BaseApiController
     {
         public IBlogArticleServices _blogArticleServices { get; set; }
         private readonly ILogger<BlogController> _logger;
