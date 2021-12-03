@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Blog.Core.Controllers
 {
-    public class BaseApiCpntroller : Controller
+    public class BaseApiController : Controller
     {
         [NonAction]
         public MessageModel<T> Success<T>(T data, string msg = "成功")

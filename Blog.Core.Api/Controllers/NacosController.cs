@@ -14,7 +14,7 @@ namespace Blog.Core.Api.Controllers
     [Produces("application/json")]
     [Route("api/[Controller]/[action]")]
     [Authorize(Permissions.Name)]
-    public class NacosController : BaseApiCpntroller
+    public class NacosController : BaseApiController
     {
 
         #region 变量
