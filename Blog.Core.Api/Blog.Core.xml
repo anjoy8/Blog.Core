@@ -232,6 +232,13 @@
             <param name="password"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.LoginController.SwgLogin(Blog.Core.Controllers.SwaggerLoginRequest)">
+            <summary>
+            swagger登录
+            </summary>
+            <param name="loginRequest"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.ModuleController">
             <summary>
             接口管理

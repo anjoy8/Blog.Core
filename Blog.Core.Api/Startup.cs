@@ -92,6 +92,9 @@ namespace Blog.Core
 
             services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
                     .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
+            
+            services.AddDistributedMemoryCache();
+            services.AddSession();
 
             services.AddControllers(o =>
             {
@@ -165,6 +168,8 @@ namespace Blog.Core
                 //app.UseHsts();
             }
 
+            app.UseSession();
+            app.UseSwaggerAuthorized();
             // 封装Swagger展示
             app.UseSwaggerMildd(() => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.Api.index.html"));
 

@@ -266,5 +266,30 @@ namespace Blog.Core.Controllers
         {
             return MD5Helper.MD5Encrypt32(password);
         }
+
+        /// <summary>
+        /// swagger登录
+        /// </summary>
+        /// <param name="loginRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("swgLogin")]
+        public dynamic SwgLogin([FromBody] SwaggerLoginRequest loginRequest)
+        {
+            // 这里可以查询数据库等各种校验
+            if (loginRequest?.name == "admin" && loginRequest?.pwd == "admin")
+            {
+                HttpContext.Session.SetString("swagger-code", "success");
+                return new { result = true };
+            }
+
+            return new { result = false };
+        }
+    }
+
+    public class SwaggerLoginRequest
+    {
+        public string name { get; set; }
+        public string pwd { get; set; }
     }
 }
