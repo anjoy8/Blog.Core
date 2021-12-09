@@ -57,7 +57,7 @@ namespace Blog.Core.Controllers
                 FrameworkDescription = RuntimeInformation.FrameworkDescription,
                 MemoryFootprint = (Process.GetCurrentProcess().WorkingSet64 / 1048576).ToString("N2") + " MB",
                 WorkingTime = DateHelper.TimeSubTract(DateTime.Now, Process.GetCurrentProcess().StartTime)
-            });
+            }, "获取服务器配置信息成功");
         }
 
 
@@ -72,7 +72,7 @@ namespace Blog.Core.Controllers
 
             _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
 
-            return Success<List<LogInfo>>(null);
+            return Success<List<LogInfo>>(null, "执行成功");
         }
 
 
@@ -80,29 +80,33 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public MessageModel<RequestApiWeekView> GetRequestApiinfoByWeek()
         {
-            return Success(LogLock.RequestApiinfoByWeek());
+            return Success(LogLock.RequestApiinfoByWeek(), "成功");
         }
 
         [HttpGet]
         public MessageModel<AccessApiDateView> GetAccessApiByDate()
         {
-            return new MessageModel<AccessApiDateView>()
-            {
-                msg = "获取成功",
-                success = true,
-                response = LogLock.AccessApiByDate()
-            };
+            //return new MessageModel<AccessApiDateView>()
+            //{
+            //    msg = "获取成功",
+            //    success = true,
+            //    response = LogLock.AccessApiByDate()
+            //};
+
+            return Success(LogLock.AccessApiByDate(), "获取成功");
         }
 
         [HttpGet]
         public MessageModel<AccessApiDateView> GetAccessApiByHour()
         {
-            return new MessageModel<AccessApiDateView>()
-            {
-                msg = "获取成功",
-                success = true,
-                response = LogLock.AccessApiByHour()
-            };
+            //return new MessageModel<AccessApiDateView>()
+            //{
+            //    msg = "获取成功",
+            //    success = true,
+            //    response = LogLock.AccessApiByHour()
+            //};
+
+            return Success(LogLock.AccessApiByHour(), "获取成功");
         }
 
         private List<UserAccessModel> GetAccessLogsToday(IWebHostEnvironment environment)
@@ -192,19 +196,28 @@ namespace Blog.Core.Controllers
             int activeUsersCount = activeUsers.Count;
             activeUsers = activeUsers.OrderByDescending(d => d.count).Take(10).ToList();
 
-            return new MessageModel<WelcomeInitData>()
+            //return new MessageModel<WelcomeInitData>()
+            //{
+            //    msg = "获取成功",
+            //    success = true,
+            //    response = new WelcomeInitData()
+            //    {
+            //        activeUsers = activeUsers,
+            //        activeUserCount = activeUsersCount,
+            //        errorCount = errorCountToday,
+            //        logs = Logs,
+            //        activeCount = GetAccessLogsTrend(environment)
+            //    }
+            //};
+
+            return Success(new WelcomeInitData()
             {
-                msg = "获取成功",
-                success = true,
-                response = new WelcomeInitData()
-                {
-                    activeUsers = activeUsers,
-                    activeUserCount = activeUsersCount,
-                    errorCount = errorCountToday,
-                    logs = Logs,
-                    activeCount = GetAccessLogsTrend(environment)
-                }
-            };
+                activeUsers = activeUsers,
+                activeUserCount = activeUsersCount,
+                errorCount = errorCountToday,
+                logs = Logs,
+                activeCount = GetAccessLogsTrend(environment)
+            }, "获取成功");
         }
 
         [HttpGet]
@@ -236,16 +249,22 @@ namespace Blog.Core.Controllers
                     count = 0
                 });
             }
-            return new MessageModel<AccessApiDateView>()
+            //return new MessageModel<AccessApiDateView>()
+            //{
+            //    msg = "获取成功",
+            //    success = true,
+            //    response = new AccessApiDateView
+            //    {
+            //        columns = new string[] { "date", "count" },
+            //        rows = apiDates.OrderBy(d => d.date).ToList(),
+            //    }
+            //};
+
+            return Success(new AccessApiDateView
             {
-                msg = "获取成功",
-                success = true,
-                response = new AccessApiDateView
-                {
-                    columns = new string[] { "date", "count" },
-                    rows = apiDates.OrderBy(d => d.date).ToList(),
-                }
-            };
+                columns = new string[] { "date", "count" },
+                rows = apiDates.OrderBy(d => d.date).ToList(),
+            }, "获取成功");
         }
 
     }

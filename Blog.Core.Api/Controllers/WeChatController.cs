@@ -114,6 +114,7 @@ namespace Blog.Core.Controllers
         /// 获取订阅用户
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="openid"></param>
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]

@@ -1010,6 +1010,7 @@
             获取订阅用户
             </summary>
             <param name="id"></param>
+            <param name="openid"></param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.WeChatController.GetQRBind(Blog.Core.Model.ViewModels.WeChatUserInfo)">
