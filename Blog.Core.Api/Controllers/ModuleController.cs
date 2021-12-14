@@ -17,7 +17,7 @@ namespace Blog.Core.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(Permissions.Name)]
-    public class ModuleController : ControllerBase
+    public class ModuleController : BaseApiController
     {
         readonly IModuleServices _moduleServices;
         readonly IUser _user;
@@ -49,12 +49,9 @@ namespace Blog.Core.Controllers
 
             var data = await _moduleServices.QueryPage(whereExpression, page, intPageSize, " Id desc ");
 
-            return new MessageModel<PageModel<Modules>>()
-            {
-                msg = "获取成功",
-                success = data.dataCount >= 0,
-                response = data
-            };
+
+            return Success(data, "获取成功");
+
 
         }
 
@@ -74,20 +71,11 @@ namespace Blog.Core.Controllers
         [HttpPost]
         public async Task<MessageModel<string>> Post([FromBody] Modules module)
         {
-            var data = new MessageModel<string>();
-
             module.CreateId = _user.ID;
             module.CreateBy = _user.Name;
-
             var id = (await _moduleServices.Add(module));
-            data.success = id > 0;
-            if (data.success)
-            {
-                data.response = id.ObjToString();
-                data.msg = "添加成功";
-            }
+            return id > 0 ? Success(id.ObjToString(), "添加成功") : Failed();
 
-            return data;
         }
 
         /// <summary>
@@ -99,18 +87,22 @@ namespace Blog.Core.Controllers
         [HttpPut]
         public async Task<MessageModel<string>> Put([FromBody] Modules module)
         {
-            var data = new MessageModel<string>();
-            if (module != null && module.Id > 0)
-            {
-                data.success = await _moduleServices.Update(module);
-                if (data.success)
-                {
-                    data.msg = "更新成功";
-                    data.response = module?.Id.ObjToString();
-                }
-            }
+            //var data = new MessageModel<string>();
+            //if (module != null && module.Id > 0)
+            //{
+            //data.success = await _moduleServices.Update(module);
+            //if (data.success)
+            //{
+            //    data.msg = "更新成功";
+            //    data.response = module?.Id.ObjToString();
+            //}
 
-            return data;
+            // }
+
+            //return data;
+            if (module == null || module.Id <= 0)
+                return Failed("缺少参数");
+            return await _moduleServices.Update(module) ? Success(module?.Id.ObjToString(), "更新成功") : Failed();
         }
 
         /// <summary>
@@ -122,20 +114,28 @@ namespace Blog.Core.Controllers
         [HttpDelete]
         public async Task<MessageModel<string>> Delete(int id)
         {
-            var data = new MessageModel<string>();
-            if (id > 0)
-            {
-                var userDetail = await _moduleServices.QueryById(id);
-                userDetail.IsDeleted = true;
-                data.success = await _moduleServices.Update(userDetail);
-                if (data.success)
-                {
-                    data.msg = "删除成功";
-                    data.response = userDetail?.Id.ObjToString();
-                }
-            }
+            if (id <= 0)
+                return Failed("缺少参数");
+            var userDetail = await _moduleServices.QueryById(id);
+            if (userDetail == null)
+                return Failed("信息不存在");
 
-            return data;
+            userDetail.IsDeleted = true;
+            return await _moduleServices.Update(userDetail) ? Success(userDetail?.Id.ObjToString(), "删除成功") : Failed("删除失败");
+
+            //var data = new MessageModel<string>();
+            //if (id > 0)
+            //{
+            //    var userDetail = await _moduleServices.QueryById(id);
+            //    userDetail.IsDeleted = true;
+            //    data.success = await _moduleServices.Update(userDetail);
+            //    if (data.success)
+            //    {
+            //        data.msg = "删除成功";
+            //        data.response = userDetail?.Id.ObjToString();
+            //    }
+            //}
+            //return data;
         }
 
         /// <summary>
@@ -147,7 +147,6 @@ namespace Blog.Core.Controllers
         [HttpPost]
         public async Task<MessageModel<string>> BatchPost([FromBody] List<Modules> modules)
         {
-            var data = new MessageModel<string>();
             string ids = string.Empty;
             int sucCount = 0;
 
@@ -162,15 +161,7 @@ namespace Blog.Core.Controllers
                     sucCount++;
                 }
             }
-
-            data.success = ids.IsNotEmptyOrNull();
-            if (data.success)
-            {
-                data.response = ids;
-                data.msg = $"{sucCount}条数据添加成功";
-            }
-
-            return data;
+            return ids.IsNotEmptyOrNull() ? Success(ids, $"{sucCount}条数据添加成功") : Failed();
         }
     }
 }

@@ -16,6 +16,16 @@ namespace Blog.Core.Controllers
                 response = data,
             };
         }
+       // [NonAction]
+        //public MessageModel<T> Success<T>(T data, string msg = "成功",bool success = true)
+        //{
+        //    return new MessageModel<T>()
+        //    {
+        //        success = success,
+        //        msg = msg,
+        //        response = data,
+        //    };
+        //}
         [NonAction]
         public MessageModel Success(string msg = "成功")
         {
