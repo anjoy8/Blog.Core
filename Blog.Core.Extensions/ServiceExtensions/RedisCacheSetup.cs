@@ -1,4 +1,5 @@
 ﻿using Blog.Core.Common;
+using Blog.Core.Common.Redis;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 using System;

@@ -2,10 +2,10 @@
 using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.HttpRestSharp;
+using Blog.Core.Common.Redis;
 using Blog.Core.Common.WebApiClients.HttpApis;
 using Blog.Core.EventBus;
 using Blog.Core.EventBus.EventHandling;
-using Blog.Core.Extensions;
 using Blog.Core.Filter;
 using Blog.Core.IServices;
 using Blog.Core.Model;
@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+
 
 namespace Blog.Core.Controllers
 {

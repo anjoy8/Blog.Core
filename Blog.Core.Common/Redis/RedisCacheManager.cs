@@ -1,8 +1,7 @@
-﻿using Blog.Core.Common;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 using System;
 
-namespace Blog.Core.Extensions
+namespace Blog.Core.Common.Redis
 {
     public class RedisCacheManager : IRedisCacheManager
     {

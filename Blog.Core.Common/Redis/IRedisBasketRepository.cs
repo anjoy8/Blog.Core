@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Extensions
+namespace Blog.Core.Common.Redis
 {
     /// <summary>
     /// Redis缓存接口
