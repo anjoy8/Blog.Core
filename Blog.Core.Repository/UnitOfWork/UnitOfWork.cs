@@ -1,5 +1,4 @@
 ﻿using Blog.Core.IRepository.UnitOfWork;
-using Microsoft.Extensions.Logging;
 using SqlSugar;
 using System;
 
@@ -8,12 +7,10 @@ namespace Blog.Core.Repository.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ISqlSugarClient _sqlSugarClient;
-        private readonly ILogger<UnitOfWork> _logger;
 
-        public UnitOfWork(ISqlSugarClient sqlSugarClient, ILogger<UnitOfWork> logger)
+        public UnitOfWork(ISqlSugarClient sqlSugarClient)
         {
             _sqlSugarClient = sqlSugarClient;
-            _logger = logger;
         }
 
         /// <summary>
@@ -40,7 +37,6 @@ namespace Blog.Core.Repository.UnitOfWork
             catch (Exception ex)
             {
                 GetDbClient().RollbackTran();
-                _logger.LogError($"{ex.Message}\r\n{ex.InnerException}");
             }
         }
 

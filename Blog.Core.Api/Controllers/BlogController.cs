@@ -233,7 +233,9 @@ namespace Blog.Core.Controllers
                     model.btraffic = BlogArticle.btraffic;
 
                     if (await _blogArticleServices.Update(model))
-                        Success<string>(BlogArticle?.bID.ObjToString());
+                    {
+                        return Success<string>(BlogArticle?.bID.ObjToString());
+                    }
                 }
             }
             return Failed("更新失败");
@@ -254,6 +256,10 @@ namespace Blog.Core.Controllers
             if (id > 0)
             {
                 var blogArticle = await _blogArticleServices.QueryById(id);
+                if (blogArticle == null)
+                {
+                    return Failed("查询无数据");
+                }
                 blogArticle.IsDeleted = true;
                 return await _blogArticleServices.Update(blogArticle) ? Success(blogArticle?.bID.ObjToString(), "删除成功") : Failed("删除失败");
             }

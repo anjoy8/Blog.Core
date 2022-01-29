@@ -30,8 +30,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Blog.Core.Api\Blog.Core.Api.csproj" />
-    <ProjectReference Include="..\Blog.Core.Repository\Blog.Core.Repository.csproj" />
-    <ProjectReference Include="..\Blog.Core.Services\Blog.Core.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="WMBlog.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
