@@ -1,4 +1,5 @@
 ﻿using Blog.Core.Common;
+using Blog.Core.Common.Redis;
 using Blog.Core.Extensions;
 using Castle.DynamicProxy;
 using System;

@@ -12,7 +12,7 @@ namespace Blog.Core.Services
         {
             this._dal = dal;
             base.BaseDal = dal;
-        }    
+        }
 
     }
 }

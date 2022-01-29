@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Blog.Core.Extensions
+namespace Blog.Core.Common.Redis
 {
     /// <summary>
     /// Redis缓存接口
