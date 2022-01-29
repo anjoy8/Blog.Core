@@ -27,15 +27,19 @@
     <Compile Remove="Extensions\**" />
     <Compile Remove="Hubs\**" />
     <Compile Remove="Middlewares\**" />
+    <Compile Remove="wwwroot\ui\**" />
     <Content Remove="Extensions\**" />
     <Content Remove="Hubs\**" />
     <Content Remove="Middlewares\**" />
+    <Content Remove="wwwroot\ui\**" />
     <EmbeddedResource Remove="Extensions\**" />
     <EmbeddedResource Remove="Hubs\**" />
     <EmbeddedResource Remove="Middlewares\**" />
+    <EmbeddedResource Remove="wwwroot\ui\**" />
     <None Remove="Extensions\**" />
     <None Remove="Hubs\**" />
     <None Remove="Middlewares\**" />
+    <None Remove="wwwroot\ui\**" />
   </ItemGroup>
 
   <ItemGroup>

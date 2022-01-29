@@ -45,7 +45,7 @@ namespace Blog.Core
             // 以下code可能与文章中不一样,对代码做了封装,具体查看右侧 Extensions 文件夹.
             services.AddSingleton(new Appsettings(Configuration));
             services.AddSingleton(new LogLock(Env.ContentRootPath));
-
+            services.AddUiFilesZipSetup(Env);
 
             Permissions.IsUseIds4 = Appsettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
 
@@ -180,6 +180,10 @@ namespace Blog.Core
             // 跳转https
             //app.UseHttpsRedirection();
             // 使用静态文件
+            DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
+            defaultFilesOptions.DefaultFileNames.Clear();
+            defaultFilesOptions.DefaultFileNames.Add("index.html");
+            app.UseDefaultFiles(defaultFilesOptions);
             app.UseStaticFiles();
             // 使用cookie
             app.UseCookiePolicy();
