@@ -15,8 +15,12 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            string zipUiItemFiles = Path.Combine(_env.ContentRootPath, "wwwroot", "ui.zip");
-            ZipFile.ExtractToDirectory(zipUiItemFiles, Path.Combine(_env.ContentRootPath, "wwwroot"));
+            string wwwrootFolderPath = Path.Combine(_env.ContentRootPath, "wwwroot");
+            string zipUiItemFiles = Path.Combine(wwwrootFolderPath, "ui.zip");
+            if (!File.Exists(Path.Combine(wwwrootFolderPath, "index.html")))
+            {
+                ZipFile.ExtractToDirectory(zipUiItemFiles, wwwrootFolderPath);
+            }
         }
     }
 }
