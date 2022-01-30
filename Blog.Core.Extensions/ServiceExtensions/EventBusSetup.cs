@@ -23,7 +23,7 @@ namespace Blog.Core.Extensions
                 var subscriptionClientName = Appsettings.app(new string[] { "EventBus", "SubscriptionClientName" });
 
                 services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-                services.AddTransient<BlogDeletedIntegrationEventHandler>();
+                services.AddTransient<BlogQueryIntegrationEventHandler>();
 
                 if (Appsettings.app(new string[] { "RabbitMQ", "Enabled" }).ObjToBool())
                 {
@@ -58,7 +58,7 @@ namespace Blog.Core.Extensions
             {
                 var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-                eventBus.Subscribe<BlogDeletedIntegrationEvent, BlogDeletedIntegrationEventHandler>();
+                eventBus.Subscribe<BlogQueryIntegrationEvent, BlogQueryIntegrationEventHandler>();
             }
         }
     }

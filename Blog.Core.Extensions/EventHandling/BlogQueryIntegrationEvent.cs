@@ -1,10 +1,10 @@
 ﻿namespace Blog.Core.EventBus.EventHandling
 {
-    public class BlogDeletedIntegrationEvent : IntegrationEvent
+    public class BlogQueryIntegrationEvent : IntegrationEvent
     {
         public string BlogId { get; private set; }
 
-        public BlogDeletedIntegrationEvent(string blogid)
+        public BlogQueryIntegrationEvent(string blogid)
             => BlogId = blogid;
     }
 }

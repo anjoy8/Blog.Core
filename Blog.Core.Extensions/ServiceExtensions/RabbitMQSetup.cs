@@ -38,10 +38,15 @@ namespace Blog.Core.Extensions
                            factory.Password = Appsettings.app(new string[] { "RabbitMQ", "Password" });
                        }
 
+                       if (!string.IsNullOrEmpty(Appsettings.app(new string[] { "RabbitMQ", "Port" })))
+                       {
+                           factory.Port = Appsettings.app(new string[] { "RabbitMQ", "Port" }).ObjToInt();
+                       }
+
                        var retryCount = 5;
                        if (!string.IsNullOrEmpty(Appsettings.app(new string[] { "RabbitMQ", "RetryCount" })))
                        {
-                           retryCount = int.Parse(Appsettings.app(new string[] { "RabbitMQ", "RetryCount" }));
+                           retryCount = Appsettings.app(new string[] { "RabbitMQ", "RetryCount" }).ObjToInt();
                        }
 
                        return new RabbitMQPersistentConnection(factory, logger, retryCount);
