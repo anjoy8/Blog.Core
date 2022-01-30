@@ -107,7 +107,7 @@ namespace Blog.Core.Controllers
             /*
             *  测试按照指定列查询带多条件和排序方法
             */
-            Expression<Func<BlogArticle, bool>> registerInfoWhere = a => a.btitle == "xxx" && a.bRemark=="XXX";
+            Expression<Func<BlogArticle, bool>> registerInfoWhere = a => a.btitle == "xxx" && a.bRemark == "XXX";
             var queryByColumsByMultiTerms = await _blogArticleServices
                 .Query<BlogArticle>(it => new BlogArticle() { btitle = it.btitle }, registerInfoWhere, "bID Desc");
 
@@ -172,7 +172,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public void EventBusTry([FromServices] IEventBus _eventBus, string blogId = "1")
         {
-            var blogDeletedEvent = new BlogDeletedIntegrationEvent(blogId);
+            var blogDeletedEvent = new BlogQueryIntegrationEvent(blogId);
 
             _eventBus.Publish(blogDeletedEvent);
         }
@@ -358,7 +358,7 @@ namespace Blog.Core.Controllers
         /// </summary>
         [HttpGet("/apollo")]
         [AllowAnonymous]
-        public async Task<IEnumerable<KeyValuePair<string,string>>> GetAllConfigByAppllo([FromServices]IConfiguration configuration)
+        public async Task<IEnumerable<KeyValuePair<string, string>>> GetAllConfigByAppllo([FromServices] IConfiguration configuration)
         {
             return await Task.FromResult(configuration.AsEnumerable());
         }
