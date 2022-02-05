@@ -1,45 +1,39 @@
 {
   "Routes": [
+    // blog-svc
     {
-      "UpstreamPathTemplate": "/gateway/api/{url}",
-      "UpstreamHttpMethod": [
-        "Get",
-        "Post",
-        "Put",
-        "Delete"
-      ],
+      "UpstreamPathTemplate": "/svc/blog/{url}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       },
-      "DownstreamPathTemplate": "/api/{url}",
+      "DownstreamPathTemplate": "/svc/blog/{url}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 9291
         }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/is4api/{url}",
-      "UpstreamHttpMethod": [
-        "Get",
-        "Post",
-        "Put",
-        "Delete"
       ],
-      "LoadBalancerOptions": {
-        "Type": "RoundRobin"
-      },
-      "DownstreamPathTemplate": "/is4api/{url}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "GW"
+      }
+    },
+    // blog-svc-swagger
+    {
+      "UpstreamPathTemplate": "/swagger/apiswg/blog-svc/swagger.json",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/swagger/V2/swagger.json",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5004
+          "Port": 9291
         }
-      ]
+      ],
+      "LoadBalancer": "RoundRobin"
     }
+
   ],
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:9000",

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Blog.Core.Gateway.Extensions
@@ -45,11 +46,18 @@ namespace Blog.Core.Gateway.Extensions
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
+            var apis = new List<string> { "blog-svc" };
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(options =>
             {
-                c.SwaggerEndpoint($"/swagger/v1/swagger.json", $"Blog.Core.Gateway-v1");
-                c.RoutePrefix = "";
+                options.SwaggerEndpoint($"/swagger/v1/swagger.json", $"Blog.Core.Gateway-v1");
+
+                apis.ForEach(m =>
+                {
+                    options.SwaggerEndpoint($"/swagger/apiswg/{m}/swagger.json", m);
+                });
+
+                options.RoutePrefix = "";
             });
         }
 

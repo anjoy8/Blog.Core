@@ -273,7 +273,7 @@ namespace Blog.Core.Controllers
         /// <param name="loginRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("swgLogin")]
+        [Route("/api/Login/swgLogin")]
         public dynamic SwgLogin([FromBody] SwaggerLoginRequest loginRequest)
         {
             // 这里可以查询数据库等各种校验

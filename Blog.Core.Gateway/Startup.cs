@@ -1,6 +1,7 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Extensions;
 using Blog.Core.Gateway.Extensions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -35,10 +36,9 @@ namespace Blog.Core.AdminMvc
 
             services.AddAuthentication_JWTSetup();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("GW", policy => policy.RequireRole("AdminTest").Build());
-            });
+            services.AddAuthentication()
+               .AddScheme<AuthenticationSchemeOptions, BlogAuthenticationHandler>(Permissions.GWName, _ => { });
+
 
             services.AddCustomSwaggerSetup();
 
