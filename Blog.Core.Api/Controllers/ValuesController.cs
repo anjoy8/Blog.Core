@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -82,6 +83,23 @@ namespace Blog.Core.Controllers
             // 测试redis消息队列
             _blogArticleServices = blogArticleServices;
         }
+
+        [HttpGet]
+        public MessageModel<List<ClaimDto>> MyClaims()
+        {
+            return new MessageModel<List<ClaimDto>>()
+            {
+                success = true,
+                response = (_user.GetClaimsIdentity().ToList()).Select(d =>
+                    new ClaimDto
+                    {
+                        Type = d.Type,
+                        Value = d.Value
+                    }
+                ).ToList()
+            };
+        }
+
         /// <summary>
         /// Get方法
         /// </summary>
@@ -372,5 +390,10 @@ namespace Blog.Core.Controllers
             return await Task.FromResult(Appsettings.app(key));
         }
         #endregion
+    }
+    public class ClaimDto
+    {
+        public string Type { get; set; }
+        public string Value { get; set; }
     }
 }

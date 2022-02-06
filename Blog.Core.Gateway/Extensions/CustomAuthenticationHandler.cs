@@ -10,20 +10,25 @@ using System.Threading.Tasks;
 
 namespace Blog.Core.AdminMvc
 {
-    public class BlogAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+    public class CustomAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        public BlogAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, 
-            ILoggerFactory logger, 
-            UrlEncoder encoder, 
+        public CustomAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options,
+            ILoggerFactory logger,
+            UrlEncoder encoder,
             ISystemClock clock) : base(options, logger, encoder, clock)
         {
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
+            // 可以查询数据库等操作
+            // 获取当前用户不能放到token中的私密信息
+            var userPhone = "15010000000";
+
             var claims = new List<Claim>()
             {
-                new Claim("gw", "gw")
+                new Claim("user-phone", userPhone),
+                new Claim("gw-sign", "gw")
             };
 
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, Scheme.Name));

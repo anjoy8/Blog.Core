@@ -37,7 +37,7 @@ namespace Blog.Core.AdminMvc
             services.AddAuthentication_JWTSetup();
 
             services.AddAuthentication()
-               .AddScheme<AuthenticationSchemeOptions, BlogAuthenticationHandler>(Permissions.GWName, _ => { });
+               .AddScheme<AuthenticationSchemeOptions, CustomAuthenticationHandler>(Permissions.GWName, _ => { });
 
 
             services.AddCustomSwaggerSetup();

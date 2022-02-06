@@ -15,6 +15,16 @@
           "Port": 9291
         }
       ],
+      "AddHeadersToRequest": {
+        "user-phone": "Claims[user-phone] > value",
+        "gw-sign": "Claims[gw-sign] > value"
+      },
+      "UpstreamHeaderTransform": {
+        "custom-key": "blog.gateway"
+      },
+      "DownstreamHeaderTransform": {
+        "trace-id": "Trace-Id"
+      },
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "GW"
       }
