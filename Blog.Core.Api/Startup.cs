@@ -48,6 +48,7 @@ namespace Blog.Core
             services.AddUiFilesZipSetup(Env);
 
             Permissions.IsUseIds4 = Appsettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
+            RoutePrefix.Name = Appsettings.app(new string[] { "Startup", "SvcName" }).ObjToString();
 
             // 确保从认证中心返回的ClaimType不被更改，不使用Map映射
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
