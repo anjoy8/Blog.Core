@@ -26,7 +26,7 @@ namespace Blog.Core.EventBus
 
             ConsoleHelper.WriteSuccessLine($"----- Handling integration event: {@event.Id} at Blog.Core - ({@event})");
 
-            //await _blogArticleServices.QueryById(@event.BlogId.ToString());
+            await _blogArticleServices.QueryById(@event.BlogId.ToString());
         }
 
     }

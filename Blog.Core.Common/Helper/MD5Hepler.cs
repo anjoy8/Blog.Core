@@ -13,7 +13,7 @@ namespace Blog.Core.Common.Helper
         /// <returns></returns>
         public static string MD5Encrypt16(string password)
         {
-            var md5 = new MD5CryptoServiceProvider();
+            var md5 = MD5.Create();
             string t2 = BitConverter.ToString(md5.ComputeHash(Encoding.Default.GetBytes(password)), 4, 8);
             t2 = t2.Replace("-", string.Empty);
             return t2;

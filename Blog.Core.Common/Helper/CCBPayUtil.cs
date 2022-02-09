@@ -96,7 +96,7 @@ namespace Blog.Core.Common
 		}
 
 		// Token: 0x04000001 RID: 1
-		private string VERSION = "1.0.0";
+		//private string VERSION = "1.0.0";
 
 		// Token: 0x04000002 RID: 2
 		private string MD5KEY = "20120315201809041004";
@@ -179,7 +179,7 @@ namespace Blog.Core.Common
 				byte[] bytes = Encoding.GetEncoding(keyCharset).GetBytes(key);
 				byte[] rgbIV = bytes;
 				byte[] bytes2 = Encoding.GetEncoding(dataCharset).GetBytes(data);
-				DESCryptoServiceProvider descryptoServiceProvider = new DESCryptoServiceProvider();
+				var descryptoServiceProvider = DES.Create();
 				descryptoServiceProvider.Mode = CipherMode.ECB;
 				descryptoServiceProvider.Padding = PaddingMode.PKCS7;
 				MemoryStream memoryStream = new MemoryStream();
@@ -204,7 +204,7 @@ namespace Blog.Core.Common
 				byte[] bytes = Encoding.GetEncoding(keyCoding).GetBytes(key);
 				byte[] rgbIV = bytes;
 				byte[] array = this.Base64Decode(data);
-				DESCryptoServiceProvider descryptoServiceProvider = new DESCryptoServiceProvider();
+				var descryptoServiceProvider = DES.Create();
 				descryptoServiceProvider.Mode = CipherMode.ECB;
 				descryptoServiceProvider.Padding = PaddingMode.PKCS7;
 				MemoryStream memoryStream = new MemoryStream();
@@ -262,7 +262,7 @@ namespace Blog.Core.Common
 		// Token: 0x06000020 RID: 32 RVA: 0x000028A0 File Offset: 0x00000AA0
 		protected internal string Md5_32(string src)
 		{
-			MD5 md = new MD5CryptoServiceProvider();
+			var md = MD5.Create();
 			byte[] bytes = Encoding.UTF8.GetBytes(src);
 			byte[] array = md.ComputeHash(bytes);
 			string text = "";
@@ -484,43 +484,43 @@ namespace Blog.Core.Common
 		internal struct CRYPT_OBJID_BLOB
 		{
 			// Token: 0x04000028 RID: 40
-			internal uint cbData;
+			internal uint cbData = default;
 
 			// Token: 0x04000029 RID: 41
-			internal IntPtr pbData;
+			internal IntPtr pbData = default;
 		}
 
 		// Token: 0x0200000C RID: 12
 		internal struct CRYPT_ALGORITHM_IDENTIFIER
 		{
 			// Token: 0x0400002A RID: 42
-			internal IntPtr pszObjId;
+			internal IntPtr pszObjId = default;
 
 			// Token: 0x0400002B RID: 43
-			internal RSACryptoServiceProviderExtension.CRYPT_OBJID_BLOB Parameters;
+			internal RSACryptoServiceProviderExtension.CRYPT_OBJID_BLOB Parameters = default;
 		}
 
 		// Token: 0x0200000D RID: 13
 		private struct CRYPT_BIT_BLOB
 		{
 			// Token: 0x0400002C RID: 44
-			internal uint cbData;
+			internal uint cbData = default;
 
 			// Token: 0x0400002D RID: 45
-			internal IntPtr pbData;
+			internal IntPtr pbData = default;
 
 			// Token: 0x0400002E RID: 46
-			internal uint cUnusedBits;
+			internal uint cUnusedBits = default;
 		}
 
 		// Token: 0x0200000E RID: 14
 		private struct CERT_PUBLIC_KEY_INFO
 		{
 			// Token: 0x0400002F RID: 47
-			internal RSACryptoServiceProviderExtension.CRYPT_ALGORITHM_IDENTIFIER Algorithm;
+			internal RSACryptoServiceProviderExtension.CRYPT_ALGORITHM_IDENTIFIER Algorithm = default;
 
 			// Token: 0x04000030 RID: 48
-			internal RSACryptoServiceProviderExtension.CRYPT_BIT_BLOB PublicKey;
+			internal RSACryptoServiceProviderExtension.CRYPT_BIT_BLOB PublicKey = default;
 		}
 	}
 }

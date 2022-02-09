@@ -186,7 +186,7 @@ namespace Blog.Core.Common.Seed
                 {
                     //DataInfoCacheService = new HttpRuntimeCache()
                 },
-                IsShardSameThread = blnIsShardSameThread
+                //IsShardSameThread = blnIsShardSameThread
             };
             return config;
         }

@@ -265,7 +265,7 @@ namespace Blog.Core.Common.Helper
 
                 string strDec = Encoding.UTF8.GetString(resData);
                 return strDec;
-            } 
+            }
         }
 
         /// <summary>
@@ -284,19 +284,19 @@ namespace Blog.Core.Common.Helper
             {
                 case SignAlgType.SHA1:
                     {
-                        var csp = new SHA1CryptoServiceProvider();
+                        var csp = SHA1.Create();
                         rgbHash = csp.ComputeHash(bt);
                     }
                     break;
                 case SignAlgType.SHA256:
                     {
-                        var csp = new SHA256CryptoServiceProvider();
+                        var csp = SHA256.Create();
                         rgbHash = csp.ComputeHash(bt);
                     }
                     break;
                 case SignAlgType.MD5:
                     {
-                        var csp = new MD5CryptoServiceProvider();
+                        var csp = MD5.Create();
                         rgbHash = csp.ComputeHash(bt);
                     }
                     break;
@@ -331,19 +331,19 @@ namespace Blog.Core.Common.Helper
             {
                 case SignAlgType.SHA1:
                     {
-                        var csp = new SHA1CryptoServiceProvider();
+                        var csp = SHA1.Create();
                         rgbHash = csp.ComputeHash(bt);
                     }
                     break;
                 case SignAlgType.SHA256:
                     {
-                        var csp = new SHA256CryptoServiceProvider();
+                        var csp = SHA256.Create();
                         rgbHash = csp.ComputeHash(bt);
                     }
                     break;
                 case SignAlgType.MD5:
                     {
-                        var csp = new MD5CryptoServiceProvider();
+                        var csp = MD5.Create();
                         rgbHash = csp.ComputeHash(bt);
                     }
                     break;

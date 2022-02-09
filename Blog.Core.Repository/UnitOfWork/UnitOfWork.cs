@@ -36,6 +36,7 @@ namespace Blog.Core.Repository.UnitOfWork
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 GetDbClient().RollbackTran();
             }
         }
