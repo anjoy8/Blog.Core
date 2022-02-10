@@ -1,90 +1,55 @@
-﻿using System.IO;
-using System.Net;
-using System.Text;
+﻿using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Common.Helper
 {
+    /// <summary>
+    /// httpclinet请求方式，请尽量使用IHttpClientFactory方式
+    /// </summary>
     public class HttpHelper
     {
-        public static string Get(string serviceAddress)
-        { 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serviceAddress);
-            request.Method = "GET";
-            request.ContentType = "text/html;charset=UTF-8";
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream myResponseStream = response.GetResponseStream();
-            StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.UTF8);
-            string retString = myStreamReader.ReadToEnd();
-            myStreamReader.Close();
-            myResponseStream.Close(); 
-            return retString;
-        }
         public static async Task<string> GetAsync(string serviceAddress)
-        { 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serviceAddress);
-            request.Method = "GET";
-            request.ContentType = "text/html;charset=UTF-8";
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream myResponseStream = response.GetResponseStream();
-            StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.UTF8);
-            string retString = await myStreamReader.ReadToEndAsync();
-            myStreamReader.Close();
-            myResponseStream.Close(); 
-            return retString;
+        {
+            try
+            {
+                string result = string.Empty;
+                Uri getUrl = new Uri(serviceAddress);
+                using var httpClient = new HttpClient();
+                httpClient.Timeout = new TimeSpan(0, 0, 60);
+                result = await httpClient.GetAsync(serviceAddress).Result.Content.ReadAsStringAsync();
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return null;
         }
 
-        public static string Post(string serviceAddress, string strContent = null)
+        public static async Task<string> PostAsync(string serviceAddress, string requestJson = null)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serviceAddress);
-            request.Method = "POST";
-            request.ContentType = "application/json";
-            //判断有无POST内容
-            if (!string.IsNullOrWhiteSpace(strContent))
+            try
             {
-                using (StreamWriter dataStream = new StreamWriter(request.GetRequestStream()))
+                string result = string.Empty;
+                Uri postUrl = new Uri(serviceAddress);
+
+                using (HttpContent httpContent = new StringContent(requestJson))
                 {
-                    dataStream.Write(strContent);
-                    dataStream.Close();
+                    httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    using var httpClient = new HttpClient();
+                    httpClient.Timeout = new TimeSpan(0, 0, 60);
+                    result = await httpClient.PostAsync(serviceAddress, httpContent).Result.Content.ReadAsStringAsync();
                 }
+                return result;
             }
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string encoding = response.ContentEncoding;
-            if (string.IsNullOrWhiteSpace(encoding))
+            catch (Exception e)
             {
-                encoding = "UTF-8"; //默认编码  
+                Console.WriteLine(e.Message);
             }
-            StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encoding));
-            string retString = reader.ReadToEnd();
-            return retString;
+            return null;
         }
-
-        public static async Task<string> PostAsync(string serviceAddress, string strContent = null)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serviceAddress);
-            request.Method = "POST";
-            request.ContentType = "application/json";
-            //判断有无POST内容
-            if (!string.IsNullOrWhiteSpace(strContent))
-            {
-                using (StreamWriter dataStream = new StreamWriter(request.GetRequestStream()))
-                {
-                    dataStream.Write(strContent);
-                    dataStream.Close();
-                }
-            }
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string encoding = response.ContentEncoding;
-            if (string.IsNullOrWhiteSpace(encoding))
-            {
-                encoding = "UTF-8"; //默认编码  
-            }
-            StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encoding));
-            string retString = await reader.ReadToEndAsync();
-            return retString;
-        } 
-
-
     }
 
 
