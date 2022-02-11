@@ -15,9 +15,7 @@ namespace Blog.Core.AdminMvc
         /**
         *┌──────────────────────────────────────────────────────────────┐
         *│　描    述：模拟一个网关项目         
-        *│　测    试：http://localhost:9000/gateway/user/MyClaims         
-        *│　测    试：http://localhost:9000/gateway/api/blog         
-        *│　测    试：http://localhost:9000/gateway/is4api/GetAchieveUsers         
+        *│　测    试：在网关swagger中查看具体的服务         
         *│　作    者：anson zhang                                             
         *└──────────────────────────────────────────────────────────────┘
         */
