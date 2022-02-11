@@ -27,7 +27,10 @@
       },
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "GW"
-      }
+      },
+      "DelegatingHandlers": [
+        "CustomResultHandler"
+      ]
     },
     // blog-svc-swagger
     {

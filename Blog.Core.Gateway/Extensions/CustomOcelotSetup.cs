@@ -17,7 +17,7 @@ namespace Blog.Core.Gateway.Extensions
 
             var basePath = AppContext.BaseDirectory;
 
-            services.AddOcelot().AddConsul().AddPolly();
+            services.AddOcelot().AddDelegatingHandler<CustomResultHandler>().AddConsul().AddPolly();
         }
 
         public static async Task<IApplicationBuilder> UseCustomOcelotMildd(this IApplicationBuilder app)
