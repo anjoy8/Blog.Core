@@ -26,7 +26,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 
   
   
-**已被多家公司所使用(80+🐱‍🚀)：[点击查看列表](https://github.com/anjoy8/Blog.Core/issues/75)**   
+**已被多家公司所使用(80+🐱‍🚀)：[点击查看列表](https://github.com/anjoy8/Blog.Core/issues/75)**   欢迎盖楼，留下公司真实名字的，可得定制化指导服务。
   
 项目单体部署，并发在400~500，一切正常(不保证自己的各种错误写法)。  
 如果搭配负载，效果更好。
