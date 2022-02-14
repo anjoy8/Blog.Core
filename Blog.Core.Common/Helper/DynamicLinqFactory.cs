@@ -1,11 +1,15 @@
-﻿using RestSharp.Extensions;
+﻿using Microsoft.AspNetCore.Http;
+using RestSharp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Common.Helper
 {
@@ -294,7 +298,192 @@ namespace Blog.Core.Common.Helper
     /// </summary>
     public static class ExpressionExtensions
     {
+        #region Nacos NamingService
+        private static readonly HttpClient httpclient = new HttpClient();
+        private static string GetServiceUrl(Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl)
+        {
+            try
+            {
+                var instance = serv.SelectOneHealthyInstance(ServiceName, Group).GetAwaiter().GetResult();
+                var host = $"{instance.Ip}:{instance.Port}";
+                if (instance.Metadata.ContainsKey("endpoint")) host = instance.Metadata["endpoint"];
+
+
+                var baseUrl = instance.Metadata.TryGetValue("secure", out _)
+                   ? $"https://{host}"
+                   : $"http://{host}";
+
+                if (string.IsNullOrWhiteSpace(baseUrl))
+                {
+                    return "";
+                }
+                return $"{baseUrl}{apiurl}";
+            }
+            catch (System.Exception ee)
+            {
+               
+            }
+            return "";
+        }
+        public static async Task<string> Cof_NaoceGet(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, Dictionary<string, string> Parameters = null)
+        {
+            try
+            {
+                var url = GetServiceUrl(serv, ServiceName, Group, apiurl);
+                if (string.IsNullOrEmpty(url)) return "";
+                if (Parameters!=null && Parameters.Any())
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (var pitem in Parameters)
+                    {
+                        sb.Append($"{pitem.Key}={pitem.Value}&");
+                    }
+                    url = $"{url}?{sb.ToString().Trim('&')}";
+                }
+                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var result = await httpclient.GetAsync(url);
+                return await result.Content.ReadAsStringAsync();
+
+            }
+            catch (System.Exception ee)
+            {
+                
+            }
+            return "";
+
+        }
+
+        public static async Task<string> Cof_NaocePostForm(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, Dictionary<string, string> Parameters)
+        {
+            try
+            {
+                var url = GetServiceUrl(serv, ServiceName, Group, apiurl);
+                if (string.IsNullOrEmpty(url)) return "";
+
+                var content = (Parameters != null && Parameters.Any())? new FormUrlEncodedContent(Parameters) : null;
+                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var result = await httpclient.PostAsync(url, content);
+                return await result.Content.ReadAsStringAsync();//.GetAwaiter().GetResult();
+
+            }
+            catch (System.Exception ee)
+            {
+                
+            }
+            return "";
+        }
+        public static async Task<string> Cof_NaocePostJson(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, string jSonData)
+        {
+            try
+            {
+                var url = GetServiceUrl(serv, ServiceName, Group, apiurl);
+                if (string.IsNullOrEmpty(url)) return "";
+                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var result = await httpclient.PostAsync(url, new StringContent(jSonData, Encoding.UTF8, "application/json"));
+                return await result.Content.ReadAsStringAsync();//.GetAwaiter().GetResult();
+
+                //httpClient.BaseAddress = new Uri("https://www.testapi.com");
+                //httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+
+            }
+            catch (System.Exception ee)
+            {
+                
+            }
+            return "";
+        }
+
+        public static async Task<string> Cof_NaocePostFile(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, Dictionary<string, byte[]> Parameters)
+        {
+            try
+            {
+                var url = GetServiceUrl(serv, ServiceName, Group, apiurl);
+                if (string.IsNullOrEmpty(url)) return "";
+
+                var content = new MultipartFormDataContent();
+                foreach (var pitem in Parameters)
+                {
+                    content.Add(new ByteArrayContent(pitem.Value), "files", pitem.Key);
+                }
+                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var result = await httpclient.PostAsync(url, content);
+                return await result.Content.ReadAsStringAsync();//.GetAwaiter().GetResult();
+
+            }
+            catch (System.Exception ee)
+            {
+                //InfluxdbHelper.GetInstance().AddLog("Cof_NaocePostFile.Err", ee);
+            }
+            return "";
+        }
+        #endregion
+
+        #region HttpContext
+        /// <summary>
+        /// 返回请求上下文
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="code"></param>
+        /// <param name="message"></param>
+        /// <param name="ContentType"></param>
+        /// <returns></returns>
+        public static async Task Cof_SendResponse(this HttpContext context, System.Net.HttpStatusCode code, string message, string ContentType = "text/html;charset=utf-8")
+        {
+            context.Response.StatusCode = (int)code;
+            context.Response.ContentType = ContentType;
+            await context.Response.WriteAsync(message);
+        }
+        #endregion
+
+        #region ICaching
+        /// <summary>
+        /// 从缓存里取数据，如果不存在则执行查询方法，
+        /// </summary>
+        /// <typeparam name="T">类型</typeparam>
+        /// <param name="cache">ICaching </param>
+        /// <param name="key">键值</param>
+        /// <param name="GetFun">查询方法</param>
+        /// <param name="timeSpanMin">有效期 单位分钟/param>
+        /// <returns></returns>
+        public static T Cof_GetICaching<T>(this ICaching cache, string key, Func<T> GetFun, int timeSpanMin) where T : class
+        {
+            var obj = cache.Get(key);
+            obj = GetFun();
+            if (obj == null)
+            {
+                obj = GetFun();
+                cache.Set(key, obj, timeSpanMin);
+            }
+            return obj as T;
+        }
+        /// <summary>
+        /// 异步从缓存里取数据，如果不存在则执行查询方法
+        /// </summary>
+        /// <typeparam name="T">类型</typeparam>
+        /// <param name="cache">ICaching </param>
+        /// <param name="key">键值</param>
+        /// <param name="GetFun">查询方法</param>
+        /// <param name="timeSpanMin">有效期 单位分钟/param>
+        /// <returns></returns>
+        public static async Task<T> Cof_AsyncGetICaching<T>(this ICaching cache, string key, Func<Task<T>> GetFun, int timeSpanMin) where T : class
+        {
+            var obj = cache.Get(key);
+            if (obj == null)
+            {
+                obj = await GetFun();
+                cache.Set(key, obj, timeSpanMin);
+            }
+            return obj as T;
+        }
+        #endregion
+
         #region 常用扩展方法
+        public static bool Cof_CheckAvailable<TSource>(this IEnumerable<TSource> Tlist)
+        {
+            return Tlist != null && Tlist.Count() > 0;
+        }
 
         /// <summary>
         /// 调用内部方法

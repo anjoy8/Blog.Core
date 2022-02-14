@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Compile Remove="Extensions\ApiResponseHandler.cs" />
+    <Compile Remove="Helper\HeaderDelegatingHandler.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -16,6 +16,8 @@ namespace Blog.Core.Gateway.Extensions
 
             var basePath = AppContext.BaseDirectory;
 
+            services.AddMvc(option => option.EnableEndpointRouting = false);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -55,6 +57,7 @@ namespace Blog.Core.Gateway.Extensions
                 apis.ForEach(m =>
                 {
                     options.SwaggerEndpoint($"/swagger/apiswg/{m}/swagger.json", m);
+                    //options.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.ApiGateway.index.html");
                 });
 
                 options.RoutePrefix = "";
