@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using RestSharp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -321,7 +320,7 @@ namespace Blog.Core.Common.Helper
             }
             catch (System.Exception ee)
             {
-               
+                string message = ee.Message;
             }
             return "";
         }
@@ -347,7 +346,7 @@ namespace Blog.Core.Common.Helper
             }
             catch (System.Exception ee)
             {
-                
+                string message = ee.Message;
             }
             return "";
 
@@ -368,7 +367,7 @@ namespace Blog.Core.Common.Helper
             }
             catch (System.Exception ee)
             {
-                
+                string message = ee.Message;
             }
             return "";
         }
@@ -390,7 +389,7 @@ namespace Blog.Core.Common.Helper
             }
             catch (System.Exception ee)
             {
-                
+                string message = ee.Message;
             }
             return "";
         }
@@ -414,7 +413,7 @@ namespace Blog.Core.Common.Helper
             }
             catch (System.Exception ee)
             {
-                //InfluxdbHelper.GetInstance().AddLog("Cof_NaocePostFile.Err", ee);
+                string message = ee.Message;
             }
             return "";
         }

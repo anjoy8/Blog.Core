@@ -17,7 +17,7 @@ namespace Blog.Core.AuthHelper
     /// 原做为自定义授权中间件
     /// 先做检查 header token的使用
     /// </summary>
-    public class JwtTokenAuth
+    public class JwtTokenAuthNew
     {
 
         /// <summary>
@@ -39,15 +39,14 @@ namespace Blog.Core.AuthHelper
         /// </summary>
         private readonly RequestDelegate _next;
         /// <summary>
-        /// 
+        /// 构造函数
         /// </summary>
+        /// <param name="serv">nacos句柄</param>
         /// <param name="next"></param>
-        /// 
-       
-
-
-
-        public JwtTokenAuth(INacosNamingService serv, RequestDelegate next, IAuthenticationSchemeProvider schemes, Appsettings appset,ICaching cache)
+        /// <param name="schemes"></param>
+        /// <param name="appset"></param>
+        /// <param name="cache"></param>
+        public JwtTokenAuthNew(INacosNamingService serv, RequestDelegate next, IAuthenticationSchemeProvider schemes, Appsettings appset,ICaching cache)
         {
             NacosServClient = serv;
             _cache = cache;
@@ -173,7 +172,7 @@ namespace Blog.Core.AuthHelper
             }
             catch (Exception ee)
             {
-               
+               string message = ee.Message;
             }
 
             return null;
@@ -184,6 +183,7 @@ namespace Blog.Core.AuthHelper
         /// </summary>
         /// <param name="context"></param>
         /// <param name="message"></param>
+        /// <param name="code"></param>
         /// <returns></returns>
         private async Task SendResponse(HttpContext context, string message, System.Net.HttpStatusCode code)
         {

@@ -4,51 +4,55 @@
         <name>Blog.Core.Gateway</name>
     </assembly>
     <members>
-        <member name="T:Blog.Core.AuthHelper.JwtTokenAuth">
+        <member name="T:Blog.Core.AuthHelper.JwtTokenAuthNew">
             <summary>
             中间件
             原做为自定义授权中间件
             先做检查 header token的使用
             </summary>
         </member>
-        <member name="F:Blog.Core.AuthHelper.JwtTokenAuth.Appsettings">
+        <member name="F:Blog.Core.AuthHelper.JwtTokenAuthNew.Appsettings">
             <summary>
             配置数据
             </summary>
         </member>
-        <member name="P:Blog.Core.AuthHelper.JwtTokenAuth.Schemes">
+        <member name="P:Blog.Core.AuthHelper.JwtTokenAuthNew.Schemes">
             <summary>
             验证方案提供对象
             </summary>
         </member>
-        <member name="F:Blog.Core.AuthHelper.JwtTokenAuth._next">
+        <member name="F:Blog.Core.AuthHelper.JwtTokenAuthNew._next">
             <summary>
             请求上下文
             </summary>
         </member>
-        <member name="M:Blog.Core.AuthHelper.JwtTokenAuth.#ctor(Nacos.V2.INacosNamingService,Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider,Blog.Core.Common.Appsettings,Blog.Core.Common.ICaching)">
+        <member name="M:Blog.Core.AuthHelper.JwtTokenAuthNew.#ctor(Nacos.V2.INacosNamingService,Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider,Blog.Core.Common.Appsettings,Blog.Core.Common.ICaching)">
             <summary>
-            
+            构造函数
             </summary>
+            <param name="serv">nacos句柄</param>
             <param name="next"></param>
-            
+            <param name="schemes"></param>
+            <param name="appset"></param>
+            <param name="cache"></param>
         </member>
-        <member name="M:Blog.Core.AuthHelper.JwtTokenAuth.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+        <member name="M:Blog.Core.AuthHelper.JwtTokenAuthNew.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             网关授权
             </summary>
             <param name="httpContext"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.AuthHelper.JwtTokenAuth.SendResponse(Microsoft.AspNetCore.Http.HttpContext,System.String,System.Net.HttpStatusCode)">
+        <member name="M:Blog.Core.AuthHelper.JwtTokenAuthNew.SendResponse(Microsoft.AspNetCore.Http.HttpContext,System.String,System.Net.HttpStatusCode)">
             <summary>
             返回相应
             </summary>
             <param name="context"></param>
             <param name="message"></param>
+            <param name="code"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.AuthHelper.JwtTokenAuth.CheckWhiteList(System.String)">
+        <member name="M:Blog.Core.AuthHelper.JwtTokenAuthNew.CheckWhiteList(System.String)">
             <summary>
             判断是否在白名单内，支持通配符 **** 
             </summary>
@@ -76,8 +80,11 @@
             <summary>
             重载方法
             </summary>
+            <param name="serv"></param>
             <param name="configClient"></param>
             <param name="serviceProvider"></param>
+            <param name="_internalConfigurationRepo"></param>
+            <param name="_internalConfigurationCreator"></param>
         </member>
         <member name="M:ApiGateway.Helper.OcelotConfigurationTask.ExecuteAsync(System.Threading.CancellationToken)">
             <summary>

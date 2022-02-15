@@ -8,10 +8,7 @@ using System.Threading.Tasks;
 using Blog.Core.Common.Helper;
 using Ocelot.Configuration.Repository;
 using Ocelot.Configuration.Creator;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json.Converters;
 using Ocelot.Configuration.File;
 using Blog.Core.Common;
 
@@ -34,13 +31,16 @@ namespace ApiGateway.Helper
         private string AppConfig = "";
         private string AppConfigGroup = "";
 
-       
-       
+
+
         /// <summary>
         /// 重载方法
         /// </summary>
+        /// <param name="serv"></param>
         /// <param name="configClient"></param>
         /// <param name="serviceProvider"></param>
+        /// <param name="_internalConfigurationRepo"></param>
+        /// <param name="_internalConfigurationCreator"></param>
         public OcelotConfigurationTask(INacosNamingService serv, INacosConfigService configClient, IServiceProvider serviceProvider, IInternalConfigurationRepository _internalConfigurationRepo, IInternalConfigurationCreator _internalConfigurationCreator)
         {
             _configClient = configClient;
