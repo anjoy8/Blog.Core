@@ -10,6 +10,7 @@ using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Nacos.V2;
 using Newtonsoft.Json.Linq;
+
 namespace Blog.Core.AuthHelper
 {
     /// <summary>
@@ -17,17 +18,11 @@ namespace Blog.Core.AuthHelper
     /// 原做为自定义授权中间件
     /// 先做检查 header token的使用
     /// </summary>
-    public class JwtTokenAuthNew
+    public class CustomJwtTokenAuthMiddleware
     {
-
-        /// <summary>
-        /// 配置数据
-        /// </summary>
-        private readonly Appsettings Appsettings;
         private readonly ICaching _cache;
       
         private readonly INacosNamingService NacosServClient;
-
        
         /// <summary>
         /// 验证方案提供对象
@@ -38,42 +33,16 @@ namespace Blog.Core.AuthHelper
         /// 请求上下文
         /// </summary>
         private readonly RequestDelegate _next;
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="serv">nacos句柄</param>
-        /// <param name="next"></param>
-        /// <param name="schemes"></param>
-        /// <param name="appset"></param>
-        /// <param name="cache"></param>
-        public JwtTokenAuthNew(INacosNamingService serv, RequestDelegate next, IAuthenticationSchemeProvider schemes, Appsettings appset,ICaching cache)
+        
+
+        public CustomJwtTokenAuthMiddleware(INacosNamingService serv, RequestDelegate next, IAuthenticationSchemeProvider schemes, Appsettings appset,ICaching cache)
         {
             NacosServClient = serv;
             _cache = cache;
             _next = next;
-            Appsettings = appset;            
-           
             Schemes = schemes;
-
-
             List<PermissionItem> Permissions = _cache.Cof_AsyncGetICaching<List<PermissionItem>>("Permissions", GetPermitionData, 10).GetAwaiter().GetResult();
-
         }
-
-
-        private void PreProceed(HttpContext next)
-        {
-            //Console.WriteLine($"{DateTime.Now} middleware invoke preproceed");
-            //...
-        }
-        private void PostProceed(HttpContext next)
-        {
-            //Console.WriteLine($"{DateTime.Now} middleware invoke postproceed");
-            //....
-        }
-
-
-
 
         /// <summary>
         /// 网关授权
@@ -170,9 +139,9 @@ namespace Blog.Core.AuthHelper
                 if(perJt["response"]!=null) return perJt["response"].ToObject<List<PermissionItem>>();
                 return perJt["data"].ToObject<List<PermissionItem>>();
             }
-            catch (Exception ee)
+            catch (Exception e)
             {
-               string message = ee.Message;
+                Console.WriteLine(e.Message);
             }
 
             return null;
@@ -185,7 +154,7 @@ namespace Blog.Core.AuthHelper
         /// <param name="message"></param>
         /// <param name="code"></param>
         /// <returns></returns>
-        private async Task SendResponse(HttpContext context, string message, System.Net.HttpStatusCode code)
+        private async Task SendResponse(HttpContext context, string message, HttpStatusCode code)
         {
             context.Response.StatusCode = (int)code;
             context.Response.ContentType = "text/plain";
@@ -199,7 +168,7 @@ namespace Blog.Core.AuthHelper
         /// <returns></returns>
         public bool CheckWhiteList(string url)
         {
-            List<urlobj> WhiteList = _cache.Cof_GetICaching<List<urlobj>>("WhiteList", () => Appsettings.app<urlobj>("WhiteList"), 10);
+            List<Urlobj> WhiteList = _cache.Cof_GetICaching<List<Urlobj>>("WhiteList", () => Appsettings.app<Urlobj>("WhiteList"), 10);
 
             if (!WhiteList.Cof_CheckAvailable()) return false;
             foreach (var Urlitem in WhiteList)
@@ -220,7 +189,7 @@ namespace Blog.Core.AuthHelper
 
         public bool CheckBlackList(string url)
         {
-            List<urlobj> BlackList = _cache.Cof_GetICaching<List<urlobj>>("BlackList", () => Appsettings.app<urlobj>("BlackList"), 10);
+            List<Urlobj> BlackList = _cache.Cof_GetICaching<List<Urlobj>>("BlackList", () => Appsettings.app<Urlobj>("BlackList"), 10);
             
             if (!BlackList.Cof_CheckAvailable()) return false;
             foreach (var Urlitem in BlackList)
@@ -238,10 +207,9 @@ namespace Blog.Core.AuthHelper
             return false;
 
         }
-
     }
 
-    public class urlobj
+    public class Urlobj
     { 
         public string url { get; set; }
     }

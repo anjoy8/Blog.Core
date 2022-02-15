@@ -32,9 +32,8 @@ namespace ApiGateway.Helper
         private string AppConfigGroup = "";
 
 
-
         /// <summary>
-        /// 重载方法
+        /// 
         /// </summary>
         /// <param name="serv"></param>
         /// <param name="configClient"></param>

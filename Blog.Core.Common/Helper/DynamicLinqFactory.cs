@@ -318,9 +318,9 @@ namespace Blog.Core.Common.Helper
                 }
                 return $"{baseUrl}{apiurl}";
             }
-            catch (System.Exception ee)
+            catch (Exception e)
             {
-                string message = ee.Message;
+                Console.WriteLine(e.Message);
             }
             return "";
         }
@@ -344,9 +344,9 @@ namespace Blog.Core.Common.Helper
                 return await result.Content.ReadAsStringAsync();
 
             }
-            catch (System.Exception ee)
+            catch (Exception e)
             {
-                string message = ee.Message;
+                Console.WriteLine(e.Message);
             }
             return "";
 
@@ -365,9 +365,9 @@ namespace Blog.Core.Common.Helper
                 return await result.Content.ReadAsStringAsync();//.GetAwaiter().GetResult();
 
             }
-            catch (System.Exception ee)
+            catch (Exception e)
             {
-                string message = ee.Message;
+                Console.WriteLine(e.Message);
             }
             return "";
         }
@@ -387,9 +387,9 @@ namespace Blog.Core.Common.Helper
 
 
             }
-            catch (System.Exception ee)
+            catch (Exception e)
             {
-                string message = ee.Message;
+                Console.WriteLine(e.Message);
             }
             return "";
         }
@@ -411,9 +411,10 @@ namespace Blog.Core.Common.Helper
                 return await result.Content.ReadAsStringAsync();//.GetAwaiter().GetResult();
 
             }
-            catch (System.Exception ee)
+            catch (Exception e)
             {
-                string message = ee.Message;
+                //InfluxdbHelper.GetInstance().AddLog("Cof_NaocePostFile.Err", ee);
+                Console.WriteLine(e.Message);
             }
             return "";
         }

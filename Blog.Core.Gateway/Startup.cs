@@ -77,7 +77,8 @@ namespace Blog.Core.AdminMvc
             {
                 endpoints.MapControllers();
             });
-            app.UseMiddleware<JwtTokenAuthNew>();
+
+            app.UseMiddleware<CustomJwtTokenAuthMiddleware>();
            
             app.UseCustomOcelotMildd().Wait();
         }
