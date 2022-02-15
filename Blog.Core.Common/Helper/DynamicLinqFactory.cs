@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using RestSharp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -319,9 +318,9 @@ namespace Blog.Core.Common.Helper
                 }
                 return $"{baseUrl}{apiurl}";
             }
-            catch (System.Exception ee)
+            catch (Exception e)
             {
-               
+                Console.WriteLine(e.Message);
             }
             return "";
         }
@@ -345,9 +344,9 @@ namespace Blog.Core.Common.Helper
                 return await result.Content.ReadAsStringAsync();
 
             }
-            catch (System.Exception ee)
+            catch (Exception e)
             {
-                
+                Console.WriteLine(e.Message);
             }
             return "";
 
@@ -366,9 +365,9 @@ namespace Blog.Core.Common.Helper
                 return await result.Content.ReadAsStringAsync();//.GetAwaiter().GetResult();
 
             }
-            catch (System.Exception ee)
+            catch (Exception e)
             {
-                
+                Console.WriteLine(e.Message);
             }
             return "";
         }
@@ -388,9 +387,9 @@ namespace Blog.Core.Common.Helper
 
 
             }
-            catch (System.Exception ee)
+            catch (Exception e)
             {
-                
+                Console.WriteLine(e.Message);
             }
             return "";
         }
@@ -412,9 +411,10 @@ namespace Blog.Core.Common.Helper
                 return await result.Content.ReadAsStringAsync();//.GetAwaiter().GetResult();
 
             }
-            catch (System.Exception ee)
+            catch (Exception e)
             {
                 //InfluxdbHelper.GetInstance().AddLog("Cof_NaocePostFile.Err", ee);
+                Console.WriteLine(e.Message);
             }
             return "";
         }

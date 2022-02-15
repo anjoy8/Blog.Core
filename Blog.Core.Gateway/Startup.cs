@@ -2,7 +2,6 @@
 using Blog.Core.Common;
 using Blog.Core.Extensions;
 using Blog.Core.Gateway.Extensions;
-using Blog.Core.Middlewares;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -78,7 +77,8 @@ namespace Blog.Core.AdminMvc
             {
                 endpoints.MapControllers();
             });
-            app.UseMiddleware<JwtTokenAuth>();
+
+            app.UseMiddleware<CustomJwtTokenAuthMiddleware>();
            
             app.UseCustomOcelotMildd().Wait();
         }
