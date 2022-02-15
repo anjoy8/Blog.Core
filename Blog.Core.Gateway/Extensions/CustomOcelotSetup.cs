@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Blog.Core.Extensions;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Provider.Consul;
+using Ocelot.Provider.Nacos;
 using Ocelot.Provider.Polly;
 using System;
 using System.Threading.Tasks;
@@ -17,7 +18,9 @@ namespace Blog.Core.Gateway.Extensions
 
             var basePath = AppContext.BaseDirectory;
 
-            services.AddOcelot().AddDelegatingHandler<CustomResultHandler>().AddConsul().AddPolly();
+            services.AddAuthentication_JWTSetup();
+            services.AddOcelot().AddDelegatingHandler<CustomResultHandler>().AddNacosDiscovery().AddPolly();
+                //.AddConsul().AddPolly();
         }
 
         public static async Task<IApplicationBuilder> UseCustomOcelotMildd(this IApplicationBuilder app)

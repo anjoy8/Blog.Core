@@ -1,4 +1,5 @@
-﻿using Blog.Core.Common;
+﻿using Blog.Core.AuthHelper;
+using Blog.Core.Common;
 using Blog.Core.Extensions;
 using Blog.Core.Gateway.Extensions;
 using Microsoft.AspNetCore.Authentication;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Nacos.V2.DependencyInjection;
 
 namespace Blog.Core.AdminMvc
 {
@@ -36,6 +38,11 @@ namespace Blog.Core.AdminMvc
 
             services.AddAuthentication()
                .AddScheme<AuthenticationSchemeOptions, CustomAuthenticationHandler>(Permissions.GWName, _ => { });
+
+
+            services.AddNacosV2Config(Configuration, null, "nacosConfig");
+            services.AddNacosV2Naming(Configuration, null, "nacos");
+            services.AddHostedService<ApiGateway.Helper.OcelotConfigurationTask>();
 
 
             services.AddCustomSwaggerSetup();
@@ -71,6 +78,8 @@ namespace Blog.Core.AdminMvc
                 endpoints.MapControllers();
             });
 
+            app.UseMiddleware<CustomJwtTokenAuthMiddleware>();
+           
             app.UseCustomOcelotMildd().Wait();
         }
     }
