@@ -481,7 +481,7 @@ namespace Blog.Core.Common
 		}
 
 		// Token: 0x0200000B RID: 11
-		internal struct CRYPT_OBJID_BLOB
+		internal class CRYPT_OBJID_BLOB
 		{
 			// Token: 0x04000028 RID: 40
 			internal uint cbData = default;
@@ -491,7 +491,7 @@ namespace Blog.Core.Common
 		}
 
 		// Token: 0x0200000C RID: 12
-		internal struct CRYPT_ALGORITHM_IDENTIFIER
+		internal class CRYPT_ALGORITHM_IDENTIFIER
 		{
 			// Token: 0x0400002A RID: 42
 			internal IntPtr pszObjId = default;
@@ -501,7 +501,7 @@ namespace Blog.Core.Common
 		}
 
 		// Token: 0x0200000D RID: 13
-		private struct CRYPT_BIT_BLOB
+		private class CRYPT_BIT_BLOB
 		{
 			// Token: 0x0400002C RID: 44
 			internal uint cbData = default;
@@ -514,7 +514,7 @@ namespace Blog.Core.Common
 		}
 
 		// Token: 0x0200000E RID: 14
-		private struct CERT_PUBLIC_KEY_INFO
+		private class CERT_PUBLIC_KEY_INFO
 		{
 			// Token: 0x0400002F RID: 47
 			internal RSACryptoServiceProviderExtension.CRYPT_ALGORITHM_IDENTIFIER Algorithm = default;
