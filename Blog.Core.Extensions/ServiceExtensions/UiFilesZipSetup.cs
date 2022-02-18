@@ -17,7 +17,7 @@ namespace Blog.Core.Extensions
 
             string wwwrootFolderPath = Path.Combine(_env.ContentRootPath, "wwwroot");
             string zipUiItemFiles = Path.Combine(wwwrootFolderPath, "ui.zip");
-            if (!File.Exists(Path.Combine(wwwrootFolderPath, "index.html")))
+            if (!File.Exists(Path.Combine(wwwrootFolderPath, "ui", "index.html")))
             {
                 ZipFile.ExtractToDirectory(zipUiItemFiles, wwwrootFolderPath);
             }
