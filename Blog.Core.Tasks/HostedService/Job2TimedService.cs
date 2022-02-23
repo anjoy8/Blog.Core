@@ -1,4 +1,4 @@
-﻿using Blog.Core.Common.Helper;
+﻿using Blog.Core.Common;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;

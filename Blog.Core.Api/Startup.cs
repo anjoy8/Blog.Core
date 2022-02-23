@@ -64,7 +64,8 @@ namespace Blog.Core
             services.AddSwaggerSetup();
             services.AddJobSetup();
             services.AddHttpContextSetup();
-            services.AddAppConfigSetup(Env);
+            //services.AddAppConfigSetup(Env);
+            services.AddAppTableConfigSetup(Env);//表格打印配置
             services.AddHttpApi();
             services.AddRedisInitMqSetup();
 
