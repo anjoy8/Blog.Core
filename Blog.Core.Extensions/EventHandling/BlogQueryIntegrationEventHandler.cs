@@ -1,4 +1,4 @@
-﻿using Blog.Core.Common.Helper;
+﻿using Blog.Core.Common;
 using Blog.Core.EventBus.EventHandling;
 using Blog.Core.IServices;
 using Microsoft.Extensions.Logging;
