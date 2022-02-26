@@ -8,9 +8,12 @@ namespace Blog.Core.Repository.UnitOfWork
     {
         private readonly ISqlSugarClient _sqlSugarClient;
 
+        private int _tranCount { get; set; }
+
         public UnitOfWork(ISqlSugarClient sqlSugarClient)
         {
             _sqlSugarClient = sqlSugarClient;
+            _tranCount = 0;
         }
 
         /// <summary>
@@ -25,25 +28,40 @@ namespace Blog.Core.Repository.UnitOfWork
 
         public void BeginTran()
         {
-            GetDbClient().BeginTran();
+            lock (this)
+            {
+                _tranCount++;
+                GetDbClient().BeginTran();
+            }
         }
 
         public void CommitTran()
         {
-            try
+            lock (this)
             {
-                GetDbClient().CommitTran(); //
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                GetDbClient().RollbackTran();
+                _tranCount--;
+                if (_tranCount == 0)
+                {
+                    try
+                    {
+                        GetDbClient().CommitTran();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        GetDbClient().RollbackTran();
+                    }
+                }
             }
         }
 
         public void RollbackTran()
         {
-            GetDbClient().RollbackTran();
+            lock (this)
+            {
+                _tranCount--;
+                GetDbClient().RollbackTran();
+            }
         }
 
     }
