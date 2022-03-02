@@ -1,5 +1,5 @@
 {
-  //apollo 閰嶇疆
+  //apollo 配置
   "Apollo": {
     "Enable": false,
     "Config": {
@@ -8,7 +8,7 @@
       "MetaServer": "http://localhost:8080/",
       "ConfigServer": [ "http://localhost:8080/" ]
     },
-    "Namespaces": [ //Namespaces鐨勬暟鎹牸寮廝roperties,Xml,Json,Yml,Yaml,Txt
+    "Namespaces": [ //Namespaces的数据格式Properties,Xml,Json,Yml,Yaml,Txt
       {
         "Name": "test",
         "Format": "json"

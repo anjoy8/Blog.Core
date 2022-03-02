@@ -1,0 +1,9 @@
+﻿{
+  "Kafka": {
+    "Enabled": false,
+    "Servers": "localhost:9092",
+    "Topic": "blog",
+    "GroupId": "blog-consumer",
+    "NumPartitions": 3 //主题分区数量
+  }
+}

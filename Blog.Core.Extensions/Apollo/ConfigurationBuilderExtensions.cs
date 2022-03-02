@@ -17,7 +17,7 @@ namespace Blog.Core.Extensions.Apollo
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="jsonPath">apollo配置文件路径 如果写入appsettings.json中 则jsonPath传null即可</param>
-        public static void AddConfigurationApollo(this IConfigurationBuilder builder,string jsonPath)
+        public static void AddConfigurationApollo(this IConfigurationBuilder builder,string jsonPath= null)
         {
             if (!string.IsNullOrEmpty(jsonPath))
             {

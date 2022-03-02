@@ -1250,11 +1250,5 @@
             全局路由前缀公约
             </summary>
         </member>
-        <member name="M:Blog.Core.Program.GetAppSettingsConfigName">
-            <summary>
-            根据环境变量定向配置文件名称
-            </summary>
-            <returns></returns>
-        </member>
     </members>
 </doc>

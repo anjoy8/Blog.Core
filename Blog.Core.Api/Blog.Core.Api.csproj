@@ -22,6 +22,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ServerGarbageCollection>false</ServerGarbageCollection>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Extensions\**" />

@@ -35,7 +35,7 @@ namespace Blog.Core.AuthHelper
         private readonly RequestDelegate _next;
         
 
-        public CustomJwtTokenAuthMiddleware(INacosNamingService serv, RequestDelegate next, IAuthenticationSchemeProvider schemes, Appsettings appset,ICaching cache)
+        public CustomJwtTokenAuthMiddleware(INacosNamingService serv, RequestDelegate next, IAuthenticationSchemeProvider schemes,ICaching cache)
         {
             NacosServClient = serv;
             _cache = cache;

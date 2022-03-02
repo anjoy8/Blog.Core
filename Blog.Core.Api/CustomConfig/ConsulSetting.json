@@ -1,0 +1,9 @@
+﻿{
+  "ConsulSetting": {
+    "ServiceName": "BlogCoreService",
+    "ServiceIP": "localhost",
+    "ServicePort": "9291",
+    "ServiceHealthCheck": "/healthcheck",
+    "ConsulAddress": "http://localhost:8500"
+  }
+}

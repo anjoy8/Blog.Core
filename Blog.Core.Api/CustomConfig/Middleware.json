@@ -1,0 +1,26 @@
+﻿{
+  "Middleware": {
+    "RequestResponseLog": {
+      "Enabled": false
+    },
+    "IPLog": {
+      "Enabled": true
+    },
+    "RecordAccessLogs": {
+      "Enabled": true,
+      "IgnoreApis": "/api/permission/getnavigationbar,/api/monitor/getids4users,/api/monitor/getaccesslogs,/api/monitor/server,/api/monitor/getactiveusers,/api/monitor/server,"
+    },
+    "SignalR": {
+      "Enabled": false
+    },
+    "QuartzNetJob": {
+      "Enabled": true
+    },
+    "Consul": {
+      "Enabled": false
+    },
+    "IpRateLimit": {
+      "Enabled": true
+    }
+  }
+}

@@ -1,0 +1,11 @@
+﻿{
+  "PayInfo": { //建行聚合支付信息
+    "MERCHANTID": "", //商户号
+    "POSID": "", //柜台号
+    "BRANCHID": "", //分行号
+    "pubKey": "", //公钥
+    "USER_ID": "", //操作员号
+    "PASSWORD": "", //密码
+    "OutAddress": "http://127.0.0.1:12345" //外联地址
+  }
+}

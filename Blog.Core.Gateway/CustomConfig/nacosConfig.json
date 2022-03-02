@@ -1,0 +1,19 @@
+{
+  "nacosConfig": {
+    "ServiceName": "*****.*****.Gateway",
+    "Optional": false,
+    "DataId": "options1",
+    "Tenant": "******",
+    "Group": "DEFAULT_GROUP",
+    "Namespace": "*****",
+    "ServerAddresses": [ "http://******:8848/" ],
+    "UserName": "****",
+    "Password": "*****",
+    "AccessKey": "",
+    "SecretKey": "",
+    "EndPoint": "",
+    "ConfigUseRpc": true,
+    "ConfigFilterAssemblies": [ "apigateway" ],
+    "ConfigFilterExtInfo": "{\"JsonPaths\":[\"ConnectionStrings.Default\"],\"Other\":\"xxxxxx\"}"
+  }
+}
