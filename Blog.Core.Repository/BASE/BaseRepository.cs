@@ -97,7 +97,7 @@ namespace Blog.Core.Repository.Base
             //return (int)i;
 
             var insert = _db.Insertable(entity);
-            
+
             //这里你可以返回TEntity，这样的话就可以获取id值，无论主键是什么类型
             //var return3 = await insert.ExecuteReturnEntityAsync();
 
@@ -453,8 +453,7 @@ namespace Blog.Core.Repository.Base
              .WhereIF(whereExpression != null, whereExpression)
              .ToPageListAsync(intPageIndex, intPageSize, totalCount);
 
-            int pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intPageSize.ObjToDecimal())).ObjToInt();
-            return new PageModel<TEntity>() { dataCount = totalCount, pageCount = pageCount, page = intPageIndex, PageSize = intPageSize, data = list };
+            return new PageModel<TEntity>(intPageIndex, totalCount, intPageSize, list);
         }
 
 
@@ -510,8 +509,7 @@ namespace Blog.Core.Repository.Base
              .OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds)
              .WhereIF(whereExpression != null, whereExpression)
              .ToPageListAsync(intPageIndex, intPageSize, totalCount);
-            int pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intPageSize.ObjToDecimal())).ObjToInt();
-            return new PageModel<TResult>() { dataCount = totalCount, pageCount = pageCount, page = intPageIndex, PageSize = intPageSize, data = list };
+            return new PageModel<TResult>(intPageIndex, totalCount, intPageSize, list);
         }
 
         /// <summary>
@@ -543,8 +541,7 @@ namespace Blog.Core.Repository.Base
              .OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds)
              .WhereIF(whereExpression != null, whereExpression)
              .ToPageListAsync(intPageIndex, intPageSize, totalCount);
-            int pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intPageSize.ObjToDecimal())).ObjToInt();
-            return new PageModel<TResult>() { dataCount = totalCount, pageCount = pageCount, page = intPageIndex, PageSize = intPageSize, data = list };
+            return new PageModel<TResult>(intPageIndex, totalCount, intPageSize, list);
         }
 
         //var exp = Expressionable.Create<ProjectToUser>()

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
 
 namespace Blog.Core.Model
 {
@@ -14,7 +16,7 @@ namespace Blog.Core.Model
         /// <summary>
         /// 总页数
         /// </summary>
-        public int pageCount { get; set; } = 6;
+        public int pageCount => (int)Math.Ceiling((decimal)dataCount / PageSize);
         /// <summary>
         /// 数据总数
         /// </summary>
@@ -22,11 +24,52 @@ namespace Blog.Core.Model
         /// <summary>
         /// 每页大小
         /// </summary>
-        public int PageSize { set; get; }
+        public int PageSize { set; get; } = 20;
         /// <summary>
         /// 返回数据
         /// </summary>
         public List<T> data { get; set; }
+
+        public PageModel() { }
+
+        public PageModel(int page, int dataCount, int pageSize, List<T> data)
+        {
+            this.page = page;
+            this.dataCount = dataCount;
+            PageSize = pageSize;
+            this.data = data;
+        }
+
+        public PageModel<TOut> ConvertTo<TOut>()
+        {
+            return new PageModel<TOut>(page, dataCount, PageSize, default);
+        }
+
+
+        public PageModel<TOut> ConvertTo<TOut>(IMapper mapper)
+        {
+            var model = ConvertTo<TOut>();
+
+            if (data != null)
+            {
+                model.data = mapper.Map<List<TOut>>(data);
+            }
+
+            return model;
+        }
+
+
+        public PageModel<TOut> ConvertTo<TOut>(IMapper mapper, Action<IMappingOperationOptions> options)
+        {
+            var model = ConvertTo<TOut>();
+            if (data != null)
+            {
+                model.data = mapper.Map<List<TOut>>(data, options);
+            }
+
+            return model;
+
+        }
 
     }
 
