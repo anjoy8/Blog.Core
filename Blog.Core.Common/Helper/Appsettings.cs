@@ -55,10 +55,9 @@ namespace Blog.Core.Common
             customConfigFolder.ToList().ForEach(folder => jsonFiles.AddRange(Directory.GetFiles(folder, "*.json", SearchOption.TopDirectoryOnly)));
 
             // 将配置文件添加到配置中
-            jsonFiles.ForEach(jsonFile => builder.AddJsonFile(jsonFile, true, true));
+            jsonFiles.ForEach(jsonFile => builder.AddJsonFile(jsonFile, true, false));
 
             Configuration = builder.Build();
-
 
             /// <summary>
             /// 获取默认配置文件
@@ -67,7 +66,6 @@ namespace Blog.Core.Common
             static List<string> GetDefaultConfigFiles()
             {
                 List<string> configFiles = new() { "appsettings.json" };
-                ;
                 string ASPNETCORE_ENVIRONMENT = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
                 if (ASPNETCORE_ENVIRONMENT?.Length > 0) configFiles.Add($"appsettings.{ASPNETCORE_ENVIRONMENT}.json");
                 return configFiles;
@@ -110,7 +108,7 @@ namespace Blog.Core.Common
         /// </summary>
         /// <param name="sections">节点配置</param>
         /// <returns></returns>
-        [Obsolete("推荐使用 Git 方法")]
+        [Obsolete("推荐使用 Get 方法")]
         public static string app(params string[] sections)
         {
             try
@@ -132,7 +130,7 @@ namespace Blog.Core.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="sections"></param>
         /// <returns></returns>
-        [Obsolete("推荐使用 Git<T> 方法")]
+        [Obsolete("推荐使用 Get<T> 方法")]
         public static List<T> app<T>(params string[] sections)
         {
             List<T> list = new List<T>();
@@ -147,7 +145,7 @@ namespace Blog.Core.Common
         /// </summary>
         /// <param name="sectionsPath"></param>
         /// <returns></returns>
-        [Obsolete("推荐使用 Git 方法")]
+        [Obsolete("推荐使用 Get 方法")]
         public static string GetValue(string sectionsPath)
         {
             try
