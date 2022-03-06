@@ -16,6 +16,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="sqlSugarCore" Version="5.0.3.4" />
+		<PackageReference Include="AutoMapper" Version="10.1.1" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
 	</ItemGroup>
 
 </Project>

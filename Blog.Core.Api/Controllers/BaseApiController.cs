@@ -16,7 +16,7 @@ namespace Blog.Core.Controllers
                 response = data,
             };
         }
-       // [NonAction]
+        // [NonAction]
         //public MessageModel<T> Success<T>(T data, string msg = "成功",bool success = true)
         //{
         //    return new MessageModel<T>()
@@ -59,20 +59,15 @@ namespace Blog.Core.Controllers
             };
         }
         [NonAction]
-        public MessageModel<PageModel<T>> SuccessPage<T>(int page, int dataCount, List<T> data, int pageCount, string msg = "获取成功")
+        public MessageModel<PageModel<T>> SuccessPage<T>(int page, int dataCount, int pageSize, List<T> data, int pageCount, string msg = "获取成功")
         {
 
             return new MessageModel<PageModel<T>>()
             {
                 success = true,
                 msg = msg,
-                response = new PageModel<T>()
-                {
-                    page = page,
-                    dataCount = dataCount,
-                    data = data,
-                    pageCount = pageCount,
-                }
+                response = new PageModel<T>(page, dataCount, pageSize, data)
+
             };
         }
         [NonAction]
@@ -83,13 +78,7 @@ namespace Blog.Core.Controllers
             {
                 success = true,
                 msg = msg,
-                response = new PageModel<T>()
-                {
-                    page = pageModel.page,
-                    dataCount = pageModel.dataCount,
-                    data = pageModel.data,
-                    pageCount = pageModel.pageCount,
-                }
+                response = pageModel
             };
         }
     }
