@@ -239,6 +239,12 @@
             <param name="loginRequest"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.LoginController.WxLogin(System.String,System.String)">
+            <summary>
+            weixin登录
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.ModuleController">
             <summary>
             接口管理
