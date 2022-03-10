@@ -97,6 +97,7 @@ namespace Blog.Core
             
             services.AddDistributedMemoryCache();
             services.AddSession();
+            services.AddHttpPollySetup();
 
             services.AddControllers(o =>
             {

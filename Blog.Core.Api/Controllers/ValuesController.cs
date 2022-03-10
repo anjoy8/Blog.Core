@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
+using Blog.Core.Common.HttpPolly;
 using Blog.Core.Common.HttpRestSharp;
 using Blog.Core.Common.WebApiClients.HttpApis;
 using Blog.Core.EventBus;
@@ -44,6 +45,7 @@ namespace Blog.Core.Controllers
         private readonly IBlogApi _blogApi;
         private readonly IDoubanApi _doubanApi;
         readonly IBlogArticleServices _blogArticleServices;
+        private readonly IHttpPollyHelper _httpPollyHelper;
 
         /// <summary>
         /// ValuesController
@@ -64,7 +66,8 @@ namespace Blog.Core.Controllers
             , IRoleModulePermissionServices roleModulePermissionServices
             , IUser user, IPasswordLibServices passwordLibServices
             , IBlogApi blogApi
-            , IDoubanApi doubanApi)
+            , IDoubanApi doubanApi
+            , IHttpPollyHelper httpPollyHelper)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
@@ -82,6 +85,8 @@ namespace Blog.Core.Controllers
             _blogArticleServices = blogArticleServices;
             // 测试redis消息队列
             _blogArticleServices = blogArticleServices;
+            // httpPolly
+            _httpPollyHelper = httpPollyHelper;
         }
 
         [HttpGet]
@@ -389,6 +394,24 @@ namespace Blog.Core.Controllers
         {
             return await Task.FromResult(Appsettings.app(key));
         }
+        #endregion
+
+        #region HttpPolly
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<string> HttpPollyPost()
+        {
+            var response = await _httpPollyHelper.PostAsync(HttpEnum.LocalHost, "/api/ElasticDemo/EsSearchTest", "{\"from\": 0,\"size\": 10,\"word\": \"非那雄安\"}");
+
+            return response;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<string> HttpPollyGet()
+        {
+            return await _httpPollyHelper.GetAsync(HttpEnum.LocalHost, "/api/ElasticDemo/GetDetailInfo?esid=3130&esindex=chinacodex");
+        } 
         #endregion
     }
     public class ClaimDto
