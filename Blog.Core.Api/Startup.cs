@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
@@ -125,6 +126,8 @@ namespace Blog.Core
                 //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 //设置本地时间而非UTC时间
                 options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
+                //添加Enum转string
+                options.SerializerSettings.Converters.Add(new StringEnumConverter());
             });
 
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
