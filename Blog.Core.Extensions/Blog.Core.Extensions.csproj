@@ -28,6 +28,7 @@
     <PackageReference Include="nacos-sdk-csharp-unofficial.Extensions.Configuration" Version="0.8.5" />
     <PackageReference Include="nacos-sdk-csharp-unofficial.IniParser" Version="0.8.5" />
     <PackageReference Include="nacos-sdk-csharp.AspNetCore" Version="1.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
