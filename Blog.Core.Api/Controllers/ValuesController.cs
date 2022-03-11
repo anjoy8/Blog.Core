@@ -59,6 +59,7 @@ namespace Blog.Core.Controllers
         /// <param name="passwordLibServices"></param>
         /// <param name="blogApi"></param>
         /// <param name="doubanApi"></param>
+        /// <param name="httpPollyHelper"></param>
         public ValuesController(IBlogArticleServices blogArticleServices
             , IMapper mapper
             , IAdvertisementServices advertisementServices
