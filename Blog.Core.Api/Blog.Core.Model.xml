@@ -1689,6 +1689,11 @@
             
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.ViewModels.EnumDemoDto.Type">
+            <summary>
+            Type Description balabala
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.ViewModels.GuestbookViewModels">
             <summary>
             留言信息展示类
