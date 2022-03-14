@@ -1,18 +1,18 @@
-﻿using AspNetCoreRateLimit;
+﻿using System;
+using AspNetCoreRateLimit;
 using Blog.Core.Common;
 using log4net;
 using Microsoft.AspNetCore.Builder;
-using System;
 
-namespace Blog.Core.Extensions
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// ip 限流
     /// </summary>
-    public static class IpLimitMildd
+    public static class IpLimitMiddleware
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(IpLimitMildd));
-        public static void UseIpLimitMildd(this IApplicationBuilder app)
+        private static readonly ILog Log = LogManager.GetLogger(typeof(IpLimitMiddleware));
+        public static void UseIpLimitMiddle(this IApplicationBuilder app)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
@@ -25,7 +25,7 @@ namespace Blog.Core.Extensions
             }
             catch (Exception e)
             {
-                log.Error($"Error occured limiting ip rate.\n{e.Message}");
+                Log.Error($"Error occured limiting ip rate.\n{e.Message}");
                 throw;
             }
         }

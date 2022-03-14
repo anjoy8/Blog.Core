@@ -107,6 +107,10 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 可配合 Ids4   实现认证中心；
 
 
+### 自定义(中间件/服务)启动图
+![系统架构图](https://img.neters.club/github/load-tool.png)
+
+
 &nbsp;
 
 ## 给个星星! ⭐️

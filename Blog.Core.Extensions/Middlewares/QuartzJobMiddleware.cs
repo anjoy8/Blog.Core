@@ -1,19 +1,19 @@
-﻿using Blog.Core.Common;
+﻿using System;
+using Blog.Core.Common;
 using Blog.Core.IServices;
 using Blog.Core.Tasks;
 using log4net;
 using Microsoft.AspNetCore.Builder;
-using System;
 
-namespace Blog.Core.Extensions
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// Quartz 启动服务
     /// </summary>
-    public static class QuartzJobMildd
+    public static class QuartzJobMiddleware
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(QuartzJobMildd));
-        public static void UseQuartzJobMildd(this IApplicationBuilder app, ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter)
+        private static readonly ILog Log = LogManager.GetLogger(typeof(QuartzJobMiddleware));
+        public static void UseQuartzJobMiddleware(this IApplicationBuilder app, ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
@@ -27,14 +27,14 @@ namespace Blog.Core.Extensions
                     {
                         if (item.IsStart)
                         {
-                            var ResuleModel = schedulerCenter.AddScheduleJobAsync(item).Result;
-                            if (ResuleModel.success)
+                            var result = schedulerCenter.AddScheduleJobAsync(item).Result;
+                            if (result.success)
                             {
                                 Console.WriteLine($"QuartzNetJob{item.Name}启动成功！");
                             }
                             else
                             {
-                                Console.WriteLine($"QuartzNetJob{item.Name}启动失败！错误信息：{ResuleModel.msg}");
+                                Console.WriteLine($"QuartzNetJob{item.Name}启动失败！错误信息：{result.msg}");
                             }
                         }
                     }
@@ -43,7 +43,7 @@ namespace Blog.Core.Extensions
             }
             catch (Exception e)
             {
-                log.Error($"An error was reported when starting the job service.\n{e.Message}");
+                Log.Error($"An error was reported when starting the job service.\n{e.Message}");
                 throw;
             }
         }

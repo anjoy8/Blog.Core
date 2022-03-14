@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Blog.Core.AuthHelper.OverWrite;
+using Microsoft.AspNetCore.Http;
 
-namespace Blog.Core.AuthHelper
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// 中间件
     /// 原做为自定义授权中间件
     /// 先做检查 header token的使用
     /// </summary>
-    public class JwtTokenAuth
+    public class JwtTokenAuthMiddleware
     {
         /// <summary>
         /// 
@@ -20,7 +20,7 @@ namespace Blog.Core.AuthHelper
         /// 
         /// </summary>
         /// <param name="next"></param>
-        public JwtTokenAuth(RequestDelegate next)
+        public JwtTokenAuthMiddleware(RequestDelegate next)
         {
             _next = next;
         }

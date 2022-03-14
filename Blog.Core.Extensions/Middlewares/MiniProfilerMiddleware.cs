@@ -1,17 +1,17 @@
-﻿using Blog.Core.Common;
+﻿using System;
+using Blog.Core.Common;
 using log4net;
 using Microsoft.AspNetCore.Builder;
-using System;
 
-namespace Blog.Core.Extensions
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// MiniProfiler性能分析
     /// </summary>
-    public static class MiniProfilerMildd
+    public static class MiniProfilerMiddleware
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(MiniProfilerMildd));
-        public static void UseMiniProfilerMildd(this IApplicationBuilder app)
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MiniProfilerMiddleware));
+        public static void UseMiniProfilerMiddleware(this IApplicationBuilder app)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
@@ -26,7 +26,7 @@ namespace Blog.Core.Extensions
             }
             catch (Exception e)
             {
-                log.Error($"An error was reported when starting the MiniProfilerMildd.\n{e.Message}");
+                Log.Error($"An error was reported when starting the MiniProfilerMildd.\n{e.Message}");
                 throw;
             }
         }

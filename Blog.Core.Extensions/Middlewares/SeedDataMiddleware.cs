@@ -1,18 +1,18 @@
-﻿using Blog.Core.Common;
+﻿using System;
+using Blog.Core.Common;
 using Blog.Core.Common.Seed;
 using log4net;
 using Microsoft.AspNetCore.Builder;
-using System;
 
-namespace Blog.Core.Extensions
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// 生成种子数据中间件服务
     /// </summary>
-    public static class SeedDataMildd
+    public static class SeedDataMiddleware
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(SeedDataMildd));
-        public static void UseSeedDataMildd(this IApplicationBuilder app, MyContext myContext, string webRootPath)
+        private static readonly ILog Log = LogManager.GetLogger(typeof(SeedDataMiddleware));
+        public static void UseSeedDataMiddle(this IApplicationBuilder app, MyContext myContext, string webRootPath)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
@@ -25,7 +25,7 @@ namespace Blog.Core.Extensions
             }
             catch (Exception e)
             {
-                log.Error($"Error occured seeding the Database.\n{e.Message}");
+                Log.Error($"Error occured seeding the Database.\n{e.Message}");
                 throw;
             }
         }
