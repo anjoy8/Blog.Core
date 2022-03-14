@@ -735,6 +735,7 @@
             <param name="passwordLibServices"></param>
             <param name="blogApi"></param>
             <param name="doubanApi"></param>
+            <param name="httpPollyHelper"></param>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get">
             <summary>

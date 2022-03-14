@@ -1514,22 +1514,22 @@
             时间:2020-4-3 20:31:26
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.intPageIndex">
+        <member name="P:Blog.Core.Model.PaginationModel.PageIndex">
             <summary>
             当前页
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.intPageSize">
+        <member name="P:Blog.Core.Model.PaginationModel.PageSize">
             <summary>
             每页大小
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.strOrderByFileds">
+        <member name="P:Blog.Core.Model.PaginationModel.OrderByFileds">
             <summary>
             排序字段(例如:id desc,time asc)
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.conditions">
+        <member name="P:Blog.Core.Model.PaginationModel.Conditions">
             <summary>
             查询条件( 例如:id = 1 and name = 小明)
             </summary>
