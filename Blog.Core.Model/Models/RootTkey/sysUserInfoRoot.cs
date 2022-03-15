@@ -10,7 +10,7 @@ namespace Blog.Core.Model
     public class SysUserInfoRoot<Tkey> where Tkey : IEquatable<Tkey>
     {
         /// <summary>
-        /// uID
+        /// Id
         /// 泛型主键Tkey
         /// </summary>
         [SugarColumn(IsNullable = false, IsPrimaryKey = true)]

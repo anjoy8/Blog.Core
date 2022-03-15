@@ -1452,7 +1452,7 @@
         </member>
         <member name="P:Blog.Core.Model.SysUserInfoRoot`1.Id">
             <summary>
-            uID
+            Id
             泛型主键Tkey
             </summary>
         </member>
