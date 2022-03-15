@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.HttpContextUser;
@@ -9,6 +10,7 @@ using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,13 +23,14 @@ namespace Blog.Core.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(Permissions.Name)]
-    public class UserController : ControllerBase
+    public class UserController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;
         readonly ISysUserInfoServices _sysUserInfoServices;
         readonly IUserRoleServices _userRoleServices;
         readonly IRoleServices _roleServices;
         private readonly IUser _user;
+        private readonly IMapper _mapper;
         private readonly ILogger<UserController> _logger;
 
         /// <summary>
@@ -38,14 +41,18 @@ namespace Blog.Core.Controllers
         /// <param name="userRoleServices"></param>
         /// <param name="roleServices"></param>
         /// <param name="user"></param>
+        /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        public UserController(IUnitOfWork unitOfWork, ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices, IUser user, ILogger<UserController> logger)
+        public UserController(IUnitOfWork unitOfWork, ISysUserInfoServices sysUserInfoServices,
+            IUserRoleServices userRoleServices, IRoleServices roleServices,
+            IUser user, IMapper mapper, ILogger<UserController> logger)
         {
             _unitOfWork = unitOfWork;
             _sysUserInfoServices = sysUserInfoServices;
             _userRoleServices = userRoleServices;
             _roleServices = roleServices;
             _user = user;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -57,7 +64,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<SysUserInfo>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<SysUserInfoDto>>> Get(int page = 1, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -87,12 +94,7 @@ namespace Blog.Core.Controllers
             #endregion
 
 
-            return new MessageModel<PageModel<SysUserInfo>>()
-            {
-                msg = "获取成功",
-                success = data.dataCount >= 0,
-                response = data
-            };
+            return SuccessPage(data.page, data.dataCount, data.PageSize, _mapper.Map<List<SysUserInfoDto>>(sysUserInfos), data.pageCount);
 
         }
 
@@ -114,9 +116,9 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<MessageModel<SysUserInfo>> GetInfoByToken(string token)
+        public async Task<MessageModel<SysUserInfoDto>> GetInfoByToken(string token)
         {
-            var data = new MessageModel<SysUserInfo>();
+            var data = new MessageModel<SysUserInfoDto>();
             if (!string.IsNullOrEmpty(token))
             {
                 var tokenModel = JwtHelper.SerializeJwt(token);
@@ -125,7 +127,7 @@ namespace Blog.Core.Controllers
                     var userinfo = await _sysUserInfoServices.QueryById(tokenModel.Uid);
                     if (userinfo != null)
                     {
-                        data.response = userinfo;
+                        data.response = _mapper.Map<SysUserInfoDto>(userinfo); 
                         data.success = true;
                         data.msg = "获取成功";
                     }
@@ -142,14 +144,14 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // POST: api/User
         [HttpPost]
-        public async Task<MessageModel<string>> Post([FromBody] SysUserInfo sysUserInfo)
+        public async Task<MessageModel<string>> Post([FromBody] SysUserInfoDto sysUserInfo)
         {
             var data = new MessageModel<string>();
 
-            sysUserInfo.LoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.LoginPWD);
-            sysUserInfo.Remark = _user.Name;
+            sysUserInfo.uLoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.uLoginPWD);
+            sysUserInfo.uRemark = _user.Name;
 
-            var id = await _sysUserInfoServices.Add(sysUserInfo);
+            var id = await _sysUserInfoServices.Add(_mapper.Map<SysUserInfo>(sysUserInfo));
             data.success = id > 0;
             if (data.success)
             {
@@ -167,7 +169,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // PUT: api/User/5
         [HttpPut]
-        public async Task<MessageModel<string>> Put([FromBody] SysUserInfo sysUserInfo)
+        public async Task<MessageModel<string>> Put([FromBody] SysUserInfoDto sysUserInfo)
         {
             // 这里使用事务处理
 
@@ -176,12 +178,12 @@ namespace Blog.Core.Controllers
             {
                 _unitOfWork.BeginTran();
 
-                if (sysUserInfo != null && sysUserInfo.Id > 0)
+                if (sysUserInfo != null && sysUserInfo.uID > 0)
                 {
                     if (sysUserInfo.RIDs.Count > 0)
                     {
                         // 无论 Update Or Add , 先删除当前用户的全部 U_R 关系
-                        var usreroles = (await _userRoleServices.Query(d => d.UserId == sysUserInfo.Id)).Select(d => d.Id.ToString()).ToArray();
+                        var usreroles = (await _userRoleServices.Query(d => d.UserId == sysUserInfo.uID)).Select(d => d.Id.ToString()).ToArray();
                         if (usreroles.Count() > 0)
                         {
                             var isAllDeleted = await _userRoleServices.DeleteByIds(usreroles);
@@ -191,21 +193,21 @@ namespace Blog.Core.Controllers
                         var userRolsAdd = new List<UserRole>();
                         sysUserInfo.RIDs.ForEach(rid =>
                        {
-                           userRolsAdd.Add(new UserRole(sysUserInfo.Id, rid));
+                           userRolsAdd.Add(new UserRole(sysUserInfo.uID, rid));
                        });
 
                         await _userRoleServices.Add(userRolsAdd);
 
                     }
 
-                    data.success = await _sysUserInfoServices.Update(sysUserInfo);
+                    data.success = await _sysUserInfoServices.Update(_mapper.Map<SysUserInfo>(sysUserInfo));
 
                     _unitOfWork.CommitTran();
 
                     if (data.success)
                     {
                         data.msg = "更新成功";
-                        data.response = sysUserInfo?.Id.ObjToString();
+                        data.response = sysUserInfo?.uID.ObjToString();
                     }
                 }
             }

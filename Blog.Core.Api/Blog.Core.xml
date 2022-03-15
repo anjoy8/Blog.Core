@@ -633,7 +633,7 @@
             用户管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
             <summary>
             构造函数
             </summary>
@@ -642,6 +642,7 @@
             <param name="userRoleServices"></param>
             <param name="roleServices"></param>
             <param name="user"></param>
+            <param name="mapper"></param>
             <param name="logger"></param>
         </member>
         <member name="M:Blog.Core.Controllers.UserController.Get(System.Int32,System.String)">
@@ -660,14 +661,14 @@
             <param name="token">令牌</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.Models.SysUserInfo)">
+        <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.ViewModels.SysUserInfoDto)">
             <summary>
             添加一个用户
             </summary>
             <param name="sysUserInfo"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.Put(Blog.Core.Model.Models.SysUserInfo)">
+        <member name="M:Blog.Core.Controllers.UserController.Put(Blog.Core.Model.ViewModels.SysUserInfoDto)">
             <summary>
             更新用户与角色
             </summary>
@@ -686,12 +687,13 @@
             用户角色关系
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserRoleController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices)">
+        <member name="M:Blog.Core.Controllers.UserRoleController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,AutoMapper.IMapper,Blog.Core.IServices.IRoleServices)">
             <summary>
             构造函数
             </summary>
             <param name="sysUserInfoServices"></param>
             <param name="userRoleServices"></param>
+            <param name="mapper"></param>
             <param name="roleServices"></param>
         </member>
         <member name="M:Blog.Core.Controllers.UserRoleController.AddUser(System.String,System.String)">
