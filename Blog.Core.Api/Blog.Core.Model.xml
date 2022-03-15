@@ -691,57 +691,57 @@
             修改时间
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.Models.sysUserInfo">
+        <member name="T:Blog.Core.Model.Models.SysUserInfo">
             <summary>
             用户信息表
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uLoginName">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.LoginName">
             <summary>
             登录账号
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uLoginPWD">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.LoginPWD">
             <summary>
             登录密码
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uRealName">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.RealName">
             <summary>
             真实姓名
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uStatus">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.Status">
             <summary>
             状态
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uRemark">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.Remark">
             <summary>
             备注
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uCreateTime">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.CreateTime">
             <summary>
             创建时间
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uUpdateTime">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.UpdateTime">
             <summary>
             更新时间
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uLastErrTime">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.LastErrorTime">
              <summary>
-            最后登录时间 
+            最后异常时间 
              </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uErrorCount">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.ErrorCount">
              <summary>
             错误次数 
              </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.name">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.Name">
             <summary>
             登录账号
             </summary>
@@ -1445,12 +1445,12 @@
             泛型主键Tkey
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.sysUserInfoRoot`1">
+        <member name="T:Blog.Core.Model.SysUserInfoRoot`1">
             <summary>
             用户信息表
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.sysUserInfoRoot`1.uID">
+        <member name="P:Blog.Core.Model.SysUserInfoRoot`1.Id">
             <summary>
             uID
             泛型主键Tkey

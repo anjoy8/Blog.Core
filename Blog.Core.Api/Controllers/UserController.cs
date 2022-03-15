@@ -57,7 +57,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<sysUserInfo>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<SysUserInfo>>> Get(int page = 1, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -66,7 +66,7 @@ namespace Blog.Core.Controllers
             int intPageSize = 50;
 
 
-            var data = await _sysUserInfoServices.QueryPage(a => a.tdIsDelete != true && a.uStatus >= 0 && ((a.uLoginName != null && a.uLoginName.Contains(key)) || (a.uRealName != null && a.uRealName.Contains(key))), page, intPageSize, " uID desc ");
+            var data = await _sysUserInfoServices.QueryPage(a => a.IsDeleted != true && a.Status >= 0 && ((a.LoginName != null && a.LoginName.Contains(key)) || (a.RealName != null && a.RealName.Contains(key))), page, intPageSize, " uID desc ");
 
 
             #region MyRegion
@@ -78,7 +78,7 @@ namespace Blog.Core.Controllers
             var sysUserInfos = data.data;
             foreach (var item in sysUserInfos)
             {
-                var currentUserRoles = allUserRoles.Where(d => d.UserId == item.uID).Select(d => d.RoleId).ToList();
+                var currentUserRoles = allUserRoles.Where(d => d.UserId == item.Id).Select(d => d.RoleId).ToList();
                 item.RIDs = currentUserRoles;
                 item.RoleNames = allRoles.Where(d => currentUserRoles.Contains(d.Id)).Select(d => d.Name).ToList();
             }
@@ -87,7 +87,7 @@ namespace Blog.Core.Controllers
             #endregion
 
 
-            return new MessageModel<PageModel<sysUserInfo>>()
+            return new MessageModel<PageModel<SysUserInfo>>()
             {
                 msg = "获取成功",
                 success = data.dataCount >= 0,
@@ -114,9 +114,9 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<MessageModel<sysUserInfo>> GetInfoByToken(string token)
+        public async Task<MessageModel<SysUserInfo>> GetInfoByToken(string token)
         {
-            var data = new MessageModel<sysUserInfo>();
+            var data = new MessageModel<SysUserInfo>();
             if (!string.IsNullOrEmpty(token))
             {
                 var tokenModel = JwtHelper.SerializeJwt(token);
@@ -142,12 +142,12 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // POST: api/User
         [HttpPost]
-        public async Task<MessageModel<string>> Post([FromBody] sysUserInfo sysUserInfo)
+        public async Task<MessageModel<string>> Post([FromBody] SysUserInfo sysUserInfo)
         {
             var data = new MessageModel<string>();
 
-            sysUserInfo.uLoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.uLoginPWD);
-            sysUserInfo.uRemark = _user.Name;
+            sysUserInfo.LoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.LoginPWD);
+            sysUserInfo.Remark = _user.Name;
 
             var id = await _sysUserInfoServices.Add(sysUserInfo);
             data.success = id > 0;
@@ -167,7 +167,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // PUT: api/User/5
         [HttpPut]
-        public async Task<MessageModel<string>> Put([FromBody] sysUserInfo sysUserInfo)
+        public async Task<MessageModel<string>> Put([FromBody] SysUserInfo sysUserInfo)
         {
             // 这里使用事务处理
 
@@ -176,12 +176,12 @@ namespace Blog.Core.Controllers
             {
                 _unitOfWork.BeginTran();
 
-                if (sysUserInfo != null && sysUserInfo.uID > 0)
+                if (sysUserInfo != null && sysUserInfo.Id > 0)
                 {
                     if (sysUserInfo.RIDs.Count > 0)
                     {
                         // 无论 Update Or Add , 先删除当前用户的全部 U_R 关系
-                        var usreroles = (await _userRoleServices.Query(d => d.UserId == sysUserInfo.uID)).Select(d => d.Id.ToString()).ToArray();
+                        var usreroles = (await _userRoleServices.Query(d => d.UserId == sysUserInfo.Id)).Select(d => d.Id.ToString()).ToArray();
                         if (usreroles.Count() > 0)
                         {
                             var isAllDeleted = await _userRoleServices.DeleteByIds(usreroles);
@@ -191,7 +191,7 @@ namespace Blog.Core.Controllers
                         var userRolsAdd = new List<UserRole>();
                         sysUserInfo.RIDs.ForEach(rid =>
                        {
-                           userRolsAdd.Add(new UserRole(sysUserInfo.uID, rid));
+                           userRolsAdd.Add(new UserRole(sysUserInfo.Id, rid));
                        });
 
                         await _userRoleServices.Add(userRolsAdd);
@@ -205,7 +205,7 @@ namespace Blog.Core.Controllers
                     if (data.success)
                     {
                         data.msg = "更新成功";
-                        data.response = sysUserInfo?.uID.ObjToString();
+                        data.response = sysUserInfo?.Id.ObjToString();
                     }
                 }
             }
@@ -231,12 +231,12 @@ namespace Blog.Core.Controllers
             if (id > 0)
             {
                 var userDetail = await _sysUserInfoServices.QueryById(id);
-                userDetail.tdIsDelete = true;
+                userDetail.IsDeleted = true;
                 data.success = await _sysUserInfoServices.Update(userDetail);
                 if (data.success)
                 {
                     data.msg = "删除成功";
-                    data.response = userDetail?.uID.ObjToString();
+                    data.response = userDetail?.Id.ObjToString();
                 }
             }
 

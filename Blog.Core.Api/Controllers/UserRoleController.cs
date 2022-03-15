@@ -42,9 +42,9 @@ namespace Blog.Core.Controllers
         /// <param name="loginPwd"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<sysUserInfo>> AddUser(string loginName, string loginPwd)
+        public async Task<MessageModel<SysUserInfo>> AddUser(string loginName, string loginPwd)
         {
-            return new MessageModel<sysUserInfo>()
+            return new MessageModel<SysUserInfo>()
             {
                 success = true,
                 msg = "添加成功",

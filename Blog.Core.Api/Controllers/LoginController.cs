@@ -152,14 +152,14 @@ namespace Blog.Core.Controllers
 
             pass = MD5Helper.MD5Encrypt32(pass);
 
-            var user = await _sysUserInfoServices.Query(d => d.uLoginName == name && d.uLoginPWD == pass && d.tdIsDelete == false);
+            var user = await _sysUserInfoServices.Query(d => d.LoginName == name && d.LoginPWD == pass && d.IsDeleted == false);
             if (user.Count > 0)
             {
                 var userRoles = await _sysUserInfoServices.GetUserRoleNameStr(name, pass);
                 //如果是基于用户的授权策略，这里要添加用户;如果是基于角色的授权策略，这里要添加角色
                 var claims = new List<Claim> {
                     new Claim(ClaimTypes.Name, name),
-                    new Claim(JwtRegisteredClaimNames.Jti, user.FirstOrDefault().uID.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Jti, user.FirstOrDefault().Id.ToString()),
                     new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString()) };
                 claims.AddRange(userRoles.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));
 
@@ -209,10 +209,10 @@ namespace Blog.Core.Controllers
                 var user = await _sysUserInfoServices.QueryById(tokenModel.Uid);
                 if (user != null)
                 {
-                    var userRoles = await _sysUserInfoServices.GetUserRoleNameStr(user.uLoginName, user.uLoginPWD);
+                    var userRoles = await _sysUserInfoServices.GetUserRoleNameStr(user.LoginName, user.LoginPWD);
                     //如果是基于用户的授权策略，这里要添加用户;如果是基于角色的授权策略，这里要添加角色
                     var claims = new List<Claim> {
-                    new Claim(ClaimTypes.Name, user.uLoginName),
+                    new Claim(ClaimTypes.Name, user.LoginName),
                     new Claim(JwtRegisteredClaimNames.Jti, tokenModel.Uid.ObjToString()),
                     new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString()) };
                     claims.AddRange(userRoles.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));

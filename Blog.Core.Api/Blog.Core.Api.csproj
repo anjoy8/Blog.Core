@@ -64,7 +64,7 @@
     <None Include="wwwroot\BlogCore.Data.json\Permission.tsv" />
     <None Include="wwwroot\BlogCore.Data.json\Role.tsv" />
     <None Include="wwwroot\BlogCore.Data.json\RoleModulePermission.tsv" />
-    <None Include="wwwroot\BlogCore.Data.json\sysUserInfo.tsv" />
+    <None Include="wwwroot\BlogCore.Data.json\SysUserInfo.tsv" />
     <None Include="wwwroot\BlogCore.Data.json\Topic.tsv" />
     <None Include="wwwroot\BlogCore.Data.json\TopicDetail.tsv" />
     <None Include="wwwroot\BlogCore.Data.json\UserRole.tsv" />

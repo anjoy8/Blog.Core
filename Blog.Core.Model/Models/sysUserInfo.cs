@@ -8,90 +8,88 @@ namespace Blog.Core.Model.Models
     /// 用户信息表
     /// </summary>
     [SugarTable("SysUserInfo")]
-    public class sysUserInfo : sysUserInfoRoot<int>
+    public class SysUserInfo : SysUserInfoRoot<int>
     {
-        public sysUserInfo() { }
+        public SysUserInfo() { }
 
-        public sysUserInfo(string loginName, string loginPWD)
+        public SysUserInfo(string loginName, string loginPWD)
         {
-            uLoginName = loginName;
-            uLoginPWD = loginPWD;
-            uRealName = uLoginName;
-            uStatus = 0;
-            uCreateTime = DateTime.Now;
-            uUpdateTime = DateTime.Now;
-            uLastErrTime = DateTime.Now;
-            uErrorCount = 0;
-            name = "";
-
+            LoginName = loginName;
+            LoginPWD = loginPWD;
+            RealName = LoginName;
+            Status = 0;
+            CreateTime = DateTime.Now;
+            UpdateTime = DateTime.Now;
+            LastErrorTime = DateTime.Now;
+            ErrorCount = 0;
+            Name = "";
         }
 
         /// <summary>
         /// 登录账号
         /// </summary>
         [SugarColumn(Length = 200, IsNullable = true)]
-        public string uLoginName { get; set; }
+        public string LoginName { get; set; }
         /// <summary>
         /// 登录密码
         /// </summary>
         [SugarColumn(Length = 200, IsNullable = true)]
-        public string uLoginPWD { get; set; }
+        public string LoginPWD { get; set; }
         /// <summary>
         /// 真实姓名
         /// </summary>
         [SugarColumn(Length = 200, IsNullable = true)]
-        public string uRealName { get; set; }
+        public string RealName { get; set; }
         /// <summary>
         /// 状态
         /// </summary>
-        public int uStatus { get; set; }
+        public int Status { get; set; }
         /// <summary>
         /// 备注
         /// </summary>
         [SugarColumn(Length = 2000, IsNullable = true)]
-        public string uRemark { get; set; }
+        public string Remark { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>
-        public System.DateTime uCreateTime { get; set; } = DateTime.Now;
+        public DateTime CreateTime { get; set; } = DateTime.Now;
         /// <summary>
         /// 更新时间
         /// </summary>
-        public System.DateTime uUpdateTime { get; set; } = DateTime.Now;
+        public DateTime UpdateTime { get; set; } = DateTime.Now;
 
         /// <summary>
-        ///最后登录时间 
+        ///最后异常时间 
         /// </summary>
-        public DateTime uLastErrTime { get; set; } = DateTime.Now;
+        public DateTime LastErrorTime { get; set; } = DateTime.Now;
 
         /// <summary>
         ///错误次数 
         /// </summary>
-        public int uErrorCount { get; set; }
-
+        public int ErrorCount { get; set; }
 
 
         /// <summary>
         /// 登录账号
         /// </summary>
         [SugarColumn(Length = 200, IsNullable = true)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         // 性别
         [SugarColumn(IsNullable = true)]
-        public int sex { get; set; } = 0;
+        public int Sex { get; set; } = 0;
         // 年龄
         [SugarColumn(IsNullable = true)]
-        public int age { get; set; }
+        public int Age { get; set; }
         // 生日
         [SugarColumn(IsNullable = true)]
-        public DateTime birth { get; set; } = DateTime.Now;
+        public DateTime Birth { get; set; } = DateTime.Now;
         // 地址
         [SugarColumn(Length = 200, IsNullable = true)]
-        public string addr { get; set; }
+        public string Address { get; set; }
 
         [SugarColumn(IsNullable = true)]
-        public bool tdIsDelete { get; set; }
+        public bool IsDeleted { get; set; }
 
 
         [SugarColumn(IsIgnore = true)]

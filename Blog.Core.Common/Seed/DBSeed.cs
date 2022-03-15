@@ -253,11 +253,11 @@ namespace Blog.Core.Common.Seed
 
 
                     #region sysUserInfo
-                    if (!await myContext.Db.Queryable<sysUserInfo>().AnyAsync())
+                    if (!await myContext.Db.Queryable<SysUserInfo>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<sysUserInfo>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "sysUserInfo"), Encoding.UTF8), setting);
+                        var data = JsonConvert.DeserializeObject<List<SysUserInfo>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "sysUserInfo"), Encoding.UTF8), setting);
 
-                        myContext.GetEntityDB<sysUserInfo>().InsertRange(data);
+                        myContext.GetEntityDB<SysUserInfo>().InsertRange(data);
                         Console.WriteLine("Table:sysUserInfo created success!");
                     }
                     else

@@ -660,14 +660,14 @@
             <param name="token">令牌</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.Models.sysUserInfo)">
+        <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.Models.SysUserInfo)">
             <summary>
             添加一个用户
             </summary>
             <param name="sysUserInfo"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.Put(Blog.Core.Model.Models.sysUserInfo)">
+        <member name="M:Blog.Core.Controllers.UserController.Put(Blog.Core.Model.Models.SysUserInfo)">
             <summary>
             更新用户与角色
             </summary>
