@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace Blog.Core.Model.ViewModels
 {
-    public class SysUserInfoDto
+    public class SysUserInfoDto : SysUserInfoDtoRoot<int>
     {
-        public int uID { get; set; }
         public string uLoginName { get; set; }
         public string uLoginPWD { get; set; }
         public string uRealName { get; set; }
@@ -22,6 +21,5 @@ namespace Blog.Core.Model.ViewModels
         public string addr { get; set; }
         public bool tdIsDelete { get; set; }
         public List<string> RoleNames { get; set; }
-        public List<int> RIDs { get; set; }
     }
 }
