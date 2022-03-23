@@ -271,6 +271,93 @@
             逻辑删除
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Models.Department">
+            <summary>
+             部门表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.Code">
+            <summary>
+            Desc:部门Code
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.PCode">
+            <summary>
+            Desc:父部门Code
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.CodeRelationship">
+            <summary>
+            Desc:部门关系编码
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.DepartName">
+            <summary>
+            Desc:部门名称
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.Leader">
+            <summary>
+            Desc:负责人
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.OrderNum">
+            <summary>
+            Desc:排序
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.Status">
+            <summary>
+            Desc:部门状态（0正常 1停用）
+            Default:0
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.IsDeleted">
+            <summary>
+            Desc:删除标志（0代表存在 2代表删除）
+            Default:0
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.CreateBy">
+            <summary>
+            Desc:创建者
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.CreateTime">
+            <summary>
+            Desc:创建时间
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.ModifyBy">
+            <summary>
+            Desc:更新者
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.ModifyTime">
+            <summary>
+            Desc:更新时间
+            Default:
+            Nullable:True
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Guestbook.blogId">
             <summary>博客ID
             
