@@ -94,7 +94,7 @@ namespace Blog.Core.Controllers
             #endregion
 
 
-            return SuccessPage(data.page, data.dataCount, data.PageSize, _mapper.Map<List<SysUserInfoDto>>(sysUserInfos), data.pageCount);
+            return Success(data.ConvertTo<SysUserInfoDto>(_mapper));
 
         }
 
