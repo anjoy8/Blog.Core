@@ -276,15 +276,9 @@
              部门表
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.Department.Code">
+        <member name="P:Blog.Core.Model.Models.Department.PId">
             <summary>
-            Desc:部门Code
-            Nullable:True
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.Department.PCode">
-            <summary>
-            Desc:父部门Code
+            Desc:父部门
             Nullable:True
             </summary>
         </member>
