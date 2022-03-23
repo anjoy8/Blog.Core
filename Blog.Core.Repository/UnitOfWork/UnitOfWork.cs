@@ -1,5 +1,4 @@
 ﻿using Blog.Core.IRepository.UnitOfWork;
-using Microsoft.Extensions.Logging;
 using SqlSugar;
 using System;
 
@@ -8,45 +7,61 @@ namespace Blog.Core.Repository.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ISqlSugarClient _sqlSugarClient;
-        private readonly ILogger<UnitOfWork> _logger;
 
-        public UnitOfWork(ISqlSugarClient sqlSugarClient, ILogger<UnitOfWork> logger)
+        private int _tranCount { get; set; }
+
+        public UnitOfWork(ISqlSugarClient sqlSugarClient)
         {
             _sqlSugarClient = sqlSugarClient;
-            _logger = logger;
+            _tranCount = 0;
         }
 
         /// <summary>
         /// 获取DB，保证唯一性
         /// </summary>
         /// <returns></returns>
-        public SqlSugarClient GetDbClient()
+        public SqlSugarScope GetDbClient()
         {
             // 必须要as，后边会用到切换数据库操作
-            return _sqlSugarClient as SqlSugarClient;
+            return _sqlSugarClient as SqlSugarScope;
         }
 
         public void BeginTran()
         {
-            GetDbClient().BeginTran();
+            lock (this)
+            {
+                _tranCount++;
+                GetDbClient().BeginTran();
+            }
         }
 
         public void CommitTran()
         {
-            try
+            lock (this)
             {
-                GetDbClient().CommitTran(); //
-            }
-            catch (Exception ex)
-            {
-                GetDbClient().RollbackTran();
-                _logger.LogError($"{ex.Message}\r\n{ex.InnerException}");
+                _tranCount--;
+                if (_tranCount == 0)
+                {
+                    try
+                    {
+                        GetDbClient().CommitTran();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        GetDbClient().RollbackTran();
+                    }
+                }
             }
         }
 
         public void RollbackTran()
         {
-            GetDbClient().RollbackTran();
+            lock (this)
+            {
+                _tranCount--;
+                GetDbClient().RollbackTran();
+            }
         }
 
     }

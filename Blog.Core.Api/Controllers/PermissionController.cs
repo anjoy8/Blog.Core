@@ -21,7 +21,7 @@ namespace Blog.Core.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(Permissions.Name)]
-    public class PermissionController : ControllerBase
+    public class PermissionController : BaseApiController
     {
         readonly IPermissionServices _permissionServices;
         readonly IModuleServices _moduleServices;
@@ -133,12 +133,14 @@ namespace Blog.Core.Controllers
             #endregion
 
 
-            return new MessageModel<PageModel<Permission>>()
-            {
-                msg = "获取成功",
-                success = permissions.dataCount >= 0,
-                response = permissions
-            };
+            //return new MessageModel<PageModel<Permission>>()
+            //{
+            //    msg = "获取成功",
+            //    success = permissions.dataCount >= 0,
+            //    response = permissions
+            //};
+
+            return permissions.dataCount >= 0 ? Success(permissions, "获取成功") : Failed<PageModel<Permission>>("获取失败");
 
         }
 
@@ -191,12 +193,13 @@ namespace Blog.Core.Controllers
             }
 
 
-            return new MessageModel<List<Permission>>()
-            {
-                msg = "获取成功",
-                success = true,
-                response = permissions
-            };
+            //return new MessageModel<List<Permission>>()
+            //{
+            //    msg = "获取成功",
+            //    success = true,
+            //    response = permissions
+            //};
+            return Success(permissions, "获取成功");
         }
 
         // GET: api/User/5
@@ -215,20 +218,21 @@ namespace Blog.Core.Controllers
         [HttpPost]
         public async Task<MessageModel<string>> Post([FromBody] Permission permission)
         {
-            var data = new MessageModel<string>();
+            //var data = new MessageModel<string>();
 
             permission.CreateId = _user.ID;
             permission.CreateBy = _user.Name;
 
             var id = (await _permissionServices.Add(permission));
-            data.success = id > 0;
-            if (data.success)
-            {
-                data.response = id.ObjToString();
-                data.msg = "添加成功";
-            }
+            //data.success = id > 0;
+            //if (data.success)
+            //{
+            //    data.response = id.ObjToString();
+            //    data.msg = "添加成功";
+            //}
 
-            return data;
+
+            return id > 0 ? Success(id.ObjToString(), "添加成功") : Failed("添加失败");
         }
 
         /// <summary>
@@ -254,9 +258,10 @@ namespace Blog.Core.Controllers
                 foreach (var item in assignView.pids)
                 {
                     var rmpitem = roleModulePermissions.Where(d => d.PermissionId == item);
+                    var moduleid = (await _permissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
                     if (!rmpitem.Any())
                     {
-                        var moduleid = (await _permissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
+
                         RoleModulePermission roleModulePermission = new RoleModulePermission()
                         {
                             IsDeleted = false,
@@ -271,6 +276,17 @@ namespace Blog.Core.Controllers
 
                         data.success &= (await _roleModulePermissionServices.Add(roleModulePermission)) > 0;
 
+                    }
+                    else
+                    {
+                        foreach (var role in rmpitem)
+                        {
+                            if (!role.ModuleId.Equals(moduleid))
+                            {
+                                role.ModuleId = moduleid.Value;
+                                await _roleModulePermissionServices.Update(role, new List<string> { "ModuleId" });
+                            }
+                        }
                     }
                 }
 
@@ -297,7 +313,7 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public async Task<MessageModel<PermissionTree>> GetPermissionTree(int pid = 0, bool needbtn = false)
         {
-            var data = new MessageModel<PermissionTree>();
+            //var data = new MessageModel<PermissionTree>();
 
             var permissions = await _permissionServices.Query(d => d.IsDeleted == false);
             var permissionTrees = (from child in permissions
@@ -323,14 +339,15 @@ namespace Blog.Core.Controllers
 
             RecursionHelper.LoopToAppendChildren(permissionTrees, rootRoot, pid, needbtn);
 
-            data.success = true;
-            if (data.success)
-            {
-                data.response = rootRoot;
-                data.msg = "获取成功";
-            }
+            //data.success = true;
+            //if (data.success)
+            //{
+            //    data.response = rootRoot;
+            //    data.msg = "获取成功";
+            //}
 
-            return data;
+            return Success(rootRoot, "获取成功");
+            //return data;
         }
 
         /// <summary>
@@ -373,6 +390,7 @@ namespace Blog.Core.Controllers
                     if (pids.Any())
                     {
                         var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id))).OrderBy(c => c.OrderSort);
+                        var temp = rolePermissionMoudles.ToList().Find(t => t.Id == 87);
                         var permissionTrees = (from child in rolePermissionMoudles
                                                where child.IsDeleted == false
                                                orderby child.Id
@@ -410,7 +428,6 @@ namespace Blog.Core.Controllers
                         };
 
                         permissionTrees = permissionTrees.OrderBy(d => d.order).ToList();
-
                         RecursionHelper.LoopNaviBarAppendChildren(permissionTrees, rootRoot);
 
                         data.success = true;
@@ -434,7 +451,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<MessageModel<AssignShow>> GetPermissionIdByRoleId(int rid = 0)
         {
-            var data = new MessageModel<AssignShow>();
+            //var data = new MessageModel<AssignShow>();
 
             var rmps = await _roleModulePermissionServices.Query(d => d.IsDeleted == false && d.RoleId == rid);
             var permissionTrees = (from child in rmps
@@ -454,18 +471,24 @@ namespace Blog.Core.Controllers
                 }
             }
 
-            data.success = true;
-            if (data.success)
-            {
-                data.response = new AssignShow()
-                {
-                    permissionids = permissionTrees,
-                    assignbtns = assignbtns,
-                };
-                data.msg = "获取成功";
-            }
+            //data.success = true;
+            //if (data.success)
+            //{
+            //    data.response = new AssignShow()
+            //    {
+            //        permissionids = permissionTrees,
+            //        assignbtns = assignbtns,
+            //    };
+            //    data.msg = "获取成功";
+            //}
 
-            return data;
+            return Success(new AssignShow()
+            {
+                permissionids = permissionTrees,
+                assignbtns = assignbtns,
+            }, "获取成功");
+
+            //return data;
         }
 
         /// <summary>
@@ -516,6 +539,42 @@ namespace Blog.Core.Controllers
 
             return data;
         }
+
+        /// <summary>
+        /// 导入多条菜单信息
+        /// </summary>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
+        // POST: api/User
+        [HttpPost]
+        public async Task<MessageModel<string>> BatchPost([FromBody] List<Permission> permissions)
+        {
+            var data = new MessageModel<string>();
+            string ids = string.Empty;
+            int sucCount = 0;
+
+            for (int i = 0; i < permissions.Count; i++)
+            {
+                var permission = permissions[i];
+                if (permission != null)
+                {
+                    permission.CreateId = _user.ID;
+                    permission.CreateBy = _user.Name;
+                    ids += (await _permissionServices.Add(permission));
+                    sucCount++;
+                }
+            }
+
+            data.success = ids.IsNotEmptyOrNull();
+            if (data.success)
+            {
+                data.response = ids;
+                data.msg = $"{sucCount}条数据添加成功";
+            }
+
+            return data;
+        }
+
     }
 
     public class AssignView

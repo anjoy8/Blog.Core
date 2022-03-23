@@ -12,6 +12,12 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.100
+        dotnet-version: 6.0.x
     - name: Build with dotnet
       run: dotnet build --configuration Release
+    - name: Build image
+      run: docker build -f "Dockerfile" --force-rm -t laozhangisphi/apkimg .
+    - name: Log into registry
+      run: echo "${{ secrets.ACCESS_TOKEN }}" | docker login -u laozhangisphi --password-stdin
+    - name: Push image
+      run: docker push laozhangisphi/apkimg

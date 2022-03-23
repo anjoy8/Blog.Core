@@ -72,7 +72,14 @@ namespace Blog.Core.Common.HttpContextUser
 
         public IEnumerable<Claim> GetClaimsIdentity()
         {
-            return _accessor.HttpContext.User.Claims;
+            var claims = _accessor.HttpContext.User.Claims.ToList();
+            var headers = _accessor.HttpContext.Request.Headers;
+            foreach (var header in headers)
+            {
+                claims.Add(new Claim(header.Key, header.Value));
+            }
+
+            return claims;
         }
 
         public List<string> GetClaimValueByType(string ClaimType)

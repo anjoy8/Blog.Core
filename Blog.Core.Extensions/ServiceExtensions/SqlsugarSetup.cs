@@ -48,7 +48,7 @@ namespace Blog.Core.Extensions
                         DbType = (DbType)m.DbType,
                         IsAutoCloseConnection = true,
                         // Check out more information: https://github.com/anjoy8/Blog.Core/issues/122
-                        IsShardSameThread = false,
+                        //IsShardSameThread = false,
                         AopEvents = new AopEvents
                         {
                             OnLogExecuting = (sql, p) =>
@@ -93,7 +93,7 @@ namespace Blog.Core.Extensions
                     }
                    );
                 });
-                return new SqlSugarClient(listConfig);
+                return new SqlSugarScope(listConfig);
             });
         }
 

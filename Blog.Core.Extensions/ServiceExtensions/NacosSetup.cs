@@ -1,10 +1,11 @@
-﻿using Blog.Core.Common;
+using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.Extensions.NacosConfig;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nacos.V2.DependencyInjection;
 using System;
+using ConfigurationManager = Blog.Core.Common.Helper.ConfigurationManager;
 
 namespace Blog.Core.Extensions
 {

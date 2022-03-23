@@ -3,8 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System;
+using System.Collections.Generic;
 using System.IO;
-
+using System.Reflection;
 namespace Blog.Core.Gateway.Extensions
 {
     public static class CustomSwaggerSetup
@@ -14,6 +15,8 @@ namespace Blog.Core.Gateway.Extensions
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             var basePath = AppContext.BaseDirectory;
+
+            services.AddMvc(option => option.EnableEndpointRouting = false);
 
             services.AddSwaggerGen(c =>
             {
@@ -45,11 +48,19 @@ namespace Blog.Core.Gateway.Extensions
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            var apis = new List<string> { "blog-svc" };
+            app.UseMvc().UseSwagger();
+            app.UseSwaggerUI(options =>
             {
-                c.SwaggerEndpoint($"/swagger/v1/swagger.json", $"Blog.Core.Gateway-v1");
-                c.RoutePrefix = "";
+                options.SwaggerEndpoint($"/swagger/v1/swagger.json", $"Blog.Core.Gateway-v1");
+
+                apis.ForEach(m =>
+                {
+                    options.SwaggerEndpoint($"/swagger/apiswg/{m}/swagger.json", m);
+                    options.IndexStream = () => app.GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.ApiGateway.index.html");
+                });
+
+                options.RoutePrefix = "";
             });
         }
 

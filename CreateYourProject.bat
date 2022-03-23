@@ -1,9 +1,9 @@
 color 5
-echo "if u install template error,pls use:>>dotnet new -i .template.config\Blog.Core.Webapi.Template.2.5.2.nupkg"
+echo "if u install template error,pls connect QQ:3143422472"
 
 
 color 3
-dotnet new -i Blog.Core.Webapi.Template::2.5.4
+dotnet new -i Blog.Core.Webapi.Template
 
 set /p OP=Please set your project name(for example:BlogMicService):
 

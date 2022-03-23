@@ -1,4 +1,4 @@
-﻿using Blog.Core.Model.Seed;
+﻿using Blog.Core.Common.Seed;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 

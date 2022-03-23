@@ -99,7 +99,7 @@ namespace Blog.Core.Common.Helper
                 if (value == null)
                     value = defaultValue;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 value = defaultValue;
             }

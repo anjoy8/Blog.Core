@@ -232,6 +232,19 @@
             <param name="password"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.LoginController.SwgLogin(Blog.Core.Controllers.SwaggerLoginRequest)">
+            <summary>
+            swagger登录
+            </summary>
+            <param name="loginRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.LoginController.WxLogin(System.String,System.String)">
+            <summary>
+            weixin登录
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.ModuleController">
             <summary>
             接口管理
@@ -264,6 +277,13 @@
             删除一条接口
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ModuleController.BatchPost(System.Collections.Generic.List{Blog.Core.Model.Models.Modules})">
+            <summary>
+            导入多条接口信息
+            </summary>
+            <param name="modules"></param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.MonitorController.Server">
@@ -413,6 +433,13 @@
             删除菜单
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.BatchPost(System.Collections.Generic.List{Blog.Core.Model.Models.Permission})">
+            <summary>
+            导入多条菜单信息
+            </summary>
+            <param name="permissions"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.RoleController">
@@ -606,7 +633,7 @@
             用户管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
             <summary>
             构造函数
             </summary>
@@ -615,6 +642,7 @@
             <param name="userRoleServices"></param>
             <param name="roleServices"></param>
             <param name="user"></param>
+            <param name="mapper"></param>
             <param name="logger"></param>
         </member>
         <member name="M:Blog.Core.Controllers.UserController.Get(System.Int32,System.String)">
@@ -633,14 +661,14 @@
             <param name="token">令牌</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.Models.sysUserInfo)">
+        <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.ViewModels.SysUserInfoDto)">
             <summary>
             添加一个用户
             </summary>
             <param name="sysUserInfo"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.Put(Blog.Core.Model.Models.sysUserInfo)">
+        <member name="M:Blog.Core.Controllers.UserController.Put(Blog.Core.Model.ViewModels.SysUserInfoDto)">
             <summary>
             更新用户与角色
             </summary>
@@ -659,12 +687,13 @@
             用户角色关系
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserRoleController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices)">
+        <member name="M:Blog.Core.Controllers.UserRoleController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,AutoMapper.IMapper,Blog.Core.IServices.IRoleServices)">
             <summary>
             构造函数
             </summary>
             <param name="sysUserInfoServices"></param>
             <param name="userRoleServices"></param>
+            <param name="mapper"></param>
             <param name="roleServices"></param>
         </member>
         <member name="M:Blog.Core.Controllers.UserRoleController.AddUser(System.String,System.String)">
@@ -695,7 +724,7 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi,Blog.Core.Common.WebApiClients.HttpApis.IDoubanApi)">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi,Blog.Core.Common.WebApiClients.HttpApis.IDoubanApi,Blog.Core.Common.HttpPolly.IHttpPollyHelper)">
             <summary>
             ValuesController
             </summary>
@@ -708,6 +737,7 @@
             <param name="passwordLibServices"></param>
             <param name="blogApi"></param>
             <param name="doubanApi"></param>
+            <param name="httpPollyHelper"></param>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get">
             <summary>
@@ -822,6 +852,308 @@
             <summary>
             通过此处的key格式为 xx:xx:x
             </summary>
+        </member>
+        <member name="T:Blog.Core.Controllers.WeChatCompanyController">
+            <summary>
+            WeChatCompanyController
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatCompanyController.#ctor(Blog.Core.IServices.IWeChatCompanyServices)">
+            <summary>
+            构造函数
+            </summary> 
+            <param name="iWeChatCompanyServices"></param> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatCompanyController.Get(Blog.Core.Model.PaginationModel)">
+            <summary>
+            获取
+            </summary>
+            <param name="pagination">分页条件</param> 
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatCompanyController.Get(System.String)">
+            <summary>
+            获取(id)
+            </summary>
+            <param name="id">主键ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatCompanyController.Post(Blog.Core.Model.Models.WeChatCompany)">
+            <summary>
+            添加
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatCompanyController.Put(Blog.Core.Model.Models.WeChatCompany)">
+            <summary>
+            更新
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatCompanyController.Delete(System.String)">
+            <summary>
+            删除
+            </summary> 
+            <returns></returns> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatCompanyController.BatchDelete(System.String)">
+            <summary>
+            批量删除
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.WeChatConfigController">
+            <summary>
+            WeChatConfigController
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatConfigController.#ctor(Blog.Core.IServices.IWeChatConfigServices)">
+            <summary>
+            构造函数
+            </summary> 
+            <param name="iWeChatConfigServices"></param> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatConfigController.Get(Blog.Core.Model.PaginationModel)">
+            <summary>
+            获取
+            </summary>
+            <param name="pagination">分页条件</param> 
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatConfigController.Get(System.String)">
+            <summary>
+            获取(id)
+            </summary>
+            <param name="id">主键ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatConfigController.Post(Blog.Core.Model.Models.WeChatConfig)">
+            <summary>
+            添加
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatConfigController.Put(Blog.Core.Model.Models.WeChatConfig)">
+            <summary>
+            更新
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatConfigController.Delete(System.String)">
+            <summary>
+            删除
+            </summary> 
+            <returns></returns> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatConfigController.BatchDelete(System.String)">
+            <summary>
+            批量删除
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.WeChatController">
+            <summary>
+            微信公众号管理 
+            作者:胡丁文
+            时间:2020-3-29 21:24:12
+            </summary>   
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.#ctor(Blog.Core.IServices.IWeChatConfigServices,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.WeChatController})">
+            <summary>
+            构造函数
+            </summary>  
+            <param name="weChatConfigServices"></param>
+            <param name="logger"></param>   
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.GetToken(System.String)">
+            <summary>
+            更新Token
+            </summary>
+            <param name="id"></param>
+            <returns></returns> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.RefreshToken(System.String)">
+            <summary>
+            刷新Token
+            </summary>
+            <param name="id"></param>
+            <returns></returns> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.GetTemplate(System.String)">
+            <summary>
+            获取模板
+            </summary>
+            <param name="id"></param>
+            <returns></returns> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.GetMenu(System.String)">
+            <summary>
+            获取菜单
+            </summary>
+            <param name="id"></param>
+            <returns></returns> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.UpdateMenu(Blog.Core.Model.ViewModels.WeChatApiDto)">
+            <summary>
+            更新菜单
+            </summary>
+            <param name="menu"></param>
+            <returns></returns> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.GetSubUsers(System.String)">
+            <summary>
+            获取订阅用户(所有)
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.Valid(Blog.Core.Model.ViewModels.WeChatValidDto)">
+            <summary>
+            入口
+            </summary>
+            <param name="validDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.GetSubUser(System.String,System.String)">
+            <summary>
+            获取订阅用户
+            </summary>
+            <param name="id"></param>
+            <param name="openid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.GetQRBind(Blog.Core.Model.ViewModels.WeChatUserInfo)">
+            <summary>
+            获取一个绑定员工公众号二维码
+            </summary>
+            <param name="info">消息</param> 
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.PushCardMsg(Blog.Core.Model.ViewModels.WeChatCardMsgDataDto)">
+            <summary>
+            推送卡片消息接口
+            </summary>
+            <param name="msg">卡片消息对象</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.PushTxtMsg(Blog.Core.Model.ViewModels.WeChatPushTestDto)">
+            <summary>
+            推送文本消息
+            </summary>
+            <param name="msg">消息对象</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.GetBindUserInfo(Blog.Core.Model.ViewModels.WeChatUserInfo)">
+            <summary>
+            通过绑定用户获取微信用户信息(一般用于初次绑定检测)
+            </summary>
+            <param name="info">信息</param> 
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.UnBind(Blog.Core.Model.ViewModels.WeChatUserInfo)">
+            <summary>
+            用户解绑
+            </summary>
+            <param name="info">消息</param> 
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.WeChatPushLogController">
+            <summary>
+            WeChatPushLogController
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatPushLogController.#ctor(Blog.Core.IServices.IWeChatPushLogServices)">
+            <summary>
+            构造函数
+            </summary> 
+            <param name="iWeChatPushLogServices"></param> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatPushLogController.Get(Blog.Core.Model.PaginationModel)">
+            <summary>
+            获取
+            </summary>
+            <param name="pagination">分页条件</param> 
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatPushLogController.Get(System.String)">
+            <summary>
+            获取(id)
+            </summary>
+            <param name="id">主键ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatPushLogController.Post(Blog.Core.Model.Models.WeChatPushLog)">
+            <summary>
+            添加
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatPushLogController.Put(Blog.Core.Model.Models.WeChatPushLog)">
+            <summary>
+            更新
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatPushLogController.Delete(System.String)">
+            <summary>
+            删除
+            </summary> 
+            <returns></returns> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatPushLogController.BatchDelete(System.String)">
+            <summary>
+            批量删除
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Controllers.WeChatSubController">
+            <summary>
+            WeChatSubController
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatSubController.#ctor(Blog.Core.IServices.IWeChatSubServices)">
+            <summary>
+            构造函数
+            </summary> 
+            <param name="iWeChatSubServices"></param> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatSubController.Get(Blog.Core.Model.PaginationModel)">
+            <summary>
+            获取
+            </summary>
+            <param name="pagination">分页条件</param> 
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatSubController.Get(System.String)">
+            <summary>
+            获取(id)
+            </summary>
+            <param name="id">主键ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatSubController.Post(Blog.Core.Model.Models.WeChatSub)">
+            <summary>
+            添加
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatSubController.Put(Blog.Core.Model.Models.WeChatSub)">
+            <summary>
+            更新
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatSubController.Delete(System.String)">
+            <summary>
+            删除
+            </summary> 
+            <returns></returns> 
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatSubController.BatchDelete(System.String)">
+            <summary>
+            批量删除
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:Blog.Core.Api.Controllers.NacosController">
             <summary>

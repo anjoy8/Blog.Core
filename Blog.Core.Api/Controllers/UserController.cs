@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.HttpContextUser;
@@ -9,6 +10,7 @@ using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,13 +23,14 @@ namespace Blog.Core.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(Permissions.Name)]
-    public class UserController : ControllerBase
+    public class UserController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;
         readonly ISysUserInfoServices _sysUserInfoServices;
         readonly IUserRoleServices _userRoleServices;
         readonly IRoleServices _roleServices;
         private readonly IUser _user;
+        private readonly IMapper _mapper;
         private readonly ILogger<UserController> _logger;
 
         /// <summary>
@@ -38,14 +41,18 @@ namespace Blog.Core.Controllers
         /// <param name="userRoleServices"></param>
         /// <param name="roleServices"></param>
         /// <param name="user"></param>
+        /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        public UserController(IUnitOfWork unitOfWork, ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices, IUser user, ILogger<UserController> logger)
+        public UserController(IUnitOfWork unitOfWork, ISysUserInfoServices sysUserInfoServices,
+            IUserRoleServices userRoleServices, IRoleServices roleServices,
+            IUser user, IMapper mapper, ILogger<UserController> logger)
         {
             _unitOfWork = unitOfWork;
             _sysUserInfoServices = sysUserInfoServices;
             _userRoleServices = userRoleServices;
             _roleServices = roleServices;
             _user = user;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -57,7 +64,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<sysUserInfo>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<SysUserInfoDto>>> Get(int page = 1, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -66,7 +73,7 @@ namespace Blog.Core.Controllers
             int intPageSize = 50;
 
 
-            var data = await _sysUserInfoServices.QueryPage(a => a.tdIsDelete != true && a.uStatus >= 0 && ((a.uLoginName != null && a.uLoginName.Contains(key)) || (a.uRealName != null && a.uRealName.Contains(key))), page, intPageSize, " uID desc ");
+            var data = await _sysUserInfoServices.QueryPage(a => a.IsDeleted != true && a.Status >= 0 && ((a.LoginName != null && a.LoginName.Contains(key)) || (a.RealName != null && a.RealName.Contains(key))), page, intPageSize, " Id desc ");
 
 
             #region MyRegion
@@ -78,7 +85,7 @@ namespace Blog.Core.Controllers
             var sysUserInfos = data.data;
             foreach (var item in sysUserInfos)
             {
-                var currentUserRoles = allUserRoles.Where(d => d.UserId == item.uID).Select(d => d.RoleId).ToList();
+                var currentUserRoles = allUserRoles.Where(d => d.UserId == item.Id).Select(d => d.RoleId).ToList();
                 item.RIDs = currentUserRoles;
                 item.RoleNames = allRoles.Where(d => currentUserRoles.Contains(d.Id)).Select(d => d.Name).ToList();
             }
@@ -87,12 +94,7 @@ namespace Blog.Core.Controllers
             #endregion
 
 
-            return new MessageModel<PageModel<sysUserInfo>>()
-            {
-                msg = "获取成功",
-                success = data.dataCount >= 0,
-                response = data
-            };
+            return Success(data.ConvertTo<SysUserInfoDto>(_mapper));
 
         }
 
@@ -114,9 +116,9 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<MessageModel<sysUserInfo>> GetInfoByToken(string token)
+        public async Task<MessageModel<SysUserInfoDto>> GetInfoByToken(string token)
         {
-            var data = new MessageModel<sysUserInfo>();
+            var data = new MessageModel<SysUserInfoDto>();
             if (!string.IsNullOrEmpty(token))
             {
                 var tokenModel = JwtHelper.SerializeJwt(token);
@@ -125,7 +127,7 @@ namespace Blog.Core.Controllers
                     var userinfo = await _sysUserInfoServices.QueryById(tokenModel.Uid);
                     if (userinfo != null)
                     {
-                        data.response = userinfo;
+                        data.response = _mapper.Map<SysUserInfoDto>(userinfo); 
                         data.success = true;
                         data.msg = "获取成功";
                     }
@@ -142,14 +144,14 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // POST: api/User
         [HttpPost]
-        public async Task<MessageModel<string>> Post([FromBody] sysUserInfo sysUserInfo)
+        public async Task<MessageModel<string>> Post([FromBody] SysUserInfoDto sysUserInfo)
         {
             var data = new MessageModel<string>();
 
             sysUserInfo.uLoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.uLoginPWD);
             sysUserInfo.uRemark = _user.Name;
 
-            var id = await _sysUserInfoServices.Add(sysUserInfo);
+            var id = await _sysUserInfoServices.Add(_mapper.Map<SysUserInfo>(sysUserInfo));
             data.success = id > 0;
             if (data.success)
             {
@@ -167,7 +169,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // PUT: api/User/5
         [HttpPut]
-        public async Task<MessageModel<string>> Put([FromBody] sysUserInfo sysUserInfo)
+        public async Task<MessageModel<string>> Put([FromBody] SysUserInfoDto sysUserInfo)
         {
             // 这里使用事务处理
 
@@ -198,7 +200,7 @@ namespace Blog.Core.Controllers
 
                     }
 
-                    data.success = await _sysUserInfoServices.Update(sysUserInfo);
+                    data.success = await _sysUserInfoServices.Update(_mapper.Map<SysUserInfo>(sysUserInfo));
 
                     _unitOfWork.CommitTran();
 
@@ -231,12 +233,12 @@ namespace Blog.Core.Controllers
             if (id > 0)
             {
                 var userDetail = await _sysUserInfoServices.QueryById(id);
-                userDetail.tdIsDelete = true;
+                userDetail.IsDeleted = true;
                 data.success = await _sysUserInfoServices.Update(userDetail);
                 if (data.success)
                 {
                     data.msg = "删除成功";
-                    data.response = userDetail?.uID.ObjToString();
+                    data.response = userDetail?.Id.ObjToString();
                 }
             }
 

@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,21 +18,24 @@ namespace Blog.Core.Controllers
     [Authorize(Permissions.Name)]
     public class UserRoleController : Controller
     {
-        readonly ISysUserInfoServices _sysUserInfoServices;
-        readonly IUserRoleServices _userRoleServices;
-        readonly IRoleServices _roleServices;
+        private readonly ISysUserInfoServices _sysUserInfoServices;
+        private readonly IUserRoleServices _userRoleServices;
+        private readonly IRoleServices _roleServices;
+        private readonly IMapper _mapper;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="sysUserInfoServices"></param>
         /// <param name="userRoleServices"></param>
+        /// <param name="mapper"></param>
         /// <param name="roleServices"></param>
-        public UserRoleController(ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices)
+        public UserRoleController(ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IMapper mapper, IRoleServices roleServices)
         {
-            this._sysUserInfoServices = sysUserInfoServices;
-            this._userRoleServices = userRoleServices;
-            this._roleServices = roleServices;
+            _sysUserInfoServices = sysUserInfoServices;
+            _userRoleServices = userRoleServices;
+            _roleServices = roleServices;
+            _mapper = mapper;
         }
 
 
@@ -42,13 +47,14 @@ namespace Blog.Core.Controllers
         /// <param name="loginPwd"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<sysUserInfo>> AddUser(string loginName, string loginPwd)
+        public async Task<MessageModel<SysUserInfoDto>> AddUser(string loginName, string loginPwd)
         {
-            return new MessageModel<sysUserInfo>()
+            var userInfo = await _sysUserInfoServices.SaveUserInfo(loginName, loginPwd);
+            return new MessageModel<SysUserInfoDto>()
             {
                 success = true,
                 msg = "添加成功",
-                response = await _sysUserInfoServices.SaveUserInfo(loginName, loginPwd)
+                response = _mapper.Map<SysUserInfoDto>(userInfo)
             };
         }
 

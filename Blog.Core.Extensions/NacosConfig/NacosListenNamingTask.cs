@@ -1,4 +1,5 @@
-﻿using Blog.Core.Common.Helper;
+﻿using Blog.Core.Common;
+using Blog.Core.Common.Helper;
 using Microsoft.Extensions.Hosting;
 using Nacos.V2;
 using System;

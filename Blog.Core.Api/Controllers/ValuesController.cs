@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
+using Blog.Core.Common.HttpPolly;
 using Blog.Core.Common.HttpRestSharp;
 using Blog.Core.Common.WebApiClients.HttpApis;
 using Blog.Core.EventBus;
@@ -17,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -43,6 +45,7 @@ namespace Blog.Core.Controllers
         private readonly IBlogApi _blogApi;
         private readonly IDoubanApi _doubanApi;
         readonly IBlogArticleServices _blogArticleServices;
+        private readonly IHttpPollyHelper _httpPollyHelper;
 
         /// <summary>
         /// ValuesController
@@ -56,6 +59,7 @@ namespace Blog.Core.Controllers
         /// <param name="passwordLibServices"></param>
         /// <param name="blogApi"></param>
         /// <param name="doubanApi"></param>
+        /// <param name="httpPollyHelper"></param>
         public ValuesController(IBlogArticleServices blogArticleServices
             , IMapper mapper
             , IAdvertisementServices advertisementServices
@@ -63,7 +67,8 @@ namespace Blog.Core.Controllers
             , IRoleModulePermissionServices roleModulePermissionServices
             , IUser user, IPasswordLibServices passwordLibServices
             , IBlogApi blogApi
-            , IDoubanApi doubanApi)
+            , IDoubanApi doubanApi
+            , IHttpPollyHelper httpPollyHelper)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
@@ -81,7 +86,26 @@ namespace Blog.Core.Controllers
             _blogArticleServices = blogArticleServices;
             // 测试redis消息队列
             _blogArticleServices = blogArticleServices;
+            // httpPolly
+            _httpPollyHelper = httpPollyHelper;
         }
+
+        [HttpGet]
+        public MessageModel<List<ClaimDto>> MyClaims()
+        {
+            return new MessageModel<List<ClaimDto>>()
+            {
+                success = true,
+                response = (_user.GetClaimsIdentity().ToList()).Select(d =>
+                    new ClaimDto
+                    {
+                        Type = d.Type,
+                        Value = d.Value
+                    }
+                ).ToList()
+            };
+        }
+
         /// <summary>
         /// Get方法
         /// </summary>
@@ -107,7 +131,7 @@ namespace Blog.Core.Controllers
             /*
             *  测试按照指定列查询带多条件和排序方法
             */
-            Expression<Func<BlogArticle, bool>> registerInfoWhere = a => a.btitle == "xxx" && a.bRemark=="XXX";
+            Expression<Func<BlogArticle, bool>> registerInfoWhere = a => a.btitle == "xxx" && a.bRemark == "XXX";
             var queryByColumsByMultiTerms = await _blogArticleServices
                 .Query<BlogArticle>(it => new BlogArticle() { btitle = it.btitle }, registerInfoWhere, "bID Desc");
 
@@ -172,7 +196,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public void EventBusTry([FromServices] IEventBus _eventBus, string blogId = "1")
         {
-            var blogDeletedEvent = new BlogDeletedIntegrationEvent(blogId);
+            var blogDeletedEvent = new BlogQueryIntegrationEvent(blogId);
 
             _eventBus.Publish(blogDeletedEvent);
         }
@@ -358,7 +382,7 @@ namespace Blog.Core.Controllers
         /// </summary>
         [HttpGet("/apollo")]
         [AllowAnonymous]
-        public async Task<IEnumerable<KeyValuePair<string,string>>> GetAllConfigByAppllo([FromServices]IConfiguration configuration)
+        public async Task<IEnumerable<KeyValuePair<string, string>>> GetAllConfigByAppllo([FromServices] IConfiguration configuration)
         {
             return await Task.FromResult(configuration.AsEnumerable());
         }
@@ -372,5 +396,32 @@ namespace Blog.Core.Controllers
             return await Task.FromResult(Appsettings.app(key));
         }
         #endregion
+
+        #region HttpPolly
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<string> HttpPollyPost()
+        {
+            var response = await _httpPollyHelper.PostAsync(HttpEnum.LocalHost, "/api/ElasticDemo/EsSearchTest", "{\"from\": 0,\"size\": 10,\"word\": \"非那雄安\"}");
+
+            return response;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<string> HttpPollyGet()
+        {
+            return await _httpPollyHelper.GetAsync(HttpEnum.LocalHost, "/api/ElasticDemo/GetDetailInfo?esid=3130&esindex=chinacodex");
+        } 
+        #endregion
+
+        [HttpPost]
+        [AllowAnonymous]
+        public string TestEnum(EnumDemoDto dto)=>dto.Type.ToString();
+    }
+    public class ClaimDto
+    {
+        public string Type { get; set; }
+        public string Value { get; set; }
     }
 }

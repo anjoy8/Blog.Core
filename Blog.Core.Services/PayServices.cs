@@ -1,6 +1,6 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.Helper;
-using Blog.Core.Common.StaticHelper;
+using Blog.Core.Common.Static;
 using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model;
@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -213,26 +213,13 @@ namespace Blog.Core.Services
 
                 _logger.LogInformation("请求地址：" + sUrl);
                 _logger.LogInformation("请求报文：" + sRequestMsg);
-                HttpWebRequest request = (System.Net.HttpWebRequest)HttpWebRequest.Create(sUrl);
-                request.Method = "POST";
 
-                request.ContentType = "application/x-www-form-urlencoded";
-                request.KeepAlive = false;
-                request.Connection = "";
-
-                //外联平台使用GB18030编码，这里进行转码处理 
+                HttpClient request = new HttpClient();         
                 byte[] byteRquest = Encoding.GetEncoding("GB18030").GetBytes(sRequestMsg);
-                request.ContentLength = byteRquest.Length;
+                ByteArrayContent bytemsg = new ByteArrayContent(byteRquest);
+                HttpResponseMessage resulthd = await request.PostAsync(sUrl, bytemsg);
+                Stream result = await resulthd.Content.ReadAsStreamAsync();
 
-                //发送请求
-                Stream writerStream = request.GetRequestStream();
-                await writerStream.WriteAsync(byteRquest, 0, byteRquest.Length);
-                writerStream.Flush();
-                writerStream.Close();
-
-                //接收请求
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream result = response.GetResponseStream();
                 StreamReader readerResult = new StreamReader(result, System.Text.Encoding.GetEncoding("GB18030"));
                 string sResult = await readerResult.ReadToEndAsync();
                 _logger.LogInformation("响应报文:" + sResult);
@@ -257,6 +244,7 @@ namespace Blog.Core.Services
                 messageModel.response.AMOUNT = Xmlresult.TX_INFO?.AMOUNT;
                 messageModel.response.PAY_AMOUNT = Xmlresult.TX_INFO?.PAY_AMOUNT;
                 messageModel.response.ORDER_NUM = Xmlresult.TX_INFO?.ORDER_NUM;
+                request.Dispose();
             }
             catch (Exception ex)
             {
@@ -270,6 +258,7 @@ namespace Blog.Core.Services
             {
                 _logger.LogInformation($"返回数据->{JsonHelper.GetJSON<MessageModel<PayRefundReturnResultModel>>(messageModel)}");
                 _logger.LogInformation("退款结束");
+                
             }
             return messageModel;
 

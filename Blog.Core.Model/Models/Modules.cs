@@ -25,37 +25,37 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 名称
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
+        [SugarColumn(Length = 50, IsNullable = true)]
         public string Name { get; set; }
         /// <summary>
         /// 菜单链接地址
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 100, IsNullable = true)]
+        [SugarColumn(Length = 100, IsNullable = true)]
         public string LinkUrl { get; set; }
         /// <summary>
         /// 区域名称
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string Area { get; set; }
         /// <summary>
         /// 控制器名称
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string Controller { get; set; }
         /// <summary>
         /// Action名称
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string Action { get; set; }
         /// <summary>
         /// 图标
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 100, IsNullable = true)]
+        [SugarColumn(Length = 100, IsNullable = true)]
         public string Icon { get; set; }
         /// <summary>
         /// 菜单编号
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 10, IsNullable = true)]
+        [SugarColumn(Length = 10, IsNullable = true)]
         public string Code { get; set; }
         /// <summary>
         /// 排序
@@ -64,7 +64,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// /描述
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 100, IsNullable = true)]
+        [SugarColumn(Length = 100, IsNullable = true)]
         public string Description { get; set; }
         /// <summary>
         /// 是否是右侧菜单
@@ -82,7 +82,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 创建者
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
+        [SugarColumn(Length = 50, IsNullable = true)]
         public string CreateBy { get; set; }
         /// <summary>
         /// 创建时间
@@ -97,7 +97,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 修改者
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 100, IsNullable = true)]
+        [SugarColumn(Length = 100, IsNullable = true)]
         public string ModifyBy { get; set; }
         /// <summary>
         /// 修改时间

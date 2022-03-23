@@ -14,19 +14,19 @@ namespace Blog.Core.Model.Models
             this.TopicDetail = new List<TopicDetail>();
             this.tUpdatetime = DateTime.Now;
         }
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tLogo { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tName { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 400, IsNullable = true)]
+        [SugarColumn(Length = 400, IsNullable = true)]
         public string tDetail { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tAuthor { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string tSectendDetail { get; set; }
 
         public bool tIsDelete { get; set; }

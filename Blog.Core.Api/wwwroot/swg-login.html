@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>默认首页</title>
+    <script src="https://apk.neters.club/js/jquery-3.3.1.min.js"></script>
+
+</head>
+<body>
+    <div id="requestMsg"></div>
+    <div style="text-align: center;">
+        <p>用户名：admin，密码：admin</p>
+        <input id="name" placeholder="name" type="text" />
+        <br />
+        <input id="pwd" placeholder="pwd" type="password" />
+        <br />
+        <input type="submit" onclick="submit()" value="submit" />
+    </div>
+    <script>
+        function submit() {
+            let postdata = {
+                "name": $("#name").val(),
+                "pwd": $("#pwd").val(),
+            };
+            if (!(postdata.name && postdata.pwd)) {
+                alert('参数不正确');
+                return
+            }
+            $.ajax({
+                url: "/api/Login/swgLogin",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(postdata),
+                dataType: 'json',
+                success: function (data) {
+                    if (data?.result) {
+                        window.location.href = "/index.html";
+                    } else {
+                        alert('参数不正确');
+                    }
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>

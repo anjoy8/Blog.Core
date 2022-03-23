@@ -1,11 +1,14 @@
-﻿using Blog.Core.Common;
+﻿using Blog.Core.AuthHelper;
+using Blog.Core.Common;
 using Blog.Core.Extensions;
 using Blog.Core.Gateway.Extensions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Nacos.V2.DependencyInjection;
 
 namespace Blog.Core.AdminMvc
 {
@@ -14,9 +17,7 @@ namespace Blog.Core.AdminMvc
         /**
         *┌──────────────────────────────────────────────────────────────┐
         *│　描    述：模拟一个网关项目         
-        *│　测    试：http://localhost:9000/gateway/user/MyClaims         
-        *│　测    试：http://localhost:9000/gateway/api/blog         
-        *│　测    试：http://localhost:9000/gateway/is4api/GetAchieveUsers         
+        *│　测    试：在网关swagger中查看具体的服务         
         *│　作    者：anson zhang                                             
         *└──────────────────────────────────────────────────────────────┘
         */
@@ -35,10 +36,14 @@ namespace Blog.Core.AdminMvc
 
             services.AddAuthentication_JWTSetup();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("GW", policy => policy.RequireRole("AdminTest").Build());
-            });
+            services.AddAuthentication()
+               .AddScheme<AuthenticationSchemeOptions, CustomAuthenticationHandler>(Permissions.GWName, _ => { });
+
+
+            services.AddNacosV2Config(Configuration, null, "nacosConfig");
+            services.AddNacosV2Naming(Configuration, null, "nacos");
+            services.AddHostedService<ApiGateway.Helper.OcelotConfigurationTask>();
+
 
             services.AddCustomSwaggerSetup();
 
@@ -73,6 +78,8 @@ namespace Blog.Core.AdminMvc
                 endpoints.MapControllers();
             });
 
+            app.UseMiddleware<CustomJwtTokenAuthMiddleware>();
+           
             app.UseCustomOcelotMildd().Wait();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Blog.Core.Common;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 
 namespace Blog.Core.Extensions
@@ -17,7 +18,8 @@ namespace Blog.Core.Extensions
             services.AddScoped<ICaching, MemoryCaching>();
             services.AddSingleton<IMemoryCache>(factory =>
             {
-                var cache = new MemoryCache(new MemoryCacheOptions());
+                var value = factory.GetRequiredService<IOptions<MemoryCacheOptions>>();
+                var cache = new MemoryCache(value);
                 return cache;
             });
         }

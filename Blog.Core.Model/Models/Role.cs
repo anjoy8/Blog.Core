@@ -34,12 +34,12 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 角色名
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
+        [SugarColumn(Length = 50, IsNullable = true)]
         public string Name { get; set; }
         /// <summary>
         ///描述
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 100, IsNullable = true)]
+        [SugarColumn(Length = 100, IsNullable = true)]
         public string Description { get; set; }
         /// <summary>
         ///排序
@@ -57,7 +57,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 创建者
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 50, IsNullable = true)]
+        [SugarColumn(Length = 50, IsNullable = true)]
         public string CreateBy { get; set; }
         /// <summary>
         /// 创建时间
