@@ -276,12 +276,6 @@
              部门表
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.Department.PId">
-            <summary>
-            Desc:父部门
-            Nullable:True
-            </summary>
-        </member>
         <member name="P:Blog.Core.Model.Models.Department.CodeRelationship">
             <summary>
             Desc:部门关系编码
@@ -289,7 +283,7 @@
             Nullable:True
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.Department.DepartName">
+        <member name="P:Blog.Core.Model.Models.Department.Name">
             <summary>
             Desc:部门名称
             Default:
@@ -303,7 +297,7 @@
             Nullable:True
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.Department.OrderNum">
+        <member name="P:Blog.Core.Model.Models.Department.OrderSort">
             <summary>
             Desc:排序
             Default:
@@ -1415,6 +1409,16 @@
         <member name="P:Blog.Core.Model.RootEntity.Id">
             <summary>
             ID
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.DepartmentRoot`1">
+            <summary>
+            部门表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.DepartmentRoot`1.Pid">
+            <summary>
+            上一级（0表示无上一级）
             </summary>
         </member>
         <member name="T:Blog.Core.Model.ModulesRoot`1">

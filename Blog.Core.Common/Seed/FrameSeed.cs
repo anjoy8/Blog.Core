@@ -194,6 +194,7 @@ namespace " + strNameSpace + @"
                 var data = new MessageModel<string>();
 
                 var id = await _{ClassName}Services.Add(request);
+                data.success = id > 0;
                 if (data.success)
                 {
                     data.response = id.ObjToString();

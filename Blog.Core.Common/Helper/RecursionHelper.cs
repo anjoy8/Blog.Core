@@ -52,6 +52,30 @@ namespace Blog.Core.Common.Helper
                 LoopToAppendChildren(all, subItem, pid, needbtn);
             }
         }
+        public static void LoopToAppendChildren(List<DepartmentTree> all, DepartmentTree curItem, int pid)
+        {
+
+            var subItems = all.Where(ee => ee.Pid == curItem.value).ToList();
+ 
+            if (subItems.Count > 0)
+            {
+                curItem.children = new List<DepartmentTree>();
+                curItem.children.AddRange(subItems);
+            }
+            else
+            {
+                curItem.children = null;
+            }
+
+            foreach (var subItem in subItems)
+            {
+                if (subItem.value == pid && pid > 0)
+                {
+                    //subItem.disabled = true;//禁用当前节点
+                }
+                LoopToAppendChildren(all, subItem, pid);
+            }
+        }
 
 
 
@@ -102,6 +126,17 @@ namespace Blog.Core.Common.Helper
         public List<PermissionTree> children { get; set; }
         public List<PermissionTree> btns { get; set; }
     }
+
+    public class DepartmentTree
+    {
+        public long value { get; set; }
+        public long Pid { get; set; }
+        public string label { get; set; }
+        public int order { get; set; }
+        public bool disabled { get; set; }
+        public List<DepartmentTree> children { get; set; }
+    }
+
     public class NavigationBar
     {
         public int id { get; set; }
