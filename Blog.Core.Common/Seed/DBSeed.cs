@@ -281,6 +281,20 @@ namespace Blog.Core.Common.Seed
                     }
                     #endregion
 
+                    #region Department
+                    if (!await myContext.Db.Queryable<Department>().AnyAsync())
+                    {
+                        var data = JsonConvert.DeserializeObject<List<Department>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Department"), Encoding.UTF8), setting);
+
+                        myContext.GetEntityDB<Department>().InsertRange(data);
+                        Console.WriteLine("Table:Department created success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Table:Department already exists...");
+                    }
+                    #endregion
+
                     ConsoleHelper.WriteSuccessLine($"Done seeding database!");
                 }
 

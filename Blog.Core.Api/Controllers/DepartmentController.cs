@@ -4,11 +4,16 @@ using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Api.Controllers
@@ -19,10 +24,12 @@ namespace Blog.Core.Api.Controllers
     public class DepartmentController : BaseApiController
     {
         private readonly IDepartmentServices _departmentServices;
+        private readonly IWebHostEnvironment _env;
 
-        public DepartmentController(IDepartmentServices departmentServices)
+        public DepartmentController(IDepartmentServices departmentServices, IWebHostEnvironment env)
         {
             _departmentServices = departmentServices;
+            _env = env;
         }
 
         [HttpGet]
@@ -176,6 +183,34 @@ namespace Blog.Core.Api.Controllers
             {
                 data.msg = "删除成功";
                 data.response = id;
+            }
+
+            return data;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<MessageModel<string>> SaveData2Tsv()
+        {
+            var data = new MessageModel<string>() { success = true, msg = "" };
+            if (_env.IsDevelopment())
+            {
+
+                JsonSerializerSettings microsoftDateFormatSettings = new JsonSerializerSettings
+                {
+                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat
+                };
+
+                var rolesJson = JsonConvert.SerializeObject(await _departmentServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Department_New.tsv"), rolesJson, Encoding.UTF8);
+
+                data.success = true;
+                data.msg = "生成成功！";
+            }
+            else
+            {
+                data.success = false;
+                data.msg = "当前不处于开发模式，代码生成不可用！";
             }
 
             return data;
