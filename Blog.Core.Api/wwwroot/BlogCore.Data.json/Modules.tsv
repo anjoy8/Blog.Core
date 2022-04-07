@@ -1491,5 +1491,27 @@
     "ModifyTime": "2022-03-23 00:00:00",
     "ParentId": 0,
     "Id": 70
+  },
+  {
+    "IsDeleted": 0,
+    "ParentId": null,
+    "Name": "Get导航条Pro",
+    "LinkUrl": "\/api\/permission\/GetNavigationBarPro",
+    "Area": null,
+    "Controller": null,
+    "Action": null,
+    "Icon": null,
+    "Code": null,
+    "OrderSort": 0,
+    "Description": null,
+    "IsMenu": 0,
+    "Enabled": 1,
+    "CreateId": 23,
+    "CreateBy": "后台总管理员",
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "Id": 71
   }
 ]

@@ -414,6 +414,13 @@
             <param name="uid"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBarPro(System.Int32)">
+            <summary>
+            获取路由树【PRO】
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Controllers.PermissionController.GetPermissionIdByRoleId(System.Int32)">
             <summary>
             通过角色获取菜单【无权限】

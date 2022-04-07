@@ -161,4 +161,27 @@ namespace Blog.Core.Common.Helper
 
 
     }
+
+
+    public class NavigationBarPro
+    {
+        public int id { get; set; }
+        public int parentId { get; set; }
+        public int order { get; set; }
+        public string name { get; set; }
+        public bool IsHide { get; set; } = false;
+        public bool IsButton { get; set; } = false;
+        public string path { get; set; }
+        public string component { get; set; }
+        public string Func { get; set; }
+        public string iconCls { get; set; }
+        public NavigationBarMetaPro meta { get; set; }
+    }
+
+    public class NavigationBarMetaPro
+    {
+        public string title { get; set; }
+        public string icon { get; set; }
+        public bool show { get; set; } = false;
+    }
 }

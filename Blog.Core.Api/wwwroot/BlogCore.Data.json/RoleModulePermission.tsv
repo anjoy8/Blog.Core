@@ -1635,5 +1635,18 @@
     "ModuleId": 70,
     "PermissionId": 120,
     "Id": 127
+  },
+  {
+    "IsDeleted": 0,
+    "RoleId": 4,
+    "ModuleId": 71,
+    "PermissionId": 121,
+    "CreateId": null,
+    "CreateBy": null,
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "Id": 128
   }
 ]
