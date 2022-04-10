@@ -140,10 +140,10 @@
     "IsHide": 0
   },
   {
-    "Code": "\/Thanks",
-    "Name": "致谢页",
+    "Code": "\/System\/BasicSetting",
+    "Name": "个人设置",
     "IsButton": 0,
-    "Pid": 0,
+    "Pid": 68,
     "Mid": 0,
     "OrderSort": 5,
     "Icon": "fa-star ",
@@ -2530,5 +2530,25 @@
     "Pid": 115,
     "Mid": 70,
     "Id": 120
+  },
+  {
+    "Code": " ",
+    "Name": "左侧导航Pro",
+    "IsButton": 1,
+    "Pid": 7,
+    "Mid": 71,
+    "OrderSort": 0,
+    "Icon": null,
+    "Description": null,
+    "Enabled": 1,
+    "CreateId": 23,
+    "CreateBy": "后台总管理员",
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "IsDeleted": 0,
+    "Id": 121,
+    "IsHide": 1
   }
 ]

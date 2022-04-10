@@ -5,7 +5,7 @@
     <OutputType>Exe</OutputType>
 
     <TargetFramework>net6.0</TargetFramework>
-    <!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
+	<ImplicitUsings>enable</ImplicitUsings>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>

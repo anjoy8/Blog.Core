@@ -414,6 +414,13 @@
             <param name="uid"></param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBarPro(System.Int32)">
+            <summary>
+            获取路由树【PRO】
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Controllers.PermissionController.GetPermissionIdByRoleId(System.Int32)">
             <summary>
             通过角色获取菜单【无权限】
@@ -633,7 +640,7 @@
             用户管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.IServices.IDepartmentServices,Blog.Core.Common.HttpContextUser.IUser,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
             <summary>
             构造函数
             </summary>
@@ -1273,12 +1280,6 @@
             <summary>
             全局路由前缀公约
             </summary>
-        </member>
-        <member name="M:Blog.Core.Program.GetAppSettingsConfigName">
-            <summary>
-            根据环境变量定向配置文件名称
-            </summary>
-            <returns></returns>
         </member>
     </members>
 </doc>
