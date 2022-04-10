@@ -45,6 +45,11 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public int Status { get; set; }
         /// <summary>
+        /// 部门
+        /// </summary>
+        [SugarColumn(IsNullable = true)]
+        public int DepartmentId { get; set; } = -1;
+        /// <summary>
         /// 备注
         /// </summary>
         [SugarColumn(Length = 2000, IsNullable = true)]
@@ -94,6 +99,10 @@ namespace Blog.Core.Model.Models
 
         [SugarColumn(IsIgnore = true)]
         public List<string> RoleNames { get; set; }
+        [SugarColumn(IsIgnore = true)]
+        public List<int> Dids { get; set; }
+        [SugarColumn(IsIgnore = true)]
+        public string DepartmentName { get; set; }
 
     }
 }

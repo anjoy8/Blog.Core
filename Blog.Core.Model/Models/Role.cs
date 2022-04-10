@@ -46,6 +46,17 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public int OrderSort { get; set; }
         /// <summary>
+        /// 自定义权限的部门ids
+        /// </summary>
+        [SugarColumn(Length = 500, IsNullable = true)]
+        public string Dids { get; set; }
+        /// <summary>
+        /// 权限范围
+        /// -1 无任何权限；1 自定义权限；2 本部门；3 本部门及以下；4 仅自己；9 全部；
+        /// </summary>
+        [SugarColumn(IsNullable = true)]
+        public int AuthorityScope { get; set; } = -1;
+        /// <summary>
         /// 是否激活
         /// </summary>
         public bool Enabled { get; set; }

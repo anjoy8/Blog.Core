@@ -29,9 +29,11 @@ namespace Blog.Core.Controllers
         readonly ISysUserInfoServices _sysUserInfoServices;
         readonly IUserRoleServices _userRoleServices;
         readonly IRoleServices _roleServices;
+        private readonly IDepartmentServices _departmentServices;
         private readonly IUser _user;
         private readonly IMapper _mapper;
         private readonly ILogger<UserController> _logger;
+        private string fullName;
 
         /// <summary>
         /// 构造函数
@@ -44,13 +46,16 @@ namespace Blog.Core.Controllers
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
         public UserController(IUnitOfWork unitOfWork, ISysUserInfoServices sysUserInfoServices,
-            IUserRoleServices userRoleServices, IRoleServices roleServices,
+            IUserRoleServices userRoleServices,
+            IRoleServices roleServices,
+            IDepartmentServices departmentServices,
             IUser user, IMapper mapper, ILogger<UserController> logger)
         {
             _unitOfWork = unitOfWork;
             _sysUserInfoServices = sysUserInfoServices;
             _userRoleServices = userRoleServices;
             _roleServices = roleServices;
+            _departmentServices = departmentServices;
             _user = user;
             _mapper = mapper;
             _logger = logger;
@@ -81,6 +86,7 @@ namespace Blog.Core.Controllers
             // 这里可以封装到多表查询，此处简单处理
             var allUserRoles = await _userRoleServices.Query(d => d.IsDeleted == false);
             var allRoles = await _roleServices.Query(d => d.IsDeleted == false);
+            var allDepartments = await _departmentServices.Query(d => d.IsDeleted == false);
 
             var sysUserInfos = data.data;
             foreach (var item in sysUserInfos)
@@ -88,6 +94,12 @@ namespace Blog.Core.Controllers
                 var currentUserRoles = allUserRoles.Where(d => d.UserId == item.Id).Select(d => d.RoleId).ToList();
                 item.RIDs = currentUserRoles;
                 item.RoleNames = allRoles.Where(d => currentUserRoles.Contains(d.Id)).Select(d => d.Name).ToList();
+                List<int> dids = new List<int>();
+                fullName = "";
+                var departmentName = GetFullDepartmentName(allDepartments, item.DepartmentId, dids);
+                item.DepartmentName = departmentName;
+                dids.Insert(0, 0);
+                item.Dids = dids;
             }
 
             data.data = sysUserInfos;
@@ -96,6 +108,21 @@ namespace Blog.Core.Controllers
 
             return Success(data.ConvertTo<SysUserInfoDto>(_mapper));
 
+        }
+
+        private string GetFullDepartmentName(List<Department> departments, int departmentId, List<int> dids)
+        {
+            var departmentModel = departments.FirstOrDefault(d => d.Id == departmentId);
+            if (departmentModel == null)
+            {
+                return fullName;
+            }
+
+            fullName = $"{departmentModel.Name}/{fullName}";
+            dids.Insert(0, departmentModel.Id);
+            GetFullDepartmentName(departments, departmentModel.Pid, dids);
+
+            return fullName;
         }
 
         // GET: api/User/5
@@ -127,7 +154,7 @@ namespace Blog.Core.Controllers
                     var userinfo = await _sysUserInfoServices.QueryById(tokenModel.Uid);
                     if (userinfo != null)
                     {
-                        data.response = _mapper.Map<SysUserInfoDto>(userinfo); 
+                        data.response = _mapper.Map<SysUserInfoDto>(userinfo);
                         data.success = true;
                         data.msg = "获取成功";
                     }

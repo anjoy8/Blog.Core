@@ -4,6 +4,36 @@
         <name>Blog.Core.Model</name>
     </assembly>
     <members>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.NONE">
+            <summary>
+            无任何权限
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.Custom">
+            <summary>
+            自定义权限
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.MyDepart">
+            <summary>
+            本部门
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.MyDepartAndDown">
+            <summary>
+            本部门及以下
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.OnlySelf">
+            <summary>
+            仅自己
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.ALL">
+            <summary>
+            所有
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.IDS4DbModels.ApplicationRole">
             <summary>
             以下model 来自ids4项目，多库模式，为了调取ids4数据
@@ -651,6 +681,17 @@
             排序
              </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.Role.Dids">
+            <summary>
+            自定义权限的部门ids
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.AuthorityScope">
+            <summary>
+            权限范围
+            -1 无任何权限；1 自定义权限；2 本部门；3 本部门及以下；4 仅自己；9 全部；
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Role.Enabled">
             <summary>
             是否激活
@@ -749,6 +790,11 @@
         <member name="P:Blog.Core.Model.Models.SysUserInfo.Status">
             <summary>
             状态
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.DepartmentId">
+            <summary>
+            部门
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.SysUserInfo.Remark">

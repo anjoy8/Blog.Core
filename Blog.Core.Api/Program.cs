@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿
+// 以下为asp.net 6.0的写法，如果用5.0，请看Program.five.cs文件
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Blog.Core;
 using Blog.Core.Common;
