@@ -33,7 +33,6 @@ namespace Blog.Core.Controllers
         private readonly IUser _user;
         private readonly IMapper _mapper;
         private readonly ILogger<UserController> _logger;
-        private string fullName;
 
         /// <summary>
         /// 构造函数
@@ -94,12 +93,9 @@ namespace Blog.Core.Controllers
                 var currentUserRoles = allUserRoles.Where(d => d.UserId == item.Id).Select(d => d.RoleId).ToList();
                 item.RIDs = currentUserRoles;
                 item.RoleNames = allRoles.Where(d => currentUserRoles.Contains(d.Id)).Select(d => d.Name).ToList();
-                List<int> dids = new List<int>();
-                fullName = "";
-                var departmentName = GetFullDepartmentName(allDepartments, item.DepartmentId, dids);
-                item.DepartmentName = departmentName;
-                dids.Insert(0, 0);
-                item.Dids = dids;
+                var departmentNameAndIds = GetFullDepartmentName(allDepartments, item.DepartmentId);
+                item.DepartmentName = departmentNameAndIds.Item1;
+                item.Dids = departmentNameAndIds.Item2;
             }
 
             data.data = sysUserInfos;
@@ -110,19 +106,20 @@ namespace Blog.Core.Controllers
 
         }
 
-        private string GetFullDepartmentName(List<Department> departments, int departmentId, List<int> dids)
+        private (string, List<int>) GetFullDepartmentName(List<Department> departments, int departmentId)
         {
             var departmentModel = departments.FirstOrDefault(d => d.Id == departmentId);
             if (departmentModel == null)
             {
-                return fullName;
+                return ("", new List<int>());
             }
 
-            fullName = $"{departmentModel.Name}/{fullName}";
-            dids.Insert(0, departmentModel.Id);
-            GetFullDepartmentName(departments, departmentModel.Pid, dids);
+            var pids = departmentModel.CodeRelationship?.TrimEnd(',').Split(',').Select(d => d.ObjToInt()).ToList();
+            pids.Add(departmentModel.Id);
+            var pnams = departments.Where(d => pids.Contains(d.Id)).ToList().Select(d => d.Name).ToArray();
+            var fullName = string.Join("/", pnams);
 
-            return fullName;
+            return (fullName, pids);
         }
 
         // GET: api/User/5
