@@ -207,16 +207,20 @@ namespace Blog.Core.Controllers
 
                 if (sysUserInfo != null && sysUserInfo.uID > 0)
                 {
+                    // 无论 Update Or Add , 先删除当前用户的全部 U_R 关系
+                    var usreroles = (await _userRoleServices.Query(d => d.UserId == sysUserInfo.uID)).Select(d => d.Id.ToString()).ToArray();
+                    if (usreroles.Any())
+                    {
+                        var isAllDeleted = await _userRoleServices.DeleteByIds(usreroles);
+                        if (!isAllDeleted)
+                        {
+                            return Failed("服务器更新异常");
+                        }
+                    }
+
+                    // 然后再执行添加操作
                     if (sysUserInfo.RIDs.Count > 0)
                     {
-                        // 无论 Update Or Add , 先删除当前用户的全部 U_R 关系
-                        var usreroles = (await _userRoleServices.Query(d => d.UserId == sysUserInfo.uID)).Select(d => d.Id.ToString()).ToArray();
-                        if (usreroles.Count() > 0)
-                        {
-                            var isAllDeleted = await _userRoleServices.DeleteByIds(usreroles);
-                        }
-
-                        // 然后再执行添加操作
                         var userRolsAdd = new List<UserRole>();
                         sysUserInfo.RIDs.ForEach(rid =>
                        {
