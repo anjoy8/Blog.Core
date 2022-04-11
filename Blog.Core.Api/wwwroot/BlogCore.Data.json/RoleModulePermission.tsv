@@ -1648,5 +1648,49 @@
     "ModifyBy": null,
     "ModifyTime": "\/Date(1546272000000+0800)\/",
     "Id": 128
+  },
+  {
+    "IsDeleted": false,
+    "CreateId": 12,
+    "CreateBy": "blogadmin",
+    "CreateTime": "2022-04-11 16:08:48",
+    "ModifyTime": "2022-04-11 00:00:00",
+    "RoleId": 6,
+    "ModuleId": 0,
+    "PermissionId": 114,
+    "Id": 129
+  },
+  {
+    "IsDeleted": false,
+    "CreateId": 12,
+    "CreateBy": "blogadmin",
+    "CreateTime": "2022-04-11 16:08:48",
+    "ModifyTime": "2022-04-11 00:00:00",
+    "RoleId": 6,
+    "ModuleId": 66,
+    "PermissionId": 115,
+    "Id": 130
+  },
+  {
+    "IsDeleted": false,
+    "CreateId": 12,
+    "CreateBy": "blogadmin",
+    "CreateTime": "2022-04-11 16:08:49",
+    "ModifyTime": "2022-04-11 00:00:00",
+    "RoleId": 6,
+    "ModuleId": 70,
+    "PermissionId": 120,
+    "Id": 131
+  },
+  {
+    "IsDeleted": false,
+    "CreateId": 12,
+    "CreateBy": "blogadmin",
+    "CreateTime": "2022-04-11 16:08:49",
+    "ModifyTime": "2022-04-11 00:00:00",
+    "RoleId": 6,
+    "ModuleId": 66,
+    "PermissionId": 116,
+    "Id": 132
   }
 ]
