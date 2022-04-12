@@ -218,15 +218,17 @@ namespace " + strNameSpace + @"
                 return data;
             }
 
-            [HttpDelete(""{id}"")]
-            public async Task<MessageModel<string>> Delete(string id)
+            [HttpDelete]
+            public async Task<MessageModel<string>> Delete(int id)
             {
                 var data = new MessageModel<string>();
-                data.success = await _{ClassName}Services.DeleteById(id);
+                var model = await _{ClassName}Services.QueryById(id);
+                model.IsDeleted = true;
+                data.success = await _departmentServices.Update(model);
                 if (data.success)
                 {
                     data.msg = ""删除成功"";
-                    data.response = id;
+                    data.response = model?.Id.ObjToString();
                 }
 
                 return data;

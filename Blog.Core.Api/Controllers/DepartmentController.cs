@@ -174,16 +174,19 @@ namespace Blog.Core.Api.Controllers
             return data;
         }
 
-        [HttpDelete("{id}")]
-        public async Task<MessageModel<string>> Delete(string id)
+        [HttpDelete]
+        public async Task<MessageModel<string>> Delete(int id)
         {
             var data = new MessageModel<string>();
-            data.success = await _departmentServices.DeleteById(id);
+            var model = await _departmentServices.QueryById(id);
+            model.IsDeleted = true;
+            data.success = await _departmentServices.Update(model);
             if (data.success)
             {
                 data.msg = "删除成功";
-                data.response = id;
+                data.response = model?.Id.ObjToString();
             }
+             
 
             return data;
         }
