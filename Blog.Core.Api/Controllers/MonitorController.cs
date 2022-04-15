@@ -69,9 +69,10 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public MessageModel<List<LogInfo>> Get()
         {
-
-            _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
-
+            if (Appsettings.app(new string[] { "Middleware", "SignalRSendLog", "Enabled" }).ObjToBool())
+            {
+                _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
+            }
             return Success<List<LogInfo>>(null, "执行成功");
         }
 
