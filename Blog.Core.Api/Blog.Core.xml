@@ -837,6 +837,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.FluentVaTest(Blog.Core.Filter.UserRegisterVo)">
+            <summary>
+            测试Fulent做参数校验
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Put(System.Int32,System.String)">
             <summary>
             Put方法

@@ -13,6 +13,7 @@ using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
 using Blog.Core.Tasks;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -110,7 +111,15 @@ builder.Services.AddControllers(o =>
     //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
     options.SerializerSettings.Converters.Add(new StringEnumConverter());
+})
+.AddFluentValidation(config =>
+{
+    //程序集方式添加验证
+    config.RegisterValidatorsFromAssemblyContaining(typeof(UserRegisterVoValidator));
+    //是否与MvcValidation共存
+    config.DisableDataAnnotationsValidation = true;
 });
+
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());

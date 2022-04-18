@@ -357,6 +357,19 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
+        /// 测试Fulent做参数校验
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<string> FluentVaTest([FromBody] UserRegisterVo param)
+        {
+            await Task.CompletedTask;
+            return "Okay";
+        }
+
+        /// <summary>
         /// Put方法
         /// </summary>
         /// <param name="id"></param>
