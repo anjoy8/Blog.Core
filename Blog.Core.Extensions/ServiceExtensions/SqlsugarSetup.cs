@@ -2,6 +2,7 @@
 using Blog.Core.Common.DB;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 using StackExchange.Profiling;
@@ -16,6 +17,8 @@ namespace Blog.Core.Extensions
     /// </summary>
     public static class SqlsugarSetup
     {
+        private static readonly MemoryCache Cache = new MemoryCache(new MemoryCacheOptions());
+
         public static void AddSqlsugarSetup(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
@@ -26,6 +29,8 @@ namespace Blog.Core.Extensions
             // 把多个连接对象注入服务，这里必须采用Scope，因为有事务操作
             services.AddScoped<ISqlSugarClient>(o =>
             {
+                var memoryCache = o.GetRequiredService<IMemoryCache>();
+
                 // 连接字符串
                 var listConfig = new List<ConnectionConfig>();
                 // 从库
@@ -81,6 +86,7 @@ namespace Blog.Core.Extensions
                         // 自定义特性
                         ConfigureExternalServices = new ConfigureExternalServices()
                         {
+                            DataInfoCacheService = new SqlSugarMemoryCacheService(memoryCache),
                             EntityService = (property, column) =>
                             {
                                 if (column.IsPrimarykey && property.PropertyType == typeof(int))
