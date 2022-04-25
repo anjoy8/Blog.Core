@@ -200,7 +200,7 @@ namespace Blog.Core.Repository.Base
         /// <returns></returns>
         public async Task<bool> DeleteById(object id)
         {
-            return await _db.Deleteable<TEntity>(id).ExecuteCommandHasChangeAsync();
+            return await _db.Deleteable<TEntity>().In(id).ExecuteCommandHasChangeAsync();
         }
 
         /// <summary>
