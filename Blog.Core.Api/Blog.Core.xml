@@ -160,12 +160,12 @@
             <param name="environment"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.ImgController.InsertPicture(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:Blog.Core.Controllers.ImgController.InsertPicture(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Blog.Core.Model.ViewModels.UploadFileDto)">
             <summary>
-            上传图片,多文件，可以使用 postman 测试，
-            如果是单文件，可以 参数写 IFormFile file1
+            上传图片,多文件
             </summary>
             <param name="environment"></param>
+            <param name="dto"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.LoginController">
