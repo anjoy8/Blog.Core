@@ -153,18 +153,16 @@
             图片管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ImgController.DownImg(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:Blog.Core.Controllers.ImgController.DownImg">
             <summary>
             下载图片（支持中文字符）
             </summary>
-            <param name="environment"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.ImgController.InsertPicture(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Blog.Core.Model.ViewModels.UploadFileDto)">
+        <member name="M:Blog.Core.Controllers.ImgController.InsertPicture(Blog.Core.Model.ViewModels.UploadFileDto)">
             <summary>
             上传图片,多文件
             </summary>
-            <param name="environment"></param>
             <param name="dto"></param>
             <returns></returns>
         </member>
