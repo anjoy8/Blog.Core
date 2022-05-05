@@ -4,6 +4,36 @@
         <name>Blog.Core.Model</name>
     </assembly>
     <members>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.NONE">
+            <summary>
+            无任何权限
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.Custom">
+            <summary>
+            自定义权限
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.MyDepart">
+            <summary>
+            本部门
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.MyDepartAndDown">
+            <summary>
+            本部门及以下
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.OnlySelf">
+            <summary>
+            仅自己
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.ALL">
+            <summary>
+            所有
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.IDS4DbModels.ApplicationRole">
             <summary>
             以下model 来自ids4项目，多库模式，为了调取ids4数据
@@ -271,6 +301,81 @@
             逻辑删除
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Models.Department">
+            <summary>
+             部门表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.CodeRelationship">
+            <summary>
+            Desc:部门关系编码
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.Name">
+            <summary>
+            Desc:部门名称
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.Leader">
+            <summary>
+            Desc:负责人
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.OrderSort">
+            <summary>
+            Desc:排序
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.Status">
+            <summary>
+            Desc:部门状态（0正常 1停用）
+            Default:0
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.IsDeleted">
+            <summary>
+            Desc:删除标志（0代表存在 2代表删除）
+            Default:0
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.CreateBy">
+            <summary>
+            Desc:创建者
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.CreateTime">
+            <summary>
+            Desc:创建时间
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.ModifyBy">
+            <summary>
+            Desc:更新者
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.ModifyTime">
+            <summary>
+            Desc:更新时间
+            Default:
+            Nullable:True
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Guestbook.blogId">
             <summary>博客ID
             
@@ -305,46 +410,6 @@
             <summary>是否显示在前台,0否1是
             
             </summary>
-        </member>
-        <member name="T:Blog.Core.Model.Models.ModulePermission">
-            <summary>
-            菜单与按钮关系表
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.IsDeleted">
-             <summary>
-            获取或设置是否禁用，逻辑上的删除，非物理删除
-             </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateId">
-            <summary>
-            创建ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateBy">
-            <summary>
-            创建者
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.CreateTime">
-            <summary>
-            创建时间
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyId">
-            <summary>
-            修改ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyBy">
-            <summary>
-            修改者
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.ModulePermission.ModifyTime">
-             <summary>
-            修改时间
-             </summary>
         </member>
         <member name="T:Blog.Core.Model.Models.Modules">
             <summary>
@@ -616,6 +681,17 @@
             排序
              </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.Role.Dids">
+            <summary>
+            自定义权限的部门ids
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.AuthorityScope">
+            <summary>
+            权限范围
+            -1 无任何权限；1 自定义权限；2 本部门；3 本部门及以下；4 仅自己；9 全部；
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Role.Enabled">
             <summary>
             是否激活
@@ -691,57 +767,62 @@
             修改时间
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.Models.sysUserInfo">
+        <member name="T:Blog.Core.Model.Models.SysUserInfo">
             <summary>
             用户信息表
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uLoginName">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.LoginName">
             <summary>
             登录账号
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uLoginPWD">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.LoginPWD">
             <summary>
             登录密码
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uRealName">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.RealName">
             <summary>
             真实姓名
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uStatus">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.Status">
             <summary>
             状态
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uRemark">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.DepartmentId">
+            <summary>
+            部门
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.Remark">
             <summary>
             备注
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uCreateTime">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.CreateTime">
             <summary>
             创建时间
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uUpdateTime">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.UpdateTime">
             <summary>
             更新时间
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uLastErrTime">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.LastErrorTime">
              <summary>
-            最后登录时间 
+            最后异常时间 
              </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.uErrorCount">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.ErrorCount">
              <summary>
             错误次数 
              </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.sysUserInfo.name">
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.Name">
             <summary>
             登录账号
             </summary>
@@ -1376,20 +1457,14 @@
             ID
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.ModulePermissionRoot`1">
+        <member name="T:Blog.Core.Model.DepartmentRoot`1">
             <summary>
-            菜单与按钮关系表
-            父类
+            部门表
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.ModulePermissionRoot`1.ModuleId">
+        <member name="P:Blog.Core.Model.DepartmentRoot`1.Pid">
             <summary>
-            菜单ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.ModulePermissionRoot`1.PermissionId">
-            <summary>
-            按钮ID
+            上一级（0表示无上一级）
             </summary>
         </member>
         <member name="T:Blog.Core.Model.ModulesRoot`1">
@@ -1445,14 +1520,14 @@
             泛型主键Tkey
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.sysUserInfoRoot`1">
+        <member name="T:Blog.Core.Model.SysUserInfoRoot`1">
             <summary>
             用户信息表
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.sysUserInfoRoot`1.uID">
+        <member name="P:Blog.Core.Model.SysUserInfoRoot`1.Id">
             <summary>
-            uID
+            Id
             泛型主键Tkey
             </summary>
         </member>
@@ -1514,22 +1589,22 @@
             时间:2020-4-3 20:31:26
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.intPageIndex">
+        <member name="P:Blog.Core.Model.PaginationModel.PageIndex">
             <summary>
             当前页
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.intPageSize">
+        <member name="P:Blog.Core.Model.PaginationModel.PageSize">
             <summary>
             每页大小
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.strOrderByFileds">
+        <member name="P:Blog.Core.Model.PaginationModel.OrderByFileds">
             <summary>
             排序字段(例如:id desc,time asc)
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.conditions">
+        <member name="P:Blog.Core.Model.PaginationModel.Conditions">
             <summary>
             查询条件( 例如:id = 1 and name = 小明)
             </summary>
@@ -1687,6 +1762,11 @@
         <member name="P:Blog.Core.Model.ViewModels.BlogViewModels.bRemark">
             <summary>备注
             
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.EnumDemoDto.Type">
+            <summary>
+            Type Description balabala
             </summary>
         </member>
         <member name="T:Blog.Core.Model.ViewModels.GuestbookViewModels">

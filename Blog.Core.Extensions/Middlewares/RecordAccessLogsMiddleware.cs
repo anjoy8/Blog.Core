@@ -1,4 +1,10 @@
-﻿using Blog.Core.Common;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.LogHelper;
@@ -6,27 +12,21 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
-namespace Blog.Core.Middlewares
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// 中间件
     /// 记录用户方访问数据
     /// </summary>
-    public class RecordAccessLogsMildd
+    public class RecordAccessLogsMiddleware
     {
         /// <summary>
         /// 
         /// </summary>
         private readonly RequestDelegate _next;
         private readonly IUser _user;
-        private readonly ILogger<RecordAccessLogsMildd> _logger;
+        private readonly ILogger<RecordAccessLogsMiddleware> _logger;
         private readonly IWebHostEnvironment _environment;
         private Stopwatch _stopwatch;
 
@@ -34,7 +34,7 @@ namespace Blog.Core.Middlewares
         /// 
         /// </summary>
         /// <param name="next"></param>
-        public RecordAccessLogsMildd(RequestDelegate next, IUser user, ILogger<RecordAccessLogsMildd> logger, IWebHostEnvironment environment)
+        public RecordAccessLogsMiddleware(RequestDelegate next, IUser user, ILogger<RecordAccessLogsMiddleware> logger, IWebHostEnvironment environment)
         {
             _next = next;
             _user = user;
@@ -60,7 +60,7 @@ namespace Blog.Core.Middlewares
 
                     userAccessModel.API = api;
                     userAccessModel.User = _user.Name;
-                    userAccessModel.IP = IPLogMildd.GetClientIP(context);
+                    userAccessModel.IP = IpLogMiddleware.GetClientIP(context);
                     userAccessModel.BeginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     userAccessModel.RequestMethod = request.Method;
                     userAccessModel.Agent = request.Headers["User-Agent"].ObjToString();

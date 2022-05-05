@@ -1,17 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Hubs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
-using Blog.Core.Common;
 
-namespace Blog.Core.Middlewares
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// 中间件
     /// SignalR发送数据
     /// </summary>
-    public class SignalRSendMildd
+    public class SignalRSendMiddleware
     {
         /// <summary>
         /// 
@@ -24,7 +24,7 @@ namespace Blog.Core.Middlewares
         /// </summary>
         /// <param name="next"></param>
         /// <param name="hubContext"></param>
-        public SignalRSendMildd(RequestDelegate next, IHubContext<ChatHub> hubContext)
+        public SignalRSendMiddleware(RequestDelegate next, IHubContext<ChatHub> hubContext)
         {
             _next = next;
             _hubContext = hubContext;

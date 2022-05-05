@@ -13,6 +13,9 @@
     "SignalR": {
       "Enabled": false
     },
+    "SignalRSendLog": {
+      "Enabled": false
+    },
     "QuartzNetJob": {
       "Enabled": true
     },

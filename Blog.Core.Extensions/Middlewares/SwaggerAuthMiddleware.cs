@@ -1,18 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
-namespace Blog.Core.Middlewares
+namespace Blog.Core.Extensions.Middlewares
 {
-    public class SwaggerAuthMildd
+    public class SwaggerAuthMiddleware
     {
 
         private readonly RequestDelegate next;
 
-        public SwaggerAuthMildd(RequestDelegate next)
+        public SwaggerAuthMiddleware(RequestDelegate next)
         {
             this.next = next;
         }
@@ -72,7 +70,7 @@ namespace Blog.Core.Middlewares
     {
         public static IApplicationBuilder UseSwaggerAuthorized(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<SwaggerAuthMildd>();
+            return builder.UseMiddleware<SwaggerAuthMiddleware>();
         }
     }
 }

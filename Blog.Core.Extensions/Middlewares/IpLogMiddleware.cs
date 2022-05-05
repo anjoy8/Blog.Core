@@ -1,31 +1,31 @@
-﻿using Blog.Core.Common;
+﻿using System;
+using System.Threading.Tasks;
+using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using System;
-using System.Threading.Tasks;
 
-namespace Blog.Core.Middlewares
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// 中间件
     /// 记录IP请求数据
     /// </summary>
-    public class IPLogMildd
+    public class IpLogMiddleware
     {
         /// <summary>
         /// 
         /// </summary>
         private readonly RequestDelegate _next;
         private readonly IWebHostEnvironment _environment;
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(IPLogMildd));
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(typeof(IpLogMiddleware));
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="next"></param>
-        public IPLogMildd(RequestDelegate next, IWebHostEnvironment environment)
+        public IpLogMiddleware(RequestDelegate next, IWebHostEnvironment environment)
         {
             _next = next;
             _environment = environment;
@@ -83,6 +83,7 @@ namespace Blog.Core.Middlewares
                     }
                     catch (Exception)
                     {
+                        // ignored
                     }
                 }
                 else

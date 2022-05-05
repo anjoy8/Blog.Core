@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nacos.V2.DependencyInjection;
 using System;
-using ConfigurationManager = Blog.Core.Common.Helper.ConfigurationManager;
 
 namespace Blog.Core.Extensions
 {
@@ -48,9 +47,7 @@ namespace Blog.Core.Extensions
                 services.AddHostedService<NacosListenConfigurationTask>();//增加配置文件监听事件
             }
 
-            services.AddSingleton<IConfigurationManager>(new ConfigurationManager((ConfigurationRoot)Configuration));
             services.AddSingleton(Configuration);
-
         }
     }
 }

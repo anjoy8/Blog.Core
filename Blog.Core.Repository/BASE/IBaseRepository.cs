@@ -74,9 +74,9 @@ namespace Blog.Core.IRepository.Base
         /// 根据model，更新，带where条件
         /// </summary>
         /// <param name="entity"></param>
-        /// <param name="strWhere"></param>
+        /// <param name="where"></param>
         /// <returns></returns>
-        Task<bool> Update(TEntity entity, string strWhere);
+        Task<bool> Update(TEntity entity, string where);
         Task<bool> Update(object operateAnonymousObjects);
 
         /// <summary>
@@ -85,9 +85,9 @@ namespace Blog.Core.IRepository.Base
         /// <param name="entity"></param>
         /// <param name="lstColumns"></param>
         /// <param name="lstIgnoreColumns"></param>
-        /// <param name="strWhere"></param>
+        /// <param name="where"></param>
         /// <returns></returns>
-        Task<bool> Update(TEntity entity, List<string> lstColumns = null, List<string> lstIgnoreColumns = null, string strWhere = "");
+        Task<bool> Update(TEntity entity, List<string> lstColumns = null, List<string> lstIgnoreColumns = null, string where = "");
 
         /// <summary>
         /// 查询
@@ -98,9 +98,9 @@ namespace Blog.Core.IRepository.Base
         /// <summary>
         /// 带sql where查询
         /// </summary>
-        /// <param name="strWhere"></param>
+        /// <param name="where"></param>
         /// <returns></returns>
-        Task<List<TEntity>> Query(string strWhere);
+        Task<List<TEntity>> Query(string where);
 
         /// <summary>
         /// 根据表达式查询
@@ -123,31 +123,31 @@ namespace Blog.Core.IRepository.Base
         /// <typeparam name="TResult"></typeparam>
         /// <param name="expression"></param>
         /// <param name="whereExpression"></param>
-        /// <param name="strOrderByFileds"></param>
+        /// <param name="orderByFields"></param>
         /// <returns></returns>
-        Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression, Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds);
-        Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds);
+        Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression, Expression<Func<TEntity, bool>> whereExpression, string orderByFields);
+        Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression, string orderByFields);
         Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true);
-        Task<List<TEntity>> Query(string strWhere, string strOrderByFileds);
+        Task<List<TEntity>> Query(string where, string orderByFields);
 
-        Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression, int intTop, string strOrderByFileds);
-        Task<List<TEntity>> Query(string strWhere, int intTop, string strOrderByFileds);
-        Task<List<TEntity>> QuerySql(string strSql, SugarParameter[] parameters = null);
-        Task<DataTable> QueryTable(string strSql, SugarParameter[] parameters = null);
+        Task<List<TEntity>> Query(Expression<Func<TEntity, bool>> whereExpression, int intTop, string orderByFields);
+        Task<List<TEntity>> Query(string where, int intTop, string orderByFields);
+        Task<List<TEntity>> QuerySql(string sql, SugarParameter[] parameters = null);
+        Task<DataTable> QueryTable(string sql, SugarParameter[] parameters = null);
 
         Task<List<TEntity>> Query(
-            Expression<Func<TEntity, bool>> whereExpression, int intPageIndex, int intPageSize, string strOrderByFileds);
-        Task<List<TEntity>> Query(string strWhere, int intPageIndex, int intPageSize, string strOrderByFileds);
+            Expression<Func<TEntity, bool>> whereExpression, int pageIndex, int pageSize, string orderByFields);
+        Task<List<TEntity>> Query(string where, int pageIndex, int pageSize, string orderByFields);
 
         /// <summary>
         /// 根据表达式，排序字段，分页查询
         /// </summary>
         /// <param name="whereExpression"></param>
-        /// <param name="intPageIndex"></param>
-        /// <param name="intPageSize"></param>
-        /// <param name="strOrderByFileds"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="orderByFields"></param>
         /// <returns></returns>
-        Task<PageModel<TEntity>> QueryPage(Expression<Func<TEntity, bool>> whereExpression, int intPageIndex = 1, int intPageSize = 20, string strOrderByFileds = null);
+        Task<PageModel<TEntity>> QueryPage(Expression<Func<TEntity, bool>> whereExpression, int pageIndex = 1, int pageSize = 20, string orderByFields = null);
 
         /// <summary>
         /// 三表联查
@@ -174,17 +174,17 @@ namespace Blog.Core.IRepository.Base
         /// <param name="joinExpression"></param>
         /// <param name="selectExpression"></param>
         /// <param name="whereExpression"></param>
-        /// <param name="intPageIndex"></param>
-        /// <param name="intPageSize"></param>
-        /// <param name="strOrderByFileds"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="orderByFields"></param>
         /// <returns></returns>
         Task<PageModel<TResult>> QueryTabsPage<T, T2, TResult>(
             Expression<Func<T, T2, object[]>> joinExpression,
             Expression<Func<T, T2, TResult>> selectExpression,
             Expression<Func<TResult, bool>> whereExpression,
-            int intPageIndex = 1,
-            int intPageSize = 20,
-            string strOrderByFileds = null);
+            int pageIndex = 1,
+            int pageSize = 20,
+            string orderByFields = null);
 
         /// <summary>
         /// 两表联合查询-分页-分组
@@ -196,17 +196,17 @@ namespace Blog.Core.IRepository.Base
         /// <param name="selectExpression"></param>
         /// <param name="whereExpression"></param>
         /// <param name="groupExpression"></param>
-        /// <param name="intPageIndex"></param>
-        /// <param name="intPageSize"></param>
-        /// <param name="strOrderByFileds"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="orderByFields"></param>
         /// <returns></returns>
         Task<PageModel<TResult>> QueryTabsPage<T, T2, TResult>(
             Expression<Func<T, T2, object[]>> joinExpression,
             Expression<Func<T, T2, TResult>> selectExpression,
             Expression<Func<TResult, bool>> whereExpression,
             Expression<Func<T, object>> groupExpression,
-            int intPageIndex = 1,
-            int intPageSize = 20,
-            string strOrderByFileds = null);
+            int pageIndex = 1,
+            int pageSize = 20,
+            string orderByFields = null);
     }
 }

@@ -1,17 +1,17 @@
-﻿using Consul;
+﻿using System;
+using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using System;
 
-namespace Blog.Core.Extensions
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// Consul 注册服务
     /// </summary>
-    public static class ConsulMildd
+    public static class ConsulMiddleware
     {
-        public static IApplicationBuilder UseConsulMildd(this IApplicationBuilder app, IConfiguration configuration, IHostApplicationLifetime lifetime)
+        public static IApplicationBuilder UseConsulMiddle(this IApplicationBuilder app, IConfiguration configuration, IHostApplicationLifetime lifetime)
         {
             if (configuration["Middleware:Consul:Enabled"].ObjToBool())
             {
