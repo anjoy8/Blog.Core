@@ -1,22 +1,22 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
-namespace Blog.Core.Middlewares
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// 测试用户，用来通过鉴权
     /// JWT：?userid=8&rolename=AdminTest
     /// </summary>
-    public class ByPassAuthMidd
+    public class ByPassAuthMiddleware
     {
         private readonly RequestDelegate _next;
         // 定义变量：当前用户Id，会常驻内存。
         private string _currentUserId;
         // 同理定义：当前角色名
         private string _currentRoleName;
-        public ByPassAuthMidd(RequestDelegate next)
+        public ByPassAuthMiddleware(RequestDelegate next)
         {
             _next = next;
             _currentUserId = null;

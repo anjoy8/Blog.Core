@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -45,6 +46,7 @@ namespace Blog.Core.Controllers
             _env = env;
         }
 
+
         /// <summary>
         /// 获取权限部分Map数据（从库）
         /// 迁移到新库（主库）
@@ -54,24 +56,41 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<string>> DataMigrateFromOld2New()
         {
             var data = new MessageModel<string>() { success = true, msg = "" };
+            var filterPermissionId = 122;
             if (_env.IsDevelopment())
             {
                 try
                 {
-                    // 获取权限集合数据 
+                    var apiList = await _moduleServices.Query(d => d.IsDeleted == false);
+                    var permissionsAllList = await _permissionServices.Query(d => d.IsDeleted == false);
+                    var permissions = permissionsAllList.Where(d => d.Pid == 0).ToList();
                     var rmps = await _roleModulePermissionServices.GetRMPMaps();
+                    List<PM> pms = new();
+
                     // 当然，你可以做个where查询
-                    //rmps = rmps.Where(d => d.ModuleId > 88).ToList();
+                    rmps = rmps.Where(d => d.PermissionId >= filterPermissionId).ToList();
+
+                    InitPermissionTree(permissions, permissionsAllList, apiList);
+
+                    var actionPermissionIds = permissionsAllList.Where(d => d.Id >= filterPermissionId).Select(d => d.Id).ToList();
+                    List<int> filterPermissionIds = new();
+                    FilterPermissionTree(permissionsAllList, actionPermissionIds, filterPermissionIds);
+                    permissions = permissions.Where(d => filterPermissionIds.Contains(d.Id)).ToList();
 
                     // 开启事务，保证数据一致性
                     _unitOfWork.BeginTran();
+
+                    // 注意信息的完整性，不要重复添加，确保主库没有要添加的数据
+
+                    // 1、保持菜单和接口
+                    await SavePermissionTreeAsync(permissions, pms);
 
                     var rid = 0;
                     var pid = 0;
                     var mid = 0;
                     var rpmid = 0;
 
-                    // 注意信息的完整性，不要重复添加，确保主库没有要添加的数据
+                    // 2、保存关系表
                     foreach (var item in rmps)
                     {
                         // 角色信息，防止重复添加，做了判断
@@ -89,22 +108,10 @@ namespace Blog.Core.Controllers
                             }
                         }
 
-                        // 菜单
-                        if (item.Permission != null)
-                        {
-                            pid = await _permissionServices.Add(item.Permission);
-                            Console.WriteLine($"Permission Added:{item.Permission.Name}");
-                        }
-
-                        // 接口
-                        if (item.Module != null)
-                        {
-                            mid = await _moduleServices.Add(item.Module);
-                            Console.WriteLine($"Module Added:{item.Module.LinkUrl}");
-                        }
-
+                        pid = (pms.FirstOrDefault(d => d.PidOld == item.PermissionId)?.PidNew).ObjToInt();
+                        mid = (pms.FirstOrDefault(d => d.MidOld == item.ModuleId)?.MidNew).ObjToInt();
                         // 关系
-                        if (rid > 0 && pid > 0 && mid > 0)
+                        if (rid > 0 && pid > 0)
                         {
                             rpmid = await _roleModulePermissionServices.Add(new RoleModulePermission()
                             {
@@ -152,7 +159,7 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>() { success = true, msg = "" };
             if (_env.IsDevelopment())
             {
-            
+
                 JsonSerializerSettings microsoftDateFormatSettings = new JsonSerializerSettings
                 {
                     DateFormatHandling = DateFormatHandling.MicrosoftDateFormat
@@ -188,5 +195,88 @@ namespace Blog.Core.Controllers
             return data;
         }
 
+        private void InitPermissionTree(List<Permission> permissionsTree, List<Permission> all, List<Modules> apis)
+        {
+            foreach (var item in permissionsTree)
+            {
+                item.Children = all.Where(d => d.Pid == item.Id).ToList();
+                item.Module = apis.FirstOrDefault(d => d.Id == item.Mid);
+                InitPermissionTree(item.Children, all, apis);
+            }
+        }
+
+        private void FilterPermissionTree(List<Permission> permissionsAll, List<int> actionPermissionId, List<int> filterPermissionIds)
+        {
+            actionPermissionId = actionPermissionId.Distinct().ToList();
+            var doneIds = permissionsAll.Where(d => actionPermissionId.Contains(d.Id) && d.Pid == 0).Select(d => d.Id).ToList();
+            filterPermissionIds.AddRange(doneIds);
+
+            var hasDoIds = permissionsAll.Where(d => actionPermissionId.Contains(d.Id) && d.Pid != 0).Select(d => d.Pid).ToList();
+            if (hasDoIds.Any())
+            {
+                FilterPermissionTree(permissionsAll, hasDoIds, filterPermissionIds);
+            }
+        }
+
+        private async Task SavePermissionTreeAsync(List<Permission> permissionsTree, List<PM> pms, int permissionId = 0)
+        {
+            var parendId = permissionId;
+
+            foreach (var item in permissionsTree)
+            {
+                PM pm = new PM();
+                // 保留原始主键id
+                pm.PidOld = item.Id;
+                pm.MidOld = (item.Module?.Id).ObjToInt();
+
+                var mid = 0;
+                // 接口
+                if (item.Module != null)
+                {
+                    var moduleModel = (await _moduleServices.Query(d => d.LinkUrl == item.Module.LinkUrl)).FirstOrDefault();
+                    if (moduleModel != null)
+                    {
+                        mid = moduleModel.Id;
+                    }
+                    else
+                    {
+                        mid = await _moduleServices.Add(item.Module);
+                    }
+                    pm.MidNew = mid;
+                    Console.WriteLine($"Moudle Added:{item.Module.Name}");
+                }
+                // 菜单
+                if (item != null)
+                {
+                    var permissionModel = (await _permissionServices.Query(d => d.Name == item.Name && d.Pid == item.Pid && d.Mid == item.Mid)).FirstOrDefault();
+                    item.Pid = parendId;
+                    item.Mid = mid;
+                    if (permissionModel != null)
+                    {
+                        permissionId = permissionModel.Id;
+                    }
+                    else
+                    {
+                        permissionId = await _permissionServices.Add(item);
+                    }
+
+                    pm.PidNew = permissionId;
+                    Console.WriteLine($"Permission Added:{item.Name}");
+                }
+                pms.Add(pm);
+
+                await SavePermissionTreeAsync(item.Children, pms, permissionId);
+            }
+        }
+
+
+    }
+
+    public class PM
+    {
+        public int PidOld { get; set; }
+        public int MidOld { get; set; }
+        public int PidNew { get; set; }
+        public int MidNew { get; set; }
     }
 }

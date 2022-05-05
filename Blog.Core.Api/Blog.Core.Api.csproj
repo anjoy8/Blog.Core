@@ -5,7 +5,7 @@
     <OutputType>Exe</OutputType>
 
     <TargetFramework>net6.0</TargetFramework>
-    <!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
+	<ImplicitUsings>enable</ImplicitUsings>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
@@ -53,6 +53,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="SkyAPM.Agent.AspNetCore" Version="1.3.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
+	<PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
+	<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -65,7 +67,7 @@
     <None Include="wwwroot\BlogCore.Data.json\Permission.tsv" />
     <None Include="wwwroot\BlogCore.Data.json\Role.tsv" />
     <None Include="wwwroot\BlogCore.Data.json\RoleModulePermission.tsv" />
-    <None Include="wwwroot\BlogCore.Data.json\sysUserInfo.tsv" />
+    <None Include="wwwroot\BlogCore.Data.json\SysUserInfo.tsv" />
     <None Include="wwwroot\BlogCore.Data.json\Topic.tsv" />
     <None Include="wwwroot\BlogCore.Data.json\TopicDetail.tsv" />
     <None Include="wwwroot\BlogCore.Data.json\UserRole.tsv" />

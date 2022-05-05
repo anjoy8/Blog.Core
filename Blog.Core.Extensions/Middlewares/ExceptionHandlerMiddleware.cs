@@ -1,19 +1,19 @@
-﻿using Blog.Core.Model;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Blog.Core.Model;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
-namespace Blog.Core.Middlewares
+namespace Blog.Core.Extensions.Middlewares
 {
-    public class ExceptionHandlerMidd
+    public class ExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
-        private static readonly log4net.ILog log =
-        log4net.LogManager.GetLogger(typeof(ExceptionHandlerMidd));
+        private static readonly log4net.ILog Log =
+        log4net.LogManager.GetLogger(typeof(ExceptionHandlerMiddleware));
 
-        public ExceptionHandlerMidd(RequestDelegate next)
+        public ExceptionHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
         }
@@ -34,7 +34,7 @@ namespace Blog.Core.Middlewares
         {
             if (e == null) return;
 
-            log.Error(e.GetBaseException().ToString());
+            Log.Error(e.GetBaseException().ToString());
 
             await WriteExceptionAsync(context, e).ConfigureAwait(false);
         }

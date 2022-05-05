@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Blog.Core.AuthHelper;
+﻿using Blog.Core.AuthHelper;
 using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.HttpContextUser;
@@ -10,7 +6,6 @@ using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
@@ -434,6 +429,82 @@ namespace Blog.Core.Controllers
                         if (data.success)
                         {
                             data.response = rootRoot;
+                            data.msg = "获取成功";
+                        }
+                    }
+                }
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// 获取路由树【PRO】
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<MessageModel<List<NavigationBarPro>>> GetNavigationBarPro(int uid)
+        {
+            var data = new MessageModel<List<NavigationBarPro>>();
+
+            var uidInHttpcontext1 = 0;
+            var roleIds = new List<int>();
+            // ids4和jwt切换
+            if (Permissions.IsUseIds4)
+            {
+                // ids4
+                uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
+                                     where item.Type == "sub"
+                                     select item.Value).FirstOrDefault().ObjToInt();
+                roleIds = (from item in _httpContext.HttpContext.User.Claims
+                           where item.Type == "role"
+                           select item.Value.ObjToInt()).ToList();
+            }
+            else
+            {
+                // jwt
+                uidInHttpcontext1 = ((JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid).ObjToInt();
+                roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToInt()).Distinct().ToList();
+            }
+
+            if (uid > 0 && uid == uidInHttpcontext1)
+            {
+                if (roleIds.Any())
+                {
+                    var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && roleIds.Contains(d.RoleId)))
+                                    .Select(d => d.PermissionId.ObjToInt()).Distinct();
+                    if (pids.Any())
+                    {
+                        var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
+                        var permissionTrees = (from item in rolePermissionMoudles
+                                               where item.IsDeleted == false
+                                               orderby item.Id
+                                               select new NavigationBarPro
+                                               {
+                                                   id = item.Id,
+                                                   name = item.Name,
+                                                   parentId = item.Pid,
+                                                   order = item.OrderSort,
+                                                   path = item.Code == "-" ? item.Name.GetTotalPingYin().FirstOrDefault() : (item.Code == "/" ? "/dashboard/workplace" : item.Code),
+                                                   component = item.Pid == 0 ? (item.Code == "/" ? "dashboard/Workplace" : "RouteView") : item.Code?.TrimStart('/'),
+                                                   iconCls = item.Icon,
+                                                   Func = item.Func,
+                                                   IsHide = item.IsHide.ObjToBool(),
+                                                   IsButton = item.IsButton.ObjToBool(),
+                                                   meta = new NavigationBarMetaPro
+                                                   {
+                                                       show = true,
+                                                       title = item.Name,
+                                                       icon = "user"//item.Icon
+                                                   }
+                                               }).ToList();
+
+                        permissionTrees = permissionTrees.OrderBy(d => d.order).ToList();
+
+                        data.success = true;
+                        if (data.success)
+                        {
+                            data.response = permissionTrees;
                             data.msg = "获取成功";
                         }
                     }

@@ -160,12 +160,12 @@
             <param name="environment"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.ImgController.InsertPicture(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:Blog.Core.Controllers.ImgController.InsertPicture(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Blog.Core.Model.ViewModels.UploadFileDto)">
             <summary>
-            上传图片,多文件，可以使用 postman 测试，
-            如果是单文件，可以 参数写 IFormFile file1
+            上传图片,多文件
             </summary>
             <param name="environment"></param>
+            <param name="dto"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.LoginController">
@@ -237,6 +237,12 @@
             swagger登录
             </summary>
             <param name="loginRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.LoginController.WxLogin(System.String,System.String)">
+            <summary>
+            weixin登录
+            </summary>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.ModuleController">
@@ -404,6 +410,13 @@
         <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBar(System.Int32)">
             <summary>
             获取路由树
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBarPro(System.Int32)">
+            <summary>
+            获取路由树【PRO】
             </summary>
             <param name="uid"></param>
             <returns></returns>
@@ -627,7 +640,7 @@
             用户管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.Common.HttpContextUser.IUser,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.IServices.IDepartmentServices,Blog.Core.Common.HttpContextUser.IUser,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
             <summary>
             构造函数
             </summary>
@@ -636,6 +649,7 @@
             <param name="userRoleServices"></param>
             <param name="roleServices"></param>
             <param name="user"></param>
+            <param name="mapper"></param>
             <param name="logger"></param>
         </member>
         <member name="M:Blog.Core.Controllers.UserController.Get(System.Int32,System.String)">
@@ -654,14 +668,14 @@
             <param name="token">令牌</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.Models.sysUserInfo)">
+        <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.ViewModels.SysUserInfoDto)">
             <summary>
             添加一个用户
             </summary>
             <param name="sysUserInfo"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.Put(Blog.Core.Model.Models.sysUserInfo)">
+        <member name="M:Blog.Core.Controllers.UserController.Put(Blog.Core.Model.ViewModels.SysUserInfoDto)">
             <summary>
             更新用户与角色
             </summary>
@@ -680,12 +694,13 @@
             用户角色关系
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserRoleController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices)">
+        <member name="M:Blog.Core.Controllers.UserRoleController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,AutoMapper.IMapper,Blog.Core.IServices.IRoleServices)">
             <summary>
             构造函数
             </summary>
             <param name="sysUserInfoServices"></param>
             <param name="userRoleServices"></param>
+            <param name="mapper"></param>
             <param name="roleServices"></param>
         </member>
         <member name="M:Blog.Core.Controllers.UserRoleController.AddUser(System.String,System.String)">
@@ -716,7 +731,7 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi,Blog.Core.Common.WebApiClients.HttpApis.IDoubanApi)">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi,Blog.Core.Common.WebApiClients.HttpApis.IDoubanApi,Blog.Core.Common.HttpPolly.IHttpPollyHelper)">
             <summary>
             ValuesController
             </summary>
@@ -729,6 +744,7 @@
             <param name="passwordLibServices"></param>
             <param name="blogApi"></param>
             <param name="doubanApi"></param>
+            <param name="httpPollyHelper"></param>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Get">
             <summary>
@@ -819,6 +835,13 @@
             <summary>
             测试http请求 WebApiClient Get
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.FluentVaTest(Blog.Core.Filter.UserRegisterVo)">
+            <summary>
+            测试Fulent做参数校验
+            </summary>
+            <param name="param"></param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.Put(System.Int32,System.String)">
@@ -1144,6 +1167,21 @@
             <summary>
             批量删除
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.DepartmentController.GetTreeTable(System.Int64,System.String)">
+            <summary>
+            查询树形 Table
+            </summary>
+            <param name="f">父节点</param>
+            <param name="key">关键字</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.DepartmentController.GetDepartmentTree(System.Int32)">
+            <summary>
+            获取部门树
+            </summary>
+            <param name="pid"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Api.Controllers.NacosController">

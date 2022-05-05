@@ -3,7 +3,6 @@ using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
-using Blog.Core.Middlewares;
 using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -20,6 +19,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Blog.Core.Extensions.Middlewares;
 
 namespace Blog.Core.Controllers
 {
@@ -69,9 +69,10 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public MessageModel<List<LogInfo>> Get()
         {
-
-            _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
-
+            if (Appsettings.app(new string[] { "Middleware", "SignalRSendLog", "Enabled" }).ObjToBool())
+            {
+                _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
+            }
             return Success<List<LogInfo>>(null, "执行成功");
         }
 

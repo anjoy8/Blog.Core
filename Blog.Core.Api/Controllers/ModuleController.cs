@@ -47,7 +47,17 @@ namespace Blog.Core.Controllers
 
             Expression<Func<Modules, bool>> whereExpression = a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key));
 
-            var data = await _moduleServices.QueryPage(whereExpression, page, intPageSize, " Id desc ");
+            PageModel<Modules> data = new PageModel<Modules>();
+
+            if (page == -1)
+            {
+                var modules = await _moduleServices.Query(whereExpression, " Id desc ");
+                data.data = modules;
+            }
+            else
+            {
+                data = await _moduleServices.QueryPage(whereExpression, page, intPageSize, " Id desc ");
+            }
 
 
             return Success(data, "获取成功");

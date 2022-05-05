@@ -110,7 +110,7 @@ namespace Blog.Core.Tests
 
             // 属性注入
             var controllerBaseType = typeof(ControllerBase);
-            builder.RegisterAssemblyTypes(typeof(Program).Assembly)
+            builder.RegisterAssemblyTypes(typeof(Startup).Assembly)
                 .Where(t => controllerBaseType.IsAssignableFrom(t) && t != controllerBaseType)
                 .PropertiesAutowired();
          

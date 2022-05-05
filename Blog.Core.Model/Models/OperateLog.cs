@@ -55,6 +55,6 @@ namespace Blog.Core.Model.Models
         public int UserId { get; set; }
 
         [SugarColumn(IsIgnore = true)]
-        public virtual sysUserInfo User { get; set; }
+        public virtual SysUserInfo User { get; set; }
     }
 }

@@ -6,7 +6,6 @@ using Blog.Core.Extensions;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
-using Blog.Core.Middlewares;
 using Blog.Core.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,10 +17,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
+using Blog.Core.Extensions.Middlewares;
 
 namespace Blog.Core
 {
@@ -96,6 +97,7 @@ namespace Blog.Core
             
             services.AddDistributedMemoryCache();
             services.AddSession();
+            services.AddHttpPollySetup();
 
             services.AddControllers(o =>
             {
@@ -124,6 +126,8 @@ namespace Blog.Core
                 //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 //设置本地时间而非UTC时间
                 options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
+                //添加Enum转string
+                options.SerializerSettings.Converters.Add(new StringEnumConverter());
             });
 
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
@@ -144,17 +148,17 @@ namespace Blog.Core
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MyContext myContext, ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter, IHostApplicationLifetime lifetime)
         {
             // Ip限流,尽量放管道外层
-            app.UseIpLimitMildd();
+            app.UseIpLimitMiddle();
             // 记录请求与返回数据 
-            app.UseReuestResponseLog();
+            app.UseRequestResponseLogMiddle();
             // 用户访问记录(必须放到外层，不然如果遇到异常，会报错，因为不能返回流)
-            app.UseRecordAccessLogsMildd();
+            app.UseRecordAccessLogsMiddle();
             // signalr 
-            app.UseSignalRSendMildd();
+            app.UseSignalRSendMiddle();
             // 记录ip请求
-            app.UseIPLogMildd();
+            app.UseIpLogMiddle();
             // 查看注入的所有服务
-            app.UseAllServicesMildd(_services);
+            app.UseAllServicesMiddle(_services);
 
             if (env.IsDevelopment())
             {
@@ -172,7 +176,7 @@ namespace Blog.Core
             app.UseSession();
             app.UseSwaggerAuthorized();
             // 封装Swagger展示
-            app.UseSwaggerMildd(() => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.Api.index.html"));
+            app.UseSwaggerMiddle(() => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.Api.index.html"));
 
             // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
 
@@ -198,14 +202,14 @@ namespace Blog.Core
             // 测试用户，用来通过鉴权
             if (Configuration.GetValue<bool>("AppSettings:UseLoadTest"))
             {
-                app.UseMiddleware<ByPassAuthMidd>();
+                app.UseMiddleware<ByPassAuthMiddleware>();
             }
             // 先开启认证
             app.UseAuthentication();
             // 然后是授权中间件
             app.UseAuthorization();
             //开启性能分析
-            app.UseMiniProfilerMildd();
+            app.UseMiniProfilerMiddleware();
             // 开启异常中间件，要放到最后
             //app.UseExceptionHandlerMidd();
 
@@ -220,11 +224,11 @@ namespace Blog.Core
             });
 
             // 生成种子数据
-            app.UseSeedDataMildd(myContext, Env.WebRootPath);
+            app.UseSeedDataMiddle(myContext, Env.WebRootPath);
             // 开启QuartzNetJob调度服务
-            app.UseQuartzJobMildd(tasksQzServices, schedulerCenter);
+            app.UseQuartzJobMiddleware(tasksQzServices, schedulerCenter);
             // 服务注册
-            app.UseConsulMildd(Configuration, lifetime);
+            app.UseConsulMiddle(Configuration, lifetime);
             // 事件总线，订阅服务
             app.ConfigureEventBus();
 

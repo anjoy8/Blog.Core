@@ -1,31 +1,31 @@
-﻿using Blog.Core.Common;
-using Blog.Core.Common.LogHelper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Blog.Core.Common;
+using Blog.Core.Common.LogHelper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
-namespace Blog.Core.Middlewares
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// 中间件
     /// 记录请求和响应数据
     /// </summary>
-    public class RequRespLogMildd
+    public class RequRespLogMiddleware
     {
         /// <summary>
         /// 
         /// </summary>
         private readonly RequestDelegate _next;
-        private readonly ILogger<RequRespLogMildd> _logger;
+        private readonly ILogger<RequRespLogMiddleware> _logger;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="next"></param>
-        public RequRespLogMildd(RequestDelegate next, ILogger<RequRespLogMildd> logger)
+        public RequRespLogMiddleware(RequestDelegate next, ILogger<RequRespLogMiddleware> logger)
         {
             _next = next;
             _logger = logger;
@@ -105,20 +105,20 @@ namespace Blog.Core.Middlewares
         private void ResponseDataLog(HttpResponse response, MemoryStream ms)
         {
             ms.Position = 0;
-            var ResponseBody = new StreamReader(ms).ReadToEnd();
+            var responseBody = new StreamReader(ms).ReadToEnd();
 
             // 去除 Html
             var reg = "<[^>]+>";
-            var isHtml = Regex.IsMatch(ResponseBody, reg);
+            var isHtml = Regex.IsMatch(responseBody, reg);
 
-            if (!string.IsNullOrEmpty(ResponseBody))
+            if (!string.IsNullOrEmpty(responseBody))
             {
                 //Parallel.For(0, 1, e =>
                 //{
                 //    LogLock.OutSql2Log("RequestResponseLog", new string[] { "Response Data:", ResponseBody });
 
                 //});
-                SerilogServer.WriteLog("RequestResponseLog", new string[] { "Response Data:", ResponseBody });
+                SerilogServer.WriteLog("RequestResponseLog", new string[] { "Response Data:", responseBody });
             }
         }
     }

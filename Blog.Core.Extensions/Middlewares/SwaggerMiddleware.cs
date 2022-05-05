@@ -1,20 +1,20 @@
-﻿using Blog.Core.Common;
-using log4net;
-using Microsoft.AspNetCore.Builder;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
+using Blog.Core.Common;
+using log4net;
+using Microsoft.AspNetCore.Builder;
 using static Blog.Core.Extensions.CustomApiVersion;
 
-namespace Blog.Core.Extensions
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// Swagger中间件
     /// </summary>
-    public static class SwaggerMildd
+    public static class SwaggerMiddleware
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(SwaggerMildd));
-        public static void UseSwaggerMildd(this IApplicationBuilder app, Func<Stream> streamHtml)
+        private static readonly ILog Log = LogManager.GetLogger(typeof(SwaggerMiddleware));
+        public static void UseSwaggerMiddle(this IApplicationBuilder app, Func<Stream> streamHtml)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
@@ -22,19 +22,19 @@ namespace Blog.Core.Extensions
             app.UseSwaggerUI(c =>
             {
                 //根据版本名称倒序 遍历展示
-                var ApiName = Appsettings.app(new string[] { "Startup", "ApiName" });
+                var apiName = Appsettings.app(new string[] { "Startup", "ApiName" });
                 typeof(ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(version =>
                 {
-                    c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{ApiName} {version}");
+                    c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{apiName} {version}");
                 });
 
-                c.SwaggerEndpoint($"https://petstore.swagger.io/v2/swagger.json", $"{ApiName} pet");
+                c.SwaggerEndpoint($"https://petstore.swagger.io/v2/swagger.json", $"{apiName} pet");
 
                 // 将swagger首页，设置成我们自定义的页面，记得这个字符串的写法：{项目名.index.html}
                 if (streamHtml.Invoke() == null)
                 {
                     var msg = "index.html的属性，必须设置为嵌入的资源";
-                    log.Error(msg);
+                    Log.Error(msg);
                     throw new Exception(msg);
                 }
                 c.IndexStream = streamHtml;

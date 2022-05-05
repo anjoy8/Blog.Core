@@ -1,19 +1,18 @@
-﻿using Autofac.Extensions.DependencyInjection;
+﻿using System;
+using System.Linq;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.IO;
-using System.Linq;
 
-namespace Blog.Core.Extensions
+namespace Blog.Core.Extensions.Middlewares
 {
     /// <summary>
     /// 查看所有注入的服务
     /// </summary>
-    public static class AllServicesMildd
+    public static class AllServicesMiddleware
     {
-        public static void UseAllServicesMildd(this IApplicationBuilder app, IServiceCollection _services)
+        public static void UseAllServicesMiddle(this IApplicationBuilder app, IServiceCollection _services)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
@@ -21,7 +20,7 @@ namespace Blog.Core.Extensions
             //tsDIAutofac.AddRange(Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "Blog.Core.Services.dll")).GetTypes().ToList());
             //tsDIAutofac.AddRange(Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "Blog.Core.Repository.dll")).GetTypes().ToList());
 
-            var autofacContaniers = (app.ApplicationServices.GetAutofacRoot())?.ComponentRegistry?.Registrations;
+            var autofacContainers = (app.ApplicationServices.GetAutofacRoot())?.ComponentRegistry?.Registrations;
 
 
             app.Map("/allservices", builder => builder.Run(async context =>
@@ -39,7 +38,7 @@ namespace Blog.Core.Extensions
                     await context.Response.WriteAsync($"<td>{svc.ImplementationType?.Name}</td>");
                     await context.Response.WriteAsync("</tr>");
                 }
-                foreach (var item in autofacContaniers.ToList())
+                foreach (var item in autofacContainers.ToList())
                 {
                     var interfaceType = item.Services;
                     foreach (var typeArray in interfaceType)
