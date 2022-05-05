@@ -7,6 +7,7 @@ using Com.Ctrip.Framework.Apollo.Enums;
 using Com.Ctrip.Framework.Apollo.Logging;
 using Microsoft.Extensions.Primitives;
 using System.Reflection;
+using Blog.Core.Common;
 
 namespace Blog.Core.Extensions.Apollo
 {
@@ -36,8 +37,9 @@ namespace Blog.Core.Extensions.Apollo
                 {
                     apolloBuilder.AddNamespace(item.Name, MatchConfigFileFormat(item.Format));
                 }
+                Appsettings.Configuration = builder.Build();
                 //监听apollo配置
-                Monitor(builder.Build());
+                Monitor((IConfigurationRoot)Appsettings.Configuration);
             }
 
         }

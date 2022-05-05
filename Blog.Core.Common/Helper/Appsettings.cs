@@ -39,24 +39,7 @@ namespace Blog.Core.Common
         {
             //清除原配置，添加默认配置
             builder.Sources.Clear();
-            GetDefaultConfigFiles().ForEach(file =>builder.AddJsonFile(file));
-
-            IConfigurationRoot configuration = builder.Build();
-            // 获取自定义配置文件夹 && 文件夹存在
-            IEnumerable<string> customConfigFolder = configuration.Get<IEnumerable<string>>("CustomConfigInfo", "ConfigFileFolders")?.Where(folderPath => Directory.Exists(folderPath));
-            if(customConfigFolder is null || !customConfigFolder.Any())
-            {
-                Configuration = builder.Build();
-                return;
-            }
-
-            // 获取所有配置文件
-            List<string> jsonFiles = new();
-            customConfigFolder.ToList().ForEach(folder => jsonFiles.AddRange(Directory.GetFiles(folder, "*.json", SearchOption.TopDirectoryOnly)));
-
-            // 将配置文件添加到配置中
-            jsonFiles.ForEach(jsonFile => builder.AddJsonFile(jsonFile, true, false));
-
+            GetDefaultConfigFiles().ForEach(file => builder.AddJsonFile(Path.Combine(AppContext.BaseDirectory, file)));
             Configuration = builder.Build();
 
             /// <summary>

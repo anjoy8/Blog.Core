@@ -11,6 +11,10 @@
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <SaveMergeLog>true</SaveMergeLog>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>..\Blog.Core.Api\Blog.Core.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
@@ -48,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Easy.Tool.MergeJson" Version="1.0.0" />
     <PackageReference Include="log4mongo-netcore" Version="3.2.0" />
     <PackageReference Include="MicroKnights.Log4NetAdoNetAppender" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
