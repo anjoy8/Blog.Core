@@ -31,11 +31,27 @@ namespace Blog.Core.Repository.MongoRepository
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<TEntity> GetByObjectIdAsync(string Id)
+        {
+            var filter = Builders<TEntity>.Filter.Eq("_id", ObjectId.Parse(Id));
+
+            return await _context.Db.GetCollection<TEntity>(typeof(TEntity).Name)
+                .Find(filter)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<List<TEntity>> GetListAsync()
         {
             return await _context.Db.GetCollection<TEntity>(typeof(TEntity).Name)
                 .Find(new BsonDocument())
                 .ToListAsync();
+        }
+
+        public async Task<List<TEntity>> GetListFilterAsync(FilterDefinition<TEntity> filter)
+        {
+            
+            return await _context.Db.GetCollection<TEntity>(typeof(TEntity).Name)
+                .Find(filter).ToListAsync();
         }
     }
 }

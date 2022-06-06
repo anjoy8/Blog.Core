@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MongoDB.Driver;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Repository.MongoRepository
@@ -9,5 +10,7 @@ namespace Blog.Core.Repository.MongoRepository
         Task AddAsync(TEntity entity);
         Task<TEntity> GetAsync(int Id);
         Task<List<TEntity>> GetListAsync();
+        Task<TEntity> GetByObjectIdAsync(string Id);
+        Task<List<TEntity>> GetListFilterAsync(FilterDefinition<TEntity> filter);
     }
 }
