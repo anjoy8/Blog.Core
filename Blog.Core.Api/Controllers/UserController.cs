@@ -41,6 +41,7 @@ namespace Blog.Core.Controllers
         /// <param name="sysUserInfoServices"></param>
         /// <param name="userRoleServices"></param>
         /// <param name="roleServices"></param>
+        /// <param name="departmentServices"></param>
         /// <param name="user"></param>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
