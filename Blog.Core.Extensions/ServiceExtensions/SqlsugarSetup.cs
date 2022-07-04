@@ -26,8 +26,9 @@ namespace Blog.Core.Extensions
             // 默认添加主数据库连接
             MainDb.CurrentDbConnId = Appsettings.app(new string[] { "MainDB" });
 
-            // 把多个连接对象注入服务，这里必须采用Scope，因为有事务操作
-            services.AddScoped<ISqlSugarClient>(o =>
+            // SqlSugarScope是线程安全，可使用单例注入
+            // 参考：https://www.donet5.com/Home/Doc?typeId=1181
+            services.AddSingleton<ISqlSugarClient>(o =>
             {
                 var memoryCache = o.GetRequiredService<IMemoryCache>();
 
