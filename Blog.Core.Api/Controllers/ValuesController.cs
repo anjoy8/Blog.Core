@@ -101,6 +101,12 @@ namespace Blog.Core.Controllers
             };
         }
 
+        /// <summary>
+        /// 测试SqlSugar二级缓存
+        /// 可设置过期时间
+        /// 或通过接口方式更新该数据，也会离开清除缓存
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<BlogArticle> TestSqlsugarWithCache()
