@@ -160,6 +160,7 @@ namespace Blog.Core.Controllers
                 var claims = new List<Claim> {
                     new Claim(ClaimTypes.Name, name),
                     new Claim(JwtRegisteredClaimNames.Jti, user.FirstOrDefault().Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()),
                     new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString()) };
                 claims.AddRange(userRoles.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));
 
@@ -214,6 +215,7 @@ namespace Blog.Core.Controllers
                     var claims = new List<Claim> {
                     new Claim(ClaimTypes.Name, user.LoginName),
                     new Claim(JwtRegisteredClaimNames.Jti, tokenModel.Uid.ObjToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()),
                     new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString()) };
                     claims.AddRange(userRoles.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));
 
