@@ -148,6 +148,12 @@ namespace Blog.Core.Common.Helper
                 }
                 else if (LinkSymbols.ContainsKey(token))
                 {
+                    var left = "";
+                    for (int j = i + 1; j < lastOperatingSymbolIndex; j++)
+                    {
+                        left += tokens[j];
+                    }
+
                     var right = "";
                     for (int j = lastOperatingSymbolIndex + 1; j <= lastIndex; j++)
                     {
@@ -156,13 +162,19 @@ namespace Blog.Core.Common.Helper
 
                     outList.Add(GetDynamicLinqHelper(LinkSymbols[token],
                         OperatingSystems[tokens[lastOperatingSymbolIndex]],
-                        tokens[i + 1],
+                        left,
                         right));
                     lastIndex = i - 1;
                     lastOperatingSymbolIndex = -1;
                 }
                 else if (i == 0 && lastOperatingSymbolIndex != -1)
                 {
+                    var left = "";
+                    for (int j = i; j < lastOperatingSymbolIndex; j++)
+                    {
+                        left += tokens[j];
+                    }
+
                     var right = "";
                     for (int j = lastOperatingSymbolIndex + 1; j <= lastIndex; j++)
                     {
@@ -172,7 +184,7 @@ namespace Blog.Core.Common.Helper
 
                     outList.Add(GetDynamicLinqHelper(LinkSymbol.Empty,
                         OperatingSystems[tokens[lastOperatingSymbolIndex]],
-                        tokens[i],
+                        left,
                         right));
                 }
             }

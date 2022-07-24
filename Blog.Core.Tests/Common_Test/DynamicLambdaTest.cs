@@ -39,6 +39,9 @@ public class DynamicLambdaTest
         await TestConditions("btitle like \"测试数据\" && bId>0");
         await TestConditions("btitle like \"测试!@#$%^&*()_+|}{\":<>?LP\"数据\" && bId>0");
         await TestConditions("btitle like \"测试!@+)(*()_&%^&^$^%$IUYWIQOJVLXKZM>?Z<>?<L:\"SQLitePCL{|\"CM<:\"KJLEGRTOWEJT\"#$%^&*()_+|}{\":<>?LP\"数据\" && bId>0");
+        
+        //比如文章下 过滤创建人 
+        //await TestConditions("btitle.user.name like \"老张\"");
     }
 
     private async Task TestConditions(string conditions)
