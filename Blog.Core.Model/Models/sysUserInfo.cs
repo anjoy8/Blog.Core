@@ -10,7 +10,9 @@ namespace Blog.Core.Model.Models
     [SugarTable("SysUserInfo")]
     public class SysUserInfo : SysUserInfoRoot<int>
     {
-        public SysUserInfo() { }
+        public SysUserInfo()
+        {
+        }
 
         public SysUserInfo(string loginName, string loginPWD)
         {
@@ -30,38 +32,50 @@ namespace Blog.Core.Model.Models
         /// </summary>
         [SugarColumn(Length = 200, IsNullable = true)]
         public string LoginName { get; set; }
+
         /// <summary>
         /// 登录密码
         /// </summary>
         [SugarColumn(Length = 200, IsNullable = true)]
         public string LoginPWD { get; set; }
+
         /// <summary>
         /// 真实姓名
         /// </summary>
         [SugarColumn(Length = 200, IsNullable = true)]
         public string RealName { get; set; }
+
         /// <summary>
         /// 状态
         /// </summary>
         public int Status { get; set; }
+
         /// <summary>
         /// 部门
         /// </summary>
         [SugarColumn(IsNullable = true)]
         public int DepartmentId { get; set; } = -1;
+
         /// <summary>
         /// 备注
         /// </summary>
         [SugarColumn(Length = 2000, IsNullable = true)]
         public string Remark { get; set; }
+
         /// <summary>
         /// 创建时间
         /// </summary>
         public DateTime CreateTime { get; set; } = DateTime.Now;
+
         /// <summary>
         /// 更新时间
         /// </summary>
         public DateTime UpdateTime { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 关键业务修改时间
+        /// </summary>
+        public DateTime CriticalModifyTime { get; set; } = DateTime.Now;
 
         /// <summary>
         ///最后异常时间 
@@ -83,12 +97,15 @@ namespace Blog.Core.Model.Models
         // 性别
         [SugarColumn(IsNullable = true)]
         public int Sex { get; set; } = 0;
+
         // 年龄
         [SugarColumn(IsNullable = true)]
         public int Age { get; set; }
+
         // 生日
         [SugarColumn(IsNullable = true)]
         public DateTime Birth { get; set; } = DateTime.Now;
+
         // 地址
         [SugarColumn(Length = 200, IsNullable = true)]
         public string Address { get; set; }
@@ -99,10 +116,11 @@ namespace Blog.Core.Model.Models
 
         [SugarColumn(IsIgnore = true)]
         public List<string> RoleNames { get; set; }
+
         [SugarColumn(IsIgnore = true)]
         public List<int> Dids { get; set; }
+
         [SugarColumn(IsIgnore = true)]
         public string DepartmentName { get; set; }
-
     }
 }

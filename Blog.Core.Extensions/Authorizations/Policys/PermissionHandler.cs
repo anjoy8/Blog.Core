@@ -195,9 +195,9 @@ namespace Blog.Core.AuthHelper
                         if (value != null)
                         {
                             var user = await _userServices.QueryById(_user.ID, true);
-                            if (user.UpdateTime > value.ObjToDate())
+                            if (user.CriticalModifyTime > value.ObjToDate())
                             {
-                                _user.MessageModel = new ApiResponse(StatusCode.CODE403, "很抱歉,授权已失效,请重新授权").MessageModel;
+                                _user.MessageModel = new ApiResponse(StatusCode.CODE401, "很抱歉,授权已失效,请重新授权").MessageModel;
                                 context.Fail(new AuthorizationFailureReason(this, _user.MessageModel.msg));
                                 return;
                             }
