@@ -1,6 +1,7 @@
 ﻿using Blog.Core.Common.DB;
 using Blog.Core.Common.Helper;
 using Blog.Core.Model.Models;
+using Magicodes.ExporterAndImporter.Excel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -95,7 +96,7 @@ namespace Blog.Core.Common.Seed
                 var modelTypes = referencedAssemblies
                     .SelectMany(a => a.DefinedTypes)
                     .Select(type => type.AsType())
-                    .Where(x => x.IsClass && x.Namespace != null && x.Namespace.Equals("Blog.Core.Model.Models")).ToList(); 
+                    .Where(x => x.IsClass && x.Namespace != null && x.Namespace.Equals("Blog.Core.Model.Models")).ToList();
                 modelTypes.ForEach(t =>
                 {
                     // 这里只支持添加表，不支持删除
@@ -130,6 +131,8 @@ namespace Blog.Core.Common.Seed
                     });
 
                     Console.WriteLine($"Seeding database data (The Db Id:{MyContext.ConnId})...");
+
+                    var importer = new ExcelImporter();
 
                     #region BlogArticle
                     if (!await myContext.Db.Queryable<BlogArticle>().AnyAsync())
@@ -180,7 +183,10 @@ namespace Blog.Core.Common.Seed
                     #region Role
                     if (!await myContext.Db.Queryable<Role>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<Role>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Role"), Encoding.UTF8), setting);
+                        //var data = JsonConvert.DeserializeObject<List<Role>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Role"), Encoding.UTF8), setting);
+                        using var stream = new FileStream(Path.Combine(WebRootPath, "BlogCore.Data.excel", "Role.xlsx"), FileMode.Open);
+                        var result = await importer.Import<Role>(stream);
+                        var data = result.Data.ToList();
 
                         myContext.GetEntityDB<Role>().InsertRange(data);
                         Console.WriteLine("Table:Role created success!");
@@ -240,7 +246,10 @@ namespace Blog.Core.Common.Seed
                     #region UserRole
                     if (!await myContext.Db.Queryable<UserRole>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<UserRole>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "UserRole"), Encoding.UTF8), setting);
+                        //var data = JsonConvert.DeserializeObject<List<UserRole>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "UserRole"), Encoding.UTF8), setting);
+                        using var stream = new FileStream(Path.Combine(WebRootPath, "BlogCore.Data.excel", "UserRole.xlsx"), FileMode.Open);
+                        var result = await importer.Import<UserRole>(stream);
+                        var data = result.Data.ToList();
 
                         myContext.GetEntityDB<UserRole>().InsertRange(data);
                         Console.WriteLine("Table:UserRole created success!");
@@ -255,7 +264,10 @@ namespace Blog.Core.Common.Seed
                     #region sysUserInfo
                     if (!await myContext.Db.Queryable<SysUserInfo>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<SysUserInfo>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "sysUserInfo"), Encoding.UTF8), setting);
+                        //var data = JsonConvert.DeserializeObject<List<SysUserInfo>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "sysUserInfo"), Encoding.UTF8), setting);
+                        using var stream = new FileStream(Path.Combine(WebRootPath, "BlogCore.Data.excel", "SysUserInfo.xlsx"), FileMode.Open);
+                        var result = await importer.Import<SysUserInfo>(stream);
+                        var data = result.Data.ToList();
 
                         myContext.GetEntityDB<SysUserInfo>().InsertRange(data);
                         Console.WriteLine("Table:sysUserInfo created success!");

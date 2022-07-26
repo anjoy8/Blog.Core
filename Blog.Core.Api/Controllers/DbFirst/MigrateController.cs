@@ -3,6 +3,8 @@ using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Magicodes.ExporterAndImporter.Core;
+using Magicodes.ExporterAndImporter.Excel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +29,8 @@ namespace Blog.Core.Controllers
         private readonly IRoleServices _roleServices;
         private readonly IPermissionServices _permissionServices;
         private readonly IModuleServices _moduleServices;
+        private readonly IDepartmentServices _departmentServices;
+        private readonly ISysUserInfoServices _sysUserInfoServices;
         private readonly IWebHostEnvironment _env;
 
         public MigrateController(IUnitOfWork unitOfWork,
@@ -35,6 +39,8 @@ namespace Blog.Core.Controllers
             IRoleServices roleServices,
             IPermissionServices permissionServices,
             IModuleServices moduleServices,
+            IDepartmentServices departmentServices,
+            ISysUserInfoServices sysUserInfoServices,
             IWebHostEnvironment env)
         {
             _unitOfWork = unitOfWork;
@@ -43,6 +49,8 @@ namespace Blog.Core.Controllers
             _roleServices = roleServices;
             _permissionServices = permissionServices;
             _moduleServices = moduleServices;
+            _departmentServices = departmentServices;
+            _sysUserInfoServices = sysUserInfoServices;
             _env = env;
         }
 
@@ -166,21 +174,90 @@ namespace Blog.Core.Controllers
                 };
 
                 // 取出数据，序列化，自己可以处理判空
+                var SysUserInfoJson = JsonConvert.SerializeObject(await _sysUserInfoServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "SysUserInfo.tsv"), SysUserInfoJson, Encoding.UTF8);
+
+                var DepartmentJson = JsonConvert.SerializeObject(await _departmentServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Department.tsv"), DepartmentJson, Encoding.UTF8);
+
                 var rolesJson = JsonConvert.SerializeObject(await _roleServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
-                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Role_New.tsv"), rolesJson, Encoding.UTF8);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Role.tsv"), rolesJson, Encoding.UTF8);
+
+                var UserRoleJson = JsonConvert.SerializeObject(await _userRoleServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "UserRole.tsv"), UserRoleJson, Encoding.UTF8);
 
 
                 var permissionsJson = JsonConvert.SerializeObject(await _permissionServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
-                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Permission_New.tsv"), permissionsJson, Encoding.UTF8);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Permission.tsv"), permissionsJson, Encoding.UTF8);
 
 
                 var modulesJson = JsonConvert.SerializeObject(await _moduleServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
-                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Modules_New.tsv"), modulesJson, Encoding.UTF8);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "Modules.tsv"), modulesJson, Encoding.UTF8);
 
 
                 var rmpsJson = JsonConvert.SerializeObject(await _roleModulePermissionServices.Query(d => d.IsDeleted == false), microsoftDateFormatSettings);
-                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "RoleModulePermission_New.tsv"), rmpsJson, Encoding.UTF8);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.json", "RoleModulePermission.tsv"), rmpsJson, Encoding.UTF8);
 
+
+
+                data.success = true;
+                data.msg = "生成成功！";
+            }
+            else
+            {
+                data.success = false;
+                data.msg = "当前不处于开发模式，代码生成不可用！";
+            }
+
+            return data;
+        }
+
+
+        /// <summary>
+        /// 权限数据库导出excel
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<MessageModel<string>> SaveData2ExcelAsync()
+        {
+            var data = new MessageModel<string>() { success = true, msg = "" };
+            if (_env.IsDevelopment())
+            {
+
+                JsonSerializerSettings microsoftDateFormatSettings = new JsonSerializerSettings
+                {
+                    DateFormatHandling = DateFormatHandling.MicrosoftDateFormat
+                };
+
+                // 取出数据，序列化，自己可以处理判空
+                IExporter exporter = new ExcelExporter();
+                var SysUserInfoList = await _sysUserInfoServices.Query(d => d.IsDeleted == false);
+                var result = await exporter.ExportAsByteArray(SysUserInfoList);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.excel", "SysUserInfo.xlsx"), result);
+
+                var DepartmentList = await _departmentServices.Query(d => d.IsDeleted == false);
+                var DepartmentResult = await exporter.ExportAsByteArray(DepartmentList);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.excel", "Department.xlsx"), DepartmentResult);
+
+                var RoleList = await _roleServices.Query(d => d.IsDeleted == false);
+                var RoleResult = await exporter.ExportAsByteArray(RoleList);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.excel", "Role.xlsx"), RoleResult);
+
+                var UserRoleList = await _userRoleServices.Query(d => d.IsDeleted == false);
+                var UserRoleResult = await exporter.ExportAsByteArray(UserRoleList);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.excel", "UserRole.xlsx"), UserRoleResult);
+
+                var PermissionList = await _permissionServices.Query(d => d.IsDeleted == false);
+                var PermissionResult = await exporter.ExportAsByteArray(PermissionList);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.excel", "Permission.xlsx"), PermissionResult);
+
+                var ModulesList = await _moduleServices.Query(d => d.IsDeleted == false);
+                var ModulesResult = await exporter.ExportAsByteArray(ModulesList);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.excel", "Modules.xlsx"), ModulesResult);
+
+                var RoleModulePermissionList = await _roleModulePermissionServices.Query(d => d.IsDeleted == false);
+                var RoleModulePermissionResult = await exporter.ExportAsByteArray(RoleModulePermissionList);
+                FileHelper.WriteFile(Path.Combine(_env.WebRootPath, "BlogCore.Data.excel", "RoleModulePermission.xlsx"), RoleModulePermissionResult);
 
 
                 data.success = true;
