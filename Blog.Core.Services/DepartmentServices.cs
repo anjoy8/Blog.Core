@@ -10,11 +10,6 @@ namespace Blog.Core.Services
     /// </summary>
     public class DepartmentServices : BaseServices<Department>, IDepartmentServices
     {
-        private readonly IBaseRepository<Department> _dal;
-        public DepartmentServices(IBaseRepository<Department> dal)
-        {
-            this._dal = dal;
-            base.BaseDal = dal;
-        }
+
     }
 }

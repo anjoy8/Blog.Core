@@ -19,16 +19,6 @@ namespace Blog.Core.Services
 	/// </summary>
     public class WeChatSubServices : BaseServices<WeChatSub>, IWeChatSubServices
     {
-        readonly IBaseRepository<WeChatSub> _dal;
-        readonly IUnitOfWork _unitOfWork;
-        readonly ILogger<WeChatSubServices> _logger;
-        public WeChatSubServices(IBaseRepository<WeChatSub> dal,IUnitOfWork unitOfWork, ILogger<WeChatSubServices> logger)
-        {
-            this._dal = dal;
-            base.BaseDal = dal;
-            this._unitOfWork = unitOfWork;
-            this._logger = logger;
-        }  
         
     }
 }

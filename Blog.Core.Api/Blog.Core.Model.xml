@@ -922,6 +922,76 @@
             Tibug 博文
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Models.TrojanCusServers">
+            <summary>
+            users自定义服务器
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.TrojanDetails">
+            <summary>
+            用户流量每月汇总表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TrojanDetails.id">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TrojanDetails.userId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TrojanDetails.calDate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TrojanDetails.download">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TrojanDetails.upload">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TrojanDetails.CreateId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TrojanDetails.CreateBy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TrojanDetails.CreateTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.TrojanServers">
+            <summary>
+            Trojan服务器
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.TrojanUrlServers">
+            <summary>
+            users自定义URL服务器
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.TrojanUsers">
+            <summary>
+            Trojan用户
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TrojanUsers.useList">
+            <summary>
+            历史流量记录
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.Models.UserRole">
             <summary>
             用户跟角色关联表
@@ -2345,6 +2415,73 @@
         <member name="P:Blog.Core.Model.ViewModels.TopgbViewModels.btitle">
             <summary>博客标题
             
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.TrojanLimitFlowDto">
+            <summary>
+            限制流量dto
+            作者:胡丁文
+            时间:2020-4-27 16:57:07
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TrojanLimitFlowDto.users">
+            <summary>
+            用户
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TrojanLimitFlowDto.quota">
+            <summary>
+            流量(-1为无限,单位为最小单位byte)
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.TrojanServerSpliceDto">
+            <summary>
+            Trojan服务器拼接服务器和订阅地址
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TrojanServerSpliceDto.normalApi">
+            <summary>
+            普通订阅连接
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TrojanServerSpliceDto.clashApi">
+            <summary>
+            clash订阅连接
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TrojanServerSpliceDto.clashApiBackup">
+            <summary>
+            备用clash订阅连接
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.ViewModels.TrojanUseDetailDto">
+            <summary>
+            Trojan用户流量统计分组
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TrojanUseDetailDto.userId">
+            <summary>
+            用户ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TrojanUseDetailDto.moth">
+            <summary>
+            月度
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TrojanUseDetailDto.up">
+            <summary>
+            上传流量
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TrojanUseDetailDto.down">
+            <summary>
+            下载流量
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.ViewModels.TrojanUseDetailDto.total">
+            <summary>
+            下载流量
             </summary>
         </member>
         <member name="T:Blog.Core.Model.ViewModels.WeChatApiDto">

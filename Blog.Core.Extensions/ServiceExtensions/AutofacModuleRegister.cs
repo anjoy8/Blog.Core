@@ -3,8 +3,10 @@ using Autofac.Extras.DynamicProxy;
 using Blog.Core.AOP;
 using Blog.Core.Common;
 using Blog.Core.IRepository.Base;
+using Blog.Core.IServices.BASE;
 using Blog.Core.Model;
 using Blog.Core.Repository.Base;
+using Blog.Core.Services.BASE;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -60,6 +62,7 @@ namespace Blog.Core.Extensions
             }
 
             builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();//注册仓储
+            builder.RegisterGeneric(typeof(BaseServices<>)).As(typeof(IBaseServices<>)).InstancePerDependency();//注册服务
 
             // 获取 Service.dll 程序集服务，并注册
             var assemblysServices = Assembly.LoadFrom(servicesDllFile);
