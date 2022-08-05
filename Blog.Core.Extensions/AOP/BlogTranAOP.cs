@@ -1,11 +1,11 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.IRepository.UnitOfWork;
 using Castle.DynamicProxy;
-using Ivytalk.FoodSafety.Common.DB.UnitOfWork;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using Blog.Core.Common.DB;
 
 namespace Blog.Core.AOP
 {
