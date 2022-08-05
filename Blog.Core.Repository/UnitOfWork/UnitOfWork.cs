@@ -2,8 +2,8 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Threading;
+using Blog.Core.Common.Extensions;
 using Blog.Core.IRepository.UnitOfWork;
-using Ivytalk.FoodSafety.Common.Extensions;
 using Microsoft.Extensions.Logging;
 using SqlSugar;
 

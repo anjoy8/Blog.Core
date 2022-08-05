@@ -7,7 +7,7 @@ using Blog.Core.Model.Models;
 using Blog.Core.Services.BASE;
 using System;
 using System.Threading.Tasks;
-using Ivytalk.FoodSafety.Common.DB.UnitOfWork;
+using Blog.Core.Common.DB;
 
 namespace Blog.Core.Services
 {

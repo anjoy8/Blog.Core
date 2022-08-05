@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blog.Core.Common;
+using Blog.Core.Common.DB;
 using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
 using Blog.Core.Services.BASE;
-using Ivytalk.FoodSafety.Common.DB.UnitOfWork;
 
 namespace Blog.Core.Services
 {

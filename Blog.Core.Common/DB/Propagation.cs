@@ -1,4 +1,4 @@
-﻿namespace Ivytalk.FoodSafety.Common.DB.UnitOfWork;
+﻿namespace Blog.Core.Common.DB;
 
 public enum Propagation
 {

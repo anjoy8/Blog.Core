@@ -1,5 +1,5 @@
 ﻿using System;
-using Ivytalk.FoodSafety.Common.DB.UnitOfWork;
+using Blog.Core.Common.DB;
 
 namespace Blog.Core.Common
 {

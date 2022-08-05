@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Ivytalk.FoodSafety.Common.Extensions;
+namespace Blog.Core.Common.Extensions;
 
 public static class MethodInfoExtensions
 {
