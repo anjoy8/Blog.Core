@@ -812,6 +812,11 @@
             更新时间
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.CriticalModifyTime">
+            <summary>
+            关键业务修改时间
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.SysUserInfo.LastErrorTime">
              <summary>
             最后异常时间 
