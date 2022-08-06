@@ -103,6 +103,24 @@ namespace Blog.Core.Controllers
             return await _guestbookServices.TestTranInRepository();
         }
 
+        [HttpGet]
+        public async Task<bool> GetTestTranPropagation()
+        {
+            return await _guestbookServices.TestTranPropagation();
+        }
+
+        [HttpGet]
+        public async Task<bool> GetTestTranPropagationNoTran()
+        {
+            return await _guestbookServices.TestTranPropagationNoTran();
+        }
+
+        [HttpGet]
+        public async Task<bool> GetTestTranPropagationTran()
+        {
+            return await _guestbookServices.TestTranPropagationTran();
+        }
+
         // POST: api/Transaction
         [HttpPost]
         public void Post([FromBody] string value)

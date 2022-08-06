@@ -802,7 +802,7 @@
             用户管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.IRepository.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.IServices.IDepartmentServices,Blog.Core.Common.HttpContextUser.IUser,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
+        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.Common.DB.UnitOfWork.IUnitOfWork,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.IServices.IDepartmentServices,Blog.Core.Common.HttpContextUser.IUser,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
             <summary>
             构造函数
             </summary>

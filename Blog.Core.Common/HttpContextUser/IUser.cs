@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using Blog.Core.Model;
 
 namespace Blog.Core.Common.HttpContextUser
 {
@@ -13,5 +14,7 @@ namespace Blog.Core.Common.HttpContextUser
 
         string GetToken();
         List<string> GetUserInfoFromToken(string ClaimType);
+
+        MessageModel<string> MessageModel { get; set; }
     }
 }
