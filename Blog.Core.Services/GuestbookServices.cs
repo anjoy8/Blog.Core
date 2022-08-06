@@ -145,10 +145,10 @@ namespace Blog.Core.Services
         [UseTran(Propagation = Propagation.Required)]
         public async Task<bool> TestTranPropagation()
         {
-            var guestbooks = await _dal.Query();
+            var guestbooks = await base.Query();
             Console.WriteLine($"first time : the count of guestbooks is :{guestbooks.Count}");
 
-            var insertGuestbook = await _dal.Add(new Guestbook()
+            var insertGuestbook = await base.Add(new Guestbook()
             {
                 username = "bbb",
                 blogId = 1,
@@ -168,10 +168,10 @@ namespace Blog.Core.Services
         /// <returns></returns>
         public async Task<bool> TestTranPropagationNoTran()
         {
-            var guestbooks = await _dal.Query();
+            var guestbooks = await base.Query();
             Console.WriteLine($"first time : the count of guestbooks is :{guestbooks.Count}");
 
-            var insertGuestbook = await _dal.Add(new Guestbook()
+            var insertGuestbook = await base.Add(new Guestbook()
             {
                 username = "bbb",
                 blogId = 1,
@@ -192,10 +192,10 @@ namespace Blog.Core.Services
         [UseTran(Propagation = Propagation.Required)]
         public async Task<bool> TestTranPropagationTran()
         {
-            var guestbooks = await _dal.Query();
+            var guestbooks = await base.Query();
             Console.WriteLine($"first time : the count of guestbooks is :{guestbooks.Count}");
 
-            var insertGuestbook = await _dal.Add(new Guestbook()
+            var insertGuestbook = await base.Add(new Guestbook()
             {
                 username = "bbb",
                 blogId = 1,
