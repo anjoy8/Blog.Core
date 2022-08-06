@@ -75,6 +75,7 @@ namespace Blog.Core.Controllers
             {
                 key = "";
             }
+
             int intPageSize = 50;
 
 
@@ -100,11 +101,11 @@ namespace Blog.Core.Controllers
             }
 
             data.data = sysUserInfos;
+
             #endregion
 
 
             return Success(data.ConvertTo<SysUserInfoDto>(_mapper));
-
         }
 
         private (string, List<int>) GetFullDepartmentName(List<Department> departments, int departmentId)
@@ -157,8 +158,8 @@ namespace Blog.Core.Controllers
                         data.msg = "获取成功";
                     }
                 }
-
             }
+
             return data;
         }
 
@@ -197,47 +198,60 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<string>> Put([FromBody] SysUserInfoDto sysUserInfo)
         {
             // 这里使用事务处理
-
             var data = new MessageModel<string>();
+
+            var oldUser = await _sysUserInfoServices.QueryById(sysUserInfo.uID);
+            if (oldUser is not { Id: > 0 })
+            {
+                return Failed<string>("用户不存在或已被删除");
+            }
+
             try
             {
-                _unitOfWork.BeginTran();
-
-                if (sysUserInfo != null && sysUserInfo.uID > 0)
+                if (sysUserInfo.uLoginPWD != oldUser.LoginPWD)
                 {
-                    // 无论 Update Or Add , 先删除当前用户的全部 U_R 关系
-                    var usreroles = (await _userRoleServices.Query(d => d.UserId == sysUserInfo.uID)).Select(d => d.Id.ToString()).ToArray();
-                    if (usreroles.Any())
+                    oldUser.CriticalModifyTime = DateTime.Now;
+                }
+
+                _mapper.Map(sysUserInfo, oldUser);
+
+                _unitOfWork.BeginTran();
+                // 无论 Update Or Add , 先删除当前用户的全部 U_R 关系
+                var usreroles = (await _userRoleServices.Query(d => d.UserId == oldUser.Id));
+                if (usreroles.Any())
+                {
+                    var ids = usreroles.Select(d => d.Id.ToString()).ToArray();
+                    var isAllDeleted = await _userRoleServices.DeleteByIds(ids);
+                    if (!isAllDeleted)
                     {
-                        var isAllDeleted = await _userRoleServices.DeleteByIds(usreroles);
-                        if (!isAllDeleted)
-                        {
-                            return Failed("服务器更新异常");
-                        }
+                        return Failed("服务器更新异常");
+                    }
+                }
+
+                // 然后再执行添加操作
+                if (sysUserInfo.RIDs.Count > 0)
+                {
+                    var userRolsAdd = new List<UserRole>();
+                    sysUserInfo.RIDs.ForEach(rid => { userRolsAdd.Add(new UserRole(oldUser.Id, rid)); });
+
+                    var oldRole = usreroles.Select(s => s.RoleId).OrderBy(i => i).ToArray();
+                    var newRole = userRolsAdd.Select(s => s.RoleId).OrderBy(i => i).ToArray();
+                    if (!oldRole.SequenceEqual(newRole))
+                    {
+                        oldUser.CriticalModifyTime = DateTime.Now;
                     }
 
-                    // 然后再执行添加操作
-                    if (sysUserInfo.RIDs.Count > 0)
-                    {
-                        var userRolsAdd = new List<UserRole>();
-                        sysUserInfo.RIDs.ForEach(rid =>
-                       {
-                           userRolsAdd.Add(new UserRole(sysUserInfo.uID, rid));
-                       });
+                    await _userRoleServices.Add(userRolsAdd);
+                }
 
-                        await _userRoleServices.Add(userRolsAdd);
+                data.success = await _sysUserInfoServices.Update(oldUser);
 
-                    }
+                _unitOfWork.CommitTran();
 
-                    data.success = await _sysUserInfoServices.Update(_mapper.Map<SysUserInfo>(sysUserInfo));
-
-                    _unitOfWork.CommitTran();
-
-                    if (data.success)
-                    {
-                        data.msg = "更新成功";
-                        data.response = sysUserInfo?.uID.ObjToString();
-                    }
+                if (data.success)
+                {
+                    data.msg = "更新成功";
+                    data.response = oldUser.Id.ObjToString();
                 }
             }
             catch (Exception e)

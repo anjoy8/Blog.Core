@@ -1,5 +1,4 @@
-﻿
-namespace Blog.Core.Model
+﻿namespace Blog.Core.Model
 {
     public class ApiResponse
     {
@@ -12,28 +11,28 @@ namespace Blog.Core.Model
             switch (apiCode)
             {
                 case StatusCode.CODE401:
-                    {
-                        Status = 401;
-                        Value = "很抱歉，您无权访问该接口，请确保已经登录!";
-                    }
+                {
+                    Status = 401;
+                    Value = msg ?? "很抱歉，您无权访问该接口，请确保已经登录!";
+                }
                     break;
                 case StatusCode.CODE403:
-                    {
-                        Status = 403;
-                        Value = "很抱歉，您的访问权限等级不够，联系管理员!";
-                    }
+                {
+                    Status = 403;
+                    Value = msg ?? "很抱歉，您的访问权限等级不够，联系管理员!";
+                }
                     break;
                 case StatusCode.CODE404:
-                    {
-                        Status = 404;
-                        Value = "资源不存在!";
-                    }
+                {
+                    Status = 404;
+                    Value = "资源不存在!";
+                }
                     break;
                 case StatusCode.CODE500:
-                    {
-                        Status = 500;
-                        Value = msg;
-                    }
+                {
+                    Status = 500;
+                    Value = msg;
+                }
                     break;
             }
 
@@ -41,7 +40,7 @@ namespace Blog.Core.Model
             {
                 status = Status,
                 msg = Value,
-                success = apiCode != StatusCode.CODE200
+                success = apiCode == StatusCode.CODE200
             };
         }
     }
@@ -54,5 +53,4 @@ namespace Blog.Core.Model
         CODE404,
         CODE500
     }
-
 }
