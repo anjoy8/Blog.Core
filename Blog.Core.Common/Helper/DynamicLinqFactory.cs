@@ -757,7 +757,13 @@ namespace Blog.Core.Common.Helper
             // 则Expression.Property无法获取子内容
             // 报错在这里，由于expression内的对象为Object，所以无法解析到
             // var x = (expression as IQueryable).ElementType;
-            return Expression.Property(expression, propertyName);
+            var exp = Expression.Property(expression, propertyName);
+            if (exp.Type.IsGenericType && exp.Type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                return Expression.Convert(exp, exp.Type.GetGenericArguments()[0]);
+            }
+
+            return exp;
         }
 
         /// <summary>
