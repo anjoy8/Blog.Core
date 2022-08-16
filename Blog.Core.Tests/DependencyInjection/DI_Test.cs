@@ -10,8 +10,10 @@ using Blog.Core.Common.LogHelper;
 using Blog.Core.Common.Seed;
 using Blog.Core.Extensions;
 using Blog.Core.IRepository.Base;
+using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.Repository.Base;
 using Blog.Core.Repository.MongoRepository;
+using Blog.Core.Repository.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +25,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace Blog.Core.Tests
 {
@@ -104,11 +107,16 @@ namespace Blog.Core.Tests
             //实例化 AutoFac  容器   
             var builder = new ContainerBuilder();
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
+            builder.RegisterInstance(new LoggerFactory())
+                .As<ILoggerFactory>();
 
+            builder.RegisterGeneric(typeof(Logger<>))
+                .As(typeof(ILogger<>))
+                .SingleInstance();
             //指定已扫描程序集中的类型注册为提供所有其实现的接口。
 
-            builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();//注册仓储
-            builder.RegisterGeneric(typeof(MongoBaseRepository<>)).As(typeof(IMongoBaseRepository<>)).InstancePerDependency();//注册仓储
+            builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();           //注册仓储
+            builder.RegisterGeneric(typeof(MongoBaseRepository<>)).As(typeof(IMongoBaseRepository<>)).InstancePerDependency(); //注册仓储
 
             // 属性注入
             var controllerBaseType = typeof(ControllerBase);
