@@ -42,6 +42,9 @@ public class DynamicLambdaTest
         
         //比如文章下 过滤创建人 
         //await TestConditions("btitle.user.name like \"老张\"");
+
+        await TestConditions("IsDeleted == false");
+        await TestConditions("IsDeleted == true");
     }
 
     private async Task TestConditions(string conditions)
