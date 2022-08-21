@@ -208,7 +208,13 @@ namespace Blog.Core.Controllers
             if (tokenModel != null && JwtHelper.customSafeVerify(token) && tokenModel.Uid > 0)
             {
                 var user = await _sysUserInfoServices.QueryById(tokenModel.Uid);
-                if (user != null)
+                var value = User.Claims.SingleOrDefault(s => s.Type == JwtRegisteredClaimNames.Iat)?.Value;
+                if (value != null && user.CriticalModifyTime > value.ObjToDate())
+                {
+                    return Failed<TokenInfoViewModel>("很抱歉,授权已失效,请重新授权！");
+                }
+
+                if (user != null && !(value != null && user.CriticalModifyTime > value.ObjToDate()))
                 {
                     var userRoles = await _sysUserInfoServices.GetUserRoleNameStr(user.LoginName, user.LoginPWD);
                     //如果是基于用户的授权策略，这里要添加用户;如果是基于角色的授权策略，这里要添加角色
