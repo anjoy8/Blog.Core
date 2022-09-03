@@ -43,22 +43,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 生产配置：一台服务器（Linux环境 + 至强8核的16G内存 + mysql数据库 + 3台Nginx负载）
 
 ```
-  
-
-
-
-&nbsp;
-
-#### Dokcer 快速启动
-如果想在服务器或者本地快速查看接口效果，直接Docker启动容器即可：
-```
- # 可以挂载配置文件和日志文件
- # 这里只是接口效果，想看前端效果，可以异步Blog.Admin查看后台管理系统
- docker run --name=apkcontainer -d \
-  -v /data/appsettings.json:/app/appsettings.json \
-  -v /data/Log/:/app/Log \
- -it -p 9291:9291 laozhangisphi/apkimg
-```
+   
  
  
 &nbsp;
