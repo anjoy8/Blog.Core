@@ -826,18 +826,6 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.RestsharpGet">
-            <summary>
-            测试http请求 RestSharp Get
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.RestsharpPost">
-            <summary>
-            测试http请求 RestSharp Post
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:Blog.Core.Controllers.ValuesController.TestMutiDBAPI">
             <summary>
             测试多库连接

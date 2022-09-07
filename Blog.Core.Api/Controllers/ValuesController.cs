@@ -2,7 +2,6 @@
 using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.HttpPolly;
-using Blog.Core.Common.HttpRestSharp;
 using Blog.Core.Common.WebApiClients.HttpApis;
 using Blog.Core.EventBus;
 using Blog.Core.EventBus.EventHandling;
@@ -304,27 +303,6 @@ namespace Blog.Core.Controllers
         public object TestPostPara(string name)
         {
             return Ok(new { success = true, name = name });
-        }
-
-        /// <summary>
-        /// 测试http请求 RestSharp Get
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("RestsharpGet")]
-        [AllowAnonymous]
-        public MessageModel<BlogViewModels> RestsharpGet()
-        {
-            return HttpHelper.GetApi<MessageModel<BlogViewModels>>("http://apk.neters.club/", "api/Blog/DetailNuxtNoPer", "id=1");
-        }
-        /// <summary>
-        /// 测试http请求 RestSharp Post
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("RestsharpPost")]
-        [AllowAnonymous]
-        public TestRestSharpPostDto RestsharpPost()
-        {
-            return HttpHelper.PostApi<TestRestSharpPostDto>("http://apk.neters.club/api/Values/TestPostPara?name=老张", new { age = 18 });
         }
 
         /// <summary>

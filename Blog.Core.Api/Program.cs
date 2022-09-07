@@ -112,13 +112,14 @@ builder.Services.AddControllers(o =>
     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
     options.SerializerSettings.Converters.Add(new StringEnumConverter());
 })
-.AddFluentValidation(config =>
-{
-    //程序集方式添加验证
-    config.RegisterValidatorsFromAssemblyContaining(typeof(UserRegisterVoValidator));
-    //是否与MvcValidation共存
-    config.DisableDataAnnotationsValidation = true;
-});
+//.AddFluentValidation(config =>
+//{
+//    //程序集方式添加验证
+//    config.RegisterValidatorsFromAssemblyContaining(typeof(UserRegisterVoValidator));
+//    //是否与MvcValidation共存
+//    config.DisableDataAnnotationsValidation = true;
+//})
+;
 
 builder.Services.AddEndpointsApiExplorer();
 
