@@ -19,13 +19,10 @@ namespace Blog.Core.Services
 	/// </summary>
     public class WeChatCompanyServices : BaseServices<WeChatCompany>, IWeChatCompanyServices
     {
-        readonly IBaseRepository<WeChatCompany> _dal;
         readonly IUnitOfWork _unitOfWork;
         readonly ILogger<WeChatCompanyServices> _logger;
-        public WeChatCompanyServices(IBaseRepository<WeChatCompany> dal,IUnitOfWork unitOfWork, ILogger<WeChatCompanyServices> logger)
+        public WeChatCompanyServices(IUnitOfWork unitOfWork, ILogger<WeChatCompanyServices> logger)
         {
-            this._dal = dal;
-            base.BaseDal = dal;
             this._unitOfWork = unitOfWork;
             this._logger = logger;
         }  

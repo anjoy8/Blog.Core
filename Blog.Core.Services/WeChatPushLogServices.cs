@@ -19,16 +19,6 @@ namespace Blog.Core.Services
 	/// </summary>
     public class WeChatPushLogServices : BaseServices<WeChatPushLog>, IWeChatPushLogServices
     {
-        readonly IBaseRepository<WeChatPushLog> _dal;
-        readonly IUnitOfWork _unitOfWork;
-        readonly ILogger<WeChatPushLogServices> _logger;
-        public WeChatPushLogServices(IBaseRepository<WeChatPushLog> dal,IUnitOfWork unitOfWork, ILogger<WeChatPushLogServices> logger)
-        {
-            this._dal = dal;
-            base.BaseDal = dal;
-            this._unitOfWork = unitOfWork;
-            this._logger = logger;
-        }  
-        
+
     }
 }
