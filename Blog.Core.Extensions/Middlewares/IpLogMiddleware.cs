@@ -33,7 +33,7 @@ namespace Blog.Core.Extensions.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (Appsettings.app("Middleware", "IPLog", "Enabled").ObjToBool())
+            if (AppSettings.app("Middleware", "IPLog", "Enabled").ObjToBool())
             {
                 // 过滤，只有接口
                 if (context.Request.Path.Value.Contains("api"))

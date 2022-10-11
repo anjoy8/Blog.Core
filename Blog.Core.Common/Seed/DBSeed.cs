@@ -36,14 +36,14 @@ namespace Blog.Core.Common.Seed
                 SeedDataFolder = Path.Combine(WebRootPath, SeedDataFolder);
 
                 Console.WriteLine("************ Blog.Core DataBase Set *****************");
-                Console.WriteLine($"Is multi-DataBase: {Appsettings.app(new string[] { "MutiDBEnabled" })}");
-                Console.WriteLine($"Is CQRS: {Appsettings.app(new string[] { "CQRSEnabled" })}");
+                Console.WriteLine($"Is multi-DataBase: {AppSettings.app(new string[] { "MutiDBEnabled" })}");
+                Console.WriteLine($"Is CQRS: {AppSettings.app(new string[] { "CQRSEnabled" })}");
                 Console.WriteLine();
                 Console.WriteLine($"Master DB ConId: {MyContext.ConnId}");
                 Console.WriteLine($"Master DB Type: {MyContext.DbType}");
                 Console.WriteLine($"Master DB ConnectString: {MyContext.ConnectionString}");
                 Console.WriteLine();
-                if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                if (AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {
                     var slaveIndex = 0;
                     BaseDBConfig.MutiConnectionString.allDbs.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
@@ -55,7 +55,7 @@ namespace Blog.Core.Common.Seed
                         Console.WriteLine($"--------------------------------------");
                     });
                 }
-                else if (Appsettings.app(new string[] { "CQRSEnabled" }).ObjToBool())
+                else if (AppSettings.app(new string[] { "CQRSEnabled" }).ObjToBool())
                 {
                     var slaveIndex = 0;
                     BaseDBConfig.MutiConnectionString.slaveDbs.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
@@ -112,7 +112,7 @@ namespace Blog.Core.Common.Seed
 
 
 
-                if (Appsettings.app(new string[] { "AppSettings", "SeedDBDataEnabled" }).ObjToBool())
+                if (AppSettings.app(new string[] { "AppSettings", "SeedDBDataEnabled" }).ObjToBool())
                 {
                     JsonSerializerSettings setting = new JsonSerializerSettings();
                     JsonConvert.DefaultSettings = new Func<JsonSerializerSettings>(() =>

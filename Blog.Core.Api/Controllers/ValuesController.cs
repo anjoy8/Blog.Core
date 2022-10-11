@@ -392,7 +392,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<string> GetConfigByAppllo(string key)
         {
-            return await Task.FromResult(Appsettings.app(key));
+            return await Task.FromResult(AppSettings.app(key));
         }
         #endregion
 

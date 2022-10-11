@@ -7,7 +7,8 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 用户信息表
     /// </summary>
-    [SugarTable("SysUserInfo")]
+    //[SugarTable("SysUserInfo")]
+    [SugarTable("SysUserInfo", "用户表")]//('数据库表名'，'数据库表备注')
     public class SysUserInfo : SysUserInfoRoot<int>
     {
         public SysUserInfo()
@@ -30,7 +31,11 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 登录账号
         /// </summary>
-        [SugarColumn(Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true, ColumnDescription = "登录账号")]
+        //:eg model 根据sqlsugar的完整定义可以如下定义，ColumnDescription可定义表字段备注
+        //[SugarColumn(IsNullable = false, ColumnDescription = "登录账号", IsPrimaryKey = false, IsIdentity = false, ColumnDataType = "nvarchar", Length = 50)]
+        //ColumnDescription 表字段备注，  已在MSSQL测试，配合 [SugarTable("SysUserInfo", "用户表")]//('数据库表名'，'数据库表备注')
+        //可以完整生成 表备注和各个字段的中文备注
         public string LoginName { get; set; }
 
         /// <summary>

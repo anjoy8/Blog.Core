@@ -51,12 +51,12 @@ builder.Host
 
 
 // 2、配置服务
-builder.Services.AddSingleton(new Appsettings(builder.Configuration));
+builder.Services.AddSingleton(new AppSettings(builder.Configuration));
 builder.Services.AddSingleton(new LogLock(builder.Environment.ContentRootPath));
 builder.Services.AddUiFilesZipSetup(builder.Environment);
 
-Permissions.IsUseIds4 = Appsettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
-RoutePrefix.Name = Appsettings.app(new string[] { "AppSettings", "SvcName" }).ObjToString();
+Permissions.IsUseIds4 = AppSettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
+RoutePrefix.Name = AppSettings.app(new string[] { "AppSettings", "SvcName" }).ObjToString();
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -151,7 +151,7 @@ app.UseSession();
 app.UseSwaggerAuthorized();
 app.UseSwaggerMiddle(() => Assembly.GetExecutingAssembly().GetManifestResourceStream("Blog.Core.Api.index.html"));
 
-app.UseCors(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
+app.UseCors(AppSettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
 DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
 defaultFilesOptions.DefaultFileNames.Clear();
 defaultFilesOptions.DefaultFileNames.Add("index.html");

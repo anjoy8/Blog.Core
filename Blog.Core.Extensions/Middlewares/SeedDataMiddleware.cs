@@ -18,7 +18,7 @@ namespace Blog.Core.Extensions.Middlewares
 
             try
             {
-                if (Appsettings.app("AppSettings", "SeedDBEnabled").ObjToBool() || Appsettings.app("AppSettings", "SeedDBDataEnabled").ObjToBool())
+                if (AppSettings.app("AppSettings", "SeedDBEnabled").ObjToBool() || AppSettings.app("AppSettings", "SeedDBDataEnabled").ObjToBool())
                 {
                     DBSeed.SeedAsync(myContext, webRootPath).Wait();
                 }

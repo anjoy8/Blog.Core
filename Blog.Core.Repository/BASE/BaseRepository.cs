@@ -26,7 +26,7 @@ namespace Blog.Core.Repository.Base
                  * 1、在appsettings.json 中开启MutiDBEnabled节点为true，必填
                  * 2、设置一个主连接的数据库ID，节点MainDB，对应的连接字符串的Enabled也必须true，必填
                  */
-                if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                if (AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {
                     //if (typeof(TEntity).GetTypeInfo().GetCustomAttributes(typeof(SugarTable), true).FirstOrDefault((x => x.GetType() == typeof(SugarTable))) is SugarTable sugarTable && !string.IsNullOrEmpty(sugarTable.TableDescription))
                     //{

@@ -45,10 +45,10 @@ namespace Blog.Core.Extensions.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (Appsettings.app("Middleware", "RecordAccessLogs", "Enabled").ObjToBool())
+            if (AppSettings.app("Middleware", "RecordAccessLogs", "Enabled").ObjToBool())
             {
                 var api = context.Request.Path.ObjToString().TrimEnd('/').ToLower();
-                var ignoreApis = Appsettings.app("Middleware", "RecordAccessLogs", "IgnoreApis");
+                var ignoreApis = AppSettings.app("Middleware", "RecordAccessLogs", "IgnoreApis");
 
                 // 过滤，只有接口
                 if (api.Contains("api") && !ignoreApis.Contains(api))

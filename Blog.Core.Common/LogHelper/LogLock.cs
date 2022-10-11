@@ -26,7 +26,7 @@ namespace Blog.Core.Common.LogHelper
         public static void OutSql2Log(string prefix, string[] dataParas, bool IsHeader = true, bool isWrt = false)
         {
 
-            if (Appsettings.app(new string[] { "AppSettings", "LogToDb", "Enabled" }).ObjToBool())
+            if (AppSettings.app(new string[] { "AppSettings", "LogToDb", "Enabled" }).ObjToBool())
             {
                 OutSql2LogToDB(prefix, dataParas, IsHeader);
             }
