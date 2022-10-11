@@ -28,16 +28,24 @@ namespace Blog.Core.Repository.Base
                  */
                 if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {
-                    if (typeof(TEntity).GetTypeInfo().GetCustomAttributes(typeof(SugarTable), true).FirstOrDefault((x => x.GetType() == typeof(SugarTable))) is SugarTable sugarTable && !string.IsNullOrEmpty(sugarTable.TableDescription))
+                    //if (typeof(TEntity).GetTypeInfo().GetCustomAttributes(typeof(SugarTable), true).FirstOrDefault((x => x.GetType() == typeof(SugarTable))) is SugarTable sugarTable && !string.IsNullOrEmpty(sugarTable.TableDescription))
+                    //{
+                    //    _dbBase.ChangeDatabase(sugarTable.TableDescription.ToLower());
+                    //}
+                    //else
+                    //{
+                    //    _dbBase.ChangeDatabase(MainDb.CurrentDbConnId.ToLower());
+                    //}
+                    //修改使用 model备注字段作为切换数据库条件，使用sqlsugar TenantAttribute存放数据库ConnId
+                    if (typeof(TEntity).GetTypeInfo().GetCustomAttributes(typeof(TenantAttribute), true).FirstOrDefault((x => x.GetType() == typeof(TenantAttribute))) is TenantAttribute tenantAttribute)
                     {
-                        _dbBase.ChangeDatabase(sugarTable.TableDescription.ToLower());
+                        _dbBase.ChangeDatabase(tenantAttribute.configId.ToString().ToLower());
                     }
                     else
                     {
                         _dbBase.ChangeDatabase(MainDb.CurrentDbConnId.ToLower());
                     }
                 }
-
                 return _dbBase;
             }
         }
