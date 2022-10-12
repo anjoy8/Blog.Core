@@ -16,7 +16,7 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            if (Appsettings.app(new string[] { "Kafka", "Enabled" }).ObjToBool())
+            if (AppSettings.app(new string[] { "Kafka", "Enabled" }).ObjToBool())
             {
                 services.Configure<KafkaOptions>(configuration.GetSection("kafka"));
                 services.AddSingleton<IKafkaConnectionPool,KafkaConnectionPool>();

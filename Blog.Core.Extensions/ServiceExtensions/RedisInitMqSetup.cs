@@ -16,7 +16,7 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            if (Appsettings.app(new string[] { "Startup", "RedisMq", "Enabled" }).ObjToBool())
+            if (AppSettings.app(new string[] { "Startup", "RedisMq", "Enabled" }).ObjToBool())
             {
                 // 
                 services.AddInitQ(m =>
@@ -24,7 +24,7 @@ namespace Blog.Core.Extensions
                     //时间间隔
                     m.SuspendTime = 2000;
                     //redis服务器地址
-                    m.ConnectionString = Appsettings.app(new string[] { "Redis", "ConnectionString" });
+                    m.ConnectionString = AppSettings.app(new string[] { "Redis", "ConnectionString" });
                     //对应的订阅者类，需要new一个实例对象，当然你也可以传参，比如日志对象
                     m.ListSubscribe = new List<Type>() { 
                         typeof(RedisSubscribe), 

@@ -24,7 +24,7 @@ namespace Blog.Core.Extensions
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             // 默认添加主数据库连接
-            MainDb.CurrentDbConnId = Appsettings.app(new string[] { "MainDB" });
+            MainDb.CurrentDbConnId = AppSettings.app(new string[] { "MainDB" });
 
             // SqlSugarScope是线程安全，可使用单例注入
             // 参考：https://www.donet5.com/Home/Doc?typeId=1181
@@ -59,9 +59,9 @@ namespace Blog.Core.Extensions
                         {
                             OnLogExecuting = (sql, p) =>
                             {
-                                if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
+                                if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
                                 {
-                                    if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "OutToLogFile", "Enabled" }).ObjToBool())
+                                    if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "OutToLogFile", "Enabled" }).ObjToBool())
                                     {
                                         Parallel.For(0, 1, e =>
                                         {
@@ -70,7 +70,7 @@ namespace Blog.Core.Extensions
 
                                         });
                                     }
-                                    if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "OutToConsole", "Enabled" }).ObjToBool())
+                                    if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "OutToConsole", "Enabled" }).ObjToBool())
                                     {
                                         ConsoleHelper.WriteColorLine(string.Join("\r\n", new string[] { "--------", "【SQL语句】：" + GetWholeSql(p, sql) }), ConsoleColor.DarkCyan);
                                     }

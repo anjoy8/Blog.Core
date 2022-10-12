@@ -60,7 +60,7 @@ namespace Blog.Core.Tests
             IServiceCollection services = new ServiceCollection();
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddSingleton(new Appsettings(basePath));
+            services.AddSingleton(new AppSettings(basePath));
             services.AddSingleton(new LogLock(basePath));
             services.AddScoped<DBSeed>();
             services.AddScoped<MyContext>();
@@ -79,8 +79,8 @@ namespace Blog.Core.Tests
             "/api/denied",
             permission,
             ClaimTypes.Role,
-            Appsettings.app(new string[] { "Audience", "Issuer" }),
-            Appsettings.app(new string[] { "Audience", "Audience" }),
+            AppSettings.app(new string[] { "Audience", "Issuer" }),
+            AppSettings.app(new string[] { "Audience", "Audience" }),
             signingCredentials,//签名凭据
             expiration: TimeSpan.FromSeconds(60 * 60)//接口的过期时间
             );

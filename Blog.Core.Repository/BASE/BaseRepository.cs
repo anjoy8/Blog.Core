@@ -26,18 +26,26 @@ namespace Blog.Core.Repository.Base
                  * 1、在appsettings.json 中开启MutiDBEnabled节点为true，必填
                  * 2、设置一个主连接的数据库ID，节点MainDB，对应的连接字符串的Enabled也必须true，必填
                  */
-                if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                if (AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {
-                    if (typeof(TEntity).GetTypeInfo().GetCustomAttributes(typeof(SugarTable), true).FirstOrDefault((x => x.GetType() == typeof(SugarTable))) is SugarTable sugarTable && !string.IsNullOrEmpty(sugarTable.TableDescription))
+                    //if (typeof(TEntity).GetTypeInfo().GetCustomAttributes(typeof(SugarTable), true).FirstOrDefault((x => x.GetType() == typeof(SugarTable))) is SugarTable sugarTable && !string.IsNullOrEmpty(sugarTable.TableDescription))
+                    //{
+                    //    _dbBase.ChangeDatabase(sugarTable.TableDescription.ToLower());
+                    //}
+                    //else
+                    //{
+                    //    _dbBase.ChangeDatabase(MainDb.CurrentDbConnId.ToLower());
+                    //}
+                    //修改使用 model备注字段作为切换数据库条件，使用sqlsugar TenantAttribute存放数据库ConnId
+                    if (typeof(TEntity).GetTypeInfo().GetCustomAttributes(typeof(TenantAttribute), true).FirstOrDefault((x => x.GetType() == typeof(TenantAttribute))) is TenantAttribute tenantAttribute)
                     {
-                        _dbBase.ChangeDatabase(sugarTable.TableDescription.ToLower());
+                        _dbBase.ChangeDatabase(tenantAttribute.configId.ToString().ToLower());
                     }
                     else
                     {
                         _dbBase.ChangeDatabase(MainDb.CurrentDbConnId.ToLower());
                     }
                 }
-
                 return _dbBase;
             }
         }

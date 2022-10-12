@@ -120,7 +120,7 @@ namespace Blog.Core.AuthHelper
                     var result = await httpContext.AuthenticateAsync(defaultAuthenticate.Name);
 
                     // 是否开启测试环境
-                    var isTestCurrent = Appsettings.app(new string[] { "AppSettings", "UseLoadTest" }).ObjToBool();
+                    var isTestCurrent = AppSettings.app(new string[] { "AppSettings", "UseLoadTest" }).ObjToBool();
 
                     //result?.Principal不为空即登录成功
                     if (result?.Principal != null || isTestCurrent)
