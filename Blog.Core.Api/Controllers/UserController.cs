@@ -6,11 +6,11 @@ using AutoMapper;
 using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.HttpContextUser;
-using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Blog.Core.Model.ViewModels;
+using Blog.Core.Repository.UnitOfWorks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,7 +25,7 @@ namespace Blog.Core.Controllers
     [Authorize(Permissions.Name)]
     public class UserController : BaseApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkManage _unitOfWorkManage;
         readonly ISysUserInfoServices _sysUserInfoServices;
         readonly IUserRoleServices _userRoleServices;
         readonly IRoleServices _roleServices;
@@ -37,7 +37,7 @@ namespace Blog.Core.Controllers
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="unitOfWork"></param>
+        /// <param name="unitOfWorkManage"></param>
         /// <param name="sysUserInfoServices"></param>
         /// <param name="userRoleServices"></param>
         /// <param name="roleServices"></param>
@@ -45,13 +45,13 @@ namespace Blog.Core.Controllers
         /// <param name="user"></param>
         /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        public UserController(IUnitOfWork unitOfWork, ISysUserInfoServices sysUserInfoServices,
+        public UserController(IUnitOfWorkManage unitOfWorkManage, ISysUserInfoServices sysUserInfoServices,
             IUserRoleServices userRoleServices,
             IRoleServices roleServices,
             IDepartmentServices departmentServices,
             IUser user, IMapper mapper, ILogger<UserController> logger)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWorkManage = unitOfWorkManage;
             _sysUserInfoServices = sysUserInfoServices;
             _userRoleServices = userRoleServices;
             _roleServices = roleServices;
@@ -215,7 +215,7 @@ namespace Blog.Core.Controllers
 
                 _mapper.Map(sysUserInfo, oldUser);
 
-                _unitOfWork.BeginTran();
+                _unitOfWorkManage.BeginTran();
                 // 无论 Update Or Add , 先删除当前用户的全部 U_R 关系
                 var usreroles = (await _userRoleServices.Query(d => d.UserId == oldUser.Id));
                 if (usreroles.Any())
@@ -246,7 +246,7 @@ namespace Blog.Core.Controllers
 
                 data.success = await _sysUserInfoServices.Update(oldUser);
 
-                _unitOfWork.CommitTran();
+                _unitOfWorkManage.CommitTran();
 
                 if (data.success)
                 {
@@ -256,7 +256,7 @@ namespace Blog.Core.Controllers
             }
             catch (Exception e)
             {
-                _unitOfWork.RollbackTran();
+                _unitOfWorkManage.RollbackTran();
                 _logger.LogError(e, e.Message);
             }
 

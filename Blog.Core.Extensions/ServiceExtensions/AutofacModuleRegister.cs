@@ -12,8 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Blog.Core.IRepository.UnitOfWork;
-using Blog.Core.Repository.UnitOfWork;
+using Blog.Core.Repository.UnitOfWorks;
 
 namespace Blog.Core.Extensions
 {
@@ -85,7 +84,7 @@ namespace Blog.Core.Extensions
                 .PropertiesAutowired()
                 .InstancePerDependency();
 
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>()
+            builder.RegisterType<UnitOfWorkManageManager>().As<IUnitOfWorkManage>()
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope()
                 .PropertiesAutowired();

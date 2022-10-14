@@ -1,7 +1,6 @@
 using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.IRepository.Base;
-using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -11,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Blog.Core.Repository.UnitOfWorks;
 
 namespace Blog.Core.Services
 {
@@ -19,11 +19,11 @@ namespace Blog.Core.Services
 	/// </summary>
     public class WeChatConfigServices : BaseServices<WeChatConfig>, IWeChatConfigServices
     {
-        readonly IUnitOfWork _unitOfWork;
+        readonly IUnitOfWorkManage _unitOfWorkManage;
         readonly ILogger<WeChatConfigServices> _logger;
-        public WeChatConfigServices(IUnitOfWork unitOfWork, ILogger<WeChatConfigServices> logger)
+        public WeChatConfigServices(IUnitOfWorkManage unitOfWorkManage, ILogger<WeChatConfigServices> logger)
         {
-            this._unitOfWork = unitOfWork;
+            this._unitOfWorkManage = unitOfWorkManage;
             this._logger = logger;
         }  
         public async Task<MessageModel<WeChatApiDto>> GetToken(string publicAccount)
@@ -831,17 +831,17 @@ namespace Blog.Core.Services
 
             try
             {
-                _unitOfWork.BeginTran();
+                _unitOfWorkManage.BeginTran();
                 await BaseDal.Db.Updateable<WeChatQR>(ticket).ExecuteCommandAsync();
                 if (isNewBind)
                     await BaseDal.Db.Insertable<WeChatSub>(bindUser).ExecuteCommandAsync();
                 else
                     await BaseDal.Db.Updateable<WeChatSub>(bindUser).ExecuteCommandAsync();
-                _unitOfWork.CommitTran();
+                _unitOfWorkManage.CommitTran();
             }
             catch
             {
-                _unitOfWork.RollbackTran();
+                _unitOfWorkManage.RollbackTran();
                 throw;
             }
             return @$"<xml><ToUserName><![CDATA[{weChat.FromUserName}]]></ToUserName>

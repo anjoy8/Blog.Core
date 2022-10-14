@@ -1,11 +1,11 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.IRepository.UnitOfWork;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using Blog.Core.Common.DB;
+using Blog.Core.Repository.UnitOfWorks;
 
 namespace Blog.Core.AOP
 {
@@ -15,11 +15,11 @@ namespace Blog.Core.AOP
     public class BlogTranAOP : IInterceptor
     {
         private readonly ILogger<BlogTranAOP> _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkManage _unitOfWorkManage;
 
-        public BlogTranAOP(IUnitOfWork unitOfWork, ILogger<BlogTranAOP> logger)
+        public BlogTranAOP(IUnitOfWorkManage unitOfWorkManage, ILogger<BlogTranAOP> logger)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWorkManage = unitOfWorkManage;
             _logger = logger;
         }
 
@@ -70,16 +70,16 @@ namespace Blog.Core.AOP
             switch (propagation)
             {
                 case Propagation.Required:
-                    if (_unitOfWork.TranCount <= 0)
+                    if (_unitOfWorkManage.TranCount <= 0)
                     {
                         _logger.LogDebug($"Begin Transaction");
                         Console.WriteLine($"Begin Transaction");
-                        _unitOfWork.BeginTran(method);
+                        _unitOfWorkManage.BeginTran(method);
                     }
 
                     break;
                 case Propagation.Mandatory:
-                    if (_unitOfWork.TranCount <= 0)
+                    if (_unitOfWorkManage.TranCount <= 0)
                     {
                         throw new Exception("事务传播机制为:[Mandatory],当前不存在事务");
                     }
@@ -88,7 +88,7 @@ namespace Blog.Core.AOP
                 case Propagation.Nested:
                     _logger.LogDebug($"Begin Transaction");
                     Console.WriteLine($"Begin Transaction");
-                    _unitOfWork.BeginTran(method);
+                    _unitOfWorkManage.BeginTran(method);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(propagation), propagation, null);
@@ -97,12 +97,12 @@ namespace Blog.Core.AOP
 
         private void After(MethodInfo method)
         {
-            _unitOfWork.CommitTran(method);
+            _unitOfWorkManage.CommitTran(method);
         }
 
         private void AfterException(MethodInfo method)
         {
-            _unitOfWork.RollbackTran(method);
+            _unitOfWorkManage.RollbackTran(method);
         }
 
         /// <summary>

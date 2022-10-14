@@ -1,7 +1,6 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.DB;
 using Blog.Core.IRepository.Base;
-using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.Model;
 using SqlSugar;
 using System;
@@ -10,12 +9,13 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Blog.Core.Repository.UnitOfWorks;
 
 namespace Blog.Core.Repository.Base
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkManage _unitOfWorkManage;
         private readonly SqlSugarScope _dbBase;
 
         private ISqlSugarClient _db
@@ -52,10 +52,10 @@ namespace Blog.Core.Repository.Base
 
         public ISqlSugarClient Db => _db;
 
-        public BaseRepository(IUnitOfWork unitOfWork)
+        public BaseRepository(IUnitOfWorkManage unitOfWorkManage)
         {
-            _unitOfWork = unitOfWork;
-            _dbBase = unitOfWork.GetDbClient();
+            _unitOfWorkManage = unitOfWorkManage;
+            _dbBase = unitOfWorkManage.GetDbClient();
         }
 
 
