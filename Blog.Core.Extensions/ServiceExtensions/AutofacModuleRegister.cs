@@ -84,7 +84,7 @@ namespace Blog.Core.Extensions
                 .PropertiesAutowired()
                 .InstancePerDependency();
 
-            builder.RegisterType<UnitOfWorkManageManager>().As<IUnitOfWorkManage>()
+            builder.RegisterType<UnitOfWorkManage>().As<IUnitOfWorkManage>()
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope()
                 .PropertiesAutowired();

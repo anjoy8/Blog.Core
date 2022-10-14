@@ -8,16 +8,16 @@ using SqlSugar;
 
 namespace Blog.Core.Repository.UnitOfWorks
 {
-    public class UnitOfWorkManageManager : IUnitOfWorkManage
+    public class UnitOfWorkManage : IUnitOfWorkManage
     {
-        private readonly ILogger<UnitOfWorkManageManager> _logger;
+        private readonly ILogger<UnitOfWorkManage> _logger;
         private readonly ISqlSugarClient _sqlSugarClient;
 
         private int _tranCount { get; set; }
         public int TranCount => _tranCount;
         public readonly ConcurrentStack<string> TranStack = new();
 
-        public UnitOfWorkManageManager(ISqlSugarClient sqlSugarClient, ILogger<UnitOfWorkManageManager> logger)
+        public UnitOfWorkManage(ISqlSugarClient sqlSugarClient, ILogger<UnitOfWorkManage> logger)
         {
             _sqlSugarClient = sqlSugarClient;
             _logger = logger;
