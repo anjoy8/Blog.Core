@@ -3,22 +3,21 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using System.Threading;
 using Blog.Core.Common.Extensions;
-using Blog.Core.IRepository.UnitOfWork;
 using Microsoft.Extensions.Logging;
 using SqlSugar;
 
-namespace Blog.Core.Repository.UnitOfWork
+namespace Blog.Core.Repository.UnitOfWorks
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWorkManage : IUnitOfWorkManage
     {
-        private readonly ILogger<UnitOfWork> _logger;
+        private readonly ILogger<UnitOfWorkManage> _logger;
         private readonly ISqlSugarClient _sqlSugarClient;
 
         private int _tranCount { get; set; }
         public int TranCount => _tranCount;
         public readonly ConcurrentStack<string> TranStack = new();
 
-        public UnitOfWork(ISqlSugarClient sqlSugarClient, ILogger<UnitOfWork> logger)
+        public UnitOfWorkManage(ISqlSugarClient sqlSugarClient, ILogger<UnitOfWorkManage> logger)
         {
             _sqlSugarClient = sqlSugarClient;
             _logger = logger;
@@ -35,6 +34,20 @@ namespace Blog.Core.Repository.UnitOfWork
             return _sqlSugarClient as SqlSugarScope;
         }
 
+
+        public UnitOfWork CreateUnitOfWork()
+        {
+            UnitOfWork uow = new UnitOfWork();
+            uow.Logger = _logger;
+            uow.Db = _sqlSugarClient;
+            uow.Tenant = (ITenant) _sqlSugarClient;
+            uow.IsTran = true;
+
+            uow.Db.Open();
+            uow.Tenant.BeginTran();
+            _logger.LogDebug("UnitOfWork Begin");
+            return uow;
+        }
 
         public void BeginTran()
         {

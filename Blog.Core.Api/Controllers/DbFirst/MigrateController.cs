@@ -1,5 +1,4 @@
 ﻿using Blog.Core.Common.Helper;
-using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -15,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Blog.Core.Repository.UnitOfWorks;
 
 namespace Blog.Core.Controllers
 {
@@ -23,7 +23,7 @@ namespace Blog.Core.Controllers
     //[Authorize(Permissions.Name)]
     public class MigrateController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkManage _unitOfWorkManage;
         private readonly IRoleModulePermissionServices _roleModulePermissionServices;
         private readonly IUserRoleServices _userRoleServices;
         private readonly IRoleServices _roleServices;
@@ -33,7 +33,7 @@ namespace Blog.Core.Controllers
         private readonly ISysUserInfoServices _sysUserInfoServices;
         private readonly IWebHostEnvironment _env;
 
-        public MigrateController(IUnitOfWork unitOfWork,
+        public MigrateController(IUnitOfWorkManage unitOfWorkManage,
             IRoleModulePermissionServices roleModulePermissionServices,
             IUserRoleServices userRoleServices,
             IRoleServices roleServices,
@@ -43,7 +43,7 @@ namespace Blog.Core.Controllers
             ISysUserInfoServices sysUserInfoServices,
             IWebHostEnvironment env)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWorkManage = unitOfWorkManage;
             _roleModulePermissionServices = roleModulePermissionServices;
             _userRoleServices = userRoleServices;
             _roleServices = roleServices;
@@ -86,7 +86,7 @@ namespace Blog.Core.Controllers
                     permissions = permissions.Where(d => filterPermissionIds.Contains(d.Id)).ToList();
 
                     // 开启事务，保证数据一致性
-                    _unitOfWork.BeginTran();
+                    _unitOfWorkManage.BeginTran();
 
                     // 注意信息的完整性，不要重复添加，确保主库没有要添加的数据
 
@@ -136,14 +136,14 @@ namespace Blog.Core.Controllers
                     }
 
 
-                    _unitOfWork.CommitTran();
+                    _unitOfWorkManage.CommitTran();
 
                     data.success = true;
                     data.msg = "导入成功！";
                 }
                 catch (Exception)
                 {
-                    _unitOfWork.RollbackTran();
+                    _unitOfWorkManage.RollbackTran();
 
                 }
             }

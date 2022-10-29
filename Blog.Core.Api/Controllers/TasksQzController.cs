@@ -4,11 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Blog.Core.Model.ViewModels;
+using Blog.Core.Repository.UnitOfWorks;
 using Blog.Core.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,11 +23,11 @@ namespace Blog.Core.Controllers
     {
         private readonly ITasksQzServices _tasksQzServices;
         private readonly ISchedulerCenter _schedulerCenter;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkManage _unitOfWorkManage;
 
-        public TasksQzController(ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter, IUnitOfWork unitOfWork)
+        public TasksQzController(ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter, IUnitOfWorkManage unitOfWorkManage)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWorkManage = unitOfWorkManage;
             _tasksQzServices = tasksQzServices;
             _schedulerCenter = schedulerCenter;
         }
@@ -70,7 +70,7 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<string>> Post([FromBody] TasksQz tasksQz)
         {
             var data = new MessageModel<string>();
-            _unitOfWork.BeginTran();
+            _unitOfWorkManage.BeginTran();
             var id = (await _tasksQzServices.Add(tasksQz));
             data.success = id > 0;
             try
@@ -107,9 +107,9 @@ namespace Blog.Core.Controllers
             }
             finally
             {   if(data.success)
-                    _unitOfWork.CommitTran();
+                    _unitOfWorkManage.CommitTran();
                 else
-                    _unitOfWork.RollbackTran();
+                    _unitOfWorkManage.RollbackTran();
             }
             return data; 
         }
@@ -126,7 +126,7 @@ namespace Blog.Core.Controllers
             var data = new MessageModel<string>();
             if (tasksQz != null && tasksQz.Id > 0)
             {
-                _unitOfWork.BeginTran();
+                _unitOfWorkManage.BeginTran();
                 data.success = await _tasksQzServices.Update(tasksQz);
                 try
                 {
@@ -160,9 +160,9 @@ namespace Blog.Core.Controllers
                 finally
                 {
                     if (data.success)
-                        _unitOfWork.CommitTran();
+                        _unitOfWorkManage.CommitTran();
                     else
-                        _unitOfWork.RollbackTran();
+                        _unitOfWorkManage.RollbackTran();
                 } 
             }
             return data;
@@ -180,7 +180,7 @@ namespace Blog.Core.Controllers
             var model = await _tasksQzServices.QueryById(jobId);
             if (model != null)
             {
-                _unitOfWork.BeginTran();
+                _unitOfWorkManage.BeginTran();
                 data.success = await _tasksQzServices.Delete(model);
                 try
                 {
@@ -204,9 +204,9 @@ namespace Blog.Core.Controllers
                 finally
                 {
                     if (data.success)
-                        _unitOfWork.CommitTran();
+                        _unitOfWorkManage.CommitTran();
                     else
-                        _unitOfWork.RollbackTran();
+                        _unitOfWorkManage.RollbackTran();
                 } 
             }
             else
@@ -229,7 +229,7 @@ namespace Blog.Core.Controllers
             var model = await _tasksQzServices.QueryById(jobId);
             if (model != null)
             {
-                _unitOfWork.BeginTran(); 
+                _unitOfWorkManage.BeginTran(); 
                 try
                 {
                     model.IsStart = true;
@@ -262,9 +262,9 @@ namespace Blog.Core.Controllers
                 finally
                 {
                     if (data.success)
-                        _unitOfWork.CommitTran();
+                        _unitOfWorkManage.CommitTran();
                     else
-                        _unitOfWork.RollbackTran();
+                        _unitOfWorkManage.RollbackTran();
                 } 
             }
             else
@@ -325,7 +325,7 @@ namespace Blog.Core.Controllers
             var model = await _tasksQzServices.QueryById(jobId);
             if (model != null)
             { 
-                _unitOfWork.BeginTran();
+                _unitOfWorkManage.BeginTran();
                 try
                 {
                     data.success = await _tasksQzServices.Update(model);
@@ -356,9 +356,9 @@ namespace Blog.Core.Controllers
                 finally
                 {
                     if (data.success)
-                        _unitOfWork.CommitTran();
+                        _unitOfWorkManage.CommitTran();
                     else
-                        _unitOfWork.RollbackTran();
+                        _unitOfWorkManage.RollbackTran();
                 } 
             }
             else
@@ -380,7 +380,7 @@ namespace Blog.Core.Controllers
             var model = await _tasksQzServices.QueryById(jobId);
             if (model != null)
             { 
-                _unitOfWork.BeginTran();
+                _unitOfWorkManage.BeginTran();
                 try
                 {
                     model.IsStart = true;
@@ -412,9 +412,9 @@ namespace Blog.Core.Controllers
                 finally
                 {
                     if (data.success)
-                        _unitOfWork.CommitTran();
+                        _unitOfWorkManage.CommitTran();
                     else
-                        _unitOfWork.RollbackTran();
+                        _unitOfWorkManage.RollbackTran();
                 } 
             }
             else
@@ -436,7 +436,7 @@ namespace Blog.Core.Controllers
             if (model != null)
             {
 
-                _unitOfWork.BeginTran();
+                _unitOfWorkManage.BeginTran();
                 try
                 {
                     model.IsStart = true;
@@ -472,9 +472,9 @@ namespace Blog.Core.Controllers
                 finally
                 {
                     if (data.success)
-                        _unitOfWork.CommitTran();
+                        _unitOfWorkManage.CommitTran();
                     else
-                        _unitOfWork.RollbackTran();
+                        _unitOfWorkManage.RollbackTran();
                 }  
             }
             else

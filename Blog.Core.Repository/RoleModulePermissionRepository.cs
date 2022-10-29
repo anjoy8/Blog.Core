@@ -1,10 +1,10 @@
 using Blog.Core.IRepository;
-using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.Model.Models;
 using Blog.Core.Repository.Base;
 using SqlSugar;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Blog.Core.Repository.UnitOfWorks;
 
 namespace Blog.Core.Repository
 {
@@ -13,7 +13,7 @@ namespace Blog.Core.Repository
     /// </summary>	
     public class RoleModulePermissionRepository : BaseRepository<RoleModulePermission>, IRoleModulePermissionRepository
     {
-        public RoleModulePermissionRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public RoleModulePermissionRepository(IUnitOfWorkManage unitOfWorkManage) : base(unitOfWorkManage)
         {
         }
 
