@@ -36,6 +36,8 @@ namespace Blog.Core.Model.Models
         //[SugarColumn(IsNullable = false, ColumnDescription = "登录账号", IsPrimaryKey = false, IsIdentity = false, ColumnDataType = "nvarchar", Length = 50)]
         //ColumnDescription 表字段备注，  已在MSSQL测试，配合 [SugarTable("SysUserInfo", "用户表")]//('数据库表名'，'数据库表备注')
         //可以完整生成 表备注和各个字段的中文备注
+        //2022/10/11
+        //测试mssql 发现 不写ColumnDescription，写好注释在mssql下也能生成表字段备注
         public string LoginName { get; set; }
 
         /// <summary>

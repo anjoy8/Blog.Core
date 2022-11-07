@@ -93,7 +93,7 @@ namespace Blog.Core.Tasks
 
             Parallel.For(0, 1, e =>
             {
-                LogLock.OutSql2Log("ACCESSTRENDLOG", new string[] { JsonConvert.SerializeObject(activeUserVMs) }, false, true);
+                LogLock.OutLogAOP("ACCESSTRENDLOG", new string[] { activeUserVMs.GetType().ToString(), JsonConvert.SerializeObject(activeUserVMs) }, false, true);
             });
         }
 

@@ -66,7 +66,8 @@ namespace Blog.Core.Extensions
                                         Parallel.For(0, 1, e =>
                                         {
                                             MiniProfiler.Current.CustomTiming("SQL：", GetParas(p) + "【SQL语句】：" + sql);
-                                            LogLock.OutSql2Log("SqlLog", new string[] { GetParas(p), "【SQL语句】：" + sql });
+                                            //LogLock.OutSql2Log("SqlLog", new string[] { GetParas(p), "【SQL语句】：" + sql });
+                                            LogLock.OutLogAOP("SqlLog", new string[] { sql.GetType().ToString(), GetParas(p), "【SQL语句】：" + sql });
 
                                         });
                                     }
