@@ -376,6 +376,56 @@
             Nullable:True
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Models.GblLogAudit">
+            <summary>
+            用户团队表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Date">
+            <summary>
+            时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Thread">
+            <summary>
+            线程
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Level">
+            <summary>
+            等级
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Logger">
+            <summary>
+            记录器
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.LogType">
+            <summary>
+            日志类型
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.DataType">
+            <summary>
+            数据类型
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Message">
+            <summary>
+            错误信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Exception">
+            <summary>
+            异常
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Guestbook.blogId">
             <summary>博客ID
             
