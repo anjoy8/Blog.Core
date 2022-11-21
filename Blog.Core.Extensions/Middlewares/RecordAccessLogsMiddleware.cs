@@ -45,10 +45,10 @@ namespace Blog.Core.Extensions.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (Appsettings.app("Middleware", "RecordAccessLogs", "Enabled").ObjToBool())
+            if (AppSettings.app("Middleware", "RecordAccessLogs", "Enabled").ObjToBool())
             {
                 var api = context.Request.Path.ObjToString().TrimEnd('/').ToLower();
-                var ignoreApis = Appsettings.app("Middleware", "RecordAccessLogs", "IgnoreApis");
+                var ignoreApis = AppSettings.app("Middleware", "RecordAccessLogs", "IgnoreApis");
 
                 // 过滤，只有接口
                 if (api.Contains("api") && !ignoreApis.Contains(api))
@@ -106,15 +106,13 @@ namespace Blog.Core.Extensions.Middlewares
 
                         // 自定义log输出
                         var requestInfo = JsonConvert.SerializeObject(userAccessModel);
-                        //Parallel.For(0, 1, e =>
-                        //{
-                        //    LogLock.OutSql2Log("RecordAccessLogs", new string[] { requestInfo + "," }, false);
-                        //});
-
-                        var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RecordAccessLogs");
-                        SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false);
-                       
-
+                        Parallel.For(0, 1, e =>
+                        {
+                            //LogLock.OutSql2Log("RecordAccessLogs", new string[] { requestInfo + "," }, false);
+                            LogLock.OutLogAOP("RecordAccessLogs", new string[] { userAccessModel.GetType().ToString(), requestInfo }, false);
+                        });
+                        //var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RecordAccessLogs");
+                        //SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false);
                         return Task.CompletedTask;
                     });
 

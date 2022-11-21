@@ -15,7 +15,7 @@ namespace Blog.Core.Extensions
 
         public RedisCacheManager()
         {
-            string redisConfiguration = Appsettings.app(new string[] { "AppSettings", "RedisCachingAOP", "ConnectionString" });//获取连接字符串
+            string redisConfiguration = AppSettings.app(new string[] { "AppSettings", "RedisCachingAOP", "ConnectionString" });//获取连接字符串
 
             if (string.IsNullOrWhiteSpace(redisConfiguration))
             {

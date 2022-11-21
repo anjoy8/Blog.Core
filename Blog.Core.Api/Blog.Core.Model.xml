@@ -4,6 +4,36 @@
         <name>Blog.Core.Model</name>
     </assembly>
     <members>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.NONE">
+            <summary>
+            无任何权限
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.Custom">
+            <summary>
+            自定义权限
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.MyDepart">
+            <summary>
+            本部门
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.MyDepartAndDown">
+            <summary>
+            本部门及以下
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.OnlySelf">
+            <summary>
+            仅自己
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.ALL">
+            <summary>
+            所有
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.IDS4DbModels.ApplicationRole">
             <summary>
             以下model 来自ids4项目，多库模式，为了调取ids4数据
@@ -269,6 +299,131 @@
         <member name="P:Blog.Core.Model.Models.BlogArticle.IsDeleted">
             <summary>
             逻辑删除
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.Department">
+            <summary>
+             部门表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.CodeRelationship">
+            <summary>
+            Desc:部门关系编码
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.Name">
+            <summary>
+            Desc:部门名称
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.Leader">
+            <summary>
+            Desc:负责人
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.OrderSort">
+            <summary>
+            Desc:排序
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.Status">
+            <summary>
+            Desc:部门状态（0正常 1停用）
+            Default:0
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.IsDeleted">
+            <summary>
+            Desc:删除标志（0代表存在 2代表删除）
+            Default:0
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.CreateBy">
+            <summary>
+            Desc:创建者
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.CreateTime">
+            <summary>
+            Desc:创建时间
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.ModifyBy">
+            <summary>
+            Desc:更新者
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Department.ModifyTime">
+            <summary>
+            Desc:更新时间
+            Default:
+            Nullable:True
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.GblLogAudit">
+            <summary>
+            用户团队表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Date">
+            <summary>
+            时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Thread">
+            <summary>
+            线程
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Level">
+            <summary>
+            等级
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Logger">
+            <summary>
+            记录器
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.LogType">
+            <summary>
+            日志类型
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.DataType">
+            <summary>
+            数据类型
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Message">
+            <summary>
+            错误信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Exception">
+            <summary>
+            异常
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.Guestbook.blogId">
@@ -576,6 +731,17 @@
             排序
              </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.Role.Dids">
+            <summary>
+            自定义权限的部门ids
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.Role.AuthorityScope">
+            <summary>
+            权限范围
+            -1 无任何权限；1 自定义权限；2 本部门；3 本部门及以下；4 仅自己；9 全部；
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Role.Enabled">
             <summary>
             是否激活
@@ -676,6 +842,11 @@
             状态
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.DepartmentId">
+            <summary>
+            部门
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.SysUserInfo.Remark">
             <summary>
             备注
@@ -689,6 +860,11 @@
         <member name="P:Blog.Core.Model.Models.SysUserInfo.UpdateTime">
             <summary>
             更新时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.CriticalModifyTime">
+            <summary>
+            关键业务修改时间
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.SysUserInfo.LastErrorTime">
@@ -1334,6 +1510,16 @@
         <member name="P:Blog.Core.Model.RootEntity.Id">
             <summary>
             ID
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.DepartmentRoot`1">
+            <summary>
+            部门表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.DepartmentRoot`1.Pid">
+            <summary>
+            上一级（0表示无上一级）
             </summary>
         </member>
         <member name="T:Blog.Core.Model.ModulesRoot`1">

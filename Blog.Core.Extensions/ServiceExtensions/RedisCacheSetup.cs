@@ -20,7 +20,7 @@ namespace Blog.Core.Extensions
             services.AddSingleton<ConnectionMultiplexer>(sp =>
                {
                    //获取连接字符串
-                   string redisConfiguration = Appsettings.app(new string[] { "Redis", "ConnectionString" });
+                   string redisConfiguration = AppSettings.app(new string[] { "Redis", "ConnectionString" });
 
                    var configuration = ConfigurationOptions.Parse(redisConfiguration, true);
 

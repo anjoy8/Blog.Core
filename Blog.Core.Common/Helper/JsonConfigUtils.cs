@@ -63,52 +63,6 @@ namespace Blog.Core.Common.Helper
         }
     }
 
-
-    /// <summary>
-    /// 配置文件管理器
-    /// </summary>
-    public interface IConfigurationManager
-    {
-        T GetAppConfig<T>(string key, T defaultValue = default(T));
-    }
-
-    /// <summary>
-    /// 配置读取  根据环境变量
-    /// </summary>
-    public class ConfigurationManager : IConfigurationManager
-    {
-        private readonly IConfigurationRoot config;
-
-        public ConfigurationManager(IConfigurationRoot _config)
-        {
-            config = _config;
-        }
-
-        public T GetAppConfig<T>(string key, T defaultValue = default(T))
-        {
-            T value = default(T);
-            try
-            {
-                var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, false)
-                      .AddJsonFile($"appsettings.{env}.json", true, false)
-                       .AddEnvironmentVariables();
-
-                var configuration = builder.Build();
-                value = (T)Convert.ChangeType(configuration[key], typeof(T));
-                if (value == null)
-                    value = defaultValue;
-            }
-            catch (Exception)
-            {
-                value = defaultValue;
-            }
-
-            return value;
-        }
-    }
-
-
     #region Nacos 配置清单
     public class JsonConfigSettings
     {

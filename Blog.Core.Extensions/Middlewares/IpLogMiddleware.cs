@@ -33,7 +33,7 @@ namespace Blog.Core.Extensions.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (Appsettings.app("Middleware", "IPLog", "Enabled").ObjToBool())
+            if (AppSettings.app("Middleware", "IPLog", "Enabled").ObjToBool())
             {
                 // 过滤，只有接口
                 if (context.Request.Path.Value.Contains("api"))
@@ -44,6 +44,7 @@ namespace Blog.Core.Extensions.Middlewares
                     {
                         // 存储请求数据
                         var request = context.Request;
+
                         var requestInfo = JsonConvert.SerializeObject(new RequestInfo()
                         {
                             Ip = GetClientIP(context),
@@ -58,7 +59,8 @@ namespace Blog.Core.Extensions.Middlewares
                             // 自定义log输出
                             Parallel.For(0, 1, e =>
                             {
-                                LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
+                                //LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
+                                LogLock.OutLogAOP("RequestIpInfoLog", new string[] { requestInfo.GetType().ToString(), requestInfo }, false);
                             });
 
                             //try

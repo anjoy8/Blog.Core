@@ -1,53 +1,53 @@
 ﻿using Blog.Core.Common;
-using Blog.Core.Common.DB;
 using Blog.Core.IRepository.Base;
-using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.Model;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
+using Blog.Core.Repository.UnitOfWorks;
 
 namespace Blog.Core.Repository.Base
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkManage _unitOfWorkManage;
         private readonly SqlSugarScope _dbBase;
 
         private ISqlSugarClient _db
         {
             get
             {
+                ISqlSugarClient db = _dbBase;
                 /* 如果要开启多库支持，
-                 * 1、在appsettings.json 中开启MutiDBEnabled节点为true，必填
-                 * 2、设置一个主连接的数据库ID，节点MainDB，对应的连接字符串的Enabled也必须true，必填
-                 */
-                if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                * 1、在appsettings.json 中开启MultiDBEnabled节点为true，必填
+                * 2、设置一个主连接的数据库ID，节点MainDB，对应的连接字符串的Enabled也必须true，必填
+                */
+                if (AppSettings.app(new[] {"MultiDBEnabled"}).ObjToBool())
                 {
-                    if (typeof(TEntity).GetTypeInfo().GetCustomAttributes(typeof(SugarTable), true).FirstOrDefault((x => x.GetType() == typeof(SugarTable))) is SugarTable sugarTable && !string.IsNullOrEmpty(sugarTable.TableDescription))
+                    //修改使用 model备注字段作为切换数据库条件，使用sqlsugar TenantAttribute存放数据库ConnId
+                    //参考 https://www.donet5.com/Home/Doc?typeId=2246
+                    var tenantAttr = typeof(TEntity).GetCustomAttribute<TenantAttribute>();
+                    if (tenantAttr != null)
                     {
-                        _dbBase.ChangeDatabase(sugarTable.TableDescription.ToLower());
-                    }
-                    else
-                    {
-                        _dbBase.ChangeDatabase(MainDb.CurrentDbConnId.ToLower());
+                        //统一处理 configId 小写
+                        db = _dbBase.GetConnectionScope(tenantAttr.configId.ToString().ToLower());
                     }
                 }
 
-                return _dbBase;
+                return db;
             }
         }
 
         public ISqlSugarClient Db => _db;
 
-        public BaseRepository(IUnitOfWork unitOfWork)
+        public BaseRepository(IUnitOfWorkManage unitOfWorkManage)
         {
-            _unitOfWork = unitOfWork;
-            _dbBase = unitOfWork.GetDbClient();
+            _unitOfWorkManage = unitOfWorkManage;
+            _dbBase = unitOfWorkManage.GetDbClient();
         }
 
 
@@ -67,7 +67,7 @@ namespace Blog.Core.Repository.Base
         public async Task<TEntity> QueryById(object objId, bool blnUseCache = false)
         {
             //return await Task.Run(() => _db.Queryable<TEntity>().WithCacheIF(blnUseCache).InSingle(objId));
-            return await _db.Queryable<TEntity>().WithCacheIF(blnUseCache).In(objId).SingleAsync();
+            return await _db.Queryable<TEntity>().WithCacheIF(blnUseCache, 10).In(objId).SingleAsync();
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Blog.Core.Repository.Base
         /// <returns></returns>
         public async Task<bool> DeleteById(object id)
         {
-            return await _db.Deleteable<TEntity>(id).ExecuteCommandHasChangeAsync();
+            return await _db.Deleteable<TEntity>().In(id).ExecuteCommandHasChangeAsync();
         }
 
         /// <summary>
