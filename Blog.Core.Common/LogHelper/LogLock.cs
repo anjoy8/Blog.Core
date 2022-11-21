@@ -23,56 +23,17 @@ namespace Blog.Core.Common.LogHelper
             _contentRoot = contentPath;
         }
 
-        public static void OutLogAOP(string prefix, string[] dataParas, bool IsHeader = true, bool isWrt = false)
+        public static void OutSql2Log(string prefix, string[] dataParas, bool IsHeader = true, bool isWrt = false)
         {
-            string AppSetingNodeName = "AppSettings";
-            string AppSetingName = "LogAOP";
-            switch (prefix)
-            {
-                case "AOPLog":
-                    AppSetingName = "LogAOP";
-                    break;
-                case "AOPLogEx":
-                    AppSetingName = "LogAOP";
-                    break;
-                case "RequestIpInfoLog":
-                    AppSetingNodeName = "Middleware";
-                    AppSetingName = "IPLog";
-                    break;
-                case "RecordAccessLogs":
-                    AppSetingNodeName = "Middleware";
-                    AppSetingName = "RecordAccessLogs";
-                    break;
-                case "SqlLog":
-                    AppSetingName = "SqlAOP";
-                    break;
-                case "RequestResponseLog":
-                    AppSetingNodeName = "Middleware";
-                    AppSetingName = "RequestResponseLog";
-                    break;
-                default:
-                    break;
-            }
-            if (AppSettings.app(new string[] { AppSetingNodeName, AppSetingName, "Enabled" }).ObjToBool())
-            {
-                if (AppSettings.app(new string[] { AppSetingNodeName, AppSetingName, "LogToDB", "Enabled" }).ObjToBool())
-                {
-                    OutSql2LogToDB(prefix, dataParas, IsHeader);
-                }
-                if (AppSettings.app(new string[] { AppSetingNodeName, AppSetingName, "LogToFile", "Enabled" }).ObjToBool())
-                {
-                    OutSql2LogToFile(prefix, dataParas, IsHeader);
-                }
-            }
 
-            //if (AppSettings.app(new string[] { "AppSettings", "LogFile", "Enabled" }).ObjToBool())
-            //{
-            //    OutSql2LogFile(prefix, dataParas, IsHeader);
-            //}
-            //else
-            //{
-            //    OutSql2Log(prefix, dataParas, IsHeader);
-            //}
+            if (Appsettings.app(new string[] { "AppSettings", "LogToDb", "Enabled" }).ObjToBool())
+            {
+                OutSql2LogToDB(prefix, dataParas, IsHeader);
+            }
+            else
+            {
+                OutSql2LogToFile(prefix, dataParas, IsHeader, isWrt);
+            }
         }
 
         public static void OutSql2LogToFile(string prefix, string[] dataParas, bool IsHeader = true, bool isWrt = false)
@@ -92,38 +53,7 @@ namespace Blog.Core.Common.LogHelper
                 }
                 //string logFilePath = Path.Combine(path, $@"{filename}.log");
                 var logFilePath = FileHelper.GetAvailableFileWithPrefixOrderSize(folderPath, prefix);
-                switch (prefix)
-                {
-                    case "AOPLog":
-                        AOPLogInfo apiLogAopInfo = JsonConvert.DeserializeObject<AOPLogInfo>(dataParas[1]);
-                        //记录被拦截方法信息的日志信息
-                        var dataIntercept = "" +
-                            $"【操作时间】：{apiLogAopInfo.RequestTime}\r\n" +
-                            $"【当前操作用户】：{ apiLogAopInfo.OpUserName} \r\n" +
-                            $"【当前执行方法】：{ apiLogAopInfo.RequestMethodName} \r\n" +
-                            $"【携带的参数有】： {apiLogAopInfo.RequestParamsName} \r\n" +
-                            $"【携带的参数JSON】： {apiLogAopInfo.RequestParamsData} \r\n" +
-                            $"【响应时间】：{apiLogAopInfo.ResponseIntervalTime}\r\n" +
-                            $"【执行完成时间】：{apiLogAopInfo.ResponseTime}\r\n" +
-                            $"【执行完成结果】：{apiLogAopInfo.ResponseJsonData}\r\n";
-                        dataParas = new string[] { dataIntercept };
-                        break;
-                    case "AOPLogEx":
-                        AOPLogExInfo apiLogAopExInfo = JsonConvert.DeserializeObject<AOPLogExInfo>(dataParas[1]);
-                        var dataInterceptEx = "" +
-                            $"【操作时间】：{apiLogAopExInfo.ApiLogAopInfo.RequestTime}\r\n" +
-                            $"【当前操作用户】：{ apiLogAopExInfo.ApiLogAopInfo.OpUserName} \r\n" +
-                            $"【当前执行方法】：{ apiLogAopExInfo.ApiLogAopInfo.RequestMethodName} \r\n" +
-                            $"【携带的参数有】： {apiLogAopExInfo.ApiLogAopInfo.RequestParamsName} \r\n" +
-                            $"【携带的参数JSON】： {apiLogAopExInfo.ApiLogAopInfo.RequestParamsData} \r\n" +
-                            $"【响应时间】：{apiLogAopExInfo.ApiLogAopInfo.ResponseIntervalTime}\r\n" +
-                            $"【执行完成时间】：{apiLogAopExInfo.ApiLogAopInfo.ResponseTime}\r\n" +
-                            $"【执行完成结果】：{apiLogAopExInfo.ApiLogAopInfo.ResponseJsonData}\r\n" +
-                            $"【执行完成异常信息】：方法中出现异常：{apiLogAopExInfo.ExMessage}\r\n" +
-                            $"【执行完成异常】：方法中出现异常：{apiLogAopExInfo.InnerException}\r\n";
-                        dataParas = new string[] { dataInterceptEx };
-                        break;
-                }
+
                 var now = DateTime.Now;
                 string logContent = String.Join("\r\n", dataParas);
                 if (IsHeader)
@@ -132,12 +62,6 @@ namespace Blog.Core.Common.LogHelper
                        "--------------------------------\r\n" +
                        DateTime.Now + "|\r\n" +
                        String.Join("\r\n", dataParas) + "\r\n"
-                       );
-                }
-                else
-                {
-                    logContent = (
-                       dataParas[1] + ",\r\n"
                        );
                 }
 
@@ -172,22 +96,18 @@ namespace Blog.Core.Common.LogHelper
         }
         public static void OutSql2LogToDB(string prefix, string[] dataParas, bool IsHeader = true)
         {
-            log4net.LogicalThreadContext.Properties["LogType"] = prefix;
-            if (dataParas.Length >= 2)
-            {
-                log4net.LogicalThreadContext.Properties["DataType"] = dataParas[0];
-            }
 
-            dataParas = dataParas.Skip(1).ToArray();
-
-            string logContent = String.Join("", dataParas);
+            string logContent = String.Join("\r\n", dataParas);
             if (IsHeader)
             {
-                logContent = (String.Join("", dataParas));
+                logContent = (
+                   "--------------------------------\r\n" +
+                   DateTime.Now + "|\r\n" +
+                   String.Join("\r\n", dataParas) + "\r\n"
+                   );
             }
             switch (prefix)
             {
-                //DEBUG | INFO | WARN | ERROR | FATAL
                 case "AOPLog":
                     log.Info(logContent);
                     break;
@@ -202,9 +122,6 @@ namespace Blog.Core.Common.LogHelper
                     break;
                 case "SqlLog":
                     log.Info(logContent);
-                    break;
-                case "RequestResponseLog":
-                    log.Debug(logContent);
                     break;
                 default:
                     break;

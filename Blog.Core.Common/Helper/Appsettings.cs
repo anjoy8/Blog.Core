@@ -9,12 +9,12 @@ namespace Blog.Core.Common
     /// <summary>
     /// appsettings.json操作类
     /// </summary>
-    public class AppSettings
+    public class Appsettings
     {
         public static IConfiguration Configuration { get; set; }
         static string contentPath { get; set; }
 
-        public AppSettings(string contentPath)
+        public Appsettings(string contentPath)
         {
             string Path = "appsettings.json";
 
@@ -27,7 +27,7 @@ namespace Blog.Core.Common
                .Build();
         }
 
-        public AppSettings(IConfiguration configuration)
+        public Appsettings(IConfiguration configuration)
         {
             Configuration = configuration;
         }

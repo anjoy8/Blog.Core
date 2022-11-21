@@ -52,30 +52,6 @@ namespace Blog.Core.Common.Helper
                 LoopToAppendChildren(all, subItem, pid, needbtn);
             }
         }
-        public static void LoopToAppendChildren(List<DepartmentTree> all, DepartmentTree curItem, int pid)
-        {
-
-            var subItems = all.Where(ee => ee.Pid == curItem.value).ToList();
- 
-            if (subItems.Count > 0)
-            {
-                curItem.children = new List<DepartmentTree>();
-                curItem.children.AddRange(subItems);
-            }
-            else
-            {
-                curItem.children = null;
-            }
-
-            foreach (var subItem in subItems)
-            {
-                if (subItem.value == pid && pid > 0)
-                {
-                    //subItem.disabled = true;//禁用当前节点
-                }
-                LoopToAppendChildren(all, subItem, pid);
-            }
-        }
 
 
 
@@ -126,17 +102,6 @@ namespace Blog.Core.Common.Helper
         public List<PermissionTree> children { get; set; }
         public List<PermissionTree> btns { get; set; }
     }
-
-    public class DepartmentTree
-    {
-        public long value { get; set; }
-        public long Pid { get; set; }
-        public string label { get; set; }
-        public int order { get; set; }
-        public bool disabled { get; set; }
-        public List<DepartmentTree> children { get; set; }
-    }
-
     public class NavigationBar
     {
         public int id { get; set; }
@@ -160,28 +125,5 @@ namespace Blog.Core.Common.Helper
         public bool keepAlive { get; set; } = false;
 
 
-    }
-
-
-    public class NavigationBarPro
-    {
-        public int id { get; set; }
-        public int parentId { get; set; }
-        public int order { get; set; }
-        public string name { get; set; }
-        public bool IsHide { get; set; } = false;
-        public bool IsButton { get; set; } = false;
-        public string path { get; set; }
-        public string component { get; set; }
-        public string Func { get; set; }
-        public string iconCls { get; set; }
-        public NavigationBarMetaPro meta { get; set; }
-    }
-
-    public class NavigationBarMetaPro
-    {
-        public string title { get; set; }
-        public string icon { get; set; }
-        public bool show { get; set; } = false;
     }
 }

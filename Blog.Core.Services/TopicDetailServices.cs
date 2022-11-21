@@ -10,6 +10,13 @@ namespace Blog.Core.Services
 {
     public class TopicDetailServices : BaseServices<TopicDetail>, ITopicDetailServices
     {
+        IBaseRepository<TopicDetail> _dal;
+        public TopicDetailServices(IBaseRepository<TopicDetail> dal)
+        {
+            this._dal = dal;
+            base.BaseDal = dal;
+        }
+
         /// <summary>
         /// 获取开Bug数据（缓存）
         /// </summary>

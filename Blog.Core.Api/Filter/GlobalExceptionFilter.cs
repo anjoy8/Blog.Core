@@ -1,5 +1,4 @@
-﻿using Blog.Core.Common;
-using Blog.Core.Common.Helper;
+﻿using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Hubs;
 using Blog.Core.Model;
@@ -56,11 +55,8 @@ namespace Blog.Core.Filter
 
             //采用log4net 进行错误日志记录
             _loggerHelper.LogError(json.msg + WriteLog(json.msg, context.Exception));
-            if (AppSettings.app(new string[] { "Middleware", "SignalRSendLog", "Enabled" }).ObjToBool())
-            {
-                _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
-            }
 
+            _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
 
         }
 

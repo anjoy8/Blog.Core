@@ -1,6 +1,11 @@
-﻿using Blog.Core.Model;
-using Blog.Core.Model.ViewModels;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Blog.Core.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
@@ -11,28 +16,20 @@ namespace Blog.Core.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class ImgController : BaseApiController
+    public class ImgController : Controller
     {
-        
-        private readonly IWebHostEnvironment _env;
-
-        public ImgController(IWebHostEnvironment webHostEnvironment)
-        {
-            _env = webHostEnvironment;
-        }
-
-
         // GET: api/Download
         /// <summary>
         /// 下载图片（支持中文字符）
         /// </summary>
+        /// <param name="environment"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("/images/Down/Pic")]
-        public FileStreamResult DownImg()
+        public FileStreamResult DownImg([FromServices] IWebHostEnvironment environment)
         {
             string foldername = "";
-            string filepath = Path.Combine(_env.WebRootPath, foldername, "测试下载中文名称的图片.png");
+            string filepath = Path.Combine(environment.WebRootPath, foldername, "测试下载中文名称的图片.png");
             var stream = System.IO.File.OpenRead(filepath);
             string fileExt = ".jpg";  // 这里可以写一个获取文件扩展名的方法，获取扩展名
             //获取文件的ContentType
@@ -45,50 +42,71 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 上传图片,多文件
+        /// 上传图片,多文件，可以使用 postman 测试，
+        /// 如果是单文件，可以 参数写 IFormFile file1
         /// </summary>
-        /// <param name="dto"></param>
+        /// <param name="environment"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("/images/Upload/Pic")]
-        public async Task<MessageModel<string>> InsertPicture([FromForm]UploadFileDto dto)
+        public async Task<MessageModel<string>> InsertPicture([FromServices] IWebHostEnvironment environment)
         {
-            
-            if (dto.Files == null || !dto.Files.Any()) return Failed("请选择上传的文件。");
+            var data = new MessageModel<string>();
+            string path = string.Empty;
+            string foldername = "images";
+            IFormFileCollection files = null;
+
+
+            // 获取提交的文件
+            files = Request.Form.Files;
+            // 获取附带的数据
+            var max_ver = Request.Form["max_ver"].ObjToString();
+
+
+            if (files == null || !files.Any()) { data.msg = "请选择上传的文件。"; return data; }
             //格式限制
             var allowType = new string[] { "image/jpg", "image/png", "image/jpeg" };
-            
-            var allowedFile = dto.Files.Where(c => allowType.Contains(c.ContentType));
-            if (!allowedFile.Any()) return Failed("图片格式错误");
-            if (allowedFile.Sum(c => c.Length) > 1024 * 1024 * 4) return Failed("图片过大");
 
-            string foldername = "images";
-            string folderpath = Path.Combine(_env.WebRootPath, foldername);
+            string folderpath = Path.Combine(environment.WebRootPath, foldername);
             if (!Directory.Exists(folderpath))
             {
                 Directory.CreateDirectory(folderpath);
             }
-            foreach (var file in allowedFile)
-            {
-                string strpath = Path.Combine(foldername, DateTime.Now.ToString("MMddHHmmss") + Path.GetFileName(file.FileName));
-                var path = Path.Combine(_env.WebRootPath, strpath);
 
-                using (var stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            if (files.Any(c => allowType.Contains(c.ContentType)))
+            {
+                if (files.Sum(c => c.Length) <= 1024 * 1024 * 4)
                 {
-                    await file.CopyToAsync(stream);
+                    //foreach (var file in files)
+                    var file = files.FirstOrDefault();
+                    string strpath = Path.Combine(foldername, DateTime.Now.ToString("MMddHHmmss") + Path.GetFileName(file.FileName));
+                    path = Path.Combine(environment.WebRootPath, strpath);
+
+                    using (var stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    data = new MessageModel<string>()
+                    {
+                        response = strpath,
+                        msg = "上传成功",
+                        success = true,
+                    };
+                    return data;
+                }
+                else
+                {
+                    data.msg = "图片过大";
+                    return data;
                 }
             }
+            else
 
-            var excludeFiles = dto.Files.Except(allowedFile);
-
-            if (excludeFiles.Any())
             {
-                var infoMsg = $"{string.Join('、', excludeFiles.Select(c => c.FileName))} 图片格式错误";
-                return Success<string>(null, infoMsg);
+                data.msg = "图片格式错误";
+                return data;
             }
-
-            return Success<string>(null, "上传成功");
-
         }
 
 
@@ -96,14 +114,14 @@ namespace Blog.Core.Controllers
         [HttpGet]
         [Route("/images/Down/Bmd")]
         [AllowAnonymous]
-        public FileStreamResult DownBmd(string filename)
+        public FileStreamResult DownBmd([FromServices] IWebHostEnvironment environment, string filename)
         {
             if (string.IsNullOrEmpty(filename))
             {
                 return null;
             }
             // 前端 blob 接收，具体查看前端admin代码
-            string filepath = Path.Combine(_env.WebRootPath, Path.GetFileName(filename));
+            string filepath = Path.Combine(environment.WebRootPath, Path.GetFileName(filename));
             if (System.IO.File.Exists(filepath))
             {
                 var stream = System.IO.File.OpenRead(filepath);

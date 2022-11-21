@@ -20,8 +20,8 @@ namespace Blog.Core.AuthHelper.OverWrite
         /// <returns></returns>
         public static string IssueJwt(TokenModelJwt tokenModel)
         {
-            string iss = AppSettings.app(new string[] { "Audience", "Issuer" });
-            string aud = AppSettings.app(new string[] { "Audience", "Audience" });
+            string iss = Appsettings.app(new string[] { "Audience", "Issuer" });
+            string aud = Appsettings.app(new string[] { "Audience", "Audience" });
             string secret = AppSecretConfig.Audience_Secret_String;
 
             //var claims = new Claim[] //old

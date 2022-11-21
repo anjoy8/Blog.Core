@@ -69,10 +69,9 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public MessageModel<List<LogInfo>> Get()
         {
-            if (AppSettings.app(new string[] { "Middleware", "SignalRSendLog", "Enabled" }).ObjToBool())
-            {
-                _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
-            }
+
+            _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
+
             return Success<List<LogInfo>>(null, "执行成功");
         }
 
@@ -226,7 +225,7 @@ namespace Blog.Core.Controllers
         {
             List<ApiDate> apiDates = new List<ApiDate>();
 
-            if (AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+            if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
             {
                 var users = await _applicationUserServices.Query(d => d.tdIsDelete == false);
 

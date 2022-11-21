@@ -19,7 +19,7 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            if (AppSettings.app(new string[] { "Startup", "AppConfigAlert", "Enabled" }).ObjToBool())
+            if (Appsettings.app(new string[] { "Startup", "AppConfigAlert", "Enabled" }).ObjToBool())
             {
                 if (env.IsDevelopment())
                 {
@@ -42,7 +42,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // Redis缓存AOP
-                if (!AppSettings.app(new string[] { "AppSettings", "RedisCachingAOP", "Enabled" }).ObjToBool())
+                if (!Appsettings.app(new string[] { "AppSettings", "RedisCachingAOP", "Enabled" }).ObjToBool())
                 {
                     Console.WriteLine($"Redis Caching AOP: False");
                 }
@@ -52,7 +52,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // 内存缓存AOP
-                if (!AppSettings.app(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool())
+                if (!Appsettings.app(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool())
                 {
                     Console.WriteLine($"Memory Caching AOP: False");
                 }
@@ -62,7 +62,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // 服务日志AOP
-                if (!AppSettings.app(new string[] { "AppSettings", "LogAOP", "Enabled" }).ObjToBool())
+                if (!Appsettings.app(new string[] { "AppSettings", "LogAOP", "Enabled" }).ObjToBool())
                 {
                     Console.WriteLine($"Service Log AOP: False");
                 }
@@ -72,9 +72,9 @@ namespace Blog.Core.Extensions
                 }
 
                 // 开启的中间件日志
-                var requestResponseLogOpen = AppSettings.app(new string[] { "Middleware", "RequestResponseLog", "Enabled" }).ObjToBool();
-                var ipLogOpen = AppSettings.app(new string[] { "Middleware", "IPLog", "Enabled" }).ObjToBool();
-                var recordAccessLogsOpen = AppSettings.app(new string[] { "Middleware", "RecordAccessLogs", "Enabled" }).ObjToBool();
+                var requestResponseLogOpen = Appsettings.app(new string[] { "Middleware", "RequestResponseLog", "Enabled" }).ObjToBool();
+                var ipLogOpen = Appsettings.app(new string[] { "Middleware", "IPLog", "Enabled" }).ObjToBool();
+                var recordAccessLogsOpen = Appsettings.app(new string[] { "Middleware", "RecordAccessLogs", "Enabled" }).ObjToBool();
                 ConsoleHelper.WriteSuccessLine($"OPEN Log: " +
                     (requestResponseLogOpen ? "RequestResponseLog √," : "") +
                     (ipLogOpen ? "IPLog √," : "") +
@@ -82,7 +82,7 @@ namespace Blog.Core.Extensions
                     );
 
                 // 事务AOP
-                if (!AppSettings.app(new string[] { "AppSettings", "TranAOP", "Enabled" }).ObjToBool())
+                if (!Appsettings.app(new string[] { "AppSettings", "TranAOP", "Enabled" }).ObjToBool())
                 {
                     Console.WriteLine($"Transaction AOP: False");
                 }
@@ -92,7 +92,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // 数据库Sql执行AOP
-                if (!AppSettings.app(new string[] { "AppSettings", "SqlAOP", "OutToLogFile", "Enabled" }).ObjToBool())
+                if (!Appsettings.app(new string[] { "AppSettings", "SqlAOP", "OutToLogFile", "Enabled" }).ObjToBool())
                 {
                     Console.WriteLine($"DB Sql AOP To LogFile: False");
                 }
@@ -102,7 +102,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // Sql执行日志输出到控制台
-                if (!AppSettings.app(new string[] { "AppSettings", "SqlAOP", "OutToConsole", "Enabled" }).ObjToBool())
+                if (!Appsettings.app(new string[] { "AppSettings", "SqlAOP", "OutToConsole", "Enabled" }).ObjToBool())
                 {
                     Console.WriteLine($"DB Sql AOP To Console: False");
                 }
@@ -112,7 +112,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // SingnalR发送数据
-                if (!AppSettings.app(new string[] { "Middleware", "SignalR", "Enabled" }).ObjToBool())
+                if (!Appsettings.app(new string[] { "Middleware", "SignalR", "Enabled" }).ObjToBool())
                 {
                     Console.WriteLine($"SignalR send data: False");
                 }
@@ -122,7 +122,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // IP限流
-                if (!AppSettings.app("Middleware", "IpRateLimit", "Enabled").ObjToBool())
+                if (!Appsettings.app("Middleware", "IpRateLimit", "Enabled").ObjToBool())
                 {
                     Console.WriteLine($"IpRateLimiting: False");
                 }
@@ -132,7 +132,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // 性能分析
-                if (!AppSettings.app("Startup", "MiniProfiler", "Enabled").ObjToBool())
+                if (!Appsettings.app("Startup", "MiniProfiler", "Enabled").ObjToBool())
                 {
                     Console.WriteLine($"MiniProfiler: False");
                 }
@@ -142,7 +142,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // CORS跨域
-                if (!AppSettings.app("Startup", "Cors", "EnableAllIPs").ObjToBool())
+                if (!Appsettings.app("Startup", "Cors", "EnableAllIPs").ObjToBool())
                 {
                     Console.WriteLine($"EnableAllIPs For CORS: False");
                 }
@@ -152,7 +152,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // redis消息队列
-                if (!AppSettings.app("Startup", "RedisMq", "Enabled").ObjToBool())
+                if (!Appsettings.app("Startup", "RedisMq", "Enabled").ObjToBool())
                 {
                     Console.WriteLine($"Redis MQ: False");
                 }
@@ -162,7 +162,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // RabbitMQ 消息队列
-                if (!AppSettings.app("RabbitMQ", "Enabled").ObjToBool())
+                if (!Appsettings.app("RabbitMQ", "Enabled").ObjToBool())
                 {
                     Console.WriteLine($"RabbitMQ: False");
                 }
@@ -172,7 +172,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // Consul 注册服务
-                if (!AppSettings.app("Middleware", "Consul", "Enabled").ObjToBool())
+                if (!Appsettings.app("Middleware", "Consul", "Enabled").ObjToBool())
                 {
                     Console.WriteLine($"Consul service: False");
                 }
@@ -182,7 +182,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // EventBus 事件总线
-                if (!AppSettings.app("EventBus", "Enabled").ObjToBool())
+                if (!Appsettings.app("EventBus", "Enabled").ObjToBool())
                 {
                     Console.WriteLine($"EventBus: False");
                 }
@@ -192,7 +192,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // 多库
-                if (!AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                if (!Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {
                     Console.WriteLine($"Is multi-DataBase: False");
                 }
@@ -202,7 +202,7 @@ namespace Blog.Core.Extensions
                 }
 
                 // 读写分离
-                if (!AppSettings.app(new string[] { "CQRSEnabled" }).ObjToBool())
+                if (!Appsettings.app(new string[] { "CQRSEnabled" }).ObjToBool())
                 {
                     Console.WriteLine($"Is CQRS: False");
                 }
@@ -220,7 +220,7 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            if (AppSettings.app(new string[] { "Startup", "AppConfigAlert", "Enabled" }).ObjToBool())
+            if (Appsettings.app(new string[] { "Startup", "AppConfigAlert", "Enabled" }).ObjToBool())
             {
 
                 if (env.IsDevelopment())
@@ -234,12 +234,12 @@ namespace Blog.Core.Extensions
                 {
                     new string[] { "当前环境", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") },
                     new string[] { "当前的授权方案", Permissions.IsUseIds4 ? "Ids4" : "JWT" },
-                    new string[] { "CORS跨域", AppSettings.app("Startup", "Cors", "EnableAllIPs") },
-                    new string[] { "RabbitMQ消息列队", AppSettings.app("RabbitMQ", "Enabled") },
-                    new string[] { "事件总线(必须开启消息列队)", AppSettings.app("EventBus", "Enabled") },
-                    new string[] { "redis消息队列", AppSettings.app("Startup", "RedisMq", "Enabled") },
-                    new string[] { "是否多库", AppSettings.app("MutiDBEnabled" ) },
-                    new string[] { "读写分离", AppSettings.app("CQRSEnabled") },
+                    new string[] { "CORS跨域", Appsettings.app("Startup", "Cors", "EnableAllIPs") },
+                    new string[] { "RabbitMQ消息列队", Appsettings.app("RabbitMQ", "Enabled") },
+                    new string[] { "事件总线(必须开启消息列队)", Appsettings.app("EventBus", "Enabled") },
+                    new string[] { "redis消息队列", Appsettings.app("Startup", "RedisMq", "Enabled") },
+                    new string[] { "是否多库", Appsettings.app("MutiDBEnabled" ) },
+                    new string[] { "读写分离", Appsettings.app("CQRSEnabled") },
                 };
 
                 new ConsoleTable()
@@ -258,12 +258,12 @@ namespace Blog.Core.Extensions
                 #region AOP
                 List<string[]> aopInfos = new()
 {
-                    new string[] { "Redis缓存AOP", AppSettings.app("AppSettings", "RedisCachingAOP", "Enabled") },
-                    new string[] { "内存缓存AOP", AppSettings.app("AppSettings", "MemoryCachingAOP", "Enabled") },
-                    new string[] { "服务日志AOP", AppSettings.app("AppSettings", "LogAOP", "Enabled" ) },
-                    new string[] { "事务AOP", AppSettings.app("AppSettings", "TranAOP", "Enabled" ) },
-                    new string[] { "Sql执行AOP", AppSettings.app("AppSettings", "SqlAOP", "OutToLogFile", "Enabled" ) },
-                    new string[] { "Sql执行AOP控制台输出", AppSettings.app("AppSettings", "SqlAOP", "OutToConsole", "Enabled" ) },
+                    new string[] { "Redis缓存AOP", Appsettings.app("AppSettings", "RedisCachingAOP", "Enabled") },
+                    new string[] { "内存缓存AOP", Appsettings.app("AppSettings", "MemoryCachingAOP", "Enabled") },
+                    new string[] { "服务日志AOP", Appsettings.app("AppSettings", "LogAOP", "Enabled" ) },
+                    new string[] { "事务AOP", Appsettings.app("AppSettings", "TranAOP", "Enabled" ) },
+                    new string[] { "Sql执行AOP", Appsettings.app("AppSettings", "SqlAOP", "OutToLogFile", "Enabled" ) },
+                    new string[] { "Sql执行AOP控制台输出", Appsettings.app("AppSettings", "SqlAOP", "OutToConsole", "Enabled" ) },
                 };
 
                 new ConsoleTable
@@ -282,13 +282,13 @@ namespace Blog.Core.Extensions
                 #region 中间件
                 List<string[]> MiddlewareInfos = new()
                 {
-                    new string[] { "请求纪录中间件", AppSettings.app("Middleware", "RecordAccessLogs", "Enabled") },
-                    new string[] { "IP记录中间件", AppSettings.app("Middleware", "IPLog", "Enabled" ) },
-                    new string[] { "请求响应日志中间件", AppSettings.app("Middleware", "RequestResponseLog", "Enabled" ) },
-                    new string[] { "SingnalR实时发送请求数据中间件", AppSettings.app("Middleware", "SignalR", "Enabled" ) },
-                    new string[] { "IP限流中间件", AppSettings.app("Middleware", "IpRateLimit", "Enabled") },
-                    new string[] { "性能分析中间件", AppSettings.app("Startup", "MiniProfiler", "Enabled") },
-                    new string[] { "Consul注册服务", AppSettings.app("Middleware", "Consul", "Enabled") },
+                    new string[] { "请求纪录中间件", Appsettings.app("Middleware", "RecordAccessLogs", "Enabled") },
+                    new string[] { "IP记录中间件", Appsettings.app("Middleware", "IPLog", "Enabled" ) },
+                    new string[] { "请求响应日志中间件", Appsettings.app("Middleware", "RequestResponseLog", "Enabled" ) },
+                    new string[] { "SingnalR实时发送请求数据中间件", Appsettings.app("Middleware", "SignalR", "Enabled" ) },
+                    new string[] { "IP限流中间件", Appsettings.app("Middleware", "IpRateLimit", "Enabled") },
+                    new string[] { "性能分析中间件", Appsettings.app("Startup", "MiniProfiler", "Enabled") },
+                    new string[] { "Consul注册服务", Appsettings.app("Middleware", "Consul", "Enabled") },
                 };
 
                 new ConsoleTable

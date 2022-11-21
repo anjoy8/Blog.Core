@@ -5,7 +5,7 @@
     "IsButton": 0,
     "Pid": 0,
     "Mid": 0,
-    "OrderSort": -90,
+    "OrderSort": 0,
     "Icon": "fa-home",
     "Description": "33",
     "Enabled": 1,
@@ -140,10 +140,10 @@
     "IsHide": 0
   },
   {
-    "Code": "\/System\/BasicSetting",
-    "Name": "个人设置",
+    "Code": "\/Thanks",
+    "Name": "致谢页",
     "IsButton": 0,
-    "Pid": 68,
+    "Pid": 0,
     "Mid": 0,
     "OrderSort": 5,
     "Icon": "fa-star ",
@@ -2344,211 +2344,5 @@
     "IsDeleted": 0,
     "Pid": 95,
     "Mid": 0
-  },
-  {
-    "Code": "-",
-    "Name": "部门权限管理",
-    "IsButton": false,
-    "IsHide": false,
-    "IskeepAlive": false,
-    "OrderSort": -10,
-    "Icon": "fa-address-book",
-    "Description": "",
-    "Enabled": true,
-    "CreateId": 12,
-    "CreateBy": "blogadmin",
-    "CreateTime": "2022-03-23 00:00:00",
-    "ModifyTime": "2022-03-23 00:00:00",
-    "IsDeleted": false,
-    "PnameArr": [
-
-    ],
-    "PCodeArr": [
-
-    ],
-    "hasChildren": true,
-    "Pid": 0,
-    "Mid": 0,
-    "Id": 114
-  },
-  {
-    "Code": "/Department/Department",
-    "Name": "部门管理",
-    "IsButton": false,
-    "IsHide": false,
-    "IskeepAlive": false,
-    "OrderSort": 0,
-    "Icon": "",
-    "Description": "",
-    "Enabled": true,
-    "CreateId": 12,
-    "CreateBy": "blogadmin",
-    "CreateTime": "2022-03-23 00:00:00",
-    "ModifyTime": "2022-03-23 00:00:00",
-    "IsDeleted": false,
-    "PnameArr": [
-
-    ],
-    "PCodeArr": [
-
-    ],
-    "hasChildren": true,
-    "Pid": 114,
-    "Mid": 66,
-    "Id": 115
-  },
-  {
-    "Code": " ",
-    "Name": "查询",
-    "IsButton": true,
-    "IsHide": false,
-    "IskeepAlive": false,
-    "Func": "handleQuery",
-    "OrderSort": 0,
-    "Icon": "",
-    "Description": "",
-    "Enabled": true,
-    "CreateId": 12,
-    "CreateBy": "blogadmin",
-    "CreateTime": "2022-03-23 00:00:00",
-    "ModifyTime": "2022-03-23 00:00:00",
-    "IsDeleted": false,
-    "PnameArr": [
-
-    ],
-    "PCodeArr": [
-
-    ],
-    "hasChildren": true,
-    "Pid": 115,
-    "Mid": 66,
-    "Id": 116
-  },
-  {
-    "Code": " ",
-    "Name": "新增",
-    "IsButton": true,
-    "IsHide": false,
-    "IskeepAlive": false,
-    "Func": "handleAdd",
-    "OrderSort": 0,
-    "Icon": "",
-    "Description": "",
-    "Enabled": true,
-    "CreateId": 12,
-    "CreateBy": "blogadmin",
-    "CreateTime": "2022-03-23 00:00:00",
-    "ModifyTime": "2022-03-23 00:00:00",
-    "IsDeleted": false,
-    "PnameArr": [
-
-    ],
-    "PCodeArr": [
-
-    ],
-    "hasChildren": true,
-    "Pid": 115,
-    "Mid": 69,
-    "Id": 117
-  },
-  {
-    "Code": " ",
-    "Name": "编辑",
-    "IsButton": true,
-    "IsHide": false,
-    "IskeepAlive": false,
-    "Func": "handleEdit",
-    "OrderSort": 0,
-    "Icon": "",
-    "Description": "",
-    "Enabled": true,
-    "CreateId": 12,
-    "CreateBy": "blogadmin",
-    "CreateTime": "2022-03-23 00:00:00",
-    "ModifyTime": "2022-03-23 00:00:00",
-    "IsDeleted": false,
-    "PnameArr": [
-
-    ],
-    "PCodeArr": [
-
-    ],
-    "hasChildren": true,
-    "Pid": 115,
-    "Mid": 68,
-    "Id": 118
-  },
-  {
-    "Code": " ",
-    "Name": "删除",
-    "IsButton": true,
-    "IsHide": false,
-    "IskeepAlive": false,
-    "Func": "handleDel",
-    "OrderSort": 0,
-    "Icon": "",
-    "Description": "",
-    "Enabled": true,
-    "CreateId": 12,
-    "CreateBy": "blogadmin",
-    "CreateTime": "2022-03-23 00:00:00",
-    "ModifyTime": "2022-03-23 00:00:00",
-    "IsDeleted": false,
-    "PnameArr": [
-
-    ],
-    "PCodeArr": [
-
-    ],
-    "hasChildren": true,
-    "Pid": 115,
-    "Mid": 67,
-    "Id": 119
-  },
-  {
-    "Code": " ",
-    "Name": "部门树",
-    "IsButton": true,
-    "IsHide": true,
-    "IskeepAlive": false,
-    "OrderSort": 0,
-    "Icon": "",
-    "Description": "",
-    "Enabled": true,
-    "CreateId": 12,
-    "CreateBy": "blogadmin",
-    "CreateTime": "2022-03-23 00:00:00",
-    "ModifyTime": "2022-03-23 00:00:00",
-    "IsDeleted": false,
-    "PnameArr": [
-
-    ],
-    "PCodeArr": [
-
-    ],
-    "hasChildren": true,
-    "Pid": 115,
-    "Mid": 70,
-    "Id": 120
-  },
-  {
-    "Code": " ",
-    "Name": "左侧导航Pro",
-    "IsButton": 1,
-    "Pid": 7,
-    "Mid": 71,
-    "OrderSort": 0,
-    "Icon": null,
-    "Description": null,
-    "Enabled": 1,
-    "CreateId": 23,
-    "CreateBy": "后台总管理员",
-    "CreateTime": "\/Date(1546272000000+0800)\/",
-    "ModifyId": null,
-    "ModifyBy": null,
-    "ModifyTime": "\/Date(1546272000000+0800)\/",
-    "IsDeleted": 0,
-    "Id": 121,
-    "IsHide": 1
   }
 ]

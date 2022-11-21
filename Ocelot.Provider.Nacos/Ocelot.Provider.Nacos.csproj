@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
+    <Authors>softlgl</Authors>
     <Copyright>softlgl</Copyright>
     <Owners>softlgl</Owners>
     <PackageProjectUrl>https://github.com/softlgl/Ocelot.Provider.Nacos</PackageProjectUrl>

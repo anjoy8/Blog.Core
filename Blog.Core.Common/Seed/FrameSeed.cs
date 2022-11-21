@@ -194,7 +194,6 @@ namespace " + strNameSpace + @"
                 var data = new MessageModel<string>();
 
                 var id = await _{ClassName}Services.Add(request);
-                data.success = id > 0;
                 if (data.success)
                 {
                     data.response = id.ObjToString();
@@ -218,17 +217,15 @@ namespace " + strNameSpace + @"
                 return data;
             }
 
-            [HttpDelete]
-            public async Task<MessageModel<string>> Delete(int id)
+            [HttpDelete(""{id}"")]
+            public async Task<MessageModel<string>> Delete(string id)
             {
                 var data = new MessageModel<string>();
-                var model = await _{ClassName}Services.QueryById(id);
-                model.IsDeleted = true;
-                data.success = await _departmentServices.Update(model);
+                data.success = await _{ClassName}Services.DeleteById(id);
                 if (data.success)
                 {
                     data.msg = ""删除成功"";
-                    data.response = model?.Id.ObjToString();
+                    data.response = id;
                 }
 
                 return data;

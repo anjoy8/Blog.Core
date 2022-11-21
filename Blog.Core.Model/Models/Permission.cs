@@ -113,12 +113,6 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsIgnore = true)]
         public bool hasChildren { get; set; } = true;
 
-        [SugarColumn(IsIgnore = true)]
-        public List<Permission> Children { get; set; } = new List<Permission>();
-
-        [SugarColumn(IsIgnore = true)]
-        public Modules Module { get; set; }
-
         //public virtual ICollection<ModulePermission> ModulePermission { get; set; }
         //public virtual ICollection<RoleModulePermission> RoleModulePermission { get; set; }
     }

@@ -12,7 +12,7 @@ namespace Blog.Core.Extensions
         public static void AddMiniProfilerSetup(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            if(AppSettings.app(new string[] { "Startup", "MiniProfiler", "Enabled" }).ObjToBool())
+            if(Appsettings.app(new string[] { "Startup", "MiniProfiler", "Enabled" }).ObjToBool())
             {
                 services.AddMiniProfiler();
             }

@@ -1,6 +1,7 @@
 using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.IRepository.Base;
+using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -10,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Blog.Core.Repository.UnitOfWorks;
 
 namespace Blog.Core.Services
 {
@@ -19,11 +19,14 @@ namespace Blog.Core.Services
 	/// </summary>
     public class WeChatConfigServices : BaseServices<WeChatConfig>, IWeChatConfigServices
     {
-        readonly IUnitOfWorkManage _unitOfWorkManage;
+        readonly IBaseRepository<WeChatConfig> _dal;
+        readonly IUnitOfWork _unitOfWork;
         readonly ILogger<WeChatConfigServices> _logger;
-        public WeChatConfigServices(IUnitOfWorkManage unitOfWorkManage, ILogger<WeChatConfigServices> logger)
+        public WeChatConfigServices(IBaseRepository<WeChatConfig> dal,IUnitOfWork unitOfWork, ILogger<WeChatConfigServices> logger)
         {
-            this._unitOfWorkManage = unitOfWorkManage;
+            this._dal = dal;
+            base.BaseDal = dal;
+            this._unitOfWork = unitOfWork;
             this._logger = logger;
         }  
         public async Task<MessageModel<WeChatApiDto>> GetToken(string publicAccount)
@@ -234,13 +237,13 @@ namespace Blog.Core.Services
                 QRticket = data.ticket
             }; 
             data.id = info.userID;
-            await this.BaseDal.Db.Insertable<WeChatQR>(weChatQR).ExecuteCommandAsync();
+            await this._dal.Db.Insertable<WeChatQR>(weChatQR).ExecuteCommandAsync();
             reData.usersData= data;
             return MessageModel<WeChatResponseUserInfo>.Success("获取二维码成功", reData);
         }
         public async Task<MessageModel<WeChatResponseUserInfo>> PushCardMsg(WeChatCardMsgDataDto msg,string ip)
         { 
-            var bindUser = await BaseDal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount == msg.info.id && t.CompanyID == msg.info.companyCode && t.IsUnBind == false && msg.info.userID.Contains(t.SubJobID)).SingleAsync();
+            var bindUser = await _dal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount == msg.info.id && t.CompanyID == msg.info.companyCode && t.IsUnBind == false && msg.info.userID.Contains(t.SubJobID)).SingleAsync();
             if (bindUser == null)
                 return MessageModel<WeChatResponseUserInfo>.Fail("用户不存在或者已经解绑!");
             var res = await GetToken(msg?.info?.id);
@@ -313,7 +316,7 @@ namespace Blog.Core.Services
                         PushLogTemplateID = msg.cardMsg.template_id,
                         PushLogIP = ip
                     };
-                    await BaseDal.Db.Insertable<WeChatPushLog>(pushLog).ExecuteCommandAsync();
+                    await _dal.Db.Insertable<WeChatPushLog>(pushLog).ExecuteCommandAsync();
                 }
                 catch (Exception ex)
                 {
@@ -352,7 +355,7 @@ namespace Blog.Core.Services
                 if (msg.selectOperate.Equals("one"))
                 {
                     //发送单个 
-                    var usrs = BaseDal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount.Equals(msg.selectWeChat) && t.CompanyID.Equals(msg.selectCompany) && t.SubJobID.Equals(msg.selectUser)).ToList();
+                    var usrs = _dal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount.Equals(msg.selectWeChat) && t.CompanyID.Equals(msg.selectCompany) && t.SubJobID.Equals(msg.selectUser)).ToList();
                     foreach (var item in usrs)
                     {
                         msg.selectUser = item.SubUserOpenID;
@@ -367,7 +370,7 @@ namespace Blog.Core.Services
                 else
                 {
                     //发送所有
-                    var usrs = BaseDal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount.Equals(msg.selectWeChat) && t.CompanyID.Equals(msg.selectCompany)).ToList();
+                    var usrs = _dal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount.Equals(msg.selectWeChat) && t.CompanyID.Equals(msg.selectCompany)).ToList();
                     foreach (var item in usrs)
                     {
                         msg.selectUser = item.SubUserOpenID;
@@ -528,7 +531,7 @@ namespace Blog.Core.Services
         }
         public async Task<MessageModel<WeChatResponseUserInfo>> GetBindUserInfo(WeChatUserInfo info)
         {
-            var bindUser = await BaseDal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount == info.id && t.CompanyID == info.companyCode && info.userID.Equals(t.SubJobID) && t.IsUnBind == false ).FirstAsync();
+            var bindUser = await _dal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount == info.id && t.CompanyID == info.companyCode && info.userID.Equals(t.SubJobID) && t.IsUnBind == false ).FirstAsync();
             if (bindUser == null) return MessageModel<WeChatResponseUserInfo>.Fail("用户不存在或者已经解绑!");
             var res = await GetToken(info.id);
             if(!res.success) return MessageModel<WeChatResponseUserInfo>.Fail(res.msg);
@@ -549,14 +552,14 @@ namespace Blog.Core.Services
         }
         public async Task<MessageModel<WeChatResponseUserInfo>> UnBind(WeChatUserInfo info)
         { 
-            var bindUser = await BaseDal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount == info.id && t.CompanyID == info.companyCode && info.userID.Equals(t.SubJobID) && t.IsUnBind == false ).FirstAsync();
+            var bindUser = await _dal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount == info.id && t.CompanyID == info.companyCode && info.userID.Equals(t.SubJobID) && t.IsUnBind == false ).FirstAsync();
             if (bindUser == null) return MessageModel<WeChatResponseUserInfo>.Fail("用户不存在或者已经解绑!");
             WeChatResponseUserInfo reData = new WeChatResponseUserInfo();
             reData.companyCode = info.companyCode;
             reData.id = info.id;
             bindUser.IsUnBind = true;
             bindUser.SubUserRefTime = DateTime.Now;
-            await BaseDal.Db.Updateable<WeChatSub>(bindUser).UpdateColumns(t=> new{ t.IsUnBind,t.SubUserRefTime}).ExecuteCommandAsync();
+            await _dal.Db.Updateable<WeChatSub>(bindUser).UpdateColumns(t=> new{ t.IsUnBind,t.SubUserRefTime}).ExecuteCommandAsync();
             return MessageModel<WeChatResponseUserInfo>.Success("用户解绑成功", reData);
         }
 
@@ -793,12 +796,12 @@ namespace Blog.Core.Services
 
         private async Task<string> QRBind(WeChatXMLDto weChat)
         {  
-            var ticket = await BaseDal.Db.Queryable<WeChatQR>().InSingleAsync(weChat.Ticket);
+            var ticket = await _dal.Db.Queryable<WeChatQR>().InSingleAsync(weChat.Ticket);
             if (ticket == null) throw new Exception("ticket未找到");
             if (ticket.QRisUsed) throw new Exception("ticket已被使用");
             if (!ticket.QRpublicAccount.Equals(weChat.publicAccount)) throw new Exception($"公众号错误  need:{ticket.QRpublicAccount}  but:{weChat.publicAccount}");
 
-            var bindUser = await BaseDal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount == ticket.QRpublicAccount && t.CompanyID == ticket.QRbindCompanyID && t.SubJobID == ticket.QRbindJobID).SingleAsync();
+            var bindUser = await _dal.Db.Queryable<WeChatSub>().Where(t => t.SubFromPublicAccount == ticket.QRpublicAccount && t.CompanyID == ticket.QRbindCompanyID && t.SubJobID == ticket.QRbindJobID).SingleAsync();
             bool isNewBind;
             if (bindUser == null )
             {
@@ -831,17 +834,17 @@ namespace Blog.Core.Services
 
             try
             {
-                _unitOfWorkManage.BeginTran();
-                await BaseDal.Db.Updateable<WeChatQR>(ticket).ExecuteCommandAsync();
+                _unitOfWork.BeginTran();
+                await _dal.Db.Updateable<WeChatQR>(ticket).ExecuteCommandAsync();
                 if (isNewBind)
-                    await BaseDal.Db.Insertable<WeChatSub>(bindUser).ExecuteCommandAsync();
+                    await _dal.Db.Insertable<WeChatSub>(bindUser).ExecuteCommandAsync();
                 else
-                    await BaseDal.Db.Updateable<WeChatSub>(bindUser).ExecuteCommandAsync();
-                _unitOfWorkManage.CommitTran();
+                    await _dal.Db.Updateable<WeChatSub>(bindUser).ExecuteCommandAsync();
+                _unitOfWork.CommitTran();
             }
             catch
             {
-                _unitOfWorkManage.RollbackTran();
+                _unitOfWork.RollbackTran();
                 throw;
             }
             return @$"<xml><ToUserName><![CDATA[{weChat.FromUserName}]]></ToUserName>

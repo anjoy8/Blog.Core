@@ -19,7 +19,7 @@ namespace Blog.Core.Extensions.Middlewares
 
             try
             {
-                if (AppSettings.app("Middleware", "QuartzNetJob", "Enabled").ObjToBool())
+                if (Appsettings.app("Middleware", "QuartzNetJob", "Enabled").ObjToBool())
                 {
 
                     var allQzServices = tasksQzServices.Query().Result;

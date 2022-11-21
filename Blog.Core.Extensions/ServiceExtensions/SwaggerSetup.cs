@@ -27,7 +27,7 @@ namespace Blog.Core.Extensions
 
             var basePath = AppContext.BaseDirectory;
             //var basePath2 = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
-            var ApiName = AppSettings.app(new string[] { "Startup", "ApiName" });
+            var ApiName = Appsettings.app(new string[] { "Startup", "ApiName" });
 
             services.AddSwaggerGen(c =>
             {
@@ -81,7 +81,7 @@ namespace Blog.Core.Extensions
                         {
                             Implicit = new OpenApiOAuthFlow
                             {
-                                AuthorizationUrl = new Uri($"{AppSettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" })}/connect/authorize"),
+                                AuthorizationUrl = new Uri($"{Appsettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" })}/connect/authorize"),
                                 Scopes = new Dictionary<string, string> {
                                 {
                                     "blog.core.api","ApiResource id"

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
-using Blog.Core.Repository.UnitOfWorks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,12 +17,12 @@ namespace Blog.Core.Controllers
     {
         private readonly IPasswordLibServices _passwordLibServices;
         private readonly IGuestbookServices _guestbookServices;
-        private readonly IUnitOfWorkManage _unitOfWorkManage;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public TransactionController(IUnitOfWorkManage unitOfWorkManage, IPasswordLibServices passwordLibServices, IGuestbookServices guestbookServices)
+        public TransactionController(IUnitOfWork unitOfWork, IPasswordLibServices passwordLibServices, IGuestbookServices guestbookServices)
         {
-            _unitOfWorkManage = unitOfWorkManage;
+            _unitOfWork = unitOfWork;
             _passwordLibServices = passwordLibServices;
             _guestbookServices = guestbookServices;
         }
@@ -36,7 +36,7 @@ namespace Blog.Core.Controllers
             {
                 returnMsg.Add($"Begin Transaction");
 
-                _unitOfWorkManage.BeginTran();
+                _unitOfWork.BeginTran();
                 var passwords = await _passwordLibServices.Query(d => d.IsDeleted == false);
                 returnMsg.Add($"first time : the count of passwords is :{passwords.Count}");
 
@@ -76,11 +76,11 @@ namespace Blog.Core.Controllers
                 returnMsg.Add($"first time : the count of guestbooks is :{guestbooks.Count}");
                 returnMsg.Add($" ");
 
-                _unitOfWorkManage.CommitTran();
+                _unitOfWork.CommitTran();
             }
             catch (Exception)
             {
-                _unitOfWorkManage.RollbackTran();
+                _unitOfWork.RollbackTran();
                 var passwords = await _passwordLibServices.Query();
                 returnMsg.Add($"third time : the count of passwords is :{passwords.Count}");
 
@@ -101,24 +101,6 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<string>> Get(int id)
         {
             return await _guestbookServices.TestTranInRepository();
-        }
-
-        [HttpGet]
-        public async Task<bool> GetTestTranPropagation()
-        {
-            return await _guestbookServices.TestTranPropagation();
-        }
-
-        [HttpGet]
-        public async Task<bool> GetTestTranPropagationNoTran()
-        {
-            return await _guestbookServices.TestTranPropagationNoTran();
-        }
-
-        [HttpGet]
-        public async Task<bool> GetTestTranPropagationTran()
-        {
-            return await _guestbookServices.TestTranPropagationTran();
         }
 
         // POST: api/Transaction

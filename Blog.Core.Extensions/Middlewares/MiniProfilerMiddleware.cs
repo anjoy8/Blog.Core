@@ -17,7 +17,7 @@ namespace Blog.Core.Extensions.Middlewares
 
             try
             {
-                if (AppSettings.app("Startup", "MiniProfiler", "Enabled").ObjToBool())
+                if (Appsettings.app("Startup", "MiniProfiler", "Enabled").ObjToBool())
                 { 
                     // 性能分析
                     app.UseMiniProfiler();

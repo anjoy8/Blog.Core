@@ -22,7 +22,7 @@ namespace Blog.Core.Extensions.Middlewares
             app.UseSwaggerUI(c =>
             {
                 //根据版本名称倒序 遍历展示
-                var apiName = AppSettings.app(new string[] { "Startup", "ApiName" });
+                var apiName = Appsettings.app(new string[] { "Startup", "ApiName" });
                 typeof(ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(version =>
                 {
                     c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{apiName} {version}");

@@ -12,12 +12,16 @@ namespace Blog.Core.FrameWork.Services
     /// </summary>	
     public class SysUserInfoServices : BaseServices<SysUserInfo>, ISysUserInfoServices
     {
+
+        private readonly IBaseRepository<SysUserInfo> _dal;
         private readonly IBaseRepository<UserRole> _userRoleRepository;
         private readonly IBaseRepository<Role> _roleRepository;
-        public SysUserInfoServices(IBaseRepository<UserRole> userRoleRepository, IBaseRepository<Role> roleRepository)
+        public SysUserInfoServices(IBaseRepository<SysUserInfo> dal, IBaseRepository<UserRole> userRoleRepository, IBaseRepository<Role> roleRepository)
         {
+            this._dal = dal;
             _userRoleRepository = userRoleRepository;
             _roleRepository = roleRepository;
+            base.BaseDal = dal;
         }
         /// <summary>
         /// 

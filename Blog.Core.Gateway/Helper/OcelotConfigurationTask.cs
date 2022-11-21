@@ -46,10 +46,10 @@ namespace ApiGateway.Helper
             _servClient = serv;
             nacosConfigListener.internalConfigurationRepo = _internalConfigurationRepo;
             nacosConfigListener.internalConfigurationCreator = _internalConfigurationCreator;
-            OcelotConfig = AppSettings.GetValue("ApiGateWay:OcelotConfig");
-            OcelotConfigGroup = AppSettings.GetValue("ApiGateWay:OcelotConfigGroup");
-            AppConfig = AppSettings.GetValue("ApiGateWay:AppConfig");
-            AppConfigGroup = AppSettings.GetValue("ApiGateWay:AppConfigGroup");
+            OcelotConfig = Appsettings.GetValue("ApiGateWay:OcelotConfig");
+            OcelotConfigGroup = Appsettings.GetValue("ApiGateWay:OcelotConfigGroup");
+            AppConfig = Appsettings.GetValue("ApiGateWay:AppConfig");
+            AppConfigGroup = Appsettings.GetValue("ApiGateWay:AppConfigGroup");
             
 
 
@@ -141,7 +141,7 @@ namespace ApiGateway.Helper
             // 当前监听到配置配置 应该重新断开 重连 刷新等一些中间件操作
             // 比如 mq redis  等其他跟配置相关的中间件
             JsonConfigSettings.Configuration = configuration;
-            AppSettings.Configuration = configuration;
+            Appsettings.Configuration = configuration;
         }
     }
 }

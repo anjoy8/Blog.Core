@@ -21,13 +21,14 @@ namespace Blog.Core.Services
 
         // 将多个仓储接口注入
         public RoleModulePermissionServices(
-            IRoleModulePermissionRepository dal,
+            IRoleModulePermissionRepository dal, 
             IBaseRepository<Modules> moduleRepository, 
             IBaseRepository<Role> roleRepository)
         {
             this._dal = dal;
             this._moduleRepository = moduleRepository;
             this._roleRepository = roleRepository;
+            base.BaseDal = dal;
         }
 
         /// <summary>

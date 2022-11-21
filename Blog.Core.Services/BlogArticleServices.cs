@@ -13,6 +13,7 @@ namespace Blog.Core.Services
 {
     public class BlogArticleServices : BaseServices<BlogArticle>, IBlogArticleServices
     {
+        public IBaseRepository<BlogArticle> _dal { get; set; }
         IMapper _mapper;
         public BlogArticleServices(IMapper mapper)
         {

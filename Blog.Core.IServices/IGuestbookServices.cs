@@ -9,11 +9,5 @@ namespace Blog.Core.IServices
     {
         Task<MessageModel<string>> TestTranInRepository();
         Task<bool> TestTranInRepositoryAOP();
-
-        Task<bool> TestTranPropagation();
-
-        Task<bool> TestTranPropagationNoTran();
-
-        Task<bool> TestTranPropagationTran();
     }
 }

@@ -7,6 +7,13 @@ namespace Blog.Core.Services
 {
     public class AdvertisementServices : BaseServices<Advertisement>, IAdvertisementServices
     {
+        IBaseRepository<Advertisement> _dal;
+        public AdvertisementServices(IBaseRepository<Advertisement> dal)
+        {
+            this._dal = dal;
+            base.BaseDal = dal;
+        }
+
         public void ReturnExp()
         {
 

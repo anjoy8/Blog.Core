@@ -1,5 +1,4 @@
-﻿using Blog.Core.Common;
-using Blog.Core.Common.LogHelper;
+﻿using Blog.Core.Common.LogHelper;
 using Blog.Core.Hubs;
 using Castle.DynamicProxy;
 using Microsoft.AspNetCore.Http;
@@ -35,33 +34,12 @@ namespace Blog.Core.AOP
         public void Intercept(IInvocation invocation)
         {
             string UserName = _accessor.HttpContext?.User?.Identity?.Name;
-            string json;
-            try
-            {
-                json = JsonConvert.SerializeObject(invocation.Arguments);
-            }
-            catch (Exception ex)
-            {
-                json = "无法序列化，可能是兰姆达表达式等原因造成，按照框架优化代码" + ex.ToString();
-            }
-            DateTime startTime = DateTime.Now;
-            AOPLogInfo apiLogAopInfo = new AOPLogInfo
-            {
-                RequestTime = startTime.ToString("yyyy-MM-dd hh:mm:ss fff"),
-                OpUserName = UserName,
-                RequestMethodName = invocation.Method.Name,
-                RequestParamsName = string.Join(", ", invocation.Arguments.Select(a => (a ?? "").ToString()).ToArray()),
-                ResponseJsonData = json
-            };
-
-            //测试异常记录
-            //Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss fff"));
 
             //记录被拦截方法信息的日志信息
-            //var dataIntercept = "" +
-            //    $"【当前操作用户】：{ UserName} \r\n" +
-            //    $"【当前执行方法】：{ invocation.Method.Name} \r\n" +
-            //    $"【携带的参数有】： {string.Join(", ", invocation.Arguments.Select(a => (a ?? "").ToString()).ToArray())} \r\n";
+            var dataIntercept = "" +
+                $"【当前操作用户】：{ UserName} \r\n" +
+                $"【当前执行方法】：{ invocation.Method.Name} \r\n" +
+                $"【携带的参数有】： {string.Join(", ", invocation.Arguments.Select(a => (a ?? "").ToString()).ToArray())} \r\n";
 
             try
             {
@@ -80,10 +58,10 @@ namespace Blog.Core.AOP
                     {
                         invocation.ReturnValue = InternalAsyncHelper.AwaitTaskWithPostActionAndFinally(
                             (Task)invocation.ReturnValue,
-                            async () => await SuccessAction(invocation, apiLogAopInfo, startTime),/*成功时执行*/
+                            async () => await SuccessAction(invocation, dataIntercept),/*成功时执行*/
                             ex =>
                             {
-                                LogEx(ex, apiLogAopInfo);
+                                LogEx(ex, dataIntercept);
                             });
                     }
                     //Task<TResult>
@@ -93,77 +71,49 @@ namespace Blog.Core.AOP
                          invocation.Method.ReturnType.GenericTypeArguments[0],
                          invocation.ReturnValue,
                           //async () => await SuccessAction(invocation, dataIntercept),/*成功时执行*/
-                          async (o) => await SuccessAction(invocation, apiLogAopInfo, startTime, o),/*成功时执行*/
+                          async (o) => await SuccessAction(invocation, dataIntercept, o),/*成功时执行*/
                          ex =>
                          {
-                             LogEx(ex, apiLogAopInfo);
+                             LogEx(ex, dataIntercept);
                          });
                     }
                     #endregion
 
 
                     // 如果方案一不行，试试这个方案
-                    //#region 方案二
+                    #region 方案二
 
                     //var type = invocation.Method.ReturnType;
                     //var resultProperty = type.GetProperty("Result");
-                    //DateTime endTime = DateTime.Now;
-                    //string ResponseTime = (endTime - startTime).Milliseconds.ToString();
-                    //apiLogAopInfo.ResponseTime = endTime.ToString("yyyy-MM-dd hh:mm:ss fff");
-                    //apiLogAopInfo.ResponseIntervalTime = ResponseTime + "ms";
-                    //apiLogAopInfo.ResponseJsonData = JsonConvert.SerializeObject(resultProperty.GetValue(invocation.ReturnValue));
-
-                    ////dataIntercept += ($"【响应时间】：{ResponseTime}ms\r\n");
-                    ////dataIntercept += ($"【执行完成时间】：{endTime.ToString("yyyy-MM-dd hh:mm:ss fff")}\r\n");
-                    ////dataIntercept += ($"【执行完成结果】：{JsonConvert.SerializeObject(resultProperty.GetValue(invocation.ReturnValue))}\r\n");
+                    //dataIntercept += ($"【执行完成结果】：{JsonConvert.SerializeObject(resultProperty.GetValue(invocation.ReturnValue))}");
 
                     //Parallel.For(0, 1, e =>
                     //{
-                    //    //LogLock.OutLogAOP("AOPLog", new string[] { dataIntercept });
-                    //    LogLock.OutLogAOP("AOPLog", new string[] { apiLogAopInfo.GetType().ToString() + " - ResponseJsonDataType:" + type, JsonConvert.SerializeObject(apiLogAopInfo) });
+                    //    LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
                     //});
 
-                    //#endregion
+                    #endregion
                 }
                 else
-                {
-                    // 同步1
-                    string jsonResult;
-                    try
-                    {
-                        jsonResult = JsonConvert.SerializeObject(invocation.ReturnValue);
-                    }
-                    catch (Exception ex)
-                    {
-                        jsonResult = "无法序列化，可能是兰姆达表达式等原因造成，按照框架优化代码" + ex.ToString();
-                    }
-                    var type = invocation.Method.ReturnType;
-                    var resultProperty = type.GetProperty("Result");
-                    DateTime endTime = DateTime.Now;
-                    string ResponseTime = (endTime - startTime).Milliseconds.ToString();
-                    apiLogAopInfo.ResponseTime = endTime.ToString("yyyy-MM-dd hh:mm:ss fff");
-                    apiLogAopInfo.ResponseIntervalTime = ResponseTime + "ms";
-                    //apiLogAopInfo.ResponseJsonData = JsonConvert.SerializeObject(resultProperty.GetValue(invocation.ReturnValue));
-                    apiLogAopInfo.ResponseJsonData = jsonResult;
-                    //dataIntercept += ($"【执行完成结果】：{jsonResult}");
+                {// 同步1
+
+                    dataIntercept += ($"【执行完成结果】：{invocation.ReturnValue}");
                     Parallel.For(0, 1, e =>
                     {
-                        //LogLock.OutLogAOP("AOPLog", new string[] { dataIntercept });
-                        LogLock.OutLogAOP("AOPLog", new string[] { apiLogAopInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopInfo) });
+                        LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
                     });
                 }
             }
             catch (Exception ex)// 同步2
             {
-                LogEx(ex, apiLogAopInfo);
+                LogEx(ex, dataIntercept);
+
             }
-            if (AppSettings.app(new string[] { "Middleware", "SignalRSendLog", "Enabled" }).ObjToBool())
-            {
-                _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
-            }
+
+            _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
         }
 
-        private async Task SuccessAction(IInvocation invocation, AOPLogInfo apiLogAopInfo, DateTime startTime, object o = null)
+        private async Task SuccessAction(IInvocation invocation, string dataIntercept, object o = null)
         {
             //invocation.ReturnValue = o;
             //var type = invocation.Method.ReturnType;
@@ -177,43 +127,32 @@ namespace Blog.Core.AOP
             //{
             //    dataIntercept += ($"【执行完成结果】：{invocation.ReturnValue}");
             //}
-            DateTime endTime = DateTime.Now;
-            string ResponseTime = (endTime - startTime).Milliseconds.ToString();
-            apiLogAopInfo.ResponseTime = endTime.ToString("yyyy-MM-dd hh:mm:ss fff");
-            apiLogAopInfo.ResponseIntervalTime = ResponseTime + "ms";
-            apiLogAopInfo.ResponseJsonData = JsonConvert.SerializeObject(o);
+
+            dataIntercept += ($"【执行完成结果】：{JsonConvert.SerializeObject(o)}");
 
 
             await Task.Run(() =>
             {
                 Parallel.For(0, 1, e =>
                 {
-                    //LogLock.OutSql2Log("AOPLog", new string[] { JsonConvert.SerializeObject(apiLogAopInfo) });
-                    LogLock.OutLogAOP("AOPLog", new string[] { apiLogAopInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopInfo) });
+                    LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
                 });
             });
         }
 
-        private void LogEx(Exception ex, AOPLogInfo dataIntercept)
+        private void LogEx(Exception ex, string dataIntercept)
         {
             if (ex != null)
             {
                 //执行的 service 中，收录异常
                 MiniProfiler.Current.CustomTiming("Errors：", ex.Message);
                 //执行的 service 中，捕获异常
-                //dataIntercept += ($"【执行完成结果】：方法中出现异常：{ex.Message + ex.InnerException}\r\n");
-                AOPLogExInfo apiLogAopExInfo = new AOPLogExInfo
-                {
-                    ExMessage = ex.Message,
-                    InnerException = "InnerException-内部异常:\r\n" + (ex.InnerException == null ? "" : ex.InnerException.InnerException.ToString()) + ("\r\nStackTrace-堆栈跟踪:\r\n") + (ex.StackTrace == null ? "" : ex.StackTrace.ToString()),
-                    ApiLogAopInfo = dataIntercept
-                };
+                dataIntercept += ($"【执行完成结果】：方法中出现异常：{ex.Message + ex.InnerException}\r\n");
+
                 // 异常日志里有详细的堆栈信息
                 Parallel.For(0, 1, e =>
                 {
-                    //LogLock.OutLogAOP("AOPLogEx", new string[] { dataIntercept });
-                    LogLock.OutLogAOP("AOPLogEx", new string[] { apiLogAopExInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopExInfo) });
-
+                    LogLock.OutSql2Log("AOPLog", new string[] { dataIntercept });
                 });
             }
         }

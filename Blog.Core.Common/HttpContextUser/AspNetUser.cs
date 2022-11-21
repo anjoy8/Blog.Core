@@ -2,7 +2,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using Blog.Core.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -70,8 +69,6 @@ namespace Blog.Core.Common.HttpContextUser
 
             return new List<string>() { };
         }
-
-        public MessageModel<string> MessageModel { get; set; }
 
         public IEnumerable<Claim> GetClaimsIdentity()
         {

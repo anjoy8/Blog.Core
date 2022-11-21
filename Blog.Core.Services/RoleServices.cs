@@ -13,6 +13,13 @@ namespace Blog.Core.Services
     /// </summary>	
     public class RoleServices : BaseServices<Role>, IRoleServices
     {
+
+        IBaseRepository<Role> _dal;
+        public RoleServices(IBaseRepository<Role> dal)
+        {
+            this._dal = dal;
+            base.BaseDal = dal;
+        }
        /// <summary>
        /// 
        /// </summary>

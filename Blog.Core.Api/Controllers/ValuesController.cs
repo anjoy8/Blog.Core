@@ -2,6 +2,7 @@
 using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.HttpPolly;
+using Blog.Core.Common.HttpRestSharp;
 using Blog.Core.Common.WebApiClients.HttpApis;
 using Blog.Core.EventBus;
 using Blog.Core.EventBus.EventHandling;
@@ -13,8 +14,13 @@ using Blog.Core.Model.Models;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Controllers
 {
@@ -98,19 +104,6 @@ namespace Blog.Core.Controllers
                     }
                 ).ToList()
             };
-        }
-
-        /// <summary>
-        /// 测试SqlSugar二级缓存
-        /// 可设置过期时间
-        /// 或通过接口方式更新该数据，也会离开清除缓存
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<BlogArticle> TestSqlsugarWithCache()
-        {
-            return await _blogArticleServices.QueryById("1", true);
         }
 
         /// <summary>
@@ -306,6 +299,27 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
+        /// 测试http请求 RestSharp Get
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("RestsharpGet")]
+        [AllowAnonymous]
+        public MessageModel<BlogViewModels> RestsharpGet()
+        {
+            return HttpHelper.GetApi<MessageModel<BlogViewModels>>("http://apk.neters.club/", "api/Blog/DetailNuxtNoPer", "id=1");
+        }
+        /// <summary>
+        /// 测试http请求 RestSharp Post
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("RestsharpPost")]
+        [AllowAnonymous]
+        public TestRestSharpPostDto RestsharpPost()
+        {
+            return HttpHelper.PostApi<TestRestSharpPostDto>("http://apk.neters.club/api/Values/TestPostPara?name=老张", new { age = 18 });
+        }
+
+        /// <summary>
         /// 测试多库连接
         /// </summary>
         /// <returns></returns>
@@ -340,19 +354,6 @@ namespace Blog.Core.Controllers
             string isbn = "9787544270878";
             var doubanVideoDetail = await _doubanApi.VideoDetailAsync(isbn);
             return await _blogApi.DetailNuxtNoPerAsync(id);
-        }
-
-        /// <summary>
-        /// 测试Fulent做参数校验
-        /// </summary>
-        /// <param name="param"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<string> FluentVaTest([FromBody] UserRegisterVo param)
-        {
-            await Task.CompletedTask;
-            return "Okay";
         }
 
         /// <summary>
@@ -392,7 +393,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<string> GetConfigByAppllo(string key)
         {
-            return await Task.FromResult(AppSettings.app(key));
+            return await Task.FromResult(Appsettings.app(key));
         }
         #endregion
 
@@ -411,12 +412,12 @@ namespace Blog.Core.Controllers
         public async Task<string> HttpPollyGet()
         {
             return await _httpPollyHelper.GetAsync(HttpEnum.LocalHost, "/api/ElasticDemo/GetDetailInfo?esid=3130&esindex=chinacodex");
-        }
+        } 
         #endregion
 
         [HttpPost]
         [AllowAnonymous]
-        public string TestEnum(EnumDemoDto dto) => dto.Type.ToString();
+        public string TestEnum(EnumDemoDto dto)=>dto.Type.ToString();
     }
     public class ClaimDto
     {

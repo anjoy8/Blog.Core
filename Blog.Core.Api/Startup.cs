@@ -44,12 +44,12 @@ namespace Blog.Core
         public void ConfigureServices(IServiceCollection services)
         {
             // 以下code可能与文章中不一样,对代码做了封装,具体查看右侧 Extensions 文件夹.
-            services.AddSingleton(new AppSettings(Configuration));
+            services.AddSingleton(new Appsettings(Configuration));
             services.AddSingleton(new LogLock(Env.ContentRootPath));
             services.AddUiFilesZipSetup(Env);
 
-            Permissions.IsUseIds4 = AppSettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
-            RoutePrefix.Name = AppSettings.app(new string[] { "AppSettings", "SvcName" }).ObjToString();
+            Permissions.IsUseIds4 = Appsettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
+            RoutePrefix.Name = Appsettings.app(new string[] { "AppSettings", "SvcName" }).ObjToString();
 
             // 确保从认证中心返回的ClaimType不被更改，不使用Map映射
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -182,7 +182,7 @@ namespace Blog.Core
             // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
 
             // CORS跨域
-            app.UseCors(AppSettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
+            app.UseCors(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
             // 跳转https
             //app.UseHttpsRedirection();
             // 使用静态文件

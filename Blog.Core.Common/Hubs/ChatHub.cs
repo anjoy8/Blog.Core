@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
 using Microsoft.AspNetCore.SignalR;
 
@@ -73,7 +72,7 @@ namespace Blog.Core.Hubs
 
         public async Task SendMessage(string user, string message)
         {
-            await Clients.All.ReceiveMessage(user, message);
+            await Clients.All.ReceiveMessage( user, message);
         }
 
         //定于一个通讯管道，用来管理我们和客户端的连接
@@ -81,12 +80,7 @@ namespace Blog.Core.Hubs
         public async Task GetLatestCount(string random)
         {
             //2、服务端主动向客户端发送数据，名字千万不能错
-            if (AppSettings.app(new string[] { "Middleware", "SignalRSendLog", "Enabled" }).ObjToBool())
-            {
-                await Clients.All.ReceiveUpdate(LogLock.GetLogData());
-            }
-
-
+            await Clients.All.ReceiveUpdate(LogLock.GetLogData());
 
             //3、客户端再通过 ReceiveUpdate ，来接收
 
