@@ -49,6 +49,8 @@
   <ItemGroup>
     <PackageReference Include="log4mongo-netcore" Version="3.2.0" />
     <PackageReference Include="MicroKnights.Log4NetAdoNetAppender" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="SkyAPM.Agent.AspNetCore" Version="2.0.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
@@ -92,6 +94,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Log\" />
     <Folder Include="wwwroot\BlogCore.Data.excel\" />
   </ItemGroup>
 
