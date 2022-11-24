@@ -23,7 +23,7 @@ namespace Blog.Core.Common.LogHelper
             _contentRoot = contentPath;
         }
 
-        public static void OutLogAOP(string prefix, string[] dataParas, bool IsHeader = true, bool isWrt = false)
+        public static void OutLogAOP(string prefix, string traceId, string[] dataParas, bool IsHeader = true)
         {
             string AppSetingNodeName = "AppSettings";
             string AppSetingName = "LogAOP";
@@ -57,11 +57,11 @@ namespace Blog.Core.Common.LogHelper
             {
                 if (AppSettings.app(new string[] { AppSetingNodeName, AppSetingName, "LogToDB", "Enabled" }).ObjToBool())
                 {
-                    OutSql2LogToDB(prefix, dataParas, IsHeader);
+                    OutSql2LogToDB(prefix, traceId, dataParas, IsHeader);
                 }
                 if (AppSettings.app(new string[] { AppSetingNodeName, AppSetingName, "LogToFile", "Enabled" }).ObjToBool())
                 {
-                    OutSql2LogToFile(prefix, dataParas, IsHeader);
+                    OutSql2LogToFile(prefix, traceId, dataParas, IsHeader);
                 }
             }
 
@@ -75,7 +75,7 @@ namespace Blog.Core.Common.LogHelper
             //}
         }
 
-        public static void OutSql2LogToFile(string prefix, string[] dataParas, bool IsHeader = true, bool isWrt = false)
+        public static void OutSql2LogToFile(string prefix, string traceId, string[] dataParas, bool IsHeader = true, bool isWrt = false)
         {
             try
             {
@@ -170,9 +170,10 @@ namespace Blog.Core.Common.LogHelper
                 LogWriteLock.ExitWriteLock();
             }
         }
-        public static void OutSql2LogToDB(string prefix, string[] dataParas, bool IsHeader = true)
+        public static void OutSql2LogToDB(string prefix, string traceId, string[] dataParas, bool IsHeader = true)
         {
             log4net.LogicalThreadContext.Properties["LogType"] = prefix;
+            log4net.LogicalThreadContext.Properties["TraceId"] = traceId;
             if (dataParas.Length >= 2)
             {
                 log4net.LogicalThreadContext.Properties["DataType"] = dataParas[0];
