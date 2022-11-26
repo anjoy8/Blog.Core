@@ -149,7 +149,7 @@ namespace Blog.Core.AOP
                     Parallel.For(0, 1, e =>
                     {
                         //LogLock.OutLogAOP("AOPLog", new string[] { dataIntercept });
-                        LogLock.OutLogAOP("AOPLog", new string[] { apiLogAopInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopInfo) });
+                        LogLock.OutLogAOP("AOPLog", _accessor.HttpContext?.TraceIdentifier, new string[] { apiLogAopInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopInfo) });
                     });
                 }
             }
@@ -189,7 +189,7 @@ namespace Blog.Core.AOP
                 Parallel.For(0, 1, e =>
                 {
                     //LogLock.OutSql2Log("AOPLog", new string[] { JsonConvert.SerializeObject(apiLogAopInfo) });
-                    LogLock.OutLogAOP("AOPLog", new string[] { apiLogAopInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopInfo) });
+                    LogLock.OutLogAOP("AOPLog", _accessor.HttpContext?.TraceIdentifier, new string[] { apiLogAopInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopInfo) });
                 });
             });
         }
@@ -212,7 +212,7 @@ namespace Blog.Core.AOP
                 Parallel.For(0, 1, e =>
                 {
                     //LogLock.OutLogAOP("AOPLogEx", new string[] { dataIntercept });
-                    LogLock.OutLogAOP("AOPLogEx", new string[] { apiLogAopExInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopExInfo) });
+                    LogLock.OutLogAOP("AOPLogEx", _accessor.HttpContext?.TraceIdentifier, new string[] { apiLogAopExInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopExInfo) });
 
                 });
             }

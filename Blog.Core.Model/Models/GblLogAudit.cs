@@ -16,6 +16,12 @@ namespace Blog.Core.Model.Models
         public int Id { get; set; }
 
         ///<summary>
+        ///HttpContext.TraceIdentifier 事件链路ID（获取或设置一个唯一标识符，用于在跟踪日志中表示此请求。）
+        ///</summary>
+        [SugarColumn(ColumnDescription = "事件链路ID", IsNullable = false, IsPrimaryKey = false, IsIdentity = false, ColumnDataType = "varchar", Length = 255)]
+        public string TraceId { get; set; }
+
+        ///<summary>
         ///时间
         ///</summary>
         [SugarColumn(ColumnDescription = "时间", IsNullable = false, IsPrimaryKey = false, IsIdentity = false, ColumnDataType = "datetime")]

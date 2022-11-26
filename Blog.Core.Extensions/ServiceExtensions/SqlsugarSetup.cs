@@ -67,7 +67,7 @@ namespace Blog.Core.Extensions
                                         {
                                             MiniProfiler.Current.CustomTiming("SQL：", GetParas(p) + "【SQL语句】：" + sql);
                                             //LogLock.OutSql2Log("SqlLog", new string[] { GetParas(p), "【SQL语句】：" + sql });
-                                            LogLock.OutLogAOP("SqlLog", new string[] { sql.GetType().ToString(), GetParas(p), "【SQL语句】：" + sql });
+                                            LogLock.OutLogAOP("SqlLog","", new string[] { sql.GetType().ToString(), GetParas(p), "【SQL语句】：" + sql });
 
                                         });
                                     }

@@ -60,7 +60,7 @@ namespace Blog.Core.Extensions.Middlewares
                             Parallel.For(0, 1, e =>
                             {
                                 //LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
-                                LogLock.OutLogAOP("RequestIpInfoLog", new string[] { requestInfo.GetType().ToString(), requestInfo }, false);
+                                LogLock.OutLogAOP("RequestIpInfoLog", context.TraceIdentifier, new string[] { requestInfo.GetType().ToString(), requestInfo }, false);
                             });
 
                             //try

@@ -386,6 +386,11 @@
             ID
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.TraceId">
+            <summary>
+            HttpContext.TraceIdentifier 事件链路ID（获取或设置一个唯一标识符，用于在跟踪日志中表示此请求。）
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.GblLogAudit.Date">
             <summary>
             时间
