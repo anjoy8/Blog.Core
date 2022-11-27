@@ -361,7 +361,7 @@
             菜单管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,Microsoft.AspNetCore.Http.IHttpContextAccessor,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.AuthHelper.PermissionRequirement)">
+        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,System.Net.Http.IHttpClientFactory,Microsoft.AspNetCore.Http.IHttpContextAccessor,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.AuthHelper.PermissionRequirement)">
             <summary>
             构造函数
             </summary>
@@ -369,6 +369,7 @@
             <param name="moduleServices"></param>
             <param name="roleModulePermissionServices"></param>
             <param name="userRoleServices"></param>
+            <param name="httpClientFactory"></param>
             <param name="httpContext"></param>
             <param name="user"></param>
             <param name="requirement"></param>
@@ -420,14 +421,14 @@
         </member>
         <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBarPro(System.Int32)">
             <summary>
-            获取路由树【PRO】
+            获取路由树
             </summary>
             <param name="uid"></param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.PermissionController.GetPermissionIdByRoleId(System.Int32)">
             <summary>
-            通过角色获取菜单【无权限】
+            通过角色获取菜单
             </summary>
             <param name="rid"></param>
             <returns></returns>
@@ -451,6 +452,15 @@
             导入多条菜单信息
             </summary>
             <param name="permissions"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.PermissionController.MigratePermission(System.String,System.Int32,System.Boolean)">
+            <summary>
+            菜单同步
+            </summary>
+            <param name="controllerName">接口module的控制器名称</param>
+            <param name="pid">菜单permission的父id</param>
+            <param name="isAction">是否执行迁移到数据</param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.RoleController">

@@ -206,13 +206,6 @@ namespace Blog.Core.Controllers
             return Success(permissions, "获取成功");
         }
 
-        // GET: api/User/5
-        [HttpGet("{id}")]
-        public string Get(string id)
-        {
-            return "value";
-        }
-
         /// <summary>
         /// 添加一个菜单
         /// </summary>
@@ -447,7 +440,7 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 获取路由树【PRO】
+        /// 获取路由树
         /// </summary>
         /// <param name="uid"></param>
         /// <returns></returns>
@@ -523,7 +516,7 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 通过角色获取菜单【无权限】
+        /// 通过角色获取菜单
         /// </summary>
         /// <param name="rid"></param>
         /// <returns></returns>
@@ -656,14 +649,13 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 系统接口菜单同步接口
+        /// 菜单同步
         /// </summary>
         /// <param name="controllerName">接口module的控制器名称</param>
         /// <param name="pid">菜单permission的父id</param>
         /// <param name="isAction">是否执行迁移到数据</param>
         /// <returns></returns>
         [HttpGet]
-        [AllowAnonymous]
         public async Task<MessageModel<List<Permission>>> MigratePermission(string controllerName = "", int pid = 0, bool isAction = false)
         {
             var data = new MessageModel<List<Permission>>();
@@ -676,7 +668,7 @@ namespace Blog.Core.Controllers
             controllerName = controllerName.ToLower();
 
             using var client = _httpClientFactory.CreateClient();
-            var jsonFileDomain = AppSettings.GetValue("SystemCfg:Domain");
+            var jsonFileDomain = AppSettings.GetValue("Startup:Domain");
 
             if (jsonFileDomain.IsNullOrEmpty())
             {
@@ -726,6 +718,7 @@ namespace Blog.Core.Controllers
                     CreateTime = DateTime.Now,
                     IsDeleted = false,
                     Pid = pid,
+                    MName = apiPath ?? "",
                     Module = new Modules()
                     {
                         LinkUrl = apiPath ?? "",

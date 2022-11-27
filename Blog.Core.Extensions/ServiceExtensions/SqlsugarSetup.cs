@@ -61,19 +61,19 @@ namespace Blog.Core.Extensions
                             {
                                 if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
                                 {
-                                    if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "OutToLogFile", "Enabled" }).ObjToBool())
+                                    if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToFile", "Enabled" }).ObjToBool())
                                     {
                                         Parallel.For(0, 1, e =>
                                         {
                                             MiniProfiler.Current.CustomTiming("SQL：", GetParas(p) + "【SQL语句】：" + sql);
                                             //LogLock.OutSql2Log("SqlLog", new string[] { GetParas(p), "【SQL语句】：" + sql });
-                                            LogLock.OutLogAOP("SqlLog","", new string[] { sql.GetType().ToString(), GetParas(p), "【SQL语句】：" + sql });
+                                            LogLock.OutLogAOP("SqlLog", "", new string[] { sql.GetType().ToString(), GetParas(p), "【SQL语句】：" + sql });
 
                                         });
                                     }
-                                    if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "OutToConsole", "Enabled" }).ObjToBool())
+                                    if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToConsole", "Enabled" }).ObjToBool())
                                     {
-                                        ConsoleHelper.WriteColorLine(string.Join("\r\n", new string[] { "--------", "【SQL语句】：" + GetWholeSql(p, sql) }), ConsoleColor.DarkCyan);
+                                        ConsoleHelper.WriteColorLine(string.Join("\r\n", new string[] { "--------", $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} ：" + GetWholeSql(p, sql) }), ConsoleColor.DarkCyan);
                                     }
                                 }
                             },

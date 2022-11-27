@@ -2550,5 +2550,26 @@
     "IsDeleted": 0,
     "Id": 121,
     "IsHide": 1
+  },
+  {
+    "Code": " ",
+    "Name": "菜单同步",
+    "IsButton": 1,
+    "Pid": 7,
+    "Mid": 72,
+    "OrderSort": 0,
+    "Icon": null,
+    "Description": null,
+    "Enabled": 1,
+    "CreateId": 23,
+    "Func": "handleSync",
+    "CreateBy": "后台总管理员",
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "IsDeleted": 0,
+    "Id": 122,
+    "IsHide": 0
   }
 ]
