@@ -191,16 +191,19 @@ namespace Blog.Core.AuthHelper
                         }
 
                         //校验签发时间
-                        var value = httpContext.User.Claims.SingleOrDefault(s => s.Type == JwtRegisteredClaimNames.Iat)?.Value;
-                        if (value != null)
+                        if (!Permissions.IsUseIds4)
                         {
-                            var user = await _userServices.QueryById(_user.ID, true);
-                            if (user.CriticalModifyTime > value.ObjToDate())
+                            var value = httpContext.User.Claims.SingleOrDefault(s => s.Type == JwtRegisteredClaimNames.Iat)?.Value;
+                            if (value != null)
                             {
-                                _user.MessageModel = new ApiResponse(StatusCode.CODE401, "很抱歉,授权已失效,请重新授权").MessageModel;
-                                context.Fail(new AuthorizationFailureReason(this, _user.MessageModel.msg));
-                                return;
-                            }
+                                var user = await _userServices.QueryById(_user.ID, true);
+                                if (user.CriticalModifyTime > value.ObjToDate())
+                                {
+                                    _user.MessageModel = new ApiResponse(StatusCode.CODE401, "很抱歉,授权已失效,请重新授权").MessageModel;
+                                    context.Fail(new AuthorizationFailureReason(this, _user.MessageModel.msg));
+                                    return;
+                                }
+                            } 
                         }
 
                         context.Succeed(requirement);
