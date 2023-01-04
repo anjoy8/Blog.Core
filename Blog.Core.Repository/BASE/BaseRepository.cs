@@ -23,10 +23,10 @@ namespace Blog.Core.Repository.Base
             {
                 ISqlSugarClient db = _dbBase;
                 /* 如果要开启多库支持，
-                * 1、在appsettings.json 中开启MultiDBEnabled节点为true，必填
+                * 1、在appsettings.json 中开启MutiDBEnabled节点为true，必填
                 * 2、设置一个主连接的数据库ID，节点MainDB，对应的连接字符串的Enabled也必须true，必填
                 */
-                if (AppSettings.app(new[] {"MultiDBEnabled"}).ObjToBool())
+                if (AppSettings.app(new[] {"MutiDBEnabled"}).ObjToBool())
                 {
                     //修改使用 model备注字段作为切换数据库条件，使用sqlsugar TenantAttribute存放数据库ConnId
                     //参考 https://www.donet5.com/Home/Doc?typeId=2246
