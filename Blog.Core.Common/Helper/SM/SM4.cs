@@ -207,7 +207,6 @@ namespace Blog.Core.Common.Helper.SM
             int length = input.Length;
             SByte[] bins = new SByte[length];
             SByte[] bous = new SByte[length];
-            SByte[] output = null;
 
             Array.Copy(input, 0, bins, 0, length);
 

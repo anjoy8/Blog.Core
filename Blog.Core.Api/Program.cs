@@ -13,7 +13,6 @@ using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
 using Blog.Core.Tasks;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -170,15 +169,8 @@ app.UseAuthorization();
 app.UseMiniProfilerMiddleware();
 //app.UseExceptionHandlerMidd();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-
-    endpoints.MapHub<ChatHub>("/api2/chatHub");
-});
-
+app.MapControllers();
+app.MapHub<ChatHub>("/api2/chatHub");
 
 var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 var myContext = scope.ServiceProvider.GetRequiredService<MyContext>();

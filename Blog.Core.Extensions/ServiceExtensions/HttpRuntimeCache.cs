@@ -38,7 +38,8 @@ namespace Blog.Core.Extensions
         public IEnumerable<string> GetAllKey<V>()
         {
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
-            var entries = _memoryCache.GetType().GetField("_entries", flags).GetValue(_memoryCache);
+            var coherentState = _memoryCache.GetType().GetField("_coherentState", flags).GetValue(_memoryCache);
+            var entries = coherentState.GetType().GetField("_entries", flags).GetValue(coherentState);
             var cacheItems = entries as IDictionary;
             var keys = new List<string>();
             if (cacheItems == null) return keys;
