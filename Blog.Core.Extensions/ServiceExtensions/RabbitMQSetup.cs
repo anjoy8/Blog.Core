@@ -16,7 +16,7 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            if (Appsettings.app(new string[] { "RabbitMQ", "Enabled" }).ObjToBool())
+            if (AppSettings.app(new string[] { "RabbitMQ", "Enabled" }).ObjToBool())
             {
                 services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
                    {
@@ -24,24 +24,29 @@ namespace Blog.Core.Extensions
 
                        var factory = new ConnectionFactory()
                        {
-                           HostName = Appsettings.app(new string[] { "RabbitMQ", "Connection" }),
+                           HostName = AppSettings.app(new string[] { "RabbitMQ", "Connection" }),
                            DispatchConsumersAsync = true
                        };
 
-                       if (!string.IsNullOrEmpty(Appsettings.app(new string[] { "RabbitMQ", "UserName" })))
+                       if (!string.IsNullOrEmpty(AppSettings.app(new string[] { "RabbitMQ", "UserName" })))
                        {
-                           factory.UserName = Appsettings.app(new string[] { "RabbitMQ", "UserName" });
+                           factory.UserName = AppSettings.app(new string[] { "RabbitMQ", "UserName" });
                        }
 
-                       if (!string.IsNullOrEmpty(Appsettings.app(new string[] { "RabbitMQ", "Password" })))
+                       if (!string.IsNullOrEmpty(AppSettings.app(new string[] { "RabbitMQ", "Password" })))
                        {
-                           factory.Password = Appsettings.app(new string[] { "RabbitMQ", "Password" });
+                           factory.Password = AppSettings.app(new string[] { "RabbitMQ", "Password" });
+                       }
+
+                       if (!string.IsNullOrEmpty(AppSettings.app(new string[] { "RabbitMQ", "Port" })))
+                       {
+                           factory.Port = AppSettings.app(new string[] { "RabbitMQ", "Port" }).ObjToInt();
                        }
 
                        var retryCount = 5;
-                       if (!string.IsNullOrEmpty(Appsettings.app(new string[] { "RabbitMQ", "RetryCount" })))
+                       if (!string.IsNullOrEmpty(AppSettings.app(new string[] { "RabbitMQ", "RetryCount" })))
                        {
-                           retryCount = int.Parse(Appsettings.app(new string[] { "RabbitMQ", "RetryCount" }));
+                           retryCount = AppSettings.app(new string[] { "RabbitMQ", "RetryCount" }).ObjToInt();
                        }
 
                        return new RabbitMQPersistentConnection(factory, logger, retryCount);

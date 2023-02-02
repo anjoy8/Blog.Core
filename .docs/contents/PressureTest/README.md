@@ -20,7 +20,7 @@
 本地发布后的 `windows` 环境，直接用 `kestrel` 启动。  
 线程数：100  
 循环数：1000   
-HTTP默认值：协议：`http`；服务器或IP：`localhost`；端口号：`8081`；   
+HTTP默认值：协议：`http`；服务器或IP：`localhost`；端口号：`9291`；   
 HTTP请求：方法：GET；路径：`/api/blog/ApacheTestUpdate`  
 HTTP信息请求管理器：无  
 响应断言：无   

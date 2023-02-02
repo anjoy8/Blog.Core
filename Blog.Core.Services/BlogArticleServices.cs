@@ -13,12 +13,9 @@ namespace Blog.Core.Services
 {
     public class BlogArticleServices : BaseServices<BlogArticle>, IBlogArticleServices
     {
-        IBaseRepository<BlogArticle> _dal;
         IMapper _mapper;
-        public BlogArticleServices(IBaseRepository<BlogArticle> dal, IMapper mapper)
+        public BlogArticleServices(IMapper mapper)
         {
-            this._dal = dal;
-            base.BaseDal = dal;
             this._mapper = mapper;
         }
         /// <summary>
@@ -65,7 +62,6 @@ namespace Blog.Core.Services
         /// <summary>
         /// 获取博客列表
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         [Caching(AbsoluteExpiration = 10)]
         public async Task<List<BlogArticle>> GetBlogs()

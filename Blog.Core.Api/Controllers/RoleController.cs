@@ -14,7 +14,7 @@ namespace Blog.Core.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(Permissions.Name)]
-    public class RoleController : ControllerBase
+    public class RoleController : BaseApiController
     {
         readonly IRoleServices _roleServices;
         readonly IUser _user;
@@ -45,12 +45,14 @@ namespace Blog.Core.Controllers
 
             var data = await _roleServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
 
-            return new MessageModel<PageModel<Role>>()
-            {
-                msg = "获取成功",
-                success = data.dataCount >= 0,
-                response = data
-            };
+            //return new MessageModel<PageModel<Role>>()
+            //{
+            //    msg = "获取成功",
+            //    success = data.dataCount >= 0,
+            //    response = data
+            //};
+
+            return Success(data, "获取成功");
 
         }
 
@@ -70,20 +72,11 @@ namespace Blog.Core.Controllers
         [HttpPost]
         public async Task<MessageModel<string>> Post([FromBody] Role role)
         {
-            var data = new MessageModel<string>();
-
             role.CreateId = _user.ID;
             role.CreateBy = _user.Name;
-
             var id = (await _roleServices.Add(role));
-            data.success = id > 0;
-            if (data.success)
-            {
-                data.response = id.ObjToString();
-                data.msg = "添加成功";
-            }
+            return id > 0 ? Success(id.ObjToString(), "添加成功") : Failed("添加失败");
 
-            return data;
         }
 
         /// <summary>
@@ -95,18 +88,22 @@ namespace Blog.Core.Controllers
         [HttpPut]
         public async Task<MessageModel<string>> Put([FromBody] Role role)
         {
-            var data = new MessageModel<string>();
-            if (role != null && role.Id > 0)
-            {
-                data.success = await _roleServices.Update(role);
-                if (data.success)
-                {
-                    data.msg = "更新成功";
-                    data.response = role?.Id.ObjToString();
-                }
-            }
+            if (role == null || role.Id <= 0)
+                return Failed("缺少参数");
 
-            return data;
+            return await _roleServices.Update(role) ? Success(role?.Id.ObjToString(),"更新成功") : Failed("更新失败");
+
+            //var data = new MessageModel<string>();
+            //if (role != null && role.Id > 0)
+            //{
+            //    data.success = await _roleServices.Update(role);
+            //    if (data.success)
+            //    {
+            //        data.msg = "更新成功";
+            //        data.response = role?.Id.ObjToString();
+            //    }
+            //}
+            //return data;
         }
 
         /// <summary>
@@ -118,20 +115,26 @@ namespace Blog.Core.Controllers
         [HttpDelete]
         public async Task<MessageModel<string>> Delete(int id)
         {
+            
             var data = new MessageModel<string>();
-            if (id > 0)
-            {
-                var userDetail = await _roleServices.QueryById(id);
-                userDetail.IsDeleted = true;
-                data.success = await _roleServices.Update(userDetail);
-                if (data.success)
-                {
-                    data.msg = "删除成功";
-                    data.response = userDetail?.Id.ObjToString();
-                }
-            }
+            //if (id > 0)
+            //{
+            //    var userDetail = await _roleServices.QueryById(id);
+            //    userDetail.IsDeleted = true;
+            //    data.success = await _roleServices.Update(userDetail);
+            //    if (data.success)
+            //    {
+            //        data.msg = "删除成功";
+            //        data.response = userDetail?.Id.ObjToString();
+            //    }
+            //}
+            //return data;
 
-            return data;
+            if (id <= 0) return Failed();
+            var userDetail = await _roleServices.QueryById(id);
+            if (userDetail == null) return Success<string>(null,"角色不存在");
+            userDetail.IsDeleted = true;
+            return await _roleServices.Update(userDetail) ? Success(userDetail?.Id.ObjToString(), "删除成功") : Failed();
         }
     }
 }

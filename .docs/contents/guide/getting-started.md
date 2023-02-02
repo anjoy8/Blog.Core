@@ -14,7 +14,7 @@ Gitee（国内） 下载 [https://gitee.com/laozhangIsPhi/Blog.Core](https://git
 ## 编译与运行
 1、拿到项目后，双击 `Blog.Core.sln` 解决方案；  
 2、首先 `F6` 编译，看是否有错误；  
-3、然后 `F5` 运行，调起 `8081` 端口，浏览器查看效果；  
+3、然后 `F5` 运行，调起 `9291` 端口，浏览器查看效果；  
 4、因为系统默认的是 `sqlite` 数据库，如果你想换其他数据库，请看下边；    
 5、注意：本系统是直接自动生成数据库和数据的，不用手动创建数据库；  
 
@@ -78,7 +78,7 @@ Gitee（国内） 下载 [https://gitee.com/laozhangIsPhi/Blog.Core](https://git
 ```
 
 ## 如何配置项目端口号
-1、在 `Blog.Core` 层下的 `program.cs` 文件中，将 `8081`端口，修改为自己想要的端口号；    
+1、在 `Blog.Core` 层下的 `program.cs` 文件中，将 `9291`端口，修改为自己想要的端口号；    
 2、或者在 `launchSettings.json` 中设置(`注意，如果仅仅修改这里，publish后，端口访问无效`)；
 
 ## 如何项目重命名

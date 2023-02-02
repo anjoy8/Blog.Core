@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>登录 - 接口文档</title>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <link type="text/css" href="css/style.css" rel="stylesheet" />
+    <script src="js/anime.min.js"></script>
+</head>
+<body>
+    <div class="page">
+        <div class="container">
+            <div class="left">
+                <div></div>
+
+                <div class="login"><img src="/logo.jpg.jpg" height="30" alt="Alternate Text"/> Blog.Core 接口文档</div>
+                <div class="eula">欢迎使用！</div>
+                <div class="eula">用户名：admin，密码：admin</div>
+            </div>
+            <div class="right">
+                <svg viewBox="0 0 320 300">
+                    <defs>
+                        <linearGradient inkscape:collect="always"
+                                        id="linearGradient"
+                                        x1="13"
+                                        y1="193.49992"
+                                        x2="307"
+                                        y2="193.49992"
+                                        gradientUnits="userSpaceOnUse">
+                            <stop style="stop-color:#ff00ff;"
+                                  offset="0"
+                                  id="stop876" />
+                            <stop style="stop-color:#ff0000;"
+                                  offset="1"
+                                  id="stop878" />
+                        </linearGradient>
+                    </defs>
+                    <path d="m 40,120.00016 239.99984,-3.2e-4 c 0,0 24.99263,0.79932 25.00016,35.00016 0.008,34.20084 -25.00016,35 -25.00016,35 h -239.99984 c 0,-0.0205 -25,4.01348 -25,38.5 0,34.48652 25,38.5 25,38.5 h 215 c 0,0 20,-0.99604 20,-25 0,-24.00396 -20,-25 -20,-25 h -190 c 0,0 -20,1.71033 -20,25 0,24.00396 20,25 20,25 h 168.57143" />
+                </svg>
+                <div class="form">
+                    <label for="email">用户名</label>
+                    <input type="email" id="email">
+                    <label for="password">密码</label>
+                    <input type="password" id="password">
+                    <input type="submit" id="submit" onclick="submit()" value="登 录">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var current = null;
+        document.querySelector('#email').addEventListener('focus', function (e) {
+            if (current) current.pause();
+            current = anime({
+                targets: 'path',
+                strokeDashoffset: {
+                    value: 0,
+                    duration: 700,
+                    easing: 'easeOutQuart'
+                },
+                strokeDasharray: {
+                    value: '240 1386',
+                    duration: 700,
+                    easing: 'easeOutQuart'
+                }
+            });
+        });
+        document.querySelector('#password').addEventListener('focus', function (e) {
+            if (current) current.pause();
+            current = anime({
+                targets: 'path',
+                strokeDashoffset: {
+                    value: -336,
+                    duration: 700,
+                    easing: 'easeOutQuart'
+                },
+                strokeDasharray: {
+                    value: '240 1386',
+                    duration: 700,
+                    easing: 'easeOutQuart'
+                }
+            });
+        });
+        document.querySelector('#submit').addEventListener('focus', function (e) {
+            if (current) current.pause();
+            current = anime({
+                targets: 'path',
+                strokeDashoffset: {
+                    value: -730,
+                    duration: 700,
+                    easing: 'easeOutQuart'
+                },
+                strokeDasharray: {
+                    value: '530 1386',
+                    duration: 700,
+                    easing: 'easeOutQuart'
+                }
+            });
+        });
+        function submit() {
+            let postdata = {
+                "name": $("#email").val(),
+                "pwd": $("#password").val(),
+            };
+            if (!(postdata.name && postdata.pwd)) {
+                alert('参数不正确');
+                return
+            }
+            $.ajax({
+                url: "/api/Login/swgLogin",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(postdata),
+                dataType: 'json',
+                success: function (data) {
+                    if (data?.result) {
+                        window.location.href = "/index.html";
+                    } else {
+                        alert('参数不正确');
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

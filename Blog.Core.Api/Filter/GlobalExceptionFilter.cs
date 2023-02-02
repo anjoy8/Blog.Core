@@ -1,5 +1,8 @@
-﻿using Blog.Core.Common.LogHelper;
+﻿using Blog.Core.Common;
+using Blog.Core.Common.Helper;
+using Blog.Core.Common.LogHelper;
 using Blog.Core.Hubs;
+using Blog.Core.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,28 +32,35 @@ namespace Blog.Core.Filter
 
         public void OnException(ExceptionContext context)
         {
-            var json = new JsonErrorResponse();
+            var json = new MessageModel<string>();
 
-            json.Message = context.Exception.Message;//错误信息
+            json.msg = context.Exception.Message;//错误信息
+            json.status = 500;//500异常 
             var errorAudit = "Unable to resolve service for";
-            if (!string.IsNullOrEmpty(json.Message)&& json.Message.Contains(errorAudit))
+            if (!string.IsNullOrEmpty(json.msg) && json.msg.Contains(errorAudit))
             {
-                json.Message = json.Message.Replace(errorAudit, $"（若新添加服务，需要重新编译项目）{errorAudit}");
+                json.msg = json.msg.Replace(errorAudit, $"（若新添加服务，需要重新编译项目）{errorAudit}");
             }
 
-            //if (_env.IsDevelopment())
+            if (_env.EnvironmentName.ObjToString().Equals("Development"))
             {
-                json.DevelopmentMessage = context.Exception.StackTrace;//堆栈信息
+                json.msgDev = context.Exception.StackTrace;//堆栈信息
             }
-            context.Result = new InternalServerErrorObjectResult(json);
+            var res = new ContentResult();
+            res.Content = JsonHelper.GetJSON<MessageModel<string>>(json);
 
-            MiniProfiler.Current.CustomTiming("Errors：", json.Message);
+            context.Result = res;
+
+            MiniProfiler.Current.CustomTiming("Errors：", json.msg);
 
 
             //采用log4net 进行错误日志记录
-            _loggerHelper.LogError(json.Message + WriteLog(json.Message, context.Exception));
+            _loggerHelper.LogError(json.msg + WriteLog(json.msg, context.Exception));
+            if (AppSettings.app(new string[] { "Middleware", "SignalRSendLog", "Enabled" }).ObjToBool())
+            {
+                _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
+            }
 
-            _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
 
         }
 

@@ -60,6 +60,8 @@ namespace Blog.Core.Tests
         [Fact]
         public async void Delete_Blog_Test()
         {
+            Add_Blog_Test();
+
             var deleteModel = (await blogArticleServices.Query(d => d.btitle == "xuint test title")).FirstOrDefault();
 
             Assert.NotNull(deleteModel);

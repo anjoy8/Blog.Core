@@ -1,17 +1,17 @@
-﻿using Blog.Core.Common.Helper;
-using Blog.Core.Common.StaticHelper;
+﻿using Blog.Core.Common;
+using Blog.Core.Common.Helper;
+using Blog.Core.Common.Static;
 using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
 using Blog.Core.Services.BASE;
-using CCB_B2CPay_Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,13 +20,10 @@ namespace Blog.Core.Services
 {
     public partial class PayServices : BaseServices<RootEntityTkey<int>>, IPayServices
     {
-        IBaseRepository<RootEntityTkey<int>> _dal;
         IHttpContextAccessor _httpContextAccessor;
         ILogger<PayServices> _logger;
-        public PayServices(IBaseRepository<RootEntityTkey<int>> dal, ILogger<PayServices> logger , IHttpContextAccessor  httpContextAccessor)
+        public PayServices(ILogger<PayServices> logger, IHttpContextAccessor httpContextAccessor)
         {
-            this._dal = dal;
-            base.BaseDal = dal;
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
         }
@@ -36,13 +33,13 @@ namespace Blog.Core.Services
             _logger.LogInformation("支付开始");
             MessageModel<PayReturnResultModel> messageModel = new MessageModel<PayReturnResultModel>();
             messageModel.response = new PayReturnResultModel();
-            string url =string.Empty;
+            string url = string.Empty;
             string param = string.Empty;
             string returnData = string.Empty;
             try
             {
 
-                _logger.LogInformation($"原始GET参数->{_httpContextAccessor.HttpContext.Request.QueryString}"); 
+                _logger.LogInformation($"原始GET参数->{_httpContextAccessor.HttpContext.Request.QueryString}");
                 //被扫支付 
                 string host = "https://ibsbjstar.ccb.com.cn/CCBIS/B2CMainPlat_00_BEPAY?";
                 ////商户信息
@@ -54,7 +51,7 @@ namespace Blog.Core.Services
                 //        "&QRCODE=134737690209713400&AMOUNT=0.01&TXCODE=PAY100&PROINFO=&REMARK1=&REMARK2=&SMERID=&SMERNAME=&SMERTYPEID=" +
                 //        "&SMERTYPE=&TRADECODE=&TRADENAME=&SMEPROTYPE=&PRONAME=";
 
-                Dictionary<string, string> dic = new Dictionary<string, string>();
+                Dictionary<string, object> dic = new Dictionary<string, object>();
 
                 //支付信息
                 dic.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
@@ -81,16 +78,16 @@ namespace Blog.Core.Services
                 //dic.Add("goods_tag", "");// => '', // 订单优惠标记 
 
                 //商户信息
-                Dictionary<string, string> dicInfo = new Dictionary<string, string>();
+                Dictionary<string, object> dicInfo = new Dictionary<string, object>();
                 dicInfo.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
                 dicInfo.Add("POSID", StaticPayInfo.POSID);// => self::POSID, // 柜台号
                 dicInfo.Add("BRANCHID", StaticPayInfo.BRANCHID);// => self::BRANCHID, // 分行号
-                var Info = StringHelper.GetPars(dicInfo); 
+                var Info = StringHelper.GetPars(dicInfo);
 
-                
+
                 //获取拼接请求串
                 param = StringHelper.GetPars(dic);
-                
+
                 //加密
                 var paramEncryption = new CCBPayUtil().makeCCBParam(param, StaticPayInfo.pubKey);
                 //拼接请求串
@@ -101,7 +98,7 @@ namespace Blog.Core.Services
                 PayResultModel payResult;
                 try
                 {
-                    returnData = await GetNetData.PostAsync(url);
+                    returnData = await HttpHelper.PostAsync(url);
                     //转换数据 
                     try
                     {
@@ -109,8 +106,8 @@ namespace Blog.Core.Services
                     }
                     catch
                     {
-                        payResult = new PayResultModel { RESULT = "N", ERRMSG = "参数错误", ORDERID = payModel.ORDERID, AMOUNT = payModel.AMOUNT};
-                        returnData = StringHelper.GetCusLine(returnData, 15); 
+                        payResult = new PayResultModel { RESULT = "N", ERRMSG = "参数错误", ORDERID = payModel.ORDERID, AMOUNT = payModel.AMOUNT };
+                        returnData = StringHelper.GetCusLine(returnData, 15);
                     }
                     _logger.LogInformation($"响应数据->{returnData}");
                 }
@@ -118,13 +115,13 @@ namespace Blog.Core.Services
                 {
                     _logger.LogInformation($"异常信息:{ex.Message}");
                     _logger.LogInformation($"异常堆栈:{ex.StackTrace}");
-                    messageModel = await  PayCheck(payModel,1);
-                    return messageModel; 
-                } 
+                    messageModel = await PayCheck(payModel, 1);
+                    return messageModel;
+                }
                 switch (payResult.RESULT)
                 {
                     case "Y":
-                        Dictionary<string, string> dicCheckPars = new Dictionary<string, string>();
+                        Dictionary<string, object> dicCheckPars = new Dictionary<string, object>();
                         dicCheckPars.Add("RESULT", payResult.RESULT);
                         dicCheckPars.Add("ORDERID", payResult.ORDERID);
                         dicCheckPars.Add("AMOUNT", payResult.AMOUNT);
@@ -152,11 +149,11 @@ namespace Blog.Core.Services
                         if (waittime <= 0) waittime = 5;//如果需要等待默认等待5秒后再次查询
                         Thread.Sleep(waittime * 1000);
                         //轮询查询
-                        messageModel = await PayCheck(payModel,1);
+                        messageModel = await PayCheck(payModel, 1);
                         break;
                     default:
                         messageModel.success = false;
-                        messageModel.msg = "支付失败"; 
+                        messageModel.msg = "支付失败";
                         break;
                 }
                 messageModel.response.ORDERID = payResult.ORDERID;
@@ -181,14 +178,14 @@ namespace Blog.Core.Services
             }
             return messageModel;
         }
-        public async Task<MessageModel<PayRefundReturnResultModel>> PayRefund(PayRefundNeedModel payModel) 
+        public async Task<MessageModel<PayRefundReturnResultModel>> PayRefund(PayRefundNeedModel payModel)
         {
             _logger.LogInformation("退款开始");
             MessageModel<PayRefundReturnResultModel> messageModel = new MessageModel<PayRefundReturnResultModel>();
             messageModel.response = new PayRefundReturnResultModel();
             try
             {
-                _logger.LogInformation($"原始GET参数->{_httpContextAccessor.HttpContext.Request.QueryString}"); 
+                _logger.LogInformation($"原始GET参数->{_httpContextAccessor.HttpContext.Request.QueryString}");
 
                 string REQUEST_SN = StringHelper.GetGuidToLongID().ToString().Substring(0, 16);//请求序列码
                 string CUST_ID = StaticPayInfo.MERCHANTID;//商户号
@@ -212,27 +209,14 @@ namespace Blog.Core.Services
                 sRequestMsg = "requestXml=" + sRequestMsg;
 
                 _logger.LogInformation("请求地址：" + sUrl);
-                _logger.LogInformation("请求报文：" + sRequestMsg); 
-                HttpWebRequest request = (System.Net.HttpWebRequest)HttpWebRequest.Create(sUrl);
-                request.Method = "POST";
+                _logger.LogInformation("请求报文：" + sRequestMsg);
 
-                request.ContentType = "application/x-www-form-urlencoded";
-                request.KeepAlive = false;
-                request.Connection = "";
-
-                //外联平台使用GB18030编码，这里进行转码处理 
+                HttpClient request = new HttpClient();         
                 byte[] byteRquest = Encoding.GetEncoding("GB18030").GetBytes(sRequestMsg);
-                request.ContentLength = byteRquest.Length;
+                ByteArrayContent bytemsg = new ByteArrayContent(byteRquest);
+                HttpResponseMessage resulthd = await request.PostAsync(sUrl, bytemsg);
+                Stream result = await resulthd.Content.ReadAsStreamAsync();
 
-                //发送请求
-                Stream writerStream = request.GetRequestStream();
-                await writerStream.WriteAsync(byteRquest, 0, byteRquest.Length);
-                writerStream.Flush();
-                writerStream.Close();
-
-                //接收请求
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream result = response.GetResponseStream();
                 StreamReader readerResult = new StreamReader(result, System.Text.Encoding.GetEncoding("GB18030"));
                 string sResult = await readerResult.ReadToEndAsync();
                 _logger.LogInformation("响应报文:" + sResult);
@@ -256,7 +240,8 @@ namespace Blog.Core.Services
 
                 messageModel.response.AMOUNT = Xmlresult.TX_INFO?.AMOUNT;
                 messageModel.response.PAY_AMOUNT = Xmlresult.TX_INFO?.PAY_AMOUNT;
-                messageModel.response.ORDER_NUM = Xmlresult.TX_INFO?.ORDER_NUM; 
+                messageModel.response.ORDER_NUM = Xmlresult.TX_INFO?.ORDER_NUM;
+                request.Dispose();
             }
             catch (Exception ex)
             {
@@ -270,13 +255,15 @@ namespace Blog.Core.Services
             {
                 _logger.LogInformation($"返回数据->{JsonHelper.GetJSON<MessageModel<PayRefundReturnResultModel>>(messageModel)}");
                 _logger.LogInformation("退款结束");
+                
             }
             return messageModel;
-        
+
         }
-        public async Task<MessageModel<PayReturnResultModel>> PayCheck(PayNeedModel payModel,int times)
+        public async Task<MessageModel<PayReturnResultModel>> PayCheck(PayNeedModel payModel, int times)
         {
-            _logger.LogInformation("轮序开始");
+            _logger.LogInformation("轮询开始");
+
             MessageModel<PayReturnResultModel> messageModel = new MessageModel<PayReturnResultModel>();
             messageModel.response = new PayReturnResultModel();
             string url = string.Empty;
@@ -284,9 +271,13 @@ namespace Blog.Core.Services
             string returnData = string.Empty;
             try
             {
+                //设置最大轮询次数,跟建行保持一致
+                int theLastTime = 6;
+                if (times > theLastTime) throw new Exception($"轮询次数超过最大次数{theLastTime}");
+
                 string host = "https://ibsbjstar.ccb.com.cn/CCBIS/B2CMainPlat_00_BEPAY?";
 
-                Dictionary<string, string> dic = new Dictionary<string, string>();
+                Dictionary<string, object> dic = new Dictionary<string, object>();
 
                 dic.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
                 dic.Add("POSID", StaticPayInfo.POSID);// => self::POSID, // 柜台号
@@ -315,11 +306,11 @@ namespace Blog.Core.Services
                 //dic.Add("goods_tag", "");// => '', // 订单优惠标记
 
                 //商户信息
-                Dictionary<string, string> dicInfo = new Dictionary<string, string>();
+                Dictionary<string, object> dicInfo = new Dictionary<string, object>();
                 dicInfo.Add("MERCHANTID", StaticPayInfo.MERCHANTID);// => self::MERCHANTID, // 商户号
                 dicInfo.Add("POSID", StaticPayInfo.POSID);// => self::POSID, // 柜台号
                 dicInfo.Add("BRANCHID", StaticPayInfo.BRANCHID);// => self::BRANCHID, // 分行号
-                var Info = StringHelper.GetPars(dicInfo);  
+                var Info = StringHelper.GetPars(dicInfo);
 
                 //var newDic = dic.OrderBy(t => t.Key).ToDictionary(o => o.Key, p => p.Value);
                 //参数信息
@@ -335,36 +326,36 @@ namespace Blog.Core.Services
                 PayResultModel payResult;
                 try
                 {
-                    returnData = await GetNetData.PostAsync(url);
+                    returnData = await HttpHelper.PostAsync(url);
                     _logger.LogInformation($"响应数据->{returnData}");
                 }
                 catch (Exception ex)
                 {
                     _logger.LogInformation($"异常信息:{ex.Message}");
                     _logger.LogInformation($"异常堆栈:{ex.StackTrace}");
-                    return  await PayCheck(payModel, ++times); 
+                    return await PayCheck(payModel, ++times);
                 }
-               
-                
+
+
                 try
                 {
                     payResult = JsonHelper.ParseFormByJson<PayResultModel>(returnData);
                 }
                 catch
                 {
-                    payResult = new PayResultModel { RESULT = "N", ERRMSG = "参数错误", ORDERID = payModel.ORDERID, AMOUNT = payModel.AMOUNT }; 
+                    payResult = new PayResultModel { RESULT = "N", ERRMSG = "参数错误", ORDERID = payModel.ORDERID, AMOUNT = payModel.AMOUNT };
                 }
 
                 switch (payResult.RESULT)
                 {
                     case "Y":
-                        Dictionary<string, string> dicCheckPars = new Dictionary<string, string>();
+                        Dictionary<string, object> dicCheckPars = new Dictionary<string, object>();
                         dicCheckPars.Add("RESULT", payResult.RESULT);
                         dicCheckPars.Add("ORDERID", payResult.ORDERID);
                         dicCheckPars.Add("AMOUNT", payResult.AMOUNT);
                         dicCheckPars.Add("WAITTIME", payResult.WAITTIME);
                         string strCheckPars = StringHelper.GetPars(dicCheckPars);
-                        if (NotifyCheck(strCheckPars, payResult.SIGN, StaticPayInfo.pubKey)) 
+                        if (NotifyCheck(strCheckPars, payResult.SIGN, StaticPayInfo.pubKey))
                         {
                             messageModel.success = true;
                             messageModel.msg = "支付成功";
@@ -373,7 +364,7 @@ namespace Blog.Core.Services
                         {
                             messageModel.success = false;
                             messageModel.msg = "签名失败";
-                        } 
+                        }
                         break;
                     case "N":
                         messageModel.success = false;
@@ -414,8 +405,9 @@ namespace Blog.Core.Services
             }
             return messageModel;
         }
-        
-        public bool NotifyCheck(string strSrc,string sign,string pubKey) {
+
+        public bool NotifyCheck(string strSrc, string sign, string pubKey)
+        {
 
             return new CCBPayUtil().verifyNotifySign(strSrc, sign, pubKey);
         }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -16,13 +16,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Blog.Core.IServices\Blog.Core.IServices.csproj" />
 		<ProjectReference Include="..\Blog.Core.Repository\Blog.Core.Repository.csproj" />
-	</ItemGroup>
-	 
-
-	<ItemGroup>
-	  <Reference Include="CCB_B2CPay_Util">
-	    <HintPath>File\CCB_B2CPay_Util.dll</HintPath>
-	  </Reference>
 	</ItemGroup>
 
 </Project>

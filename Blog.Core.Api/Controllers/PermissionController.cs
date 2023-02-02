@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Blog.Core.AuthHelper;
+﻿using Blog.Core.AuthHelper;
 using Blog.Core.AuthHelper.OverWrite;
+using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Blog.Core.Controllers
 {
@@ -21,12 +19,13 @@ namespace Blog.Core.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(Permissions.Name)]
-    public class PermissionController : ControllerBase
+    public class PermissionController : BaseApiController
     {
         readonly IPermissionServices _permissionServices;
         readonly IModuleServices _moduleServices;
         readonly IRoleModulePermissionServices _roleModulePermissionServices;
         readonly IUserRoleServices _userRoleServices;
+        private readonly IHttpClientFactory _httpClientFactory;
         readonly IHttpContextAccessor _httpContext;
         readonly IUser _user;
         private readonly PermissionRequirement _requirement;
@@ -38,15 +37,20 @@ namespace Blog.Core.Controllers
         /// <param name="moduleServices"></param>
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="userRoleServices"></param>
+        /// <param name="httpClientFactory"></param>
         /// <param name="httpContext"></param>
         /// <param name="user"></param>
         /// <param name="requirement"></param>
-        public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices, IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices, IHttpContextAccessor httpContext, IUser user, PermissionRequirement requirement)
+        public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices,
+            IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices,
+            IHttpClientFactory httpClientFactory,
+            IHttpContextAccessor httpContext, IUser user, PermissionRequirement requirement)
         {
             _permissionServices = permissionServices;
             _moduleServices = moduleServices;
             _roleModulePermissionServices = roleModulePermissionServices;
             _userRoleServices = userRoleServices;
+            this._httpClientFactory = httpClientFactory;
             _httpContext = httpContext;
             _user = user;
             _requirement = requirement;
@@ -133,12 +137,14 @@ namespace Blog.Core.Controllers
             #endregion
 
 
-            return new MessageModel<PageModel<Permission>>()
-            {
-                msg = "获取成功",
-                success = permissions.dataCount >= 0,
-                response = permissions
-            };
+            //return new MessageModel<PageModel<Permission>>()
+            //{
+            //    msg = "获取成功",
+            //    success = permissions.dataCount >= 0,
+            //    response = permissions
+            //};
+
+            return permissions.dataCount >= 0 ? Success(permissions, "获取成功") : Failed<PageModel<Permission>>("获取失败");
 
         }
 
@@ -191,19 +197,13 @@ namespace Blog.Core.Controllers
             }
 
 
-            return new MessageModel<List<Permission>>()
-            {
-                msg = "获取成功",
-                success = true,
-                response = permissions
-            };
-        }
-
-        // GET: api/User/5
-        [HttpGet("{id}")]
-        public string Get(string id)
-        {
-            return "value";
+            //return new MessageModel<List<Permission>>()
+            //{
+            //    msg = "获取成功",
+            //    success = true,
+            //    response = permissions
+            //};
+            return Success(permissions, "获取成功");
         }
 
         /// <summary>
@@ -215,20 +215,21 @@ namespace Blog.Core.Controllers
         [HttpPost]
         public async Task<MessageModel<string>> Post([FromBody] Permission permission)
         {
-            var data = new MessageModel<string>();
+            //var data = new MessageModel<string>();
 
             permission.CreateId = _user.ID;
             permission.CreateBy = _user.Name;
 
             var id = (await _permissionServices.Add(permission));
-            data.success = id > 0;
-            if (data.success)
-            {
-                data.response = id.ObjToString();
-                data.msg = "添加成功";
-            }
+            //data.success = id > 0;
+            //if (data.success)
+            //{
+            //    data.response = id.ObjToString();
+            //    data.msg = "添加成功";
+            //}
 
-            return data;
+
+            return id > 0 ? Success(id.ObjToString(), "添加成功") : Failed("添加失败");
         }
 
         /// <summary>
@@ -254,9 +255,10 @@ namespace Blog.Core.Controllers
                 foreach (var item in assignView.pids)
                 {
                     var rmpitem = roleModulePermissions.Where(d => d.PermissionId == item);
+                    var moduleid = (await _permissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
                     if (!rmpitem.Any())
                     {
-                        var moduleid = (await _permissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
+
                         RoleModulePermission roleModulePermission = new RoleModulePermission()
                         {
                             IsDeleted = false,
@@ -271,6 +273,17 @@ namespace Blog.Core.Controllers
 
                         data.success &= (await _roleModulePermissionServices.Add(roleModulePermission)) > 0;
 
+                    }
+                    else
+                    {
+                        foreach (var role in rmpitem)
+                        {
+                            if (!role.ModuleId.Equals(moduleid))
+                            {
+                                role.ModuleId = moduleid.Value;
+                                await _roleModulePermissionServices.Update(role, new List<string> { "ModuleId" });
+                            }
+                        }
                     }
                 }
 
@@ -297,7 +310,7 @@ namespace Blog.Core.Controllers
         [HttpGet]
         public async Task<MessageModel<PermissionTree>> GetPermissionTree(int pid = 0, bool needbtn = false)
         {
-            var data = new MessageModel<PermissionTree>();
+            //var data = new MessageModel<PermissionTree>();
 
             var permissions = await _permissionServices.Query(d => d.IsDeleted == false);
             var permissionTrees = (from child in permissions
@@ -323,14 +336,15 @@ namespace Blog.Core.Controllers
 
             RecursionHelper.LoopToAppendChildren(permissionTrees, rootRoot, pid, needbtn);
 
-            data.success = true;
-            if (data.success)
-            {
-                data.response = rootRoot;
-                data.msg = "获取成功";
-            }
+            //data.success = true;
+            //if (data.success)
+            //{
+            //    data.response = rootRoot;
+            //    data.msg = "获取成功";
+            //}
 
-            return data;
+            return Success(rootRoot, "获取成功");
+            //return data;
         }
 
         /// <summary>
@@ -373,6 +387,7 @@ namespace Blog.Core.Controllers
                     if (pids.Any())
                     {
                         var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id))).OrderBy(c => c.OrderSort);
+                        var temp = rolePermissionMoudles.ToList().Find(t => t.Id == 87);
                         var permissionTrees = (from child in rolePermissionMoudles
                                                where child.IsDeleted == false
                                                orderby child.Id
@@ -410,7 +425,6 @@ namespace Blog.Core.Controllers
                         };
 
                         permissionTrees = permissionTrees.OrderBy(d => d.order).ToList();
-
                         RecursionHelper.LoopNaviBarAppendChildren(permissionTrees, rootRoot);
 
                         data.success = true;
@@ -426,7 +440,83 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 通过角色获取菜单【无权限】
+        /// 获取路由树
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<MessageModel<List<NavigationBarPro>>> GetNavigationBarPro(int uid)
+        {
+            var data = new MessageModel<List<NavigationBarPro>>();
+
+            var uidInHttpcontext1 = 0;
+            var roleIds = new List<int>();
+            // ids4和jwt切换
+            if (Permissions.IsUseIds4)
+            {
+                // ids4
+                uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
+                                     where item.Type == "sub"
+                                     select item.Value).FirstOrDefault().ObjToInt();
+                roleIds = (from item in _httpContext.HttpContext.User.Claims
+                           where item.Type == "role"
+                           select item.Value.ObjToInt()).ToList();
+            }
+            else
+            {
+                // jwt
+                uidInHttpcontext1 = ((JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid).ObjToInt();
+                roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToInt()).Distinct().ToList();
+            }
+
+            if (uid > 0 && uid == uidInHttpcontext1)
+            {
+                if (roleIds.Any())
+                {
+                    var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && roleIds.Contains(d.RoleId)))
+                                    .Select(d => d.PermissionId.ObjToInt()).Distinct();
+                    if (pids.Any())
+                    {
+                        var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
+                        var permissionTrees = (from item in rolePermissionMoudles
+                                               where item.IsDeleted == false
+                                               orderby item.Id
+                                               select new NavigationBarPro
+                                               {
+                                                   id = item.Id,
+                                                   name = item.Name,
+                                                   parentId = item.Pid,
+                                                   order = item.OrderSort,
+                                                   path = item.Code == "-" ? item.Name.GetTotalPingYin().FirstOrDefault() : (item.Code == "/" ? "/dashboard/workplace" : item.Code),
+                                                   component = item.Pid == 0 ? (item.Code == "/" ? "dashboard/Workplace" : "RouteView") : item.Code?.TrimStart('/'),
+                                                   iconCls = item.Icon,
+                                                   Func = item.Func,
+                                                   IsHide = item.IsHide.ObjToBool(),
+                                                   IsButton = item.IsButton.ObjToBool(),
+                                                   meta = new NavigationBarMetaPro
+                                                   {
+                                                       show = true,
+                                                       title = item.Name,
+                                                       icon = "user"//item.Icon
+                                                   }
+                                               }).ToList();
+
+                        permissionTrees = permissionTrees.OrderBy(d => d.order).ToList();
+
+                        data.success = true;
+                        if (data.success)
+                        {
+                            data.response = permissionTrees;
+                            data.msg = "获取成功";
+                        }
+                    }
+                }
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// 通过角色获取菜单
         /// </summary>
         /// <param name="rid"></param>
         /// <returns></returns>
@@ -434,7 +524,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<MessageModel<AssignShow>> GetPermissionIdByRoleId(int rid = 0)
         {
-            var data = new MessageModel<AssignShow>();
+            //var data = new MessageModel<AssignShow>();
 
             var rmps = await _roleModulePermissionServices.Query(d => d.IsDeleted == false && d.RoleId == rid);
             var permissionTrees = (from child in rmps
@@ -454,18 +544,24 @@ namespace Blog.Core.Controllers
                 }
             }
 
-            data.success = true;
-            if (data.success)
-            {
-                data.response = new AssignShow()
-                {
-                    permissionids = permissionTrees,
-                    assignbtns = assignbtns,
-                };
-                data.msg = "获取成功";
-            }
+            //data.success = true;
+            //if (data.success)
+            //{
+            //    data.response = new AssignShow()
+            //    {
+            //        permissionids = permissionTrees,
+            //        assignbtns = assignbtns,
+            //    };
+            //    data.msg = "获取成功";
+            //}
 
-            return data;
+            return Success(new AssignShow()
+            {
+                permissionids = permissionTrees,
+                assignbtns = assignbtns,
+            }, "获取成功");
+
+            //return data;
         }
 
         /// <summary>
@@ -516,6 +612,154 @@ namespace Blog.Core.Controllers
 
             return data;
         }
+
+        /// <summary>
+        /// 导入多条菜单信息
+        /// </summary>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
+        // POST: api/User
+        [HttpPost]
+        public async Task<MessageModel<string>> BatchPost([FromBody] List<Permission> permissions)
+        {
+            var data = new MessageModel<string>();
+            string ids = string.Empty;
+            int sucCount = 0;
+
+            for (int i = 0; i < permissions.Count; i++)
+            {
+                var permission = permissions[i];
+                if (permission != null)
+                {
+                    permission.CreateId = _user.ID;
+                    permission.CreateBy = _user.Name;
+                    ids += (await _permissionServices.Add(permission));
+                    sucCount++;
+                }
+            }
+
+            data.success = ids.IsNotEmptyOrNull();
+            if (data.success)
+            {
+                data.response = ids;
+                data.msg = $"{sucCount}条数据添加成功";
+            }
+
+            return data;
+        }
+
+        /// <summary>
+        /// 菜单同步
+        /// </summary>
+        /// <param name="controllerName">接口module的控制器名称</param>
+        /// <param name="pid">菜单permission的父id</param>
+        /// <param name="isAction">是否执行迁移到数据</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<MessageModel<List<Permission>>> MigratePermission(string controllerName = "", int pid = 0, bool isAction = false)
+        {
+            var data = new MessageModel<List<Permission>>();
+            if (controllerName.IsNullOrEmpty())
+            {
+                data.msg = "必须填写要迁移的所属接口的控制器名称";
+                return data;
+            }
+
+            controllerName = controllerName.ToLower();
+
+            using var client = _httpClientFactory.CreateClient();
+            var jsonFileDomain = AppSettings.GetValue("Startup:Domain");
+
+            if (jsonFileDomain.IsNullOrEmpty())
+            {
+                data.msg = "Swagger.json在线文件域名不能为空";
+                return data;
+            }
+
+            var url = $"{jsonFileDomain}/swagger/V2/swagger.json";
+            var response = await client.GetAsync(url);
+            var body = await response.Content.ReadAsStringAsync();
+
+            var resultJObj = (JObject)JsonConvert.DeserializeObject(body);
+            var paths = resultJObj["paths"].ObjToString();
+            var pathsJObj = (JObject)JsonConvert.DeserializeObject(paths);
+
+            List<Permission> permissions = new List<Permission>();
+            foreach (JProperty jProperty in pathsJObj.Properties())
+            {
+                var apiPath = jProperty.Name.ToLower();
+                string httpmethod = "";
+                if (jProperty.Value.ToString().ToLower().Contains("get"))
+                {
+                    httpmethod = "get";
+                }
+                else if (jProperty.Value.ToString().ToLower().Contains("post"))
+                {
+                    httpmethod = "post";
+                }
+                else if (jProperty.Value.ToString().ToLower().Contains("put"))
+                {
+                    httpmethod = "put";
+                }
+                else if (jProperty.Value.ToString().ToLower().Contains("delete"))
+                {
+                    httpmethod = "delete";
+                }
+
+                var summary = jProperty.Value.SelectToken($"{httpmethod}.summary").ObjToString();
+
+                permissions.Add(new Permission()
+                {
+                    Code = " ",
+                    Name = summary,
+                    IsButton = true,
+                    IsHide = false,
+                    Enabled = true,
+                    CreateTime = DateTime.Now,
+                    IsDeleted = false,
+                    Pid = pid,
+                    MName = apiPath ?? "",
+                    Module = new Modules()
+                    {
+                        LinkUrl = apiPath ?? "",
+                        Name = summary,
+                        Enabled = true,
+                        CreateTime = DateTime.Now,
+                        ModifyTime = DateTime.Now,
+                        IsDeleted = false,
+                    }
+                });
+            }
+
+            var modulesList = (await _moduleServices.Query(d => d.IsDeleted == false && d.LinkUrl != null)).Select(d => d.LinkUrl.ToLower()).ToList();
+            permissions = permissions.Where(d => !modulesList.Contains(d.Module.LinkUrl.ToLower()) && d.Module.LinkUrl.Contains($"/{controllerName}/")).ToList();
+
+
+            if (isAction)
+            {
+                foreach (var item in permissions)
+                {
+                    List<Modules> modules = await _moduleServices.Query(d => d.LinkUrl != null && d.LinkUrl.ToLower() == item.Module.LinkUrl);
+                    if (!modules.Any())
+                    {
+                        int mid = await _moduleServices.Add(item.Module);
+                        if (mid > 0)
+                        {
+                            item.Mid = mid;
+                            int permissionid = await _permissionServices.Add(item);
+                        }
+
+                    }
+                }
+            }
+
+            data.response = permissions;
+            data.status = 200;
+            data.success = isAction;
+
+            return data;
+        }
+
     }
 
     public class AssignView

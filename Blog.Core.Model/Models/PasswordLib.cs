@@ -6,7 +6,8 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 密码库表
     /// </summary>
-    [SugarTable("PasswordLib", "WMBLOG_MSSQL_2")]
+    [SugarTable("PasswordLib", "密码库表")]//('数据库表名'，'数据库表备注')
+    [TenantAttribute("WMBLOG_MYSQL_2")] //('代表是哪个数据库，名字是appsettings.json 的 ConnId')
     public class PasswordLib
     {
         [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
@@ -18,13 +19,13 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public bool? IsDeleted { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string plURL { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 100, IsNullable = true)]
+        [SugarColumn(Length = 100, IsNullable = true)]
         public string plPWD { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string plAccountName { get; set; }
 
         [SugarColumn(IsNullable = true)]
@@ -33,10 +34,10 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public int? plErrorCount { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string plHintPwd { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string plHintquestion { get; set; }
 
         [SugarColumn(IsNullable = true)]
@@ -48,7 +49,7 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public DateTime? plLastErrTime { get; set; }
 
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string test { get; set; }
 
 

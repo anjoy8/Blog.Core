@@ -18,41 +18,47 @@ namespace Blog.Core.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            if (Appsettings.app(new string[] { "RabbitMQ", "Enabled" }).ObjToBool() && Appsettings.app(new string[] { "EventBus", "Enabled" }).ObjToBool())
+            if (AppSettings.app(new string[] { "EventBus", "Enabled" }).ObjToBool())
             {
-                var subscriptionClientName = Appsettings.app(new string[] { "EventBus", "SubscriptionClientName" });
-
+                var subscriptionClientName = AppSettings.app(new string[] { "EventBus", "SubscriptionClientName" });
 
                 services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-                services.AddTransient<BlogDeletedIntegrationEventHandler>();
+                services.AddTransient<BlogQueryIntegrationEventHandler>();
 
-
-                services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+                if (AppSettings.app(new string[] { "RabbitMQ", "Enabled" }).ObjToBool())
                 {
-                    var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
-                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-                    var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-
-                    var retryCount = 5;
-                    if (!string.IsNullOrEmpty(Appsettings.app(new string[] { "RabbitMQ", "RetryCount" })))
+                    services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
                     {
-                        retryCount = int.Parse(Appsettings.app(new string[] { "RabbitMQ", "RetryCount" }));
-                    }
+                        var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
+                        var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                        var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+                        var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
-                    return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
-                });
+                        var retryCount = 5;
+                        if (!string.IsNullOrEmpty(AppSettings.app(new string[] { "RabbitMQ", "RetryCount" })))
+                        {
+                            retryCount = int.Parse(AppSettings.app(new string[] { "RabbitMQ", "RetryCount" }));
+                        }
+
+                        return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                    });
+                }
+                if(AppSettings.app(new string[] { "Kafka", "Enabled" }).ObjToBool())
+                {
+                    services.AddHostedService<KafkaConsumerHostService>();
+                    services.AddSingleton<IEventBus, EventBusKafka>();
+                }
             }
         }
 
 
         public static void ConfigureEventBus(this IApplicationBuilder app)
         {
-            if (Appsettings.app(new string[] { "RabbitMQ", "Enabled" }).ObjToBool() && Appsettings.app(new string[] { "EventBus", "Enabled" }).ObjToBool())
+            if (AppSettings.app(new string[] { "EventBus", "Enabled" }).ObjToBool())
             {
                 var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-                eventBus.Subscribe<BlogDeletedIntegrationEvent, BlogDeletedIntegrationEventHandler>(); 
+                eventBus.Subscribe<BlogQueryIntegrationEvent, BlogQueryIntegrationEventHandler>();
             }
         }
     }

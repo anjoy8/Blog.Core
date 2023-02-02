@@ -1,6 +1,8 @@
 git pull;
-rm -rf .PublishFiles;
+find .PublishFiles/ -type f -and ! -path '*/wwwroot/images/*' ! -name 'appsettings.*' |xargs rm -rf
 dotnet build;
-dotnet publish -o /home/Blog.Core/Blog.Core.Api/bin/Debug/net5.0;
-cp -r /home/Blog.Core/Blog.Core.Api/bin/Debug/net5.0 .PublishFiles;
+rm -rf /home/Blog.Core/Blog.Core.Api/bin/Debug/.PublishFiles;
+dotnet publish -o /home/Blog.Core/Blog.Core.Api/bin/Debug/.PublishFiles;
+# cp -r /home/Blog.Core/Blog.Core.Api/bin/Debug/.PublishFiles ./;
+awk 'BEGIN { cmd="cp -ri /home/Blog.Core/Blog.Core.Api/bin/Debug/.PublishFiles ./"; print "n" |cmd; }'
 echo "Successfully!!!! ^ please see the file .PublishFiles";

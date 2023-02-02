@@ -1,87 +1,107 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-	<PropertyGroup>
+  <PropertyGroup>
 
-		<OutputType>Exe</OutputType>
+    <OutputType>Exe</OutputType>
 
-		<TargetFramework>net5.0</TargetFramework>
-		<!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
-		<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
-		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
-	</PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+	<ImplicitUsings>enable</ImplicitUsings>
+    <!--<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>-->
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+  </PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DocumentationFile>..\Blog.Core.Api\Blog.Core.xml</DocumentationFile>
-		<NoWarn>1701;1702;1591</NoWarn>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>..\Blog.Core.Api\Blog.Core.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DocumentationFile>..\Blog.Core\Blog.Core.xml</DocumentationFile>
-		<NoWarn>1701;1702;1591</NoWarn>
-	</PropertyGroup>
-        <PropertyGroup> 
-          <ServerGarbageCollection>false</ServerGarbageCollection> 
-        </PropertyGroup>
-	<ItemGroup>
-		<Compile Remove="Extensions\**" />
-		<Compile Remove="Hubs\**" />
-		<Compile Remove="Middlewares\**" />
-		<Content Remove="Extensions\**" />
-		<Content Remove="Hubs\**" />
-		<Content Remove="Middlewares\**" />
-		<EmbeddedResource Remove="Extensions\**" />
-		<EmbeddedResource Remove="Hubs\**" />
-		<EmbeddedResource Remove="Middlewares\**" />
-		<None Remove="Extensions\**" />
-		<None Remove="Hubs\**" />
-		<None Remove="Middlewares\**" />
-	</ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>..\Blog.Core\Blog.Core.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <Compile Remove="Hubs\**" />
+    <Compile Remove="Middlewares\**" />
+    <Compile Remove="wwwroot\ui\**" />
+    <Content Remove="Extensions\**" />
+    <Content Remove="Hubs\**" />
+    <Content Remove="Middlewares\**" />
+    <Content Remove="wwwroot\ui\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <EmbeddedResource Remove="Hubs\**" />
+    <EmbeddedResource Remove="Middlewares\**" />
+    <EmbeddedResource Remove="wwwroot\ui\**" />
+    <None Remove="Extensions\**" />
+    <None Remove="Hubs\**" />
+    <None Remove="Middlewares\**" />
+    <None Remove="wwwroot\ui\**" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <None Remove="index.html" />
-	</ItemGroup>
+  <ItemGroup>
+    <None Remove="index.html" />
+  </ItemGroup>
 
-	<ItemGroup>
-	
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-	
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="log4mongo-netcore" Version="3.2.0" />
+    <PackageReference Include="MicroKnights.Log4NetAdoNetAppender" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="SkyAPM.Agent.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
+	<PackageReference Include="FluentValidation.AspNetCore" Version="11.2.1" />
+	<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.1" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Blog.Core.Extensions\Blog.Core.Extensions.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Blog.Core.Extensions\Blog.Core.Extensions.csproj" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<None Include="wwwroot\BlogCore.Data.json\BlogArticle.tsv" />
-		<None Include="wwwroot\BlogCore.Data.json\Modules.tsv" />
-		<None Include="wwwroot\BlogCore.Data.json\Permission.tsv" />
-		<None Include="wwwroot\BlogCore.Data.json\Role.tsv" />
-		<None Include="wwwroot\BlogCore.Data.json\RoleModulePermission.tsv" />
-		<None Include="wwwroot\BlogCore.Data.json\sysUserInfo.tsv" />
-		<None Include="wwwroot\BlogCore.Data.json\Topic.tsv" />
-		<None Include="wwwroot\BlogCore.Data.json\TopicDetail.tsv" />
-		<None Include="wwwroot\BlogCore.Data.json\UserRole.tsv" />
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\BlogCore.Data.json\BlogArticle.tsv" />
+    <None Include="wwwroot\BlogCore.Data.json\Modules.tsv" />
+    <None Include="wwwroot\BlogCore.Data.json\Permission.tsv" />
+    <None Include="wwwroot\BlogCore.Data.json\Role.tsv" />
+    <None Include="wwwroot\BlogCore.Data.json\RoleModulePermission.tsv" />
+    <None Include="wwwroot\BlogCore.Data.json\SysUserInfo.tsv" />
+    <None Include="wwwroot\BlogCore.Data.json\Topic.tsv" />
+    <None Include="wwwroot\BlogCore.Data.json\TopicDetail.tsv" />
+    <None Include="wwwroot\BlogCore.Data.json\UserRole.tsv" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <EmbeddedResource Include="index.html" />
-	</ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="index.html" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<Content Update="appsettings.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
-	<ItemGroup>
-	  <None Update="Dockerfile">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="StopContainerImg.sh">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="StopContainerImg.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Log\" />
+    <Folder Include="wwwroot\BlogCore.Data.excel\" />
+  </ItemGroup>
+
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties appsettings_1json__JsonSchema="" />
+    </VisualStudio>
+  </ProjectExtensions>
 
 </Project>

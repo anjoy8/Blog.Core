@@ -22,19 +22,18 @@ namespace Blog.Core.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/Blog")]
-    public class BlogController : Controller
+    public class BlogController : BaseApiController
     {
-        readonly IBlogArticleServices _blogArticleServices;
+        public IBlogArticleServices _blogArticleServices { get; set; }
         private readonly ILogger<BlogController> _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="blogArticleServices"></param>
         /// <param name="logger"></param>
-        public BlogController(IBlogArticleServices blogArticleServices, ILogger<BlogController> logger)
+        /// 
+        public BlogController(ILogger<BlogController> logger)
         {
-            _blogArticleServices = blogArticleServices;
             _logger = logger;
         }
 
@@ -76,18 +75,7 @@ namespace Blog.Core.Controllers
                 }
             }
 
-            return new MessageModel<PageModel<BlogArticle>>()
-            {
-                success = true,
-                msg = "获取成功",
-                response = new PageModel<BlogArticle>()
-                {
-                    page = page,
-                    dataCount = pageModelBlog.dataCount,
-                    data = pageModelBlog.data,
-                    pageCount = pageModelBlog.pageCount,
-                }
-            };
+            return SuccessPage(pageModelBlog);
         }
 
 
@@ -101,12 +89,7 @@ namespace Blog.Core.Controllers
         [Authorize]
         public async Task<MessageModel<BlogViewModels>> Get(int id)
         {
-            return new MessageModel<BlogViewModels>()
-            {
-                msg = "获取成功",
-                success = true,
-                response = await _blogArticleServices.GetBlogDetails(id)
-            };
+            return Success(await _blogArticleServices.GetBlogDetails(id));
         }
 
 
@@ -120,12 +103,7 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<BlogViewModels>> DetailNuxtNoPer(int id)
         {
             _logger.LogInformation("xxxxxxxxxxxxxxxxxxx");
-            return new MessageModel<BlogViewModels>()
-            {
-                msg = "获取成功",
-                success = true,
-                response = await _blogArticleServices.GetBlogDetails(id)
-            };
+            return Success(await _blogArticleServices.GetBlogDetails(id));
         }
 
         [HttpGet]
@@ -154,16 +132,10 @@ namespace Blog.Core.Controllers
         {
             if (types.IsNotEmptyOrNull())
             {
-                var blogs = await _blogArticleServices.Query(d => d.bcategory != null && types.Contains(d.bcategory) && d.IsDeleted == false);
-                return new MessageModel<List<BlogArticle>>()
-                {
-                    msg = "获取成功",
-                    success = true,
-                    response = blogs
-                };
+                var blogs = await _blogArticleServices.Query(d => d.bcategory != null && types.Contains(d.bcategory) && d.IsDeleted == false, d => d.bID, false);
+                return Success(blogs);
             }
-
-            return new MessageModel<List<BlogArticle>>() { };
+            return Success(new List<BlogArticle>() { });
         }
 
         [HttpGet]
@@ -172,15 +144,9 @@ namespace Blog.Core.Controllers
         {
             if (id > 0)
             {
-                return new MessageModel<BlogArticle>()
-                {
-                    msg = "获取成功",
-                    success = true,
-                    response = await _blogArticleServices.QueryById(id)
-                };
+                return Success(await _blogArticleServices.QueryById(id));
             }
-
-            return new MessageModel<BlogArticle>() { };
+            return Success(new BlogArticle());
         }
 
         /// <summary>
@@ -197,12 +163,7 @@ namespace Blog.Core.Controllers
         [CustomRoute(ApiVersions.V2, "Blogtest")]
         public MessageModel<string> V2_Blogtest()
         {
-            return new MessageModel<string>()
-            {
-                msg = "获取成功",
-                success = true,
-                response = "我是第二版的博客信息"
-            };
+            return Success<string>("我是第二版的博客信息");
         }
 
         /// <summary>
@@ -215,22 +176,20 @@ namespace Blog.Core.Controllers
         [Authorize]
         public async Task<MessageModel<string>> Post([FromBody] BlogArticle blogArticle)
         {
-            var data = new MessageModel<string>();
-
-            blogArticle.bCreateTime = DateTime.Now;
-            blogArticle.bUpdateTime = DateTime.Now;
-            blogArticle.IsDeleted = false;
-            blogArticle.bcategory = "技术博文";
-
-            var id = (await _blogArticleServices.Add(blogArticle));
-            data.success = id > 0;
-            if (data.success)
+            if (blogArticle.btitle.Length > 5 && blogArticle.bcontent.Length > 50)
             {
-                data.response = id.ObjToString();
-                data.msg = "添加成功";
-            }
 
-            return data;
+                blogArticle.bCreateTime = DateTime.Now;
+                blogArticle.bUpdateTime = DateTime.Now;
+                blogArticle.IsDeleted = false;
+                blogArticle.bcategory = "技术博文";
+                var id = (await _blogArticleServices.Add(blogArticle));
+                return id > 0 ? Success<string>(id.ObjToString()) : Failed("添加失败");
+            }
+            else
+            {
+                return Failed("文章标题不能少于5个字符，内容不能少于50个字符！");
+            }
         }
 
 
@@ -244,21 +203,11 @@ namespace Blog.Core.Controllers
         [Authorize(Permissions.Name)]
         public async Task<MessageModel<string>> AddForMVP([FromBody] BlogArticle blogArticle)
         {
-            var data = new MessageModel<string>();
-
             blogArticle.bCreateTime = DateTime.Now;
             blogArticle.bUpdateTime = DateTime.Now;
             blogArticle.IsDeleted = false;
-
             var id = (await _blogArticleServices.Add(blogArticle));
-            data.success = id > 0;
-            if (data.success)
-            {
-                data.response = id.ObjToString();
-                data.msg = "添加成功";
-            }
-
-            return data;
+            return id > 0 ? Success<string>(id.ObjToString()) : Failed("添加失败");
         }
         /// <summary>
         /// 更新博客信息
@@ -271,7 +220,6 @@ namespace Blog.Core.Controllers
         [Authorize(Permissions.Name)]
         public async Task<MessageModel<string>> Put([FromBody] BlogArticle BlogArticle)
         {
-            var data = new MessageModel<string>();
             if (BlogArticle != null && BlogArticle.bID > 0)
             {
                 var model = await _blogArticleServices.QueryById(BlogArticle.bID);
@@ -284,17 +232,13 @@ namespace Blog.Core.Controllers
                     model.bcontent = BlogArticle.bcontent;
                     model.btraffic = BlogArticle.btraffic;
 
-                    data.success = await _blogArticleServices.Update(model);
-                    if (data.success)
+                    if (await _blogArticleServices.Update(model))
                     {
-                        data.msg = "更新成功";
-                        data.response = BlogArticle?.bID.ObjToString();
+                        return Success<string>(BlogArticle?.bID.ObjToString());
                     }
                 }
-
             }
-
-            return data;
+            return Failed("更新失败");
         }
 
 
@@ -309,20 +253,17 @@ namespace Blog.Core.Controllers
         [Route("Delete")]
         public async Task<MessageModel<string>> Delete(int id)
         {
-            var data = new MessageModel<string>();
             if (id > 0)
             {
                 var blogArticle = await _blogArticleServices.QueryById(id);
-                blogArticle.IsDeleted = true;
-                data.success = await _blogArticleServices.Update(blogArticle);
-                if (data.success)
+                if (blogArticle == null)
                 {
-                    data.msg = "删除成功";
-                    data.response = blogArticle?.bID.ObjToString();
+                    return Failed("查询无数据");
                 }
+                blogArticle.IsDeleted = true;
+                return await _blogArticleServices.Update(blogArticle) ? Success(blogArticle?.bID.ObjToString(), "删除成功") : Failed("删除失败");
             }
-
-            return data;
+            return Failed("入参无效");
         }
         /// <summary>
         /// apache jemeter 压力测试
@@ -333,12 +274,7 @@ namespace Blog.Core.Controllers
         [Route("ApacheTestUpdate")]
         public async Task<MessageModel<bool>> ApacheTestUpdate()
         {
-            return new MessageModel<bool>()
-            {
-                success = true,
-                msg = "更新成功",
-                response = await _blogArticleServices.Update(new { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", bID = 1 })
-            };
+            return Success(await _blogArticleServices.Update(new { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", bID = 1 }), "更新成功");
         }
     }
 }

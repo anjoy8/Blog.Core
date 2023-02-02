@@ -9,12 +9,12 @@ namespace Blog.Core.Common
     /// <summary>
     /// appsettings.json操作类
     /// </summary>
-    public class Appsettings
+    public class AppSettings
     {
-        static IConfiguration Configuration { get; set; }
+        public static IConfiguration Configuration { get; set; }
         static string contentPath { get; set; }
 
-        public Appsettings(string contentPath)
+        public AppSettings(string contentPath)
         {
             string Path = "appsettings.json";
 
@@ -27,7 +27,7 @@ namespace Blog.Core.Common
                .Build();
         }
 
-        public Appsettings(IConfiguration configuration)
+        public AppSettings(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -64,6 +64,24 @@ namespace Blog.Core.Common
             // 引用 Microsoft.Extensions.Configuration.Binder 包
             Configuration.Bind(string.Join(":", sections), list);
             return list;
+        }
+
+
+        /// <summary>
+        /// 根据路径  configuration["App:Name"];
+        /// </summary>
+        /// <param name="sectionsPath"></param>
+        /// <returns></returns>
+        public static string GetValue(string sectionsPath)
+        {
+            try
+            {
+                return Configuration[sectionsPath];
+            }
+            catch (Exception) { }
+
+            return "";
+
         }
     }
 }

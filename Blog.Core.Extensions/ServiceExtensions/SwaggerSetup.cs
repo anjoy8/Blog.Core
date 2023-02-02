@@ -27,7 +27,7 @@ namespace Blog.Core.Extensions
 
             var basePath = AppContext.BaseDirectory;
             //var basePath2 = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
-            var ApiName = Appsettings.app(new string[] { "Startup", "ApiName" });
+            var ApiName = AppSettings.app(new string[] { "Startup", "ApiName" });
 
             services.AddSwaggerGen(c =>
             {
@@ -45,7 +45,7 @@ namespace Blog.Core.Extensions
                     c.OrderActionsBy(o => o.RelativePath);
                 });
 
-
+                c.UseInlineDefinitionsForEnums();
                 try
                 {
                     //这个就是刚刚配置的xml文件名
@@ -81,7 +81,7 @@ namespace Blog.Core.Extensions
                         {
                             Implicit = new OpenApiOAuthFlow
                             {
-                                AuthorizationUrl = new Uri($"{Appsettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" })}/connect/authorize"),
+                                AuthorizationUrl = new Uri($"{AppSettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" })}/connect/authorize"),
                                 Scopes = new Dictionary<string, string> {
                                 {
                                     "blog.core.api","ApiResource id"
@@ -106,6 +106,7 @@ namespace Blog.Core.Extensions
 
 
             });
+            services.AddSwaggerGenNewtonsoftSupport();
         }
     }
 

@@ -2,9 +2,9 @@
 
 # Blog.Core
 
-[English](readme-en.md) | 简体中文
+[English](README-en.md) | 简体中文
 
-[![sdk](https://img.shields.io/badge/sdk-5.0.1-d.svg)](#)  [![Build status](https://github.com/anjoy8/blog.core/workflows/.NET%20Core/badge.svg)](https://github.com/anjoy8/Blog.Core/actions)  [![Build Status](https://dev.azure.com/laozhangisphi/anjoy8/_apis/build/status/anjoy8.Blog.Core?branchName=master)](https://dev.azure.com/laozhangisphi/anjoy8/_build?definitionId=1)  [![codecov](https://codecov.io/gh/anjoy8/Blog.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/anjoy8/Blog.Core)  [![License MIT](https://img.shields.io/badge/license-Apache-blue.svg?style=flat-square)](https://github.com/anjoy8/Blog.Core/blob/master/LICENSE) [![star this repo](http://githubbadges.com/star.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges)  [![fork this repo](http://githubbadges.com/fork.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges/fork)  [![博客园](https://img.shields.io/badge/博客园-老张的哲学-brightgreen.svg)](https://www.cnblogs.com/laozhang-is-phi/)
+[![sdk](https://img.shields.io/badge/sdk-6.0.1-d.svg)](#)  [![Build status](https://github.com/anjoy8/blog.core/workflows/.NET%20Core/badge.svg)](https://github.com/anjoy8/Blog.Core/actions)  [![Build Status](https://dev.azure.com/laozhangisphi/anjoy8/_apis/build/status/anjoy8.Blog.Core?branchName=master)](https://dev.azure.com/laozhangisphi/anjoy8/_build?definitionId=1)  [![codecov](https://codecov.io/gh/anjoy8/Blog.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/anjoy8/Blog.Core)  [![License MIT](https://img.shields.io/badge/license-Apache-blue.svg?style=flat-square)](https://github.com/anjoy8/Blog.Core/blob/master/LICENSE) [![star this repo](http://githubbadges.com/star.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges)  [![fork this repo](http://githubbadges.com/fork.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges/fork)  [![博客园](https://img.shields.io/badge/博客园-老张的哲学-brightgreen.svg)](https://www.cnblogs.com/laozhang-is-phi/)
 
 
 &nbsp;
@@ -16,29 +16,72 @@
   <img src="http://apk.neters.club/MVP_Logo_Horizontal_Preferred_Cyan300_CMYK_72ppi.png" alt="MVP"   >
 </a>
 
-<a href="https://dotnetfoundation.org/member/Profile" >
-  <img src="https://vueadmin.neters.club/images/1125120255netfoundation.png" alt=".netfoundation" width="220" >
-</a>
+ 
 </div>
 
+-------------------------------
+Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x + RBAC】权限框架。  
+其他版本看具体分支吧🎉  
+官网：http://apk.neters.club/.doc/    
 
-Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x + RBAC】权限框架。    
-官网：http://apk.neters.club/.doc/   
-已被多家公司所使用：[点击查看列表](https://github.com/anjoy8/Blog.Core/issues/75)    
+  
+---------------------
 
+**已被近100家公司所使用(🐱‍🚀)：[点击查看列表](https://github.com/anjoy8/Blog.Core/issues/75)**   欢迎盖楼，留下公司真实名字的，可得定制化指导服务。  
+同时商业授权付费版也悄悄准备上线，欢迎联系老张（QQ：3143422472）。
+  
+
+
+#### ❤ 真实用户反馈 ❤
+```
+项目单体部署，并发在400~500，一切正常(不保证自己的各种错误写法)。  
+如果搭配负载，效果更好。
+
+1、A~CoderDong:
+应用场景：使用Blog.Core为基础骨架开发，搭建Client监控类守护进程项目，To C 客户群，
+并发情况：目前压测并发5k正常8秒处理完，并发10k可15秒处理完毕，异常不会丢失。
+生产配置：一台服务器（Linux环境 + 至强8核的16G内存 + mysql数据库 + 3台Nginx负载）
+
+```
+   
+ 
+ 
 &nbsp;
+
+## 给个星星! ⭐️
+如果你喜欢这个项目或者它帮助你, 请给 Star~   
+如果你的项目中借鉴了本项目，请稍微说明下[https://github.com/anjoy8/Blog.Core/issues/75](https://github.com/anjoy8/Blog.Core/issues/75)，开源不易✨。  
+
+
 
 ### 功能与进度
 
-框架模块：  
+#### 商业授权付费版下🎁🎁🎁
+
+- [x] 包含下边框架模块中的所有功能；
+- [x] 全部表结构主键底层架构改成`string`类型（默认雪花，支持guid），更方便迁移；
+- [x] 完善部门数据权限，可以基于策略配置查看数据范围；
+- [x] 优化权限处理器，解决多实例分布式下，权限不同步问题（必须配置Redis）；
+- [x] 增加在线用户查看功能，并实现强制用户下线功能（必须配置Redis）；
+- [x] 增加用户黑名单功能（必须配置Redis）；
+- [x] 增加岗位功能（单独建表），配合部门使用；
+- [ ] 后期优化站内通知功能，其实目前已经有SignalR来实现消息推送了，可以直接用；
+- [ ] 前端`Blog.Admin.Pro`使用`AntDesignVue`框架（设计中，未完全实现）；
+- [x] 铁粉奖励：如果参与上述功能和其他付费功能开发，可半价获取商业授权；
+
+
+
+#### 框架模块：  
 - [x] 采用`仓储+服务+接口`的形式封装框架；
 - [x] 异步 async/await 开发；
 - [x] 接入国产数据库ORM组件 —— SqlSugar，封装数据库操作；
 - [x] 支持自由切换多种数据库，MySql/SqlServer/Sqlite/Oracle/Postgresql/达梦/人大金仓；
 - [x] 实现项目启动，自动生成种子数据 ✨； 
-- [x] 五种日志记录，审计/异常/请求响应/服务操作/Sql记录等； 
+- [x] 实现数据库主键类型配置化，什么类型都可以自定义 ✨； 
+- [x] 五种日志记录，审计/异常/请求响应/服务操作/Sql记录等,并自动持久化到数据库表🎶； 
 - [x] 支持项目事务处理（若要分布式，用cap即可）✨；
 - [x] 设计4种 AOP 切面编程，功能涵盖：日志、缓存、审计、事务 ✨；
+- [x] 设计并支持按钮级别的RBAC权限控制，同时支持一键同步接口和菜单 🎶；
 - [x] 支持 T4 代码模板，自动生成每层代码；
 - [x] 或使用 DbFirst 一键创建自己项目的四层文件（支持多库）；
 - [x] 封装`Blog.Core.Webapi.Template`项目模板，一键重建自己的项目 ✨；
@@ -61,26 +104,47 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core5.0 Api + Vue 2.x 
 - [x] 新增 Redis 消息队列 ✨;
 - [x] 新增 RabbitMQ 消息队列 ✨;
 - [x] 新增 EventBus 事件总线 ✨;
-- [x] 调试中 - 统一聚合支付;
-- [ ] 计划 - 数据部门权限;
-- [ ] 计划 - ES 搜索;
+- [x] 新增 - 统一聚合支付;
+- [x] 新增 - Nacos注册中心配置;
+- [x] 新增 - ES 搜索配置;
+- [x] 新增 - Apollo 配置;
+- [x] 新增 Kafka 消息队列，并配合实现EventBus ✨;
+- [x] 新增 微信公众号管理，并集成到Blog.Admin后台 ✨;
+- [x] 新增 - 数据部门权限;
 
 微服务模块：
 - [x] 可配合 Docker 实现容器化；
 - [x] 可配合 Jenkins 实现CI / CD；
 - [x] 可配合 Consul 实现服务发现；
+- [x] 可配合 Nacos 实现服务发现；
 - [x] 可配合 Ocelot 实现网关处理；
 - [x] 可配合 Nginx  实现负载均衡；
 - [x] 可配合 Ids4   实现认证中心；
 
 
+### 自定义全部日志记录图
+![系统架构图](https://img.neters.club/github/log5.png)
+
+
+### 自定义(中间件/服务)启动图
+![系统架构图](https://img.neters.club/github/load-tool.png)
+
+
 &nbsp;
 
-## 给个星星! ⭐️
-如果你喜欢这个项目或者它帮助你, 请给 Star~   
-如果你的项目中借鉴了本项目，请稍微说明下[https://github.com/anjoy8/Blog.Core/issues/75](https://github.com/anjoy8/Blog.Core/issues/75)，开源不易✨。  
 
+## 贡献者们 
 
+Thanks goes to these wonderful people ([✨](https://github.com/anjoy8/Blog.Core/graphs/contributors)):（排名暂时按提交顺序）  
+  
+    
+<a href="https://github.com/anjoy8/blog.core/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=anjoy8/blog.core" />
+</a>
+<!-- prettier-ignore-end -->
+
+This project follows the [all-contributors](https://github.com/anjoy8/Blog.Core/graphs/contributors) specification.
+Contributions of any kind are welcome!
 
 &nbsp;
 

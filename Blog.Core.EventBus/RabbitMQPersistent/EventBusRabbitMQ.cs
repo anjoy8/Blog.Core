@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Blog.Core.Common.Extensions;
-using Blog.Core.Common.Helper;
+using Blog.Core.Common;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

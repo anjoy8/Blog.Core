@@ -61,7 +61,7 @@ namespace Blog.Core.Services
         public <#=tableName#>Services(IBaseRepository<<#=tableName#>> dal)
         {
             this.dal = dal;
-            base.baseDal = dal;
+            base.BaseDal = dal;
         }
        
     }
@@ -108,7 +108,7 @@ namespace Blog.Core.Services
         public <#=row["TABLE_NAME"].ToString() #>Services(IBaseRepository<<#=row["TABLE_NAME"].ToString() #>> dal)
         {
             this.dal = dal;
-            base.baseDal = dal;
+            base.BaseDal = dal;
         }
        
     }
@@ -142,7 +142,7 @@ namespace Blog.Core.Services
 	/// </summary>	
 	public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : class, new()
     {
-		public IBaseRepository<TEntity> baseDal;
+		public IBaseRepository<TEntity> BaseDal;
        
     }
 }

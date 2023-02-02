@@ -1,7 +1,6 @@
-﻿using Blog.Core.AuthHelper;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 
-namespace Blog.Core.Middlewares
+namespace Blog.Core.Extensions.Middlewares
 {
     public static class MiddlewareHelpers
     {
@@ -12,7 +11,7 @@ namespace Blog.Core.Middlewares
         /// <returns></returns>
         public static IApplicationBuilder UseJwtTokenAuth(this IApplicationBuilder app)
         {
-            return app.UseMiddleware<JwtTokenAuth>();
+            return app.UseMiddleware<JwtTokenAuthMiddleware>();
         }
 
         /// <summary>
@@ -20,9 +19,9 @@ namespace Blog.Core.Middlewares
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseReuestResponseLog(this IApplicationBuilder app)
+        public static IApplicationBuilder UseRequestResponseLogMiddle(this IApplicationBuilder app)
         {
-            return app.UseMiddleware<RequRespLogMildd>();
+            return app.UseMiddleware<RequRespLogMiddleware>();
         }
 
         /// <summary>
@@ -30,9 +29,9 @@ namespace Blog.Core.Middlewares
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseSignalRSendMildd(this IApplicationBuilder app)
+        public static IApplicationBuilder UseSignalRSendMiddle(this IApplicationBuilder app)
         {
-            return app.UseMiddleware<SignalRSendMildd>();
+            return app.UseMiddleware<SignalRSendMiddleware>();
         }
 
         /// <summary>
@@ -40,9 +39,9 @@ namespace Blog.Core.Middlewares
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseExceptionHandlerMidd(this IApplicationBuilder app)
+        public static IApplicationBuilder UseExceptionHandlerMiddle(this IApplicationBuilder app)
         {
-            return app.UseMiddleware<ExceptionHandlerMidd>();
+            return app.UseMiddleware<ExceptionHandlerMiddleware>();
         }
 
         /// <summary>
@@ -50,9 +49,9 @@ namespace Blog.Core.Middlewares
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseIPLogMildd(this IApplicationBuilder app)
+        public static IApplicationBuilder UseIpLogMiddle(this IApplicationBuilder app)
         {
-            return app.UseMiddleware<IPLogMildd>();
+            return app.UseMiddleware<IpLogMiddleware>();
         }
 
         /// <summary>
@@ -60,9 +59,9 @@ namespace Blog.Core.Middlewares
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseRecordAccessLogsMildd(this IApplicationBuilder app)
+        public static IApplicationBuilder UseRecordAccessLogsMiddle(this IApplicationBuilder app)
         {
-            return app.UseMiddleware<RecordAccessLogsMildd>();
+            return app.UseMiddleware<RecordAccessLogsMiddleware>();
         }
     }
 }

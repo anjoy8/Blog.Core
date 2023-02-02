@@ -74,7 +74,7 @@ namespace Blog.Core.Common.Helper
         public static string GetAvailableFileWithPrefixOrderSize(string folderPath, string prefix, int size = 1 * 1024 * 1024, string ext = ".log")
         {
             var allFiles = new DirectoryInfo(folderPath);
-            var selectFiles = allFiles.GetFiles().Where(fi => fi.Name.ToLower().Contains(prefix.ToLower()) && fi.Extension.ToLower() == ext.ToLower() && fi.Length < size).OrderByDescending(d=>d.Name).ToList();
+            var selectFiles = allFiles.GetFiles().Where(fi => fi.Name.ToLower().Contains(prefix.ToLower()) && fi.Extension.ToLower() == ext.ToLower() && fi.Length < size).OrderByDescending(d => d.Name).ToList();
 
             if (selectFiles.Count > 0)
             {
@@ -82,6 +82,24 @@ namespace Blog.Core.Common.Helper
             }
 
             return Path.Combine(folderPath, $@"{prefix}_{DateTime.Now.DateToTimeStamp()}.log");
+        }
+        public static string GetAvailableFileNameWithPrefixOrderSize(string _contentRoot, string prefix, int size = 1 * 1024 * 1024, string ext = ".log")
+        {
+            var folderPath = Path.Combine(_contentRoot, "Log");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            var allFiles = new DirectoryInfo(folderPath);
+            var selectFiles = allFiles.GetFiles().Where(fi => fi.Name.ToLower().Contains(prefix.ToLower()) && fi.Extension.ToLower() == ext.ToLower() && fi.Length < size).OrderByDescending(d => d.Name).ToList();
+
+            if (selectFiles.Count > 0)
+            {
+                return selectFiles.FirstOrDefault().Name.Replace(".log", "");
+            }
+
+            return $@"{prefix}_{DateTime.Now.DateToTimeStamp()}";
         }
         #endregion
 
@@ -109,6 +127,23 @@ namespace Blog.Core.Common.Helper
             }
             StreamWriter f2 = new StreamWriter(Path, false, System.Text.Encoding.GetEncoding("gb2312"));
             f2.Write(Strings);
+            f2.Close();
+            f2.Dispose();
+        }
+        /// <summary>
+        /// 写文件
+        /// </summary>
+        /// <param name="Path">文件路径</param>
+        /// <param name="Strings">文件内容</param>
+        public static void WriteFile(string Path, byte[] buf)
+        {
+            if (!File.Exists(Path))
+            {
+                FileStream f = File.Create(Path);
+                f.Close();
+            }
+            FileStream f2 = new FileStream(Path, FileMode.Create, FileAccess.Write);
+            f2.Write(buf, 0, buf.Length);
             f2.Close();
             f2.Dispose();
         }

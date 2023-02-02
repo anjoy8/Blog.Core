@@ -37,7 +37,7 @@ namespace Blog.Core.Common.Helper
         /// <typeparam name="T"></typeparam>
         /// <param name="xml"></param>
         /// <returns></returns>
-        public static T ParseFormByXml<T>(string xml,string rootName="")
+        public static T ParseFormByXml<T>(string xml,string rootName="root")
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T), new XmlRootAttribute(rootName));
             StringReader reader = new StringReader(xml);

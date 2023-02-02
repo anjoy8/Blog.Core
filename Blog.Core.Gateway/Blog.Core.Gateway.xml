@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Blog.Core.Gateway</name>
+    </assembly>
+    <members>
+        <member name="T:Blog.Core.AuthHelper.CustomJwtTokenAuthMiddleware">
+            <summary>
+            中间件
+            原做为自定义授权中间件
+            先做检查 header token的使用
+            </summary>
+        </member>
+        <member name="P:Blog.Core.AuthHelper.CustomJwtTokenAuthMiddleware.Schemes">
+            <summary>
+            验证方案提供对象
+            </summary>
+        </member>
+        <member name="F:Blog.Core.AuthHelper.CustomJwtTokenAuthMiddleware._next">
+            <summary>
+            请求上下文
+            </summary>
+        </member>
+        <member name="M:Blog.Core.AuthHelper.CustomJwtTokenAuthMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            网关授权
+            </summary>
+            <param name="httpContext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.AuthHelper.CustomJwtTokenAuthMiddleware.SendResponse(Microsoft.AspNetCore.Http.HttpContext,System.String,System.Net.HttpStatusCode)">
+            <summary>
+            返回相应
+            </summary>
+            <param name="context"></param>
+            <param name="message"></param>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.AuthHelper.CustomJwtTokenAuthMiddleware.CheckWhiteList(System.String)">
+            <summary>
+            判断是否在白名单内，支持通配符 **** 
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.AdminMvc.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            ┌──────────────────────────────────────────────────────────────┐
+            │　描    述：模拟一个网关项目         
+            │　测    试：在网关swagger中查看具体的服务         
+            │　作    者：anson zhang                                             
+            └──────────────────────────────────────────────────────────────┘
+        </member>
+        <member name="T:ApiGateway.Helper.OcelotConfigurationTask">
+            <summary>
+            Nacos配置文件变更事件
+            </summary>
+        </member>
+        <member name="F:ApiGateway.Helper.OcelotConfigurationTask.nacosConfigListener">
+            <summary>
+            Nacos 配置文件监听事件
+            </summary>
+        </member>
+        <member name="M:ApiGateway.Helper.OcelotConfigurationTask.#ctor(Nacos.V2.INacosNamingService,Nacos.V2.INacosConfigService,System.IServiceProvider,Ocelot.Configuration.Repository.IInternalConfigurationRepository,Ocelot.Configuration.Creator.IInternalConfigurationCreator)">
+            <summary>
+            
+            </summary>
+            <param name="serv"></param>
+            <param name="configClient"></param>
+            <param name="serviceProvider"></param>
+            <param name="_internalConfigurationRepo"></param>
+            <param name="_internalConfigurationCreator"></param>
+        </member>
+        <member name="M:ApiGateway.Helper.OcelotConfigurationTask.ExecuteAsync(System.Threading.CancellationToken)">
+            <summary>
+            执行
+            </summary>
+            <param name="stoppingToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApiGateway.Helper.OcelotConfigurationTask.StopAsync(System.Threading.CancellationToken)">
+            <summary>
+            停止
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ApiGateway.Helper.OcelotConfigListener">
+            <summary>
+            配置监听事件
+            </summary>
+        </member>
+        <member name="M:ApiGateway.Helper.OcelotConfigListener.ReceiveConfigInfo(System.String)">
+            <summary>
+            收到配置文件变更
+            </summary>
+            <param name="configInfo"></param>
+        </member>
+    </members>
+</doc>

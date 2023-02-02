@@ -13,32 +13,32 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 任务名称
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string Name { get; set; }
         /// <summary>
         /// 任务分组
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string JobGroup { get; set; }
         /// <summary>
         /// 任务运行时间表达式
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string Cron { get; set; }
         /// <summary>
         /// 任务所在DLL对应的程序集名称
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string AssemblyName { get; set; }
         /// <summary>
         /// 任务所在类
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 200, IsNullable = true)]
+        [SugarColumn(Length = 200, IsNullable = true)]
         public string ClassName { get; set; }
         /// <summary>
         /// 任务描述
         /// </summary>
-        [SugarColumn(ColumnDataType = "nvarchar", Length = 1000, IsNullable = true)]
+        [SugarColumn(Length = 1000, IsNullable = true)]
         public string Remark { get; set; }
         /// <summary>
         /// 执行次数
@@ -60,6 +60,7 @@ namespace Blog.Core.Model.Models
         /// 执行间隔时间, 秒为单位
         /// </summary>
         public int IntervalSecond { get; set; }
+        /// <summary>
         /// 循环执行次数
         /// </summary>
         public int CycleRunTimes { get; set; }

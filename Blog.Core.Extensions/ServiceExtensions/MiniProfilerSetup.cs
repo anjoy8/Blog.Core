@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Blog.Core.Common;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace Blog.Core.Extensions
@@ -11,9 +12,10 @@ namespace Blog.Core.Extensions
         public static void AddMiniProfilerSetup(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-
-            services.AddMiniProfiler();
-
+            if(AppSettings.app(new string[] { "Startup", "MiniProfiler", "Enabled" }).ObjToBool())
+            {
+                services.AddMiniProfiler();
+            }
             // 3.x使用MiniProfiler，必须要注册MemoryCache服务
             // services.AddMiniProfiler(options =>
             // {

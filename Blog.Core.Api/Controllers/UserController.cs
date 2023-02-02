@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.HttpContextUser;
-using Blog.Core.IRepository.UnitOfWork;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.ViewModels;
+using Blog.Core.Repository.UnitOfWorks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,31 +23,41 @@ namespace Blog.Core.Controllers
     [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(Permissions.Name)]
-    public class UserController : ControllerBase
+    public class UserController : BaseApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkManage _unitOfWorkManage;
         readonly ISysUserInfoServices _sysUserInfoServices;
         readonly IUserRoleServices _userRoleServices;
         readonly IRoleServices _roleServices;
+        private readonly IDepartmentServices _departmentServices;
         private readonly IUser _user;
+        private readonly IMapper _mapper;
         private readonly ILogger<UserController> _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="unitOfWork"></param>
+        /// <param name="unitOfWorkManage"></param>
         /// <param name="sysUserInfoServices"></param>
         /// <param name="userRoleServices"></param>
         /// <param name="roleServices"></param>
+        /// <param name="departmentServices"></param>
         /// <param name="user"></param>
+        /// <param name="mapper"></param>
         /// <param name="logger"></param>
-        public UserController(IUnitOfWork unitOfWork, ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices, IUser user, ILogger<UserController> logger)
+        public UserController(IUnitOfWorkManage unitOfWorkManage, ISysUserInfoServices sysUserInfoServices,
+            IUserRoleServices userRoleServices,
+            IRoleServices roleServices,
+            IDepartmentServices departmentServices,
+            IUser user, IMapper mapper, ILogger<UserController> logger)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWorkManage = unitOfWorkManage;
             _sysUserInfoServices = sysUserInfoServices;
             _userRoleServices = userRoleServices;
             _roleServices = roleServices;
+            _departmentServices = departmentServices;
             _user = user;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -57,16 +69,17 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<sysUserInfo>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<SysUserInfoDto>>> Get(int page = 1, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
                 key = "";
             }
+
             int intPageSize = 50;
 
 
-            var data = await _sysUserInfoServices.QueryPage(a => a.tdIsDelete != true && a.uStatus >= 0 && ((a.uLoginName != null && a.uLoginName.Contains(key)) || (a.uRealName != null && a.uRealName.Contains(key))), page, intPageSize, " uID desc ");
+            var data = await _sysUserInfoServices.QueryPage(a => a.IsDeleted != true && a.Status >= 0 && ((a.LoginName != null && a.LoginName.Contains(key)) || (a.RealName != null && a.RealName.Contains(key))), page, intPageSize, " Id desc ");
 
 
             #region MyRegion
@@ -74,26 +87,41 @@ namespace Blog.Core.Controllers
             // 这里可以封装到多表查询，此处简单处理
             var allUserRoles = await _userRoleServices.Query(d => d.IsDeleted == false);
             var allRoles = await _roleServices.Query(d => d.IsDeleted == false);
+            var allDepartments = await _departmentServices.Query(d => d.IsDeleted == false);
 
             var sysUserInfos = data.data;
             foreach (var item in sysUserInfos)
             {
-                var currentUserRoles = allUserRoles.Where(d => d.UserId == item.uID).Select(d => d.RoleId).ToList();
+                var currentUserRoles = allUserRoles.Where(d => d.UserId == item.Id).Select(d => d.RoleId).ToList();
                 item.RIDs = currentUserRoles;
                 item.RoleNames = allRoles.Where(d => currentUserRoles.Contains(d.Id)).Select(d => d.Name).ToList();
+                var departmentNameAndIds = GetFullDepartmentName(allDepartments, item.DepartmentId);
+                item.DepartmentName = departmentNameAndIds.Item1;
+                item.Dids = departmentNameAndIds.Item2;
             }
 
             data.data = sysUserInfos;
+
             #endregion
 
 
-            return new MessageModel<PageModel<sysUserInfo>>()
-            {
-                msg = "获取成功",
-                success = data.dataCount >= 0,
-                response = data
-            };
+            return Success(data.ConvertTo<SysUserInfoDto>(_mapper));
+        }
 
+        private (string, List<int>) GetFullDepartmentName(List<Department> departments, int departmentId)
+        {
+            var departmentModel = departments.FirstOrDefault(d => d.Id == departmentId);
+            if (departmentModel == null)
+            {
+                return ("", new List<int>());
+            }
+
+            var pids = departmentModel.CodeRelationship?.TrimEnd(',').Split(',').Select(d => d.ObjToInt()).ToList();
+            pids.Add(departmentModel.Id);
+            var pnams = departments.Where(d => pids.Contains(d.Id)).ToList().Select(d => d.Name).ToArray();
+            var fullName = string.Join("/", pnams);
+
+            return (fullName, pids);
         }
 
         // GET: api/User/5
@@ -114,9 +142,9 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<MessageModel<sysUserInfo>> GetInfoByToken(string token)
+        public async Task<MessageModel<SysUserInfoDto>> GetInfoByToken(string token)
         {
-            var data = new MessageModel<sysUserInfo>();
+            var data = new MessageModel<SysUserInfoDto>();
             if (!string.IsNullOrEmpty(token))
             {
                 var tokenModel = JwtHelper.SerializeJwt(token);
@@ -125,13 +153,13 @@ namespace Blog.Core.Controllers
                     var userinfo = await _sysUserInfoServices.QueryById(tokenModel.Uid);
                     if (userinfo != null)
                     {
-                        data.response = userinfo;
+                        data.response = _mapper.Map<SysUserInfoDto>(userinfo);
                         data.success = true;
                         data.msg = "获取成功";
                     }
                 }
-
             }
+
             return data;
         }
 
@@ -142,14 +170,14 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // POST: api/User
         [HttpPost]
-        public async Task<MessageModel<string>> Post([FromBody] sysUserInfo sysUserInfo)
+        public async Task<MessageModel<string>> Post([FromBody] SysUserInfoDto sysUserInfo)
         {
             var data = new MessageModel<string>();
 
             sysUserInfo.uLoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.uLoginPWD);
             sysUserInfo.uRemark = _user.Name;
 
-            var id = await _sysUserInfoServices.Add(sysUserInfo);
+            var id = await _sysUserInfoServices.Add(_mapper.Map<SysUserInfo>(sysUserInfo));
             data.success = id > 0;
             if (data.success)
             {
@@ -167,51 +195,68 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // PUT: api/User/5
         [HttpPut]
-        public async Task<MessageModel<string>> Put([FromBody] sysUserInfo sysUserInfo)
+        public async Task<MessageModel<string>> Put([FromBody] SysUserInfoDto sysUserInfo)
         {
             // 这里使用事务处理
-
             var data = new MessageModel<string>();
+
+            var oldUser = await _sysUserInfoServices.QueryById(sysUserInfo.uID);
+            if (oldUser is not { Id: > 0 })
+            {
+                return Failed<string>("用户不存在或已被删除");
+            }
+
             try
             {
-                _unitOfWork.BeginTran();
-
-                if (sysUserInfo != null && sysUserInfo.uID > 0)
+                if (sysUserInfo.uLoginPWD != oldUser.LoginPWD)
                 {
-                    if (sysUserInfo.RIDs.Count > 0)
+                    oldUser.CriticalModifyTime = DateTime.Now;
+                }
+
+                _mapper.Map(sysUserInfo, oldUser);
+
+                _unitOfWorkManage.BeginTran();
+                // 无论 Update Or Add , 先删除当前用户的全部 U_R 关系
+                var usreroles = (await _userRoleServices.Query(d => d.UserId == oldUser.Id));
+                if (usreroles.Any())
+                {
+                    var ids = usreroles.Select(d => d.Id.ToString()).ToArray();
+                    var isAllDeleted = await _userRoleServices.DeleteByIds(ids);
+                    if (!isAllDeleted)
                     {
-                        // 无论 Update Or Add , 先删除当前用户的全部 U_R 关系
-                        var usreroles = (await _userRoleServices.Query(d => d.UserId == sysUserInfo.uID)).Select(d => d.Id.ToString()).ToArray();
-                        if (usreroles.Count() > 0)
-                        {
-                            var isAllDeleted = await _userRoleServices.DeleteByIds(usreroles);
-                        }
+                        return Failed("服务器更新异常");
+                    }
+                }
 
-                        // 然后再执行添加操作
-                        var userRolsAdd = new List<UserRole>();
-                        sysUserInfo.RIDs.ForEach(rid =>
-                       {
-                           userRolsAdd.Add(new UserRole(sysUserInfo.uID, rid));
-                       });
+                // 然后再执行添加操作
+                if (sysUserInfo.RIDs.Count > 0)
+                {
+                    var userRolsAdd = new List<UserRole>();
+                    sysUserInfo.RIDs.ForEach(rid => { userRolsAdd.Add(new UserRole(oldUser.Id, rid)); });
 
-                        await _userRoleServices.Add(userRolsAdd);
-
+                    var oldRole = usreroles.Select(s => s.RoleId).OrderBy(i => i).ToArray();
+                    var newRole = userRolsAdd.Select(s => s.RoleId).OrderBy(i => i).ToArray();
+                    if (!oldRole.SequenceEqual(newRole))
+                    {
+                        oldUser.CriticalModifyTime = DateTime.Now;
                     }
 
-                    data.success = await _sysUserInfoServices.Update(sysUserInfo);
+                    await _userRoleServices.Add(userRolsAdd);
+                }
 
-                    _unitOfWork.CommitTran();
+                data.success = await _sysUserInfoServices.Update(oldUser);
 
-                    if (data.success)
-                    {
-                        data.msg = "更新成功";
-                        data.response = sysUserInfo?.uID.ObjToString();
-                    }
+                _unitOfWorkManage.CommitTran();
+
+                if (data.success)
+                {
+                    data.msg = "更新成功";
+                    data.response = oldUser.Id.ObjToString();
                 }
             }
             catch (Exception e)
             {
-                _unitOfWork.RollbackTran();
+                _unitOfWorkManage.RollbackTran();
                 _logger.LogError(e, e.Message);
             }
 
@@ -231,12 +276,12 @@ namespace Blog.Core.Controllers
             if (id > 0)
             {
                 var userDetail = await _sysUserInfoServices.QueryById(id);
-                userDetail.tdIsDelete = true;
+                userDetail.IsDeleted = true;
                 data.success = await _sysUserInfoServices.Update(userDetail);
                 if (data.success)
                 {
                     data.msg = "删除成功";
-                    data.response = userDetail?.uID.ObjToString();
+                    data.response = userDetail?.Id.ObjToString();
                 }
             }
 
