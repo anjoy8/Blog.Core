@@ -55,6 +55,7 @@ builder.Services.AddSingleton(new LogLock(builder.Environment.ContentRootPath));
 builder.Services.AddUiFilesZipSetup(builder.Environment);
 
 Permissions.IsUseIds4 = AppSettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
+Permissions.IsUseAuthing = AppSettings.app(new string[] { "Startup", "Authing", "Enabled" }).ObjToBool();
 RoutePrefix.Name = AppSettings.app(new string[] { "AppSettings", "SvcName" }).ObjToString();
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -78,9 +79,10 @@ builder.Services.AddEventBusSetup();
 builder.Services.AddNacosSetup(builder.Configuration);
 
 builder.Services.AddAuthorizationSetup();
-if (Permissions.IsUseIds4)
+if (Permissions.IsUseIds4 || Permissions.IsUseAuthing)
 {
-    builder.Services.AddAuthentication_Ids4Setup();
+    if (Permissions.IsUseIds4) builder.Services.AddAuthentication_Ids4Setup();
+    else if (Permissions.IsUseAuthing) builder.Services.AddAuthentication_AuthingSetup();
 }
 else
 {
