@@ -649,14 +649,15 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 菜单同步
+        /// 系统接口菜单同步接口
         /// </summary>
+        /// <param name="action"></param>
         /// <param name="controllerName">接口module的控制器名称</param>
         /// <param name="pid">菜单permission的父id</param>
         /// <param name="isAction">是否执行迁移到数据</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<List<Permission>>> MigratePermission(string controllerName = "", int pid = 0, bool isAction = false)
+        public async Task<MessageModel<List<Permission>>> MigratePermission(string action = "", string controllerName = "", int pid = 0, bool isAction = false)
         {
             var data = new MessageModel<List<Permission>>();
             if (controllerName.IsNullOrEmpty())
@@ -677,6 +678,7 @@ namespace Blog.Core.Controllers
             }
 
             var url = $"{jsonFileDomain}/swagger/V2/swagger.json";
+
             var response = await client.GetAsync(url);
             var body = await response.Content.ReadAsStringAsync();
 
@@ -688,6 +690,13 @@ namespace Blog.Core.Controllers
             foreach (JProperty jProperty in pathsJObj.Properties())
             {
                 var apiPath = jProperty.Name.ToLower();
+                if (action.IsNotEmptyOrNull())
+                {
+                    if (!apiPath.Contains(action.ToLower()))
+                    {
+                        continue;
+                    }
+                }
                 string httpmethod = "";
                 if (jProperty.Value.ToString().ToLower().Contains("get"))
                 {
@@ -707,6 +716,12 @@ namespace Blog.Core.Controllers
                 }
 
                 var summary = jProperty.Value.SelectToken($"{httpmethod}.summary").ObjToString();
+
+                var subIx = summary.IndexOf("(Auth");
+                if (subIx > 0)
+                {
+                    summary = summary.Substring(0, subIx - 1);
+                }
 
                 permissions.Add(new Permission()
                 {
