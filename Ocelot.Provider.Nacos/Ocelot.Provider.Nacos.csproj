@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	
+  <Import Project="..\build\common.targets" />
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
     <Copyright>softlgl</Copyright>
     <Owners>softlgl</Owners>
     <PackageProjectUrl>https://github.com/softlgl/Ocelot.Provider.Nacos</PackageProjectUrl>
