@@ -70,6 +70,7 @@ builder.Services.AddCorsSetup();
 builder.Services.AddMiniProfilerSetup();
 builder.Services.AddSwaggerSetup();
 builder.Services.AddJobSetup();
+//builder.Services.AddJobSetup_HostedService();
 builder.Services.AddHttpContextSetup();
 builder.Services.AddAppTableConfigSetup(builder.Environment);
 builder.Services.AddHttpApi();
