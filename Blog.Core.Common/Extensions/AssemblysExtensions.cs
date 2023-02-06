@@ -12,7 +12,7 @@ public static class AssemblysExtensions
     {
         var list = new List<Assembly>();
         var deps = DependencyContext.Default;
-        var libs = deps.CompileLibraries.Where(lib => !lib.Serviceable && lib.Type != "package" && lib.Name.StartsWith("Baiqian"));
+        var libs = deps.CompileLibraries.Where(lib => !lib.Serviceable && lib.Type != "package" );
         foreach (var lib in libs)
         {
             var assembly = AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(lib.Name));

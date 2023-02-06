@@ -4,6 +4,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Blog.Core;
 using Blog.Core.Common;
+using Blog.Core.Common.Core;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Common.Seed;
 using Blog.Core.Extensions;
@@ -13,7 +14,6 @@ using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
 using Blog.Core.Tasks;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -132,6 +132,7 @@ Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 // 3、配置中间件
 var app = builder.Build();
+app.ConfigureApplication();
 
 if (app.Environment.IsDevelopment())
 {
