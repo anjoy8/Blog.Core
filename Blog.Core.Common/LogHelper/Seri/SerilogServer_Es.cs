@@ -1,4 +1,6 @@
 using Blog.Core.Common.Helper;
+using Blog.Core.Serilog.Es;
+using Blog.Core.Serilog.Es.Formatters;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -6,7 +8,7 @@ using System.IO;
 
 namespace Blog.Core.Common.LogHelper
 {
-    public class SerilogServer
+    public class SerilogServer_Es
     {
         /// <summary>
         /// 记录日常日志
@@ -17,12 +19,23 @@ namespace Blog.Core.Common.LogHelper
         public static void WriteLog(string filename, string[] dataParas, bool IsHeader = true, string defaultFolder = "", bool isJudgeJsonFormat = false)
         {
             Log.Logger = new LoggerConfiguration()
+                // TCPSink 集成Serilog 使用tcp的方式向elk 输出log日志  LogstashJsonFormatter 这个是按照自定义格式化输出内容
+                .WriteTo.TCPSink(new LogstashJsonFormatter())
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
                 //.WriteTo.File(Path.Combine($"log/Serilog/{filename}/", ".log"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message}{NewLine}{Exception}")
                 .WriteTo.File(Path.Combine("Log", defaultFolder, $"{filename}.log"),
-                    rollingInterval: RollingInterval.Infinite,
-                    outputTemplate: "{Message}{NewLine}{Exception}")
+                rollingInterval: RollingInterval.Infinite,
+                outputTemplate: "{Message}{NewLine}{Exception}")
+
+                // 将日志托送到远程ES
+                // docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -d --name ES01 elasticsearch:7.2.0
+                //.Enrich.FromLogContext()
+                //.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://x.xxx.xx.xx:9200/"))
+                //{
+                //    AutoRegisterTemplate = true,
+                //})
+
                 .CreateLogger();
 
             var now = DateTime.Now;

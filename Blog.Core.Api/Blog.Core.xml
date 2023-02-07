@@ -454,10 +454,11 @@
             <param name="permissions"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.MigratePermission(System.String,System.Int32,System.Boolean)">
+        <member name="M:Blog.Core.Controllers.PermissionController.MigratePermission(System.String,System.String,System.Int32,System.Boolean)">
             <summary>
-            菜单同步
+            系统接口菜单同步接口
             </summary>
+            <param name="action"></param>
             <param name="controllerName">接口module的控制器名称</param>
             <param name="pid">菜单permission的父id</param>
             <param name="isAction">是否执行迁移到数据</param>
