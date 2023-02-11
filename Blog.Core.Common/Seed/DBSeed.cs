@@ -291,7 +291,7 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:TasksQz already exists...");
                     }
-                    #endregion TasksQz
+                    #endregion
 
                     #region Department
                     if (!await myContext.Db.Queryable<Department>().AnyAsync())
