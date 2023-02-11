@@ -14,7 +14,7 @@ public class RepositorySetting
         return typeof(BaseEntity).Assembly
             .GetTypes()
             .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseEntity)))
-            .Where(it => it.FullName != null && it.FullName.StartsWith("Ivytalk.FoodSafety.Model.Models"));
+            .Where(it => it.FullName != null && it.FullName.StartsWith("Blog.Core.Model.Models"));
     });
 
     public static IEnumerable<Type> Entitys => AllEntitys.Value;
