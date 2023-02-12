@@ -26,6 +26,7 @@ namespace Blog.Core.IServices.BASE
         Task<bool> DeleteByIds(object[] ids);
 
         Task<bool> Update(TEntity model);
+        Task<bool> Update(List<TEntity> model);
         Task<bool> Update(TEntity entity, string where);
 
         Task<bool> Update(object operateAnonymousObjects);

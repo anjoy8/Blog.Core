@@ -76,6 +76,15 @@ namespace Blog.Core.Services.BASE
         {
             return await BaseDal.Update(entity);
         }
+        /// <summary>
+        /// 更新实体数据
+        /// </summary>
+        /// <param name="entity">博文实体类</param>
+        /// <returns></returns>
+        public async Task<bool> Update(List<TEntity> entity)
+        {
+            return await BaseDal.Update(entity);
+        }
         public async Task<bool> Update(TEntity entity, string where)
         {
             return await BaseDal.Update(entity, where);

@@ -146,6 +146,18 @@ namespace Blog.Core.Controllers
            return await _weChatConfigServices.PushCardMsg(msg, pushUserIP);
         }
         /// <summary>
+        /// 推送卡片消息接口
+        /// </summary>
+        /// <param name="msg">卡片消息对象</param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<MessageModel<WeChatResponseUserInfo>> PushCardMsgGet([FromQuery] WeChatCardMsgDataDto msg)
+        {
+            string pushUserIP = $"{Request.HttpContext.Connection.RemoteIpAddress}:{Request.HttpContext.Connection.RemotePort}";
+            return await _weChatConfigServices.PushCardMsg(msg, pushUserIP);
+        }
+        /// <summary>
         /// 推送文本消息
         /// </summary>
         /// <param name="msg">消息对象</param>
