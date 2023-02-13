@@ -151,6 +151,16 @@ namespace Blog.Core.Common.Helper
             return left.Call("Contains", right);
         }
 
+        public static Expression StartContains(this Expression left, Expression right)
+        {
+            return left.Call("StartsWith", right);
+        }
+
+        public static Expression EndContains(this Expression left, Expression right)
+        {
+            return left.Call("EndsWith", right);
+        }
+
         /// <summary>
         /// >
         /// </summary>
@@ -201,5 +211,4 @@ namespace Blog.Core.Common.Helper
 
         #endregion
     }
-
 }

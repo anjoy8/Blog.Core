@@ -301,6 +301,16 @@
             逻辑删除
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.Comments">
+            <summary>
+            评论
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.BlogArticleComment">
+            <summary>
+            博客文章 评论
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.Models.Department">
             <summary>
              部门表

@@ -8,7 +8,7 @@ namespace Blog.Core.Model.Models
     /// 用户信息表
     /// </summary>
     //[SugarTable("SysUserInfo")]
-    [SugarTable("SysUserInfo", "用户表")]//('数据库表名'，'数据库表备注')
+    [SugarTable("SysUserInfo", "用户表")] //('数据库表名'，'数据库表备注')
     public class SysUserInfo : SysUserInfoRoot<int>
     {
         public SysUserInfo()
