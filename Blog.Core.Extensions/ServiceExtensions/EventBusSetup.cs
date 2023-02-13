@@ -1,11 +1,9 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Blog.Core.Common;
 using Blog.Core.EventBus;
-using Blog.Core.EventBus.EventHandling;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace Blog.Core.Extensions
 {
@@ -43,22 +41,11 @@ namespace Blog.Core.Extensions
                         return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
                     });
                 }
-                if(AppSettings.app(new string[] { "Kafka", "Enabled" }).ObjToBool())
+                if (AppSettings.app(new string[] { "Kafka", "Enabled" }).ObjToBool())
                 {
                     services.AddHostedService<KafkaConsumerHostService>();
                     services.AddSingleton<IEventBus, EventBusKafka>();
                 }
-            }
-        }
-
-
-        public static void ConfigureEventBus(this IApplicationBuilder app)
-        {
-            if (AppSettings.app(new string[] { "EventBus", "Enabled" }).ObjToBool())
-            {
-                var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-
-                eventBus.Subscribe<BlogQueryIntegrationEvent, BlogQueryIntegrationEventHandler>();
             }
         }
     }
