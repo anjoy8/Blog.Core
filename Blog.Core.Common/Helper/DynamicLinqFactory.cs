@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Blog.Core.Common.Helper
 {
@@ -20,10 +16,10 @@ namespace Blog.Core.Common.Helper
     /// </summary>
     public static class DynamicLinqFactory
     {
-        private static readonly Dictionary<string, OperationSymbol> _operatingSystems = new();
+        private static readonly Dictionary<string, OperationSymbol> _operatingSystems = new Dictionary<string, OperationSymbol>();
         public static Dictionary<string, OperationSymbol> OperatingSystems => GetOperationSymbol();
 
-        private static readonly Dictionary<string, LinkSymbol> _linkSymbols = new();
+        private static readonly Dictionary<string, LinkSymbol> _linkSymbols = new Dictionary<string, LinkSymbol>();
         public static Dictionary<string, LinkSymbol> LinkSymbols => GetLinkSymbol();
 
         /// <summary>
@@ -70,11 +66,16 @@ namespace Blog.Core.Common.Helper
 
             var properties = DynamicLinq.Left.Split('.');
 
-            // 从1开始，是不想用自定义种子，外层种子已经定义好了
-            // 暂时也不会有多个自定义种子，先这样
-            for (var i = 0; i < properties.Length; i++)
+            int index = 0;
+            foreach (var t in properties)
             {
-                mainExpression = mainExpression.Property(properties[i]);
+                if (mainExpression.Type.HasImplementedRawGeneric(typeof(IEnumerable<>)))
+                {
+                    return ExpressionStudioEnumerable(left, mainExpression, DynamicLinq.Clone(), properties.Skip(index).ToArray());
+                }
+
+                mainExpression = mainExpression.Property(t);
+                index++;
             }
 
             left = left == null
@@ -84,6 +85,32 @@ namespace Blog.Core.Common.Helper
                 : ChangeLinkSymbol(DynamicLinq.LinkSymbol, left, ChangeOperationSymbol(DynamicLinq.OperationSymbol, mainExpression, DynamicLinq.Right));
             return left;
         }
+
+        public static Expression ExpressionStudioEnumerable(Expression left, Expression property, DynamicLinqHelper dynamicLinq, string[] properties)
+        {
+            var realType = property.Type.GenericTypeArguments[0];
+
+            var parameter = Expression.Parameter(realType, "z");
+            Expression mainExpression = property;
+            if (!properties.Any())
+            {
+                throw new ApplicationException("条件表达式错误,属性为集合时,需要明确具体属性");
+            }
+
+            dynamicLinq.Left = string.Join(".", properties);
+            mainExpression = ExpressionStudio(null, dynamicLinq, parameter);
+
+            var lambda = Expression.Lambda(mainExpression, parameter);
+
+            mainExpression = Expression.Call(typeof(Enumerable), "Any", new[] { realType }, property, lambda);
+
+            left = left == null
+                ? mainExpression
+                : ChangeLinkSymbol(dynamicLinq.LinkSymbol, left, mainExpression);
+
+            return left;
+        }
+
 
         /// <summary>
         /// 将字符串装换成动态帮助类（内含递归）
@@ -132,6 +159,7 @@ namespace Blog.Core.Common.Helper
         {
             var outList = new List<DynamicLinqHelper>();
             var tokens = Regex.Matches(FormatString(str), _pattern, RegexOptions.Compiled)
+                .Cast<Match>()
                 .Select(m => m.Groups[1].Value.Trim())
                 .ToList();
 
@@ -139,7 +167,7 @@ namespace Blog.Core.Common.Helper
             int lastOperatingSymbolIndex = -1;
             for (int i = tokens.Count - 1; i >= 0; i--)
             {
-                var token = tokens[i];
+                var token = tokens[i].ToLower();
 
                 if (OperatingSystems.ContainsKey(token))
                 {
@@ -189,6 +217,7 @@ namespace Blog.Core.Common.Helper
                 }
             }
 
+            outList.Reverse();
             return outList;
         }
 
@@ -259,7 +288,7 @@ namespace Blog.Core.Common.Helper
                 {
                     foreach (var name in attr.Name.Split(';'))
                     {
-                        _operatingSystems.Add(name, (OperationSymbol)item.GetValue(null));
+                        _operatingSystems.Add(name.ToLower(), (OperationSymbol)item.GetValue(null));
                     }
                 }
             }
@@ -353,7 +382,14 @@ namespace Blog.Core.Common.Helper
         public static readonly string _pattern = @"\s*(" + string.Join("|", new string[]
         {
             // operators and punctuation that are longer than one char: longest first
-            string.Join("|", new[] { "||", "&&", "==", "!=", "<=", ">=", "like", "contains" }.Select(Regex.Escape)),
+            string.Join("|", new[]
+            {
+                "||", "&&", "==", "!=", "<=", ">=",
+                "in",
+                "like", "contains", "%=",
+                "startslike", "startscontains", "%>",
+                "endlike", "endcontains", "%<",
+            }.Select(Regex.Escape)),
             @"""(?:\\.|[^""])*""", // string
             @"\d+(?:\.\d+)?",      // number with optional decimal part
             @"\w+",                // word
@@ -365,7 +401,7 @@ namespace Blog.Core.Common.Helper
         /// </summary>
         public static OperationSymbol ChangeOperationSymbol(string str)
         {
-            switch (str)
+            switch (str.ToLower())
             {
                 case "<":
                     return OperationSymbol.LessThan;
@@ -382,7 +418,16 @@ namespace Blog.Core.Common.Helper
                     return OperationSymbol.NotEqual;
                 case "contains":
                 case "like":
+                case "%=":
                     return OperationSymbol.Contains;
+                case "startslike":
+                case "startscontains":
+                case "%>":
+                    return OperationSymbol.StartsContains;
+                case "endlike":
+                case "endcontains":
+                case "%<":
+                    return OperationSymbol.EndContains;
             }
 
             throw new Exception("OperationSymbol IS NULL");
@@ -451,6 +496,10 @@ namespace Blog.Core.Common.Helper
                     return key.NotEqual(Expression.Constant(newTypeRight));
                 case OperationSymbol.Contains:
                     return key.Contains(Expression.Constant(newTypeRight));
+                case OperationSymbol.StartsContains:
+                    return key.StartContains(Expression.Constant(newTypeRight));
+                case OperationSymbol.EndContains:
+                    return key.EndContains(Expression.Constant(newTypeRight));
                 case OperationSymbol.In:
                     var contains = typeof(Enumerable).GetMethods(BindingFlags.Static | BindingFlags.Public)
                         .Single(x => x.Name == "Contains" && x.GetParameters().Length == 2)
@@ -480,6 +529,17 @@ namespace Blog.Core.Common.Helper
 
         [Display(Name = "连接符")]
         public LinkSymbol LinkSymbol { get; set; }
+
+        public DynamicLinqHelper Clone()
+        {
+            return new DynamicLinqHelper()
+            {
+                Left = this.Left,
+                Right = this.Right,
+                OperationSymbol = this.OperationSymbol,
+                LinkSymbol = this.LinkSymbol,
+            };
+        }
     }
 
     /// <summary>
@@ -504,8 +564,14 @@ namespace Blog.Core.Common.Helper
         [Display(Name = "in")]
         In,
 
-        [Display(Name = "like;contains")]
+        [Display(Name = "like;contains;%=")]
         Contains,
+
+        [Display(Name = "StartsLike;StartsContains;%>")]
+        StartsContains,
+
+        [Display(Name = "EndLike;EndContains;%<")]
+        EndContains,
 
         [Display(Name = ">")]
         GreaterThan,
@@ -528,7 +594,7 @@ namespace Blog.Core.Common.Helper
 
     #endregion
 
-  
+
     /// <summary>
     /// Queryable扩展
     /// </summary>

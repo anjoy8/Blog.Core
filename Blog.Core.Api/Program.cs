@@ -1,12 +1,13 @@
-﻿
-// 以下为asp.net 6.0的写法，如果用5.0，请看Program.five.cs文件
+﻿// 以下为asp.net 6.0的写法，如果用5.0，请看Program.five.cs文件
+using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
+using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Blog.Core;
 using Blog.Core.Common;
 using Blog.Core.Common.Core;
 using Blog.Core.Common.LogHelper;
-using Blog.Core.Common.Seed;
 using Blog.Core.Extensions;
 using Blog.Core.Extensions.Apollo;
 using Blog.Core.Extensions.Middlewares;
@@ -21,9 +22,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +46,6 @@ builder.Host
     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
     config.AddConfigurationApollo("appsettings.apollo.json");
 });
-
 
 // 2、配置服务
 builder.Services.AddSingleton(new AppSettings(builder.Configuration));
@@ -79,7 +76,7 @@ builder.Services.AddRabbitMQSetup();
 builder.Services.AddKafkaSetup(builder.Configuration);
 builder.Services.AddEventBusSetup();
 builder.Services.AddNacosSetup(builder.Configuration);
-
+builder.Services.AddInitializationHostServiceSetup();
 builder.Services.AddAuthorizationSetup();
 if (Permissions.IsUseIds4 || Permissions.IsUseAuthing)
 {
@@ -128,7 +125,6 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
 
 // 3、配置中间件
 var app = builder.Build();
@@ -182,17 +178,6 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapHub<ChatHub>("/api2/chatHub");
 });
-
-
-var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-var myContext = scope.ServiceProvider.GetRequiredService<MyContext>();
-var tasksQzServices = scope.ServiceProvider.GetRequiredService<ITasksQzServices>();
-var schedulerCenter = scope.ServiceProvider.GetRequiredService<ISchedulerCenter>();
-var lifetime = scope.ServiceProvider.GetRequiredService<IHostApplicationLifetime>();
-app.UseSeedDataMiddle(myContext, builder.Environment.WebRootPath);
-app.UseQuartzJobMiddleware(tasksQzServices, schedulerCenter);
-app.UseConsulMiddle(builder.Configuration, lifetime);
-app.ConfigureEventBus();
 
 // 4、运行
 app.Run();
