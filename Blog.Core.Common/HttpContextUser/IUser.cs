@@ -8,6 +8,7 @@ namespace Blog.Core.Common.HttpContextUser
     {
         string Name { get; }
         int ID { get; }
+        long TenantId { get; }
         bool IsAuthenticated();
         IEnumerable<Claim> GetClaimsIdentity();
         List<string> GetClaimValueByType(string ClaimType);

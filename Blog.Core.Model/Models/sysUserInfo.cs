@@ -120,6 +120,14 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public bool IsDeleted { get; set; }
 
+        /// <summary>
+        /// 租户Id
+        /// </summary>
+        [SugarColumn(IsNullable = false,DefaultValue = "0")]
+        public long TenantId { get; set; }
+
+        [Navigate(NavigateType.OneToOne, nameof(TenantId))]
+        public SysTenant Tenant { get; set; }
 
         [SugarColumn(IsIgnore = true)]
         public List<string> RoleNames { get; set; }

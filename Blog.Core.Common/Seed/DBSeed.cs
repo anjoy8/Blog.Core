@@ -1,4 +1,5 @@
 ﻿using Blog.Core.Common.DB;
+using Blog.Core.Common.Extensions;
 using Blog.Core.Common.Helper;
 using Blog.Core.Model.Models;
 using Magicodes.ExporterAndImporter.Excel;
@@ -96,7 +97,7 @@ namespace Blog.Core.Common.Seed
                 var modelTypes = referencedAssemblies
                     .SelectMany(a => a.DefinedTypes)
                     .Select(type => type.AsType())
-                    .Where(x => x.IsClass && x.Namespace != null && x.Namespace.Equals("Blog.Core.Model.Models")).ToList();
+                    .Where(x => x.IsClass && x.Namespace is "Blog.Core.Model.Models").ToList();
                 modelTypes.ForEach(t =>
                 {
                     // 这里只支持添加表，不支持删除
@@ -109,8 +110,6 @@ namespace Blog.Core.Common.Seed
                 });
                 ConsoleHelper.WriteSuccessLine($"Tables created successfully!");
                 Console.WriteLine();
-
-
 
                 if (AppSettings.app(new string[] { "AppSettings", "SeedDBDataEnabled" }).ObjToBool())
                 {
@@ -135,6 +134,7 @@ namespace Blog.Core.Common.Seed
                     var importer = new ExcelImporter();
 
                     #region BlogArticle
+
                     if (!await myContext.Db.Queryable<BlogArticle>().AnyAsync())
                     {
                         myContext.GetEntityDB<BlogArticle>().InsertRange(JsonHelper.ParseFormByJson<List<BlogArticle>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "BlogArticle"), Encoding.UTF8)));
@@ -144,15 +144,14 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:BlogArticle already exists...");
                     }
+
                     #endregion
 
 
                     #region Modules
+
                     if (!await myContext.Db.Queryable<Modules>().AnyAsync())
                     {
-
-
-
                         var data = JsonConvert.DeserializeObject<List<Modules>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Modules"), Encoding.UTF8), setting);
 
                         myContext.GetEntityDB<Modules>().InsertRange(data);
@@ -162,10 +161,12 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:Modules already exists...");
                     }
+
                     #endregion
 
 
                     #region Permission
+
                     if (!await myContext.Db.Queryable<Permission>().AnyAsync())
                     {
                         var data = JsonConvert.DeserializeObject<List<Permission>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Permission"), Encoding.UTF8), setting);
@@ -177,10 +178,12 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:Permission already exists...");
                     }
+
                     #endregion
 
 
                     #region Role
+
                     if (!await myContext.Db.Queryable<Role>().AnyAsync())
                     {
                         //var data = JsonConvert.DeserializeObject<List<Role>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Role"), Encoding.UTF8), setting);
@@ -195,10 +198,12 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:Role already exists...");
                     }
+
                     #endregion
 
 
                     #region RoleModulePermission
+
                     if (!await myContext.Db.Queryable<RoleModulePermission>().AnyAsync())
                     {
                         var data = JsonConvert.DeserializeObject<List<RoleModulePermission>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "RoleModulePermission"), Encoding.UTF8), setting);
@@ -210,10 +215,12 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:RoleModulePermission already exists...");
                     }
+
                     #endregion
 
 
                     #region Topic
+
                     if (!await myContext.Db.Queryable<Topic>().AnyAsync())
                     {
                         var data = JsonConvert.DeserializeObject<List<Topic>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Topic"), Encoding.UTF8), setting);
@@ -225,10 +232,12 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:Topic already exists...");
                     }
+
                     #endregion
 
 
                     #region TopicDetail
+
                     if (!await myContext.Db.Queryable<TopicDetail>().AnyAsync())
                     {
                         var data = JsonConvert.DeserializeObject<List<TopicDetail>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "TopicDetail"), Encoding.UTF8), setting);
@@ -240,10 +249,12 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:TopicDetail already exists...");
                     }
+
                     #endregion
 
 
                     #region UserRole
+
                     if (!await myContext.Db.Queryable<UserRole>().AnyAsync())
                     {
                         //var data = JsonConvert.DeserializeObject<List<UserRole>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "UserRole"), Encoding.UTF8), setting);
@@ -258,10 +269,12 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:UserRole already exists...");
                     }
+
                     #endregion
 
 
                     #region sysUserInfo
+
                     if (!await myContext.Db.Queryable<SysUserInfo>().AnyAsync())
                     {
                         //var data = JsonConvert.DeserializeObject<List<SysUserInfo>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "sysUserInfo"), Encoding.UTF8), setting);
@@ -276,10 +289,12 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:sysUserInfo already exists...");
                     }
+
                     #endregion
 
 
                     #region TasksQz
+
                     if (!await myContext.Db.Queryable<TasksQz>().AnyAsync())
                     {
                         var data = JsonConvert.DeserializeObject<List<TasksQz>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "TasksQz"), Encoding.UTF8), setting);
@@ -291,9 +306,11 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:TasksQz already exists...");
                     }
+
                     #endregion
 
                     #region Department
+
                     if (!await myContext.Db.Queryable<Department>().AnyAsync())
                     {
                         var data = JsonConvert.DeserializeObject<List<Department>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Department"), Encoding.UTF8), setting);
@@ -305,13 +322,16 @@ namespace Blog.Core.Common.Seed
                     {
                         Console.WriteLine("Table:Department already exists...");
                     }
+
                     #endregion
+
+                    //种子初始化
+                    await SeedDataAsync(myContext);
 
                     ConsoleHelper.WriteSuccessLine($"Done seeding database!");
                 }
 
                 Console.WriteLine();
-
             }
             catch (Exception ex)
             {
@@ -319,6 +339,57 @@ namespace Blog.Core.Common.Seed
                     $"1、若是Mysql,查看常见问题:https://github.com/anjoy8/Blog.Core/issues/148#issue-776281770 \n" +
                     $"2、若是Oracle,查看常见问题:https://github.com/anjoy8/Blog.Core/issues/148#issuecomment-752340231 \n" +
                     "3、其他错误：" + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 种子初始化数据
+        /// </summary>
+        /// <param name="myContext"></param>
+        /// <returns></returns>
+        private static async Task SeedDataAsync(MyContext myContext)
+        {
+            // 获取所有种子配置-初始化数据
+            var seedDataTypes = AssemblysExtensions.GetAllAssemblies().SelectMany(s => s.DefinedTypes)
+                .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass &&
+                            u.GetInterfaces().Any(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>))));
+            if (!seedDataTypes.Any()) return;
+            foreach (var seedType in seedDataTypes)
+            {
+                dynamic instance = Activator.CreateInstance(seedType);
+                //初始化数据
+                {
+                    var seedData = instance.InitSeedData();
+                    if (seedData != null && Enumerable.Any(seedData))
+                    {
+                        var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
+                        var entity = myContext.Db.EntityMaintenance.GetEntityInfo(entityType);
+
+                        if (!await myContext.Db.Queryable(entity.DbTableName, "").AnyAsync())
+                        {
+                            await myContext.Db.Insertable(Enumerable.ToList(seedData)).ExecuteCommandAsync();
+                            Console.WriteLine($"Table:{entity.DbTableName} init success!");
+                        }
+                    }
+                }
+
+                //种子数据
+                {
+                    var seedData = instance.SeedData();
+                    if (seedData != null && Enumerable.Any(seedData))
+                    {
+                        var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
+                        var entity = myContext.Db.EntityMaintenance.GetEntityInfo(entityType);
+
+                        await myContext.Db.Storageable(Enumerable.ToList(seedData)).ExecuteCommandAsync();
+                        Console.WriteLine($"Table:{entity.DbTableName} seedData success!");
+                    }
+                }
+
+                //自定义处理
+                {
+                    await instance.CustomizeSeedData(myContext.Db);
+                }
             }
         }
     }

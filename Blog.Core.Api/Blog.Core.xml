@@ -1236,6 +1236,23 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByIdController">
+            <summary>
+            多租户测试
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.GetAll">
+            <summary>
+            获取租户下全部业务数据 <br/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.Post(Blog.Core.Model.Models.BusinessTable)">
+            <summary>
+            新增业务数据
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.SwaggerHelper.CustomRouteAttribute">
             <summary>
             自定义路由 /api/{version}/[controler]/[action]
