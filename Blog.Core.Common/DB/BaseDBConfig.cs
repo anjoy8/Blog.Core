@@ -11,6 +11,7 @@ namespace Blog.Core.Common.DB
          * 目前是多库操作，默认加载的是appsettings.json设置为true的第一个db连接。
          */
         public static (List<MutiDBOperate> allDbs, List<MutiDBOperate> slaveDbs) MutiConnectionString => MutiInitConn();
+
         private static string DifDBConnOfSecurity(params string[] conn)
         {
             foreach (var item in conn)
@@ -22,7 +23,9 @@ namespace Blog.Core.Common.DB
                         return File.ReadAllText(item).Trim();
                     }
                 }
-                catch (System.Exception) { }
+                catch (System.Exception)
+                {
+                }
             }
 
             return conn[conn.Length - 1];
@@ -37,8 +40,9 @@ namespace Blog.Core.Common.DB
             {
                 SpecialDbString(i);
             }
-            List<MutiDBOperate> listdatabaseSimpleDB = new List<MutiDBOperate>();//单库
-            List<MutiDBOperate> listdatabaseSlaveDB = new List<MutiDBOperate>();//从库
+
+            List<MutiDBOperate> listdatabaseSimpleDB = new List<MutiDBOperate>(); //单库
+            List<MutiDBOperate> listdatabaseSlaveDB = new List<MutiDBOperate>();  //从库
 
             // 单库，且不开启读写分离，只保留一个
             if (!AppSettings.app(new string[] { "CQRSEnabled" }).ObjToBool() && !AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
@@ -54,6 +58,7 @@ namespace Blog.Core.Common.DB
                     {
                         dbFirst = listdatabase.FirstOrDefault();
                     }
+
                     listdatabaseSimpleDB.Add(dbFirst);
                     return (listdatabaseSimpleDB, listdatabaseSlaveDB);
                 }
@@ -68,7 +73,6 @@ namespace Blog.Core.Common.DB
                     listdatabaseSlaveDB = listdatabase.Where(d => d.ConnId != AppSettings.app(new string[] { "MainDB" }).ObjToString()).ToList();
                 }
             }
-
 
 
             return (listdatabase, listdatabaseSlaveDB);
@@ -115,24 +119,29 @@ namespace Blog.Core.Common.DB
         Dm = 5,
         Kdbndp = 6,
     }
+
     public class MutiDBOperate
     {
         /// <summary>
         /// 连接启用开关
         /// </summary>
         public bool Enabled { get; set; }
+
         /// <summary>
         /// 连接ID
         /// </summary>
         public string ConnId { get; set; }
+
         /// <summary>
         /// 从库执行级别，越大越先执行
         /// </summary>
         public int HitRate { get; set; }
+
         /// <summary>
         /// 连接字符串
         /// </summary>
         public string Connection { get; set; }
+
         /// <summary>
         /// 数据库类型
         /// </summary>

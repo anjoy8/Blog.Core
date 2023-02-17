@@ -1,6 +1,6 @@
 ﻿using SqlSugar;
 
-namespace Blog.Core.Model.Models.RootTkey.Interface;
+namespace Blog.Core.Model.Tenants;
 
 /// <summary>
 /// 租户模型接口

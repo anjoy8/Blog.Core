@@ -1236,9 +1236,20 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByIdController">
+        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByDbController">
             <summary>
             多租户测试
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByDbController.GetAll">
+            <summary>
+            获取租户下全部业务数据 <br/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByIdController">
+            <summary>
+            多租户-Id方案 测试
             </summary>
         </member>
         <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.GetAll">

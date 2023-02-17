@@ -9,17 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace Blog.Core.Api.Controllers.Tenant;
 
 /// <summary>
-/// 多租户-Id方案 测试
+/// 多租户测试
 /// </summary>
 [Produces("application/json")]
-[Route("api/Tenant/ById")]
+[Route("api/Tenant/ByDb")]
 [Authorize]
-public class TenantByIdController : BaseApiController
+public class TenantByDbController : BaseApiController
 {
-    private readonly IBaseServices<BusinessTable> _services;
+    private readonly IBaseServices<SubLibraryBusinessTable> _services;
     private readonly IUser _user;
 
-    public TenantByIdController(IUser user, IBaseServices<BusinessTable> services)
+    public TenantByDbController(IUser user, IBaseServices<SubLibraryBusinessTable> services)
     {
         _user = user;
         _services = services;
@@ -30,20 +30,9 @@ public class TenantByIdController : BaseApiController
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public async Task<MessageModel<List<BusinessTable>>> GetAll()
+    public async Task<MessageModel<List<SubLibraryBusinessTable>>> GetAll()
     {
         var data = await _services.Query();
         return Success(data);
-    }
-
-    /// <summary>
-    /// 新增业务数据
-    /// </summary>
-    /// <returns></returns>
-    [HttpPost]
-    public async Task<MessageModel> Post([FromBody] BusinessTable data)
-    {
-        await _services.Db.Insertable(data).ExecuteReturnSnowflakeIdAsync();
-        return Success();
     }
 }

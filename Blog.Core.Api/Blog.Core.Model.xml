@@ -34,21 +34,6 @@
             所有
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.CustomEnums.TenantTypeEnum">
-            <summary>
-            租户隔离方案
-            </summary>
-        </member>
-        <member name="F:Blog.Core.Model.CustomEnums.TenantTypeEnum.Id">
-            <summary>
-            Id隔离
-            </summary>
-        </member>
-        <member name="F:Blog.Core.Model.CustomEnums.TenantTypeEnum.Db">
-            <summary>
-            库隔离
-            </summary>
-        </member>
         <member name="T:Blog.Core.Model.IDS4DbModels.ApplicationRole">
             <summary>
             以下model 来自ids4项目，多库模式，为了调取ids4数据
@@ -316,7 +301,16 @@
             逻辑删除
             </summary>
         </member>
-
+        <member name="P:Blog.Core.Model.Models.BlogArticle.Comments">
+            <summary>
+            评论
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.BlogArticleComment">
+            <summary>
+            博客文章 评论
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.Models.BusinessTable">
             <summary>
             业务数据 <br/>
@@ -336,16 +330,6 @@
         <member name="P:Blog.Core.Model.Models.BusinessTable.Amount">
             <summary>
             金额
-
-        <member name="P:Blog.Core.Model.Models.BlogArticle.Comments">
-            <summary>
-            评论
-            </summary>
-        </member>
-        <member name="T:Blog.Core.Model.Models.BlogArticleComment">
-            <summary>
-            博客文章 评论
-
             </summary>
         </member>
         <member name="T:Blog.Core.Model.Models.Department">
@@ -933,14 +917,20 @@
             软删除 过滤器
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.Models.RootTkey.Interface.ITenantEntity">
+        <member name="T:Blog.Core.Model.Models.SubLibraryBusinessTable">
             <summary>
-            租户模型接口
+            多租户-多库方案 业务表 <br/>
+            公共库无需标记[MultiTenant]特性
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.Interface.ITenantEntity.TenantId">
+        <member name="P:Blog.Core.Model.Models.SubLibraryBusinessTable.Name">
             <summary>
-            租户Id
+            名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SubLibraryBusinessTable.Amount">
+            <summary>
+            金额
             </summary>
         </member>
         <member name="T:Blog.Core.Model.Models.SysTenant">
@@ -1890,6 +1880,37 @@
         <member name="P:Blog.Core.Model.TableModel`1.Data">
             <summary>
             返回数据集
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Tenants.ITenantEntity">
+            <summary>
+            租户模型接口
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Tenants.ITenantEntity.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Tenants.MultiTenantAttribute">
+            <summary>
+            标识 多租户-分库 的业务表 <br/>
+            公共表无需区分 直接使用主库 各自业务在各自库中
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Tenants.TenantTypeEnum">
+            <summary>
+            租户隔离方案
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Id">
+            <summary>
+            Id隔离
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Db">
+            <summary>
+            库隔离
             </summary>
         </member>
         <member name="T:Blog.Core.Model.ViewModels.AdvertisementViewModels">

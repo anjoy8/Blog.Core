@@ -38,6 +38,9 @@ public sealed class SeedDataHostedService : IHostedService
             if (AppSettings.app("AppSettings", "SeedDBEnabled").ObjToBool() || AppSettings.app("AppSettings", "SeedDBDataEnabled").ObjToBool())
             {
                 await DBSeed.SeedAsync(_myContext, _webRootPath);
+
+                //多租户 同步
+                await DBSeed.TenantSeedAsync(_myContext);
             }
         }
         catch (Exception ex)
