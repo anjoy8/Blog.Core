@@ -372,7 +372,7 @@ namespace Blog.Core.Common.Seed
 
                     return false;
                 });
-            
+
             if (!seedDataTypes.Any()) return;
             foreach (var seedType in seedDataTypes)
             {
@@ -437,6 +437,7 @@ namespace Blog.Core.Common.Seed
 
         public static async Task InitTenantSeedAsync(ITenant itenant, ConnectionConfig config)
         {
+            itenant.RemoveConnection(config.ConfigId);
             itenant.AddConnection(config);
 
             var db = itenant.GetConnectionScope(config.ConfigId);

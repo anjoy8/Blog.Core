@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Blog.Core.Api.Controllers.Tenant;
 
 /// <summary>
-/// 多租户测试
+/// 多租户-多库方案 测试
 /// </summary>
 [Produces("application/json")]
 [Route("api/Tenant/ByDb")]
@@ -34,5 +34,17 @@ public class TenantByDbController : BaseApiController
     {
         var data = await _services.Query();
         return Success(data);
+    }
+
+    /// <summary>
+    /// 新增数据
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<MessageModel> Post(SubLibraryBusinessTable data)
+    {
+        await _services.Db.Insertable(data).ExecuteReturnSnowflakeIdAsync();
+
+        return Success();
     }
 }

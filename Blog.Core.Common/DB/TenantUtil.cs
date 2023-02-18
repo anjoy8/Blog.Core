@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Blog.Core.Model.Models;
 using SqlSugar;
 
@@ -6,12 +7,33 @@ namespace Blog.Core.Common.DB;
 
 public static class TenantUtil
 {
+    public static SysTenant DefaultTenantConfig(this SysTenant tenant)
+    {
+        tenant.DbType ??= DbType.Sqlite;
+
+        //如果没有配置连接
+        if (tenant.Connection.IsNullOrEmpty())
+        {
+            //此处默认配置 Sqlite 地址
+            //实际业务中 也会有运维、系统管理员等来维护
+            switch (tenant.DbType.Value)
+            {
+                case DbType.Sqlite:
+                    tenant.Connection = $"DataSource={Path.Combine(Environment.CurrentDirectory, tenant.ConfigId)}.db" ;
+                    break;
+            }
+        }
+
+        return tenant;
+    }
+
     public static ConnectionConfig GetConnectionConfig(this SysTenant tenant)
     {
         if (tenant.DbType is null)
         {
             throw new ArgumentException("Tenant DbType Must");
         }
+
 
         return new ConnectionConfig()
         {

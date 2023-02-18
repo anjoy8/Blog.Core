@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -106,6 +107,8 @@ namespace Blog.Core.Common.DB
 
             return mutiDBOperate;
         }
+
+        
     }
 
 
