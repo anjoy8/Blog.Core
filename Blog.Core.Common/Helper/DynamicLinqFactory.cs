@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Blog.Core.Common.Helper
 {
@@ -20,10 +16,10 @@ namespace Blog.Core.Common.Helper
     /// </summary>
     public static class DynamicLinqFactory
     {
-        private static readonly Dictionary<string, OperationSymbol> _operatingSystems = new();
+        private static readonly Dictionary<string, OperationSymbol> _operatingSystems = new Dictionary<string, OperationSymbol>();
         public static Dictionary<string, OperationSymbol> OperatingSystems => GetOperationSymbol();
 
-        private static readonly Dictionary<string, LinkSymbol> _linkSymbols = new();
+        private static readonly Dictionary<string, LinkSymbol> _linkSymbols = new Dictionary<string, LinkSymbol>();
         public static Dictionary<string, LinkSymbol> LinkSymbols => GetLinkSymbol();
 
         /// <summary>
@@ -70,11 +66,16 @@ namespace Blog.Core.Common.Helper
 
             var properties = DynamicLinq.Left.Split('.');
 
-            // 从1开始，是不想用自定义种子，外层种子已经定义好了
-            // 暂时也不会有多个自定义种子，先这样
-            for (var i = 0; i < properties.Length; i++)
+            int index = 0;
+            foreach (var t in properties)
             {
-                mainExpression = mainExpression.Property(properties[i]);
+                if (mainExpression.Type.HasImplementedRawGeneric(typeof(IEnumerable<>)))
+                {
+                    return ExpressionStudioEnumerable(left, mainExpression, DynamicLinq.Clone(), properties.Skip(index).ToArray());
+                }
+
+                mainExpression = mainExpression.Property(t);
+                index++;
             }
 
             left = left == null
@@ -84,6 +85,32 @@ namespace Blog.Core.Common.Helper
                 : ChangeLinkSymbol(DynamicLinq.LinkSymbol, left, ChangeOperationSymbol(DynamicLinq.OperationSymbol, mainExpression, DynamicLinq.Right));
             return left;
         }
+
+        public static Expression ExpressionStudioEnumerable(Expression left, Expression property, DynamicLinqHelper dynamicLinq, string[] properties)
+        {
+            var realType = property.Type.GenericTypeArguments[0];
+
+            var parameter = Expression.Parameter(realType, "z");
+            Expression mainExpression = property;
+            if (!properties.Any())
+            {
+                throw new ApplicationException("条件表达式错误,属性为集合时,需要明确具体属性");
+            }
+
+            dynamicLinq.Left = string.Join(".", properties);
+            mainExpression = ExpressionStudio(null, dynamicLinq, parameter);
+
+            var lambda = Expression.Lambda(mainExpression, parameter);
+
+            mainExpression = Expression.Call(typeof(Enumerable), "Any", new[] { realType }, property, lambda);
+
+            left = left == null
+                ? mainExpression
+                : ChangeLinkSymbol(dynamicLinq.LinkSymbol, left, mainExpression);
+
+            return left;
+        }
+
 
         /// <summary>
         /// 将字符串装换成动态帮助类（内含递归）
@@ -132,6 +159,7 @@ namespace Blog.Core.Common.Helper
         {
             var outList = new List<DynamicLinqHelper>();
             var tokens = Regex.Matches(FormatString(str), _pattern, RegexOptions.Compiled)
+                .Cast<Match>()
                 .Select(m => m.Groups[1].Value.Trim())
                 .ToList();
 
@@ -139,7 +167,7 @@ namespace Blog.Core.Common.Helper
             int lastOperatingSymbolIndex = -1;
             for (int i = tokens.Count - 1; i >= 0; i--)
             {
-                var token = tokens[i];
+                var token = tokens[i].ToLower();
 
                 if (OperatingSystems.ContainsKey(token))
                 {
@@ -189,6 +217,7 @@ namespace Blog.Core.Common.Helper
                 }
             }
 
+            outList.Reverse();
             return outList;
         }
 
@@ -259,7 +288,7 @@ namespace Blog.Core.Common.Helper
                 {
                     foreach (var name in attr.Name.Split(';'))
                     {
-                        _operatingSystems.Add(name, (OperationSymbol)item.GetValue(null));
+                        _operatingSystems.Add(name.ToLower(), (OperationSymbol)item.GetValue(null));
                     }
                 }
             }
@@ -353,7 +382,14 @@ namespace Blog.Core.Common.Helper
         public static readonly string _pattern = @"\s*(" + string.Join("|", new string[]
         {
             // operators and punctuation that are longer than one char: longest first
-            string.Join("|", new[] { "||", "&&", "==", "!=", "<=", ">=", "like", "contains" }.Select(Regex.Escape)),
+            string.Join("|", new[]
+            {
+                "||", "&&", "==", "!=", "<=", ">=",
+                "in",
+                "like", "contains", "%=",
+                "startslike", "startscontains", "%>",
+                "endlike", "endcontains", "%<",
+            }.Select(Regex.Escape)),
             @"""(?:\\.|[^""])*""", // string
             @"\d+(?:\.\d+)?",      // number with optional decimal part
             @"\w+",                // word
@@ -365,7 +401,7 @@ namespace Blog.Core.Common.Helper
         /// </summary>
         public static OperationSymbol ChangeOperationSymbol(string str)
         {
-            switch (str)
+            switch (str.ToLower())
             {
                 case "<":
                     return OperationSymbol.LessThan;
@@ -382,7 +418,16 @@ namespace Blog.Core.Common.Helper
                     return OperationSymbol.NotEqual;
                 case "contains":
                 case "like":
+                case "%=":
                     return OperationSymbol.Contains;
+                case "startslike":
+                case "startscontains":
+                case "%>":
+                    return OperationSymbol.StartsContains;
+                case "endlike":
+                case "endcontains":
+                case "%<":
+                    return OperationSymbol.EndContains;
             }
 
             throw new Exception("OperationSymbol IS NULL");
@@ -451,6 +496,10 @@ namespace Blog.Core.Common.Helper
                     return key.NotEqual(Expression.Constant(newTypeRight));
                 case OperationSymbol.Contains:
                     return key.Contains(Expression.Constant(newTypeRight));
+                case OperationSymbol.StartsContains:
+                    return key.StartContains(Expression.Constant(newTypeRight));
+                case OperationSymbol.EndContains:
+                    return key.EndContains(Expression.Constant(newTypeRight));
                 case OperationSymbol.In:
                     var contains = typeof(Enumerable).GetMethods(BindingFlags.Static | BindingFlags.Public)
                         .Single(x => x.Name == "Contains" && x.GetParameters().Length == 2)
@@ -480,6 +529,17 @@ namespace Blog.Core.Common.Helper
 
         [Display(Name = "连接符")]
         public LinkSymbol LinkSymbol { get; set; }
+
+        public DynamicLinqHelper Clone()
+        {
+            return new DynamicLinqHelper()
+            {
+                Left = this.Left,
+                Right = this.Right,
+                OperationSymbol = this.OperationSymbol,
+                LinkSymbol = this.LinkSymbol,
+            };
+        }
     }
 
     /// <summary>
@@ -504,8 +564,14 @@ namespace Blog.Core.Common.Helper
         [Display(Name = "in")]
         In,
 
-        [Display(Name = "like;contains")]
+        [Display(Name = "like;contains;%=")]
         Contains,
+
+        [Display(Name = "StartsLike;StartsContains;%>")]
+        StartsContains,
+
+        [Display(Name = "EndLike;EndContains;%<")]
+        EndContains,
 
         [Display(Name = ">")]
         GreaterThan,
@@ -528,331 +594,6 @@ namespace Blog.Core.Common.Helper
 
     #endregion
 
-    /// <summary>
-    /// Linq扩展
-    /// </summary>
-    public static class ExpressionExtensions
-    {
-        #region Nacos NamingService
-
-        private static readonly HttpClient httpclient = new HttpClient();
-
-        private static string GetServiceUrl(Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl)
-        {
-            try
-            {
-                var instance = serv.SelectOneHealthyInstance(ServiceName, Group).GetAwaiter().GetResult();
-                var host = $"{instance.Ip}:{instance.Port}";
-                if (instance.Metadata.ContainsKey("endpoint")) host = instance.Metadata["endpoint"];
-
-
-                var baseUrl = instance.Metadata.TryGetValue("secure", out _)
-                    ? $"https://{host}"
-                    : $"http://{host}";
-
-                if (string.IsNullOrWhiteSpace(baseUrl))
-                {
-                    return "";
-                }
-
-                return $"{baseUrl}{apiurl}";
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return "";
-        }
-
-        public static async Task<string> Cof_NaoceGet(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, Dictionary<string, string> Parameters = null)
-        {
-            try
-            {
-                var url = GetServiceUrl(serv, ServiceName, Group, apiurl);
-                if (string.IsNullOrEmpty(url)) return "";
-                if (Parameters != null && Parameters.Any())
-                {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (var pitem in Parameters)
-                    {
-                        sb.Append($"{pitem.Key}={pitem.Value}&");
-                    }
-
-                    url = $"{url}?{sb.ToString().Trim('&')}";
-                }
-
-                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var result = await httpclient.GetAsync(url);
-                return await result.Content.ReadAsStringAsync();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return "";
-        }
-
-        public static async Task<string> Cof_NaocePostForm(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, Dictionary<string, string> Parameters)
-        {
-            try
-            {
-                var url = GetServiceUrl(serv, ServiceName, Group, apiurl);
-                if (string.IsNullOrEmpty(url)) return "";
-
-                var content = (Parameters != null && Parameters.Any()) ? new FormUrlEncodedContent(Parameters) : null;
-                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var result = await httpclient.PostAsync(url, content);
-                return await result.Content.ReadAsStringAsync(); //.GetAwaiter().GetResult();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return "";
-        }
-
-        public static async Task<string> Cof_NaocePostJson(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, string jSonData)
-        {
-            try
-            {
-                var url = GetServiceUrl(serv, ServiceName, Group, apiurl);
-                if (string.IsNullOrEmpty(url)) return "";
-                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var result = await httpclient.PostAsync(url, new StringContent(jSonData, Encoding.UTF8, "application/json"));
-                return await result.Content.ReadAsStringAsync(); //.GetAwaiter().GetResult();
-
-                //httpClient.BaseAddress = new Uri("https://www.testapi.com");
-                //httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return "";
-        }
-
-        public static async Task<string> Cof_NaocePostFile(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, Dictionary<string, byte[]> Parameters)
-        {
-            try
-            {
-                var url = GetServiceUrl(serv, ServiceName, Group, apiurl);
-                if (string.IsNullOrEmpty(url)) return "";
-
-                var content = new MultipartFormDataContent();
-                foreach (var pitem in Parameters)
-                {
-                    content.Add(new ByteArrayContent(pitem.Value), "files", pitem.Key);
-                }
-
-                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var result = await httpclient.PostAsync(url, content);
-                return await result.Content.ReadAsStringAsync(); //.GetAwaiter().GetResult();
-            }
-            catch (Exception e)
-            {
-                //InfluxdbHelper.GetInstance().AddLog("Cof_NaocePostFile.Err", ee);
-                Console.WriteLine(e.Message);
-            }
-
-            return "";
-        }
-
-        #endregion
-
-        #region HttpContext
-
-        /// <summary>
-        /// 返回请求上下文
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="code"></param>
-        /// <param name="message"></param>
-        /// <param name="ContentType"></param>
-        /// <returns></returns>
-        public static async Task Cof_SendResponse(this HttpContext context, System.Net.HttpStatusCode code, string message, string ContentType = "text/html;charset=utf-8")
-        {
-            context.Response.StatusCode = (int)code;
-            context.Response.ContentType = ContentType;
-            await context.Response.WriteAsync(message);
-        }
-
-        #endregion
-
-        #region ICaching
-
-        /// <summary>
-        /// 从缓存里取数据，如果不存在则执行查询方法，
-        /// </summary>
-        /// <typeparam name="T">类型</typeparam>
-        /// <param name="cache">ICaching </param>
-        /// <param name="key">键值</param>
-        /// <param name="GetFun">查询方法</param>
-        /// <param name="timeSpanMin">有效期 单位分钟/param>
-        /// <returns></returns>
-        public static T Cof_GetICaching<T>(this ICaching cache, string key, Func<T> GetFun, int timeSpanMin) where T : class
-        {
-            var obj = cache.Get(key);
-            obj = GetFun();
-            if (obj == null)
-            {
-                obj = GetFun();
-                cache.Set(key, obj, timeSpanMin);
-            }
-
-            return obj as T;
-        }
-
-        /// <summary>
-        /// 异步从缓存里取数据，如果不存在则执行查询方法
-        /// </summary>
-        /// <typeparam name="T">类型</typeparam>
-        /// <param name="cache">ICaching </param>
-        /// <param name="key">键值</param>
-        /// <param name="GetFun">查询方法</param>
-        /// <param name="timeSpanMin">有效期 单位分钟/param>
-        /// <returns></returns>
-        public static async Task<T> Cof_AsyncGetICaching<T>(this ICaching cache, string key, Func<Task<T>> GetFun, int timeSpanMin) where T : class
-        {
-            var obj = cache.Get(key);
-            if (obj == null)
-            {
-                obj = await GetFun();
-                cache.Set(key, obj, timeSpanMin);
-            }
-
-            return obj as T;
-        }
-
-        #endregion
-
-        #region 常用扩展方法
-
-        public static bool Cof_CheckAvailable<TSource>(this IEnumerable<TSource> Tlist)
-        {
-            return Tlist != null && Tlist.Count() > 0;
-        }
-
-        /// <summary>
-        /// 调用内部方法
-        /// </summary>
-        public static Expression Call(this Expression instance, string methodName, params Expression[] arguments)
-        {
-            if (instance.Type == typeof(string))
-                return Expression.Call(instance, instance.Type.GetMethod(methodName, new Type[] { typeof(string) }), arguments); //修复string contains 出现的问题 Ambiguous match found.
-            else
-                return Expression.Call(instance, instance.Type.GetMethod(methodName), arguments);
-        }
-
-        /// <summary>
-        /// 获取内部成员
-        /// </summary>
-        public static Expression Property(this Expression expression, string propertyName)
-        {
-            // Todo:左边条件如果是dynamic，
-            // 则Expression.Property无法获取子内容
-            // 报错在这里，由于expression内的对象为Object，所以无法解析到
-            // var x = (expression as IQueryable).ElementType;
-            var exp = Expression.Property(expression, propertyName);
-            if (exp.Type.IsGenericType && exp.Type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                return Expression.Convert(exp, exp.Type.GetGenericArguments()[0]);
-            }
-
-            return exp;
-        }
-
-        /// <summary>
-        /// 转Lambda
-        /// </summary>
-        public static Expression<TDelegate> ToLambda<TDelegate>(this Expression body,
-            params ParameterExpression[] parameters)
-        {
-            return Expression.Lambda<TDelegate>(body, parameters);
-        }
-
-        #endregion
-
-        #region 常用运算符 [ > , >= , == , < , <= , != , || , && ]
-
-        /// <summary>
-        /// &&
-        /// </summary>
-        public static Expression AndAlso(this Expression left, Expression right)
-        {
-            return Expression.AndAlso(left, right);
-        }
-
-        /// <summary>
-        /// ||
-        /// </summary>
-        public static Expression OrElse(this Expression left, Expression right)
-        {
-            return Expression.OrElse(left, right);
-        }
-
-        /// <summary>
-        /// Contains
-        /// </summary>
-        public static Expression Contains(this Expression left, Expression right)
-        {
-            return left.Call("Contains", right);
-        }
-
-        /// <summary>
-        /// >
-        /// </summary>
-        public static Expression GreaterThan(this Expression left, Expression right)
-        {
-            return Expression.GreaterThan(left, right);
-        }
-
-        /// <summary>
-        /// >=
-        /// </summary>
-        public static Expression GreaterThanOrEqual(this Expression left, Expression right)
-        {
-            return Expression.GreaterThanOrEqual(left, right);
-        }
-
-        /// <summary>
-        /// <
-        /// </summary>
-        public static Expression LessThan(this Expression left, Expression right)
-        {
-            return Expression.LessThan(left, right);
-        }
-
-        /// <summary>
-        /// <=
-        /// </summary>
-        public static Expression LessThanOrEqual(this Expression left, Expression right)
-        {
-            return Expression.LessThanOrEqual(left, right);
-        }
-
-        /// <summary>
-        /// ==
-        /// </summary>
-        public static Expression Equal(this Expression left, Expression right)
-        {
-            return Expression.Equal(left, right);
-        }
-
-        /// <summary>
-        /// !=
-        /// </summary>
-        public static Expression NotEqual(this Expression left, Expression right)
-        {
-            return Expression.NotEqual(left, right);
-        }
-
-        #endregion
-    }
 
     /// <summary>
     /// Queryable扩展

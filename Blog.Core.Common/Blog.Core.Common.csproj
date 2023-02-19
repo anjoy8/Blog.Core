@@ -41,4 +41,8 @@
     <ProjectReference Include="..\Ocelot.Provider.Nacos\Ocelot.Provider.Nacos.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\" />
+  </ItemGroup>
+
 </Project>

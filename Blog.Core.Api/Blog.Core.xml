@@ -454,10 +454,11 @@
             <param name="permissions"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.MigratePermission(System.String,System.Int32,System.Boolean)">
+        <member name="M:Blog.Core.Controllers.PermissionController.MigratePermission(System.String,System.String,System.Int32,System.Boolean)">
             <summary>
-            菜单同步
+            系统接口菜单同步接口
             </summary>
+            <param name="action"></param>
             <param name="controllerName">接口module的控制器名称</param>
             <param name="pid">菜单permission的父id</param>
             <param name="isAction">是否执行迁移到数据</param>
@@ -1232,6 +1233,23 @@
         <member name="M:Blog.Core.Api.Controllers.NacosController.Deregister">
             <summary>
             服务下线
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByIdController">
+            <summary>
+            多租户测试
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.GetAll">
+            <summary>
+            获取租户下全部业务数据 <br/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.Post(Blog.Core.Model.Models.BusinessTable)">
+            <summary>
+            新增业务数据
             </summary>
             <returns></returns>
         </member>

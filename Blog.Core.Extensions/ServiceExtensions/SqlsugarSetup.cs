@@ -9,6 +9,7 @@ using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Blog.Core.Common.DB.Aop;
 
 namespace Blog.Core.Extensions
 {
@@ -101,7 +102,21 @@ namespace Blog.Core.Extensions
                     }
                    );
                 });
-                return new SqlSugarScope(listConfig);
+                return new SqlSugarScope(listConfig, db =>
+                {
+                    listConfig.ForEach(config =>
+                    {
+                        var dbProvider = db.GetConnectionScope((string)config.ConfigId);
+
+                        // 数据审计
+                        dbProvider.Aop.DataExecuting = SqlSugarAop.DataExecuting;
+
+                        // 配置实体假删除过滤器
+                        RepositorySetting.SetDeletedEntityFilter(dbProvider);
+                        // 配置实体数据权限
+                        RepositorySetting.SetTenantEntityFilter(dbProvider);
+                    });
+                });
             });
         }
 

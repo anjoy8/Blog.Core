@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Blog.Core.AuthHelper;
+﻿using Blog.Core.AuthHelper;
 using Blog.Core.AuthHelper.OverWrite;
 using Blog.Core.Common.Helper;
 using Blog.Core.IServices;
@@ -12,8 +6,9 @@ using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 
 namespace Blog.Core.Controllers
@@ -52,6 +47,7 @@ namespace Blog.Core.Controllers
 
 
         #region 获取token的第1种方法
+
         /// <summary>
         /// 获取JWT的方法1
         /// </summary>
@@ -62,7 +58,6 @@ namespace Blog.Core.Controllers
         [Route("Token")]
         public async Task<MessageModel<string>> GetJwtStr(string name, string pass)
         {
-
             string jwtStr = string.Empty;
             bool suc = false;
             //这里就是用户登陆以后，通过数据库去调取数据，分配权限的操作
@@ -70,7 +65,6 @@ namespace Blog.Core.Controllers
             var user = await _sysUserInfoServices.GetUserRoleNameStr(name, MD5Helper.MD5Encrypt32(pass));
             if (user != null)
             {
-
                 TokenModelJwt tokenModel = new TokenModelJwt { Uid = 1, Role = user };
 
                 jwtStr = JwtHelper.IssueJwt(tokenModel);
@@ -119,6 +113,7 @@ namespace Blog.Core.Controllers
             {
                 jwtStr = "login fail!!!";
             }
+
             var result = new
             {
                 data = new { success = suc, token = jwtStr }
@@ -131,8 +126,8 @@ namespace Blog.Core.Controllers
                 response = jwtStr
             };
         }
-        #endregion
 
+        #endregion
 
 
         /// <summary>
@@ -157,11 +152,14 @@ namespace Blog.Core.Controllers
             {
                 var userRoles = await _sysUserInfoServices.GetUserRoleNameStr(name, pass);
                 //如果是基于用户的授权策略，这里要添加用户;如果是基于角色的授权策略，这里要添加角色
-                var claims = new List<Claim> {
+                var claims = new List<Claim>
+                {
                     new Claim(ClaimTypes.Name, name),
                     new Claim(JwtRegisteredClaimNames.Jti, user.FirstOrDefault().Id.ToString()),
+                    new Claim("TenantId", user.FirstOrDefault().TenantId.ToString()),
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()),
-                    new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString()) };
+                    new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString())
+                };
                 claims.AddRange(userRoles.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));
 
 
@@ -218,11 +216,13 @@ namespace Blog.Core.Controllers
                 {
                     var userRoles = await _sysUserInfoServices.GetUserRoleNameStr(user.LoginName, user.LoginPWD);
                     //如果是基于用户的授权策略，这里要添加用户;如果是基于角色的授权策略，这里要添加角色
-                    var claims = new List<Claim> {
-                    new Claim(ClaimTypes.Name, user.LoginName),
-                    new Claim(JwtRegisteredClaimNames.Jti, tokenModel.Uid.ObjToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()),
-                    new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString()) };
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.LoginName),
+                        new Claim(JwtRegisteredClaimNames.Jti, tokenModel.Uid.ObjToString()),
+                        new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()),
+                        new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString())
+                    };
                     claims.AddRange(userRoles.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));
 
                     //用户标识
@@ -233,6 +233,7 @@ namespace Blog.Core.Controllers
                     return Success(refreshToken, "获取成功");
                 }
             }
+
             return Failed<TokenInfoViewModel>("认证失败！");
         }
 
