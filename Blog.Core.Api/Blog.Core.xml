@@ -1236,9 +1236,26 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByIdController">
+        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByDbController">
             <summary>
             多租户测试
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByDbController.GetAll">
+            <summary>
+            获取租户下全部业务数据 <br/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByDbController.Post(Blog.Core.Model.Models.SubLibraryBusinessTable)">
+            <summary>
+            新增数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByIdController">
+            <summary>
+            多租户-Id方案 测试
             </summary>
         </member>
         <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.GetAll">
@@ -1250,6 +1267,44 @@
         <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.Post(Blog.Core.Model.Models.BusinessTable)">
             <summary>
             新增业务数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantManagerController">
+            <summary>
+            租户管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantManagerController.GetAll">
+            <summary>
+            获取全部租户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantManagerController.GetInfo(System.Int64)">
+            <summary>
+            获取租户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantManagerController.Post(Blog.Core.Model.Models.SysTenant)">
+            <summary>
+            新增租户信息 <br/>
+            此处只做演示，具体要以实际业务为准
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantManagerController.Put(Blog.Core.Model.Models.SysTenant)">
+            <summary>
+            修改租户信息 <br/>
+            此处只做演示，具体要以实际业务为准
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantManagerController.Delete(System.Int64)">
+            <summary>
+            删除租户 <br/>
+            此处只做演示，具体要以实际业务为准
             </summary>
             <returns></returns>
         </member>

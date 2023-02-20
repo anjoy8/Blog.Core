@@ -11,6 +11,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Blog.Core.Model.Tenants;
+using SqlSugar;
 
 namespace Blog.Core.Common.Seed
 {
@@ -97,7 +99,9 @@ namespace Blog.Core.Common.Seed
                 var modelTypes = referencedAssemblies
                     .SelectMany(a => a.DefinedTypes)
                     .Select(type => type.AsType())
-                    .Where(x => x.IsClass && x.Namespace is "Blog.Core.Model.Models").ToList();
+                    .Where(x => x.IsClass && x.Namespace is "Blog.Core.Model.Models")
+                    .Where(s => !s.IsDefined(typeof(MultiTenantAttribute), false))
+                    .ToList();
                 modelTypes.ForEach(t =>
                 {
                     // 这里只支持添加表，不支持删除
@@ -326,7 +330,7 @@ namespace Blog.Core.Common.Seed
                     #endregion
 
                     //种子初始化
-                    await SeedDataAsync(myContext);
+                    await SeedDataAsync(myContext.Db);
 
                     ConsoleHelper.WriteSuccessLine($"Done seeding database!");
                 }
@@ -347,12 +351,28 @@ namespace Blog.Core.Common.Seed
         /// </summary>
         /// <param name="myContext"></param>
         /// <returns></returns>
-        private static async Task SeedDataAsync(MyContext myContext)
+        private static async Task SeedDataAsync(ISqlSugarClient db)
         {
             // 获取所有种子配置-初始化数据
             var seedDataTypes = AssemblysExtensions.GetAllAssemblies().SelectMany(s => s.DefinedTypes)
-                .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass &&
-                            u.GetInterfaces().Any(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>))));
+                .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass)
+                .Where(u =>
+                {
+                    var esd = u.GetInterfaces().FirstOrDefault(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>)));
+                    if (esd is null)
+                    {
+                        return false;
+                    }
+
+                    var eType = esd.GenericTypeArguments[0];
+                    if (eType.GetCustomAttribute<MultiTenantAttribute>() is null)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                });
+
             if (!seedDataTypes.Any()) return;
             foreach (var seedType in seedDataTypes)
             {
@@ -363,11 +383,11 @@ namespace Blog.Core.Common.Seed
                     if (seedData != null && Enumerable.Any(seedData))
                     {
                         var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
-                        var entity = myContext.Db.EntityMaintenance.GetEntityInfo(entityType);
+                        var entity = db.EntityMaintenance.GetEntityInfo(entityType);
 
-                        if (!await myContext.Db.Queryable(entity.DbTableName, "").AnyAsync())
+                        if (!await db.Queryable(entity.DbTableName, "").AnyAsync())
                         {
-                            await myContext.Db.Insertable(Enumerable.ToList(seedData)).ExecuteCommandAsync();
+                            await db.Insertable(Enumerable.ToList(seedData)).ExecuteCommandAsync();
                             Console.WriteLine($"Table:{entity.DbTableName} init success!");
                         }
                     }
@@ -379,16 +399,131 @@ namespace Blog.Core.Common.Seed
                     if (seedData != null && Enumerable.Any(seedData))
                     {
                         var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
-                        var entity = myContext.Db.EntityMaintenance.GetEntityInfo(entityType);
+                        var entity = db.EntityMaintenance.GetEntityInfo(entityType);
 
-                        await myContext.Db.Storageable(Enumerable.ToList(seedData)).ExecuteCommandAsync();
+                        await db.Storageable(Enumerable.ToList(seedData)).ExecuteCommandAsync();
                         Console.WriteLine($"Table:{entity.DbTableName} seedData success!");
                     }
                 }
 
                 //自定义处理
                 {
-                    await instance.CustomizeSeedData(myContext.Db);
+                    await instance.CustomizeSeedData(db);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 初始化 多租户
+        /// </summary>
+        /// <param name="myContext"></param>
+        /// <returns></returns>
+        public static async Task TenantSeedAsync(MyContext myContext)
+        {
+            var tenants = await myContext.Db.Queryable<SysTenant>().Where(s => s.TenantType == TenantTypeEnum.Db).ToListAsync();
+            if (!tenants.Any())
+            {
+                return;
+            }
+
+            Console.WriteLine($@"Init Multi Tenant Db");
+            foreach (var tenant in tenants)
+            {
+                Console.WriteLine($@"Init Multi Tenant Db : {tenant.ConfigId}/{tenant.Name}");
+                await InitTenantSeedAsync(myContext.Db.AsTenant(), tenant.GetConnectionConfig());
+            }
+        }
+
+        public static async Task InitTenantSeedAsync(ITenant itenant, ConnectionConfig config)
+        {
+            itenant.RemoveConnection(config.ConfigId);
+            itenant.AddConnection(config);
+
+            var db = itenant.GetConnectionScope(config.ConfigId);
+
+            db.DbMaintenance.CreateDatabase();
+            ConsoleHelper.WriteSuccessLine($"Init Multi Tenant Db : {config.ConfigId} Database created successfully!");
+
+
+            Console.WriteLine($@"Init Multi Tenant Db : {config.ConfigId}  Create Tables");
+            // 获取所有实体表-初始化租户业务表
+            var entityTypes = RepositorySetting.Entitys
+                .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass)
+                .Where(s => s.IsDefined(typeof(MultiTenantAttribute), false));
+            if (!entityTypes.Any()) return;
+            foreach (var entityType in entityTypes)
+            {
+                var splitTable = entityType.GetCustomAttribute<SplitTableAttribute>();
+                if (splitTable == null)
+                    db.CodeFirst.InitTables(entityType);
+                else
+                    db.CodeFirst.SplitTables().InitTables(entityType);
+
+                Console.WriteLine(entityType.Name);
+            }
+
+            //多租户初始化种子数据
+            await TenantSeedDataAsync(db);
+        }
+
+        private static async Task TenantSeedDataAsync(ISqlSugarClient db)
+        {
+            // 获取所有种子配置-初始化数据
+            var seedDataTypes = AssemblysExtensions.GetAllAssemblies().SelectMany(s => s.DefinedTypes)
+                .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass)
+                .Where(u =>
+                {
+                    var esd = u.GetInterfaces().FirstOrDefault(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>)));
+                    if (esd is null)
+                    {
+                        return false;
+                    }
+
+                    var eType = esd.GenericTypeArguments[0];
+                    if (eType.GetCustomAttribute<MultiTenantAttribute>() is null)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                });
+            if (!seedDataTypes.Any()) return;
+            foreach (var seedType in seedDataTypes)
+            {
+                dynamic instance = Activator.CreateInstance(seedType);
+                //初始化数据
+                {
+                    var seedData = instance.InitSeedData();
+                    if (seedData != null && Enumerable.Any(seedData))
+                    {
+                        var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
+                        var entity = db.EntityMaintenance.GetEntityInfo(entityType);
+
+                        if (!await db.Queryable(entity.DbTableName, "").AnyAsync())
+                        {
+                            await db.Insertable(Enumerable.ToList(seedData)).ExecuteCommandAsync();
+                            Console.WriteLine($"Table:{entity.DbTableName} init success!");
+                        }
+                    }
+                }
+
+                //种子数据
+                {
+                    var seedData = instance.SeedData();
+                    if (seedData != null && Enumerable.Any(seedData))
+                    {
+                        var entityType = seedType.GetInterfaces().First().GetGenericArguments().First();
+                        var entity = db.EntityMaintenance.GetEntityInfo(entityType);
+
+                        await db.Storageable(Enumerable.ToList(seedData)).ExecuteCommandAsync();
+                        Console.WriteLine($"Table:{entity.DbTableName} seedData success!");
+                    }
+                }
+
+                //自定义处理
+                {
+                    await instance.CustomizeSeedData(db);
                 }
             }
         }

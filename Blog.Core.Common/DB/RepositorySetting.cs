@@ -1,5 +1,6 @@
 ﻿using Blog.Core.Model.Models.RootTkey;
 using Blog.Core.Model.Models.RootTkey.Interface;
+using Blog.Core.Model.Tenants;
 using SqlSugar;
 using System;
 using System.Collections.Generic;

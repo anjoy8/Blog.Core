@@ -4,17 +4,12 @@ using Blog.Core.Model.Tenants;
 namespace Blog.Core.Model.Models;
 
 /// <summary>
-/// 业务数据 <br/>
-/// 多租户 (Id 隔离)
+/// 多租户-多库方案 业务表 <br/>
+/// 公共库无需标记[MultiTenant]特性
 /// </summary>
-public class BusinessTable : BaseEntity, ITenantEntity
+[MultiTenant]
+public class SubLibraryBusinessTable : BaseEntity
 {
-    /// <summary>
-    /// 无需手动赋值
-    /// </summary>
-    public long TenantId { get; set; }
-
-
     /// <summary>
     /// 名称
     /// </summary>

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Blog.Core.Model.CustomEnums;
+namespace Blog.Core.Model.Tenants;
 
 /// <summary>
 /// 租户隔离方案
