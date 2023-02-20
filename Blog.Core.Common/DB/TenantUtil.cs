@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.Tenants;
 using SqlSugar;
 
 namespace Blog.Core.Common.DB;
@@ -19,7 +23,7 @@ public static class TenantUtil
             switch (tenant.DbType.Value)
             {
                 case DbType.Sqlite:
-                    tenant.Connection = $"DataSource={Path.Combine(Environment.CurrentDirectory, tenant.ConfigId)}.db" ;
+                    tenant.Connection = $"DataSource={Path.Combine(Environment.CurrentDirectory, tenant.ConfigId)}.db";
                     break;
             }
         }
@@ -46,5 +50,53 @@ public static class TenantUtil
                 IsAutoRemoveDataCache = true
             },
         };
+    }
+
+    public static List<Type> GetTenantEntityTypes(TenantTypeEnum? tenantType = null)
+    {
+        return RepositorySetting.Entitys
+            .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass)
+            .Where(s => IsTenantEntity(s, tenantType))
+            .ToList();
+    }
+
+    public static bool IsTenantEntity(this Type u, TenantTypeEnum? tenantType = null)
+    {
+        var mta = u.GetCustomAttribute<MultiTenantAttribute>();
+        if (mta is null)
+        {
+            return false;
+        }
+
+        if (tenantType != null)
+        {
+            if (mta.TenantType != tenantType)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static string GetTenantTableName(this Type type, ISqlSugarClient db, string id)
+    {
+        var entityInfo = db.EntityMaintenance.GetEntityInfo(type);
+        return $@"{entityInfo.DbTableName}_{id}";
+    }
+
+    public static string GetTenantTableName(this Type type, ISqlSugarClient db, SysTenant tenant)
+    {
+        return GetTenantTableName(type, db, tenant.Id.ToString());
+    }
+
+    public static void SetTenantTable(this ISqlSugarClient db, string id)
+    {
+        var types = GetTenantEntityTypes(TenantTypeEnum.Tables);
+
+        foreach (var type in types)
+        {
+            db.MappingTables.Add(type.Name, type.GetTenantTableName(db, id));
+        }
     }
 }

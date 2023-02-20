@@ -54,6 +54,14 @@ public class UserInfoSeedData : IEntitySeedData<SysUserInfo>
                 Name = "赵六",
                 TenantId = 1000004, //租户Id
             },
+            new SysUserInfo()
+            {
+                Id = 10005,
+                LoginName = "sunqi",
+                LoginPWD = "E10ADC3949BA59ABBE56E057F20F883E",
+                Name = "孙七",
+                TenantId = 1000005, //租户Id
+            },
         };
 
         var names = data.Select(s => s.LoginName).ToList();

@@ -50,6 +50,13 @@ public class TenantSeedData : IEntitySeedData<SysTenant>
                 DbType = DbType.Sqlite,
                 Connection = $"DataSource=" + Path.Combine(Environment.CurrentDirectory, "ZhaoLiu.db"),
             },
+            new SysTenant()
+            {
+                Id = 1000005,
+                ConfigId = "Tenant_5",
+                Name = "孙七",
+                TenantType = TenantTypeEnum.Tables,
+            },
         };
     }
 

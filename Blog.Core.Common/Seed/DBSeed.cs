@@ -2,8 +2,10 @@
 using Blog.Core.Common.Extensions;
 using Blog.Core.Common.Helper;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.Tenants;
 using Magicodes.ExporterAndImporter.Excel;
 using Newtonsoft.Json;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,8 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Blog.Core.Model.Tenants;
-using SqlSugar;
 
 namespace Blog.Core.Common.Seed
 {
@@ -422,19 +422,62 @@ namespace Blog.Core.Common.Seed
         public static async Task TenantSeedAsync(MyContext myContext)
         {
             var tenants = await myContext.Db.Queryable<SysTenant>().Where(s => s.TenantType == TenantTypeEnum.Db).ToListAsync();
-            if (!tenants.Any())
+            if (tenants.Any())
             {
-                return;
+                Console.WriteLine($@"Init Multi Tenant Db");
+                foreach (var tenant in tenants)
+                {
+                    Console.WriteLine($@"Init Multi Tenant Db : {tenant.ConfigId}/{tenant.Name}");
+                    await InitTenantSeedAsync(myContext.Db.AsTenant(), tenant.GetConnectionConfig());
+                }
             }
 
-            Console.WriteLine($@"Init Multi Tenant Db");
-            foreach (var tenant in tenants)
+            tenants = await myContext.Db.Queryable<SysTenant>().Where(s => s.TenantType == TenantTypeEnum.Tables).ToListAsync();
+            if (tenants.Any())
             {
-                Console.WriteLine($@"Init Multi Tenant Db : {tenant.ConfigId}/{tenant.Name}");
-                await InitTenantSeedAsync(myContext.Db.AsTenant(), tenant.GetConnectionConfig());
+                await InitTenantSeedAsync(myContext, tenants);
             }
         }
 
+        #region 多租户 多表 初始化
+
+        private static async Task InitTenantSeedAsync(MyContext myContext, List<SysTenant> tenants)
+        {
+            ConsoleHelper.WriteInfoLine($"Init Multi Tenant Tables : {myContext.Db.CurrentConnectionConfig.ConfigId}");
+
+            // 获取所有实体表-初始化租户业务表
+            var entityTypes = TenantUtil.GetTenantEntityTypes(TenantTypeEnum.Tables);
+            if (!entityTypes.Any()) return;
+
+            foreach (var sysTenant in tenants)
+            {
+                foreach (var entityType in entityTypes)
+                {
+                    myContext.Db.CodeFirst
+                        .As(entityType, entityType.GetTenantTableName(myContext.Db, sysTenant))
+                        .InitTables(entityType);
+
+                    Console.WriteLine($@"Init Tables:{entityType.GetTenantTableName(myContext.Db, sysTenant)}");
+                }
+
+                myContext.Db.SetTenantTable(sysTenant.Id.ToString());
+                //多租户初始化种子数据
+                await TenantSeedDataAsync(myContext.Db, TenantTypeEnum.Tables);
+            }
+
+            ConsoleHelper.WriteSuccessLine($"Init Multi Tenant Tables : {myContext.Db.CurrentConnectionConfig.ConfigId} created successfully!");
+        }
+
+        #endregion
+
+        #region 多租户 多库 初始化
+
+        /// <summary>
+        /// 初始化多库
+        /// </summary>
+        /// <param name="itenant"></param>
+        /// <param name="config"></param>
+        /// <returns></returns>
         public static async Task InitTenantSeedAsync(ITenant itenant, ConnectionConfig config)
         {
             itenant.RemoveConnection(config.ConfigId);
@@ -445,12 +488,10 @@ namespace Blog.Core.Common.Seed
             db.DbMaintenance.CreateDatabase();
             ConsoleHelper.WriteSuccessLine($"Init Multi Tenant Db : {config.ConfigId} Database created successfully!");
 
-
             Console.WriteLine($@"Init Multi Tenant Db : {config.ConfigId}  Create Tables");
+
             // 获取所有实体表-初始化租户业务表
-            var entityTypes = RepositorySetting.Entitys
-                .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass)
-                .Where(s => s.IsDefined(typeof(MultiTenantAttribute), false));
+            var entityTypes = TenantUtil.GetTenantEntityTypes(TenantTypeEnum.Db);
             if (!entityTypes.Any()) return;
             foreach (var entityType in entityTypes)
             {
@@ -464,10 +505,12 @@ namespace Blog.Core.Common.Seed
             }
 
             //多租户初始化种子数据
-            await TenantSeedDataAsync(db);
+            await TenantSeedDataAsync(db, TenantTypeEnum.Db);
         }
 
-        private static async Task TenantSeedDataAsync(ISqlSugarClient db)
+        #endregion
+
+        private static async Task TenantSeedDataAsync(ISqlSugarClient db, TenantTypeEnum tenantType)
         {
             // 获取所有种子配置-初始化数据
             var seedDataTypes = AssemblysExtensions.GetAllAssemblies().SelectMany(s => s.DefinedTypes)
@@ -481,12 +524,7 @@ namespace Blog.Core.Common.Seed
                     }
 
                     var eType = esd.GenericTypeArguments[0];
-                    if (eType.GetCustomAttribute<MultiTenantAttribute>() is null)
-                    {
-                        return false;
-                    }
-
-                    return true;
+                    return eType.IsTenantEntity(tenantType);
                 });
             if (!seedDataTypes.Any()) return;
             foreach (var seedType in seedDataTypes)

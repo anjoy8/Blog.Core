@@ -20,4 +20,10 @@ public enum TenantTypeEnum
     /// </summary>
     [Description("库隔离")]
     Db = 2,
+
+    /// <summary>
+    /// 表隔离
+    /// </summary>
+    [Description("表隔离")]
+    Tables = 3,
 }
