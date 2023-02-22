@@ -1,6 +1,10 @@
 ﻿using Blog.Core.Common;
+using Blog.Core.Common.DB;
 using Blog.Core.IRepository.Base;
 using Blog.Core.Model;
+using Blog.Core.Model.Models;
+using Blog.Core.Model.Tenants;
+using Blog.Core.Repository.UnitOfWorks;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -8,11 +12,6 @@ using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Blog.Core.Common.DB;
-using Blog.Core.Common.HttpContextUser;
-using Blog.Core.Model.Models;
-using Blog.Core.Model.Tenants;
-using Blog.Core.Repository.UnitOfWorks;
 
 namespace Blog.Core.Repository.Base
 {
@@ -45,7 +44,8 @@ namespace Blog.Core.Repository.Base
                 }
 
                 //多租户
-                if (typeof(TEntity).GetCustomAttribute<MultiTenantAttribute>() != null)
+                var mta = typeof(TEntity).GetCustomAttribute<MultiTenantAttribute>();
+                if (mta is { TenantType: TenantTypeEnum.Db })
                 {
                     //获取租户信息 租户信息可以提前缓存下来 
                     if (App.User is { TenantId: > 0 })

@@ -311,27 +311,6 @@
             博客文章 评论
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.Models.BusinessTable">
-            <summary>
-            业务数据 <br/>
-            多租户 (Id 隔离)
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.BusinessTable.TenantId">
-            <summary>
-            无需手动赋值
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.BusinessTable.Name">
-            <summary>
-            名称
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.BusinessTable.Amount">
-            <summary>
-            金额
-            </summary>
-        </member>
         <member name="T:Blog.Core.Model.Models.Department">
             <summary>
              部门表
@@ -917,22 +896,6 @@
             软删除 过滤器
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.Models.SubLibraryBusinessTable">
-            <summary>
-            多租户-多库方案 业务表 <br/>
-            公共库无需标记[MultiTenant]特性
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.SubLibraryBusinessTable.Name">
-            <summary>
-            名称
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.SubLibraryBusinessTable.Amount">
-            <summary>
-            金额
-            </summary>
-        </member>
         <member name="T:Blog.Core.Model.Models.SysTenant">
             <summary>
             系统租户表 <br/>
@@ -1143,6 +1106,63 @@
         <member name="P:Blog.Core.Model.Models.TasksQz.Triggers">
             <summary>
             任务内存中的状态
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.BusinessTable">
+            <summary>
+            业务数据 <br/>
+            多租户 (Id 隔离)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BusinessTable.TenantId">
+            <summary>
+            无需手动赋值
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BusinessTable.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BusinessTable.Amount">
+            <summary>
+            金额
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.MultiBusinessSubTable">
+            <summary>
+            多租户-多表方案 业务表 子表 <br/>
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.MultiBusinessTable">
+            <summary>
+            多租户-多表方案 业务表 <br/>
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.MultiBusinessTable.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.MultiBusinessTable.Amount">
+            <summary>
+            金额
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.SubLibraryBusinessTable">
+            <summary>
+            多租户-多库方案 业务表 <br/>
+            公共库无需标记[MultiTenant]特性
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SubLibraryBusinessTable.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SubLibraryBusinessTable.Amount">
+            <summary>
+            金额
             </summary>
         </member>
         <member name="T:Blog.Core.Model.Models.Topic">
@@ -1894,8 +1914,9 @@
         </member>
         <member name="T:Blog.Core.Model.Tenants.MultiTenantAttribute">
             <summary>
-            标识 多租户-分库 的业务表 <br/>
-            公共表无需区分 直接使用主库 各自业务在各自库中
+            标识 多租户 的业务表 <br/>
+            默认设置是多库       <br/>
+            公共表无需区分 直接使用主库 各自业务在各自库中 <br/>
             </summary>
         </member>
         <member name="T:Blog.Core.Model.Tenants.TenantTypeEnum">
@@ -1911,6 +1932,11 @@
         <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Db">
             <summary>
             库隔离
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Tables">
+            <summary>
+            表隔离
             </summary>
         </member>
         <member name="T:Blog.Core.Model.ViewModels.AdvertisementViewModels">

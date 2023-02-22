@@ -1238,7 +1238,7 @@
         </member>
         <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByDbController">
             <summary>
-            多租户测试
+            多租户-多库方案 测试
             </summary>
         </member>
         <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByDbController.GetAll">
@@ -1267,6 +1267,23 @@
         <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.Post(Blog.Core.Model.Models.BusinessTable)">
             <summary>
             新增业务数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByTableController">
+            <summary>
+            多租户-多表方案 测试
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByTableController.GetAll">
+            <summary>
+            获取租户下全部业务数据 <br/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByTableController.Post(Blog.Core.Model.Models.MultiBusinessTable)">
+            <summary>
+            新增数据
             </summary>
             <returns></returns>
         </member>
