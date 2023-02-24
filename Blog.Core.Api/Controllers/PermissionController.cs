@@ -61,13 +61,13 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <param name="page"></param>
         /// <param name="key"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<Permission>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<Permission>>> Get(int page = 1, string key = "", int pageSize = 50)
         {
             PageModel<Permission> permissions = new PageModel<Permission>();
-            int intPageSize = 50;
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
                 key = "";
@@ -88,7 +88,7 @@ namespace Blog.Core.Controllers
 
 
 
-            permissions = await _permissionServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
+            permissions = await _permissionServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, pageSize, " Id desc ");
 
 
             #region 单独处理

@@ -374,12 +374,13 @@
             <param name="user"></param>
             <param name="requirement"></param>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.Get(System.Int32,System.String)">
+        <member name="M:Blog.Core.Controllers.PermissionController.Get(System.Int32,System.String,System.Int32)">
             <summary>
             获取菜单
             </summary>
             <param name="page"></param>
             <param name="key"></param>
+            <param name="pageSize"></param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.PermissionController.GetTreeTable(System.Int32,System.String)">
