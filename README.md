@@ -74,7 +74,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 #### 框架模块：  
 - [x] 采用`仓储+服务+接口`的形式封装框架；
 - [x] 异步 async/await 开发；
-- [x] 接入国产数据库ORM组件 —— SqlSugar，封装数据库操作；
+- [x] 接入国产数据库ORM组件 —— SqlSugar，封装数据库操作，支持级联操作；
 - [x] 支持自由切换多种数据库，MySql/SqlServer/Sqlite/Oracle/Postgresql/达梦/人大金仓；
 - [x] 实现项目启动，自动生成种子数据 ✨； 
 - [x] 实现数据库主键类型配置化，什么类型都可以自定义 ✨； 
@@ -87,6 +87,8 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 封装`Blog.Core.Webapi.Template`项目模板，一键重建自己的项目 ✨；
 - [x] 搭配多个前端案例供参考和借鉴：Blog.Vue、Blog.Admin、Nuxt.tbug、Blog.Mvp.Blazor ✨；
 - [x] 统一集成 IdentityServer4 认证 ✨;
+- [x] 统一实现多租户;  
+
 
 组件模块：
 - [x] 提供 Redis 做缓存处理；
@@ -111,6 +113,9 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 新增 Kafka 消息队列，并配合实现EventBus ✨;
 - [x] 新增 微信公众号管理，并集成到Blog.Admin后台 ✨;
 - [x] 新增 - 数据部门权限;
+- [x] 新增 - Log4net集成日志数据持久化到数据库;  
+- [x] 新增 - 多租户模式（单表，多表，多库三种模式）;  
+
 
 微服务模块：
 - [x] 可配合 Docker 实现容器化；
