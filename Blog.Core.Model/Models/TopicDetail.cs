@@ -19,7 +19,7 @@ namespace Blog.Core.Model.Models
         [SugarColumn(Length = 200, IsNullable = true)]
         public string tdName { get; set; }
 
-        [SugarColumn(Length = 2000, IsNullable = true)]
+        [SugarColumn(Length = 6000, IsNullable = true)]
         public string tdContent { get; set; }
 
         [SugarColumn(Length = 2000, IsNullable = true)]

@@ -40,7 +40,7 @@ namespace Blog.Core.Common.LogHelper
 
     }
 
-    public class ApiLogAopInfo
+    public class AOPLogInfo
     {
         /// <summary>
         /// 请求时间
@@ -76,9 +76,9 @@ namespace Blog.Core.Common.LogHelper
         public string ResponseJsonData { get; set; } = string.Empty;
     }
 
-    public class ApiLogAopExInfo
+    public class AOPLogExInfo
     {
-        public ApiLogAopInfo ApiLogAopInfo { get; set; }
+        public AOPLogInfo ApiLogAopInfo { get; set; }
         /// <summary>
         /// 异常
         /// </summary>
@@ -87,5 +87,23 @@ namespace Blog.Core.Common.LogHelper
         /// 异常信息
         /// </summary>
         public string ExMessage { get; set; } = string.Empty;
+    }
+
+    public class RequestLogInfo
+    {
+        /// <summary>
+        /// 请求地址
+        /// </summary>
+        public string Path { get; set; }
+
+        /// <summary>
+        /// 请求参数
+        /// </summary>
+        public string QueryString { get; set; }
+
+        /// <summary>
+        /// Body参数
+        /// </summary>
+        public string BodyData { get; set; }
     }
 }

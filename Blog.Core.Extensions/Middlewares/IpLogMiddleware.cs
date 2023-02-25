@@ -44,6 +44,7 @@ namespace Blog.Core.Extensions.Middlewares
                     {
                         // 存储请求数据
                         var request = context.Request;
+
                         var requestInfo = JsonConvert.SerializeObject(new RequestInfo()
                         {
                             Ip = GetClientIP(context),
@@ -58,7 +59,8 @@ namespace Blog.Core.Extensions.Middlewares
                             // 自定义log输出
                             Parallel.For(0, 1, e =>
                             {
-                                LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
+                                //LogLock.OutSql2Log("RequestIpInfoLog", new string[] { requestInfo + "," }, false);
+                                LogLock.OutLogAOP("RequestIpInfoLog", context.TraceIdentifier, new string[] { requestInfo.GetType().ToString(), requestInfo }, false);
                             });
 
                             //try

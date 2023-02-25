@@ -45,7 +45,7 @@ namespace Blog.Core.AOP
                 json = "无法序列化，可能是兰姆达表达式等原因造成，按照框架优化代码" + ex.ToString();
             }
             DateTime startTime = DateTime.Now;
-            ApiLogAopInfo apiLogAopInfo = new ApiLogAopInfo
+            AOPLogInfo apiLogAopInfo = new AOPLogInfo
             {
                 RequestTime = startTime.ToString("yyyy-MM-dd hh:mm:ss fff"),
                 OpUserName = UserName,
@@ -103,7 +103,7 @@ namespace Blog.Core.AOP
 
 
                     // 如果方案一不行，试试这个方案
-                    #region 方案二
+                    //#region 方案二
 
                     //var type = invocation.Method.ReturnType;
                     //var resultProperty = type.GetProperty("Result");
@@ -120,10 +120,10 @@ namespace Blog.Core.AOP
                     //Parallel.For(0, 1, e =>
                     //{
                     //    //LogLock.OutLogAOP("AOPLog", new string[] { dataIntercept });
-                    //    LogLock.OutSql2Log("AOPLog", new string[] { JsonConvert.SerializeObject(apiLogAopInfo) });
+                    //    LogLock.OutLogAOP("AOPLog", new string[] { apiLogAopInfo.GetType().ToString() + " - ResponseJsonDataType:" + type, JsonConvert.SerializeObject(apiLogAopInfo) });
                     //});
 
-                    #endregion
+                    //#endregion
                 }
                 else
                 {
@@ -137,10 +137,19 @@ namespace Blog.Core.AOP
                     {
                         jsonResult = "无法序列化，可能是兰姆达表达式等原因造成，按照框架优化代码" + ex.ToString();
                     }
+                    var type = invocation.Method.ReturnType;
+                    var resultProperty = type.GetProperty("Result");
+                    DateTime endTime = DateTime.Now;
+                    string ResponseTime = (endTime - startTime).Milliseconds.ToString();
+                    apiLogAopInfo.ResponseTime = endTime.ToString("yyyy-MM-dd hh:mm:ss fff");
+                    apiLogAopInfo.ResponseIntervalTime = ResponseTime + "ms";
+                    //apiLogAopInfo.ResponseJsonData = JsonConvert.SerializeObject(resultProperty.GetValue(invocation.ReturnValue));
                     apiLogAopInfo.ResponseJsonData = jsonResult;
+                    //dataIntercept += ($"【执行完成结果】：{jsonResult}");
                     Parallel.For(0, 1, e =>
                     {
-                        LogLock.OutSql2Log("AOPLog", new string[] { JsonConvert.SerializeObject(apiLogAopInfo) });
+                        //LogLock.OutLogAOP("AOPLog", new string[] { dataIntercept });
+                        LogLock.OutLogAOP("AOPLog", _accessor.HttpContext?.TraceIdentifier, new string[] { apiLogAopInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopInfo) });
                     });
                 }
             }
@@ -154,7 +163,7 @@ namespace Blog.Core.AOP
             }
         }
 
-        private async Task SuccessAction(IInvocation invocation, ApiLogAopInfo apiLogAopInfo, DateTime startTime, object o = null)
+        private async Task SuccessAction(IInvocation invocation, AOPLogInfo apiLogAopInfo, DateTime startTime, object o = null)
         {
             //invocation.ReturnValue = o;
             //var type = invocation.Method.ReturnType;
@@ -179,12 +188,13 @@ namespace Blog.Core.AOP
             {
                 Parallel.For(0, 1, e =>
                 {
-                    LogLock.OutSql2Log("AOPLog", new string[] { JsonConvert.SerializeObject(apiLogAopInfo) });
+                    //LogLock.OutSql2Log("AOPLog", new string[] { JsonConvert.SerializeObject(apiLogAopInfo) });
+                    LogLock.OutLogAOP("AOPLog", _accessor.HttpContext?.TraceIdentifier, new string[] { apiLogAopInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopInfo) });
                 });
             });
         }
 
-        private void LogEx(Exception ex, ApiLogAopInfo apiLogAopInfo)
+        private void LogEx(Exception ex, AOPLogInfo dataIntercept)
         {
             if (ex != null)
             {
@@ -192,16 +202,18 @@ namespace Blog.Core.AOP
                 MiniProfiler.Current.CustomTiming("Errors：", ex.Message);
                 //执行的 service 中，捕获异常
                 //dataIntercept += ($"【执行完成结果】：方法中出现异常：{ex.Message + ex.InnerException}\r\n");
-                ApiLogAopExInfo apiLogAopExInfo = new ApiLogAopExInfo
+                AOPLogExInfo apiLogAopExInfo = new AOPLogExInfo
                 {
                     ExMessage = ex.Message,
-                    InnerException = ex.InnerException.ToString(),
-                    ApiLogAopInfo = apiLogAopInfo
+                    InnerException = "InnerException-内部异常:\r\n" + (ex.InnerException == null ? "" : ex.InnerException.InnerException.ToString()) + ("\r\nStackTrace-堆栈跟踪:\r\n") + (ex.StackTrace == null ? "" : ex.StackTrace.ToString()),
+                    ApiLogAopInfo = dataIntercept
                 };
                 // 异常日志里有详细的堆栈信息
                 Parallel.For(0, 1, e =>
                 {
-                    LogLock.OutSql2Log("AOPLog", new string[] { JsonConvert.SerializeObject(apiLogAopExInfo) });
+                    //LogLock.OutLogAOP("AOPLogEx", new string[] { dataIntercept });
+                    LogLock.OutLogAOP("AOPLogEx", _accessor.HttpContext?.TraceIdentifier, new string[] { apiLogAopExInfo.GetType().ToString(), JsonConvert.SerializeObject(apiLogAopExInfo) });
+
                 });
             }
         }

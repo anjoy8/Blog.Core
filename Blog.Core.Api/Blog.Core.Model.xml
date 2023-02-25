@@ -301,6 +301,16 @@
             逻辑删除
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.BlogArticle.Comments">
+            <summary>
+            评论
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.BlogArticleComment">
+            <summary>
+            博客文章 评论
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.Models.Department">
             <summary>
              部门表
@@ -374,6 +384,61 @@
             Desc:更新时间
             Default:
             Nullable:True
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.GblLogAudit">
+            <summary>
+            用户团队表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.TraceId">
+            <summary>
+            HttpContext.TraceIdentifier 事件链路ID（获取或设置一个唯一标识符，用于在跟踪日志中表示此请求。）
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Date">
+            <summary>
+            时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Thread">
+            <summary>
+            线程
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Level">
+            <summary>
+            等级
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Logger">
+            <summary>
+            记录器
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.LogType">
+            <summary>
+            日志类型
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.DataType">
+            <summary>
+            数据类型
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Message">
+            <summary>
+            错误信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.GblLogAudit.Exception">
+            <summary>
+            异常
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.Guestbook.blogId">
@@ -767,6 +832,127 @@
             修改时间
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Id">
+            <summary>
+            雪花Id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Enabled">
+            <summary>
+            状态 <br/>
+            中立字段，某些表可使用某些表不使用
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.IsDeleted">
+            <summary>
+            中立字段，某些表可使用某些表不使用   <br/>
+            逻辑上的删除，非物理删除  <br/>
+            例如：单据删除并非直接删除
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.IsInternal">
+            <summary>
+            中立字段 <br/>
+            是否内置数据
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.CreateId">
+            <summary>
+            创建ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.CreateBy">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.ModifyId">
+            <summary>
+            修改ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.ModifyBy">
+            <summary>
+            更新者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.ModifyTime">
+            <summary>
+            修改日期
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Version">
+            <summary>
+            数据版本
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.RootTkey.Interface.IDeleteFilter">
+            <summary>
+            软删除 过滤器
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.SysTenant">
+            <summary>
+            系统租户表 <br/>
+            根据TenantType 分为两种方案: <br/>
+            1.按租户字段区分<br/>
+            2.按租户分库<br/>
+            
+            <br/>
+            
+            注意:<br/>
+            使用租户Id方案,无需配置分库的连接
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysTenant.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysTenant.TenantType">
+            <summary>
+            租户类型
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysTenant.ConfigId">
+            <summary>
+            数据库/租户标识 不可重复<br/>
+            使用Id方案,可无需配置
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysTenant.Host">
+            <summary>
+            主机<br/>
+            使用Id方案,可无需配置
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysTenant.DbType">
+            <summary>
+            数据库类型<br/>
+            使用Id方案,可无需配置
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysTenant.Connection">
+            <summary>
+            数据库连接<br/>
+            使用Id方案,可无需配置
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysTenant.Status">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysTenant.Remark">
+            <summary>
+            备注
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.Models.SysUserInfo">
             <summary>
             用户信息表
@@ -830,6 +1016,11 @@
         <member name="P:Blog.Core.Model.Models.SysUserInfo.Name">
             <summary>
             登录账号
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SysUserInfo.TenantId">
+            <summary>
+            租户Id
             </summary>
         </member>
         <member name="T:Blog.Core.Model.Models.TasksQz">
@@ -915,6 +1106,63 @@
         <member name="P:Blog.Core.Model.Models.TasksQz.Triggers">
             <summary>
             任务内存中的状态
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.BusinessTable">
+            <summary>
+            业务数据 <br/>
+            多租户 (Id 隔离)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BusinessTable.TenantId">
+            <summary>
+            无需手动赋值
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BusinessTable.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.BusinessTable.Amount">
+            <summary>
+            金额
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.MultiBusinessSubTable">
+            <summary>
+            多租户-多表方案 业务表 子表 <br/>
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.MultiBusinessTable">
+            <summary>
+            多租户-多表方案 业务表 <br/>
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.MultiBusinessTable.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.MultiBusinessTable.Amount">
+            <summary>
+            金额
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.SubLibraryBusinessTable">
+            <summary>
+            多租户-多库方案 业务表 <br/>
+            公共库无需标记[MultiTenant]特性
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SubLibraryBusinessTable.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SubLibraryBusinessTable.Amount">
+            <summary>
+            金额
             </summary>
         </member>
         <member name="T:Blog.Core.Model.Models.Topic">
@@ -1652,6 +1900,43 @@
         <member name="P:Blog.Core.Model.TableModel`1.Data">
             <summary>
             返回数据集
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Tenants.ITenantEntity">
+            <summary>
+            租户模型接口
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Tenants.ITenantEntity.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Tenants.MultiTenantAttribute">
+            <summary>
+            标识 多租户 的业务表 <br/>
+            默认设置是多库       <br/>
+            公共表无需区分 直接使用主库 各自业务在各自库中 <br/>
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Tenants.TenantTypeEnum">
+            <summary>
+            租户隔离方案
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Id">
+            <summary>
+            Id隔离
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Db">
+            <summary>
+            库隔离
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Tables">
+            <summary>
+            表隔离
             </summary>
         </member>
         <member name="T:Blog.Core.Model.ViewModels.AdvertisementViewModels">

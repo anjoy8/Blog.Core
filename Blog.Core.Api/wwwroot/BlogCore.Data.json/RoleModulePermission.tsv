@@ -1692,5 +1692,16 @@
     "ModuleId": 66,
     "PermissionId": 116,
     "Id": 132
+  },
+  {
+    "IsDeleted": false,
+    "CreateId": 12,
+    "CreateBy": "blogadmin",
+    "CreateTime": "2022-04-11 16:08:49",
+    "ModifyTime": "2022-04-11 00:00:00",
+    "RoleId": 4,
+    "ModuleId": 72,
+    "PermissionId": 122,
+    "Id": 133
   }
 ]

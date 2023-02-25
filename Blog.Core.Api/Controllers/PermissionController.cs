@@ -1,5 +1,6 @@
 ﻿using Blog.Core.AuthHelper;
 using Blog.Core.AuthHelper.OverWrite;
+using Blog.Core.Common;
 using Blog.Core.Common.Helper;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
@@ -7,6 +8,8 @@ using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Blog.Core.Controllers
 {
@@ -22,6 +25,7 @@ namespace Blog.Core.Controllers
         readonly IModuleServices _moduleServices;
         readonly IRoleModulePermissionServices _roleModulePermissionServices;
         readonly IUserRoleServices _userRoleServices;
+        private readonly IHttpClientFactory _httpClientFactory;
         readonly IHttpContextAccessor _httpContext;
         readonly IUser _user;
         private readonly PermissionRequirement _requirement;
@@ -33,15 +37,20 @@ namespace Blog.Core.Controllers
         /// <param name="moduleServices"></param>
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="userRoleServices"></param>
+        /// <param name="httpClientFactory"></param>
         /// <param name="httpContext"></param>
         /// <param name="user"></param>
         /// <param name="requirement"></param>
-        public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices, IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices, IHttpContextAccessor httpContext, IUser user, PermissionRequirement requirement)
+        public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices,
+            IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices,
+            IHttpClientFactory httpClientFactory,
+            IHttpContextAccessor httpContext, IUser user, PermissionRequirement requirement)
         {
             _permissionServices = permissionServices;
             _moduleServices = moduleServices;
             _roleModulePermissionServices = roleModulePermissionServices;
             _userRoleServices = userRoleServices;
+            this._httpClientFactory = httpClientFactory;
             _httpContext = httpContext;
             _user = user;
             _requirement = requirement;
@@ -52,13 +61,13 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <param name="page"></param>
         /// <param name="key"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<Permission>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<Permission>>> Get(int page = 1, string key = "", int pageSize = 50)
         {
             PageModel<Permission> permissions = new PageModel<Permission>();
-            int intPageSize = 50;
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
                 key = "";
@@ -79,7 +88,7 @@ namespace Blog.Core.Controllers
 
 
 
-            permissions = await _permissionServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
+            permissions = await _permissionServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, pageSize, " Id desc ");
 
 
             #region 单独处理
@@ -195,13 +204,6 @@ namespace Blog.Core.Controllers
             //    response = permissions
             //};
             return Success(permissions, "获取成功");
-        }
-
-        // GET: api/User/5
-        [HttpGet("{id}")]
-        public string Get(string id)
-        {
-            return "value";
         }
 
         /// <summary>
@@ -438,7 +440,7 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 获取路由树【PRO】
+        /// 获取路由树
         /// </summary>
         /// <param name="uid"></param>
         /// <returns></returns>
@@ -514,7 +516,7 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 通过角色获取菜单【无权限】
+        /// 通过角色获取菜单
         /// </summary>
         /// <param name="rid"></param>
         /// <returns></returns>
@@ -642,6 +644,133 @@ namespace Blog.Core.Controllers
                 data.response = ids;
                 data.msg = $"{sucCount}条数据添加成功";
             }
+
+            return data;
+        }
+
+        /// <summary>
+        /// 系统接口菜单同步接口
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="controllerName">接口module的控制器名称</param>
+        /// <param name="pid">菜单permission的父id</param>
+        /// <param name="isAction">是否执行迁移到数据</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<MessageModel<List<Permission>>> MigratePermission(string action = "", string controllerName = "", int pid = 0, bool isAction = false)
+        {
+            var data = new MessageModel<List<Permission>>();
+            if (controllerName.IsNullOrEmpty())
+            {
+                data.msg = "必须填写要迁移的所属接口的控制器名称";
+                return data;
+            }
+
+            controllerName = controllerName.ToLower();
+
+            using var client = _httpClientFactory.CreateClient();
+            var jsonFileDomain = AppSettings.GetValue("Startup:Domain");
+
+            if (jsonFileDomain.IsNullOrEmpty())
+            {
+                data.msg = "Swagger.json在线文件域名不能为空";
+                return data;
+            }
+
+            var url = $"{jsonFileDomain}/swagger/V2/swagger.json";
+
+            var response = await client.GetAsync(url);
+            var body = await response.Content.ReadAsStringAsync();
+
+            var resultJObj = (JObject)JsonConvert.DeserializeObject(body);
+            var paths = resultJObj["paths"].ObjToString();
+            var pathsJObj = (JObject)JsonConvert.DeserializeObject(paths);
+
+            List<Permission> permissions = new List<Permission>();
+            foreach (JProperty jProperty in pathsJObj.Properties())
+            {
+                var apiPath = jProperty.Name.ToLower();
+                if (action.IsNotEmptyOrNull())
+                {
+                    if (!apiPath.Contains(action.ToLower()))
+                    {
+                        continue;
+                    }
+                }
+                string httpmethod = "";
+                if (jProperty.Value.ToString().ToLower().Contains("get"))
+                {
+                    httpmethod = "get";
+                }
+                else if (jProperty.Value.ToString().ToLower().Contains("post"))
+                {
+                    httpmethod = "post";
+                }
+                else if (jProperty.Value.ToString().ToLower().Contains("put"))
+                {
+                    httpmethod = "put";
+                }
+                else if (jProperty.Value.ToString().ToLower().Contains("delete"))
+                {
+                    httpmethod = "delete";
+                }
+
+                var summary = jProperty.Value.SelectToken($"{httpmethod}.summary").ObjToString();
+
+                var subIx = summary.IndexOf("(Auth");
+                if (subIx > 0)
+                {
+                    summary = summary.Substring(0, subIx - 1);
+                }
+
+                permissions.Add(new Permission()
+                {
+                    Code = " ",
+                    Name = summary,
+                    IsButton = true,
+                    IsHide = false,
+                    Enabled = true,
+                    CreateTime = DateTime.Now,
+                    IsDeleted = false,
+                    Pid = pid,
+                    MName = apiPath ?? "",
+                    Module = new Modules()
+                    {
+                        LinkUrl = apiPath ?? "",
+                        Name = summary,
+                        Enabled = true,
+                        CreateTime = DateTime.Now,
+                        ModifyTime = DateTime.Now,
+                        IsDeleted = false,
+                    }
+                });
+            }
+
+            var modulesList = (await _moduleServices.Query(d => d.IsDeleted == false && d.LinkUrl != null)).Select(d => d.LinkUrl.ToLower()).ToList();
+            permissions = permissions.Where(d => !modulesList.Contains(d.Module.LinkUrl.ToLower()) && d.Module.LinkUrl.Contains($"/{controllerName}/")).ToList();
+
+
+            if (isAction)
+            {
+                foreach (var item in permissions)
+                {
+                    List<Modules> modules = await _moduleServices.Query(d => d.LinkUrl != null && d.LinkUrl.ToLower() == item.Module.LinkUrl);
+                    if (!modules.Any())
+                    {
+                        int mid = await _moduleServices.Add(item.Module);
+                        if (mid > 0)
+                        {
+                            item.Mid = mid;
+                            int permissionid = await _permissionServices.Add(item);
+                        }
+
+                    }
+                }
+            }
+
+            data.response = permissions;
+            data.status = 200;
+            data.success = isAction;
 
             return data;
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using Blog.Core.Common;
 using log4net;
 using Microsoft.AspNetCore.Builder;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using static Blog.Core.Extensions.CustomApiVersion;
 
 namespace Blog.Core.Extensions.Middlewares
@@ -38,6 +39,7 @@ namespace Blog.Core.Extensions.Middlewares
                     throw new Exception(msg);
                 }
                 c.IndexStream = streamHtml;
+                c.DocExpansion(DocExpansion.None); //->修改界面打开时自动折叠
 
                 if (Permissions.IsUseIds4)
                 {

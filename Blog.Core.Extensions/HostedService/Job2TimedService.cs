@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Tasks
+namespace Blog.Core.Extensions
 {
     public class Job2TimedService : IHostedService, IDisposable
     {

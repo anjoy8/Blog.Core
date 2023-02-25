@@ -106,15 +106,13 @@ namespace Blog.Core.Extensions.Middlewares
 
                         // 自定义log输出
                         var requestInfo = JsonConvert.SerializeObject(userAccessModel);
-                        //Parallel.For(0, 1, e =>
-                        //{
-                        //    LogLock.OutSql2Log("RecordAccessLogs", new string[] { requestInfo + "," }, false);
-                        //});
-
-                        var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RecordAccessLogs");
-                        SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false);
-                       
-
+                        Parallel.For(0, 1, e =>
+                        {
+                            //LogLock.OutSql2Log("RecordAccessLogs", new string[] { requestInfo + "," }, false);
+                            LogLock.OutLogAOP("RecordAccessLogs", context.TraceIdentifier, new string[] { userAccessModel.GetType().ToString(), requestInfo }, false);
+                        });
+                        //var logFileName = FileHelper.GetAvailableFileNameWithPrefixOrderSize(_environment.ContentRootPath, "RecordAccessLogs");
+                        //SerilogServer.WriteLog(logFileName, new string[] { requestInfo + "," }, false);
                         return Task.CompletedTask;
                     });
 

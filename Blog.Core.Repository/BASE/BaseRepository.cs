@@ -1,6 +1,10 @@
 ﻿using Blog.Core.Common;
+using Blog.Core.Common.DB;
 using Blog.Core.IRepository.Base;
 using Blog.Core.Model;
+using Blog.Core.Model.Models;
+using Blog.Core.Model.Tenants;
+using Blog.Core.Repository.UnitOfWorks;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -8,7 +12,6 @@ using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Blog.Core.Repository.UnitOfWorks;
 
 namespace Blog.Core.Repository.Base
 {
@@ -22,11 +25,12 @@ namespace Blog.Core.Repository.Base
             get
             {
                 ISqlSugarClient db = _dbBase;
+
                 /* 如果要开启多库支持，
-                * 1、在appsettings.json 中开启MultiDBEnabled节点为true，必填
+                * 1、在appsettings.json 中开启MutiDBEnabled节点为true，必填
                 * 2、设置一个主连接的数据库ID，节点MainDB，对应的连接字符串的Enabled也必须true，必填
                 */
-                if (AppSettings.app(new[] {"MultiDBEnabled"}).ObjToBool())
+                if (AppSettings.app(new[] { "MutiDBEnabled" }).ObjToBool())
                 {
                     //修改使用 model备注字段作为切换数据库条件，使用sqlsugar TenantAttribute存放数据库ConnId
                     //参考 https://www.donet5.com/Home/Doc?typeId=2246
@@ -35,6 +39,28 @@ namespace Blog.Core.Repository.Base
                     {
                         //统一处理 configId 小写
                         db = _dbBase.GetConnectionScope(tenantAttr.configId.ToString().ToLower());
+                        return db;
+                    }
+                }
+
+                //多租户
+                var mta = typeof(TEntity).GetCustomAttribute<MultiTenantAttribute>();
+                if (mta is { TenantType: TenantTypeEnum.Db })
+                {
+                    //获取租户信息 租户信息可以提前缓存下来 
+                    if (App.User is { TenantId: > 0 })
+                    {
+                        var tenant = db.Queryable<SysTenant>().WithCache().Where(s => s.Id == App.User.TenantId).First();
+                        if (tenant != null)
+                        {
+                            var iTenant = db.AsTenant();
+                            if (!iTenant.IsAnyConnection(tenant.ConfigId))
+                            {
+                                iTenant.AddConnection(tenant.GetConnectionConfig());
+                            }
+
+                            return iTenant.GetConnectionScope(tenant.ConfigId);
+                        }
                     }
                 }
 
@@ -51,12 +77,12 @@ namespace Blog.Core.Repository.Base
         }
 
 
-
         public async Task<TEntity> QueryById(object objId)
         {
             //return await Task.Run(() => _db.Queryable<TEntity>().InSingle(objId));
             return await _db.Queryable<TEntity>().In(objId).SingleAsync();
         }
+
         /// <summary>
         /// 功能描述:根据ID查询一条数据
         /// 作　　者:Blog.Core
@@ -161,25 +187,28 @@ namespace Blog.Core.Repository.Base
         }
 
         public async Task<bool> Update(
-          TEntity entity,
-          List<string> lstColumns = null,
-          List<string> lstIgnoreColumns = null,
-          string where = ""
-            )
+            TEntity entity,
+            List<string> lstColumns = null,
+            List<string> lstIgnoreColumns = null,
+            string where = ""
+        )
         {
             IUpdateable<TEntity> up = _db.Updateable(entity);
             if (lstIgnoreColumns != null && lstIgnoreColumns.Count > 0)
             {
                 up = up.IgnoreColumns(lstIgnoreColumns.ToArray());
             }
+
             if (lstColumns != null && lstColumns.Count > 0)
             {
                 up = up.UpdateColumns(lstColumns.ToArray());
             }
+
             if (!string.IsNullOrEmpty(where))
             {
                 up = up.Where(where);
             }
+
             return await up.ExecuteCommandHasChangeAsync();
         }
 
@@ -212,7 +241,6 @@ namespace Blog.Core.Repository.Base
         {
             return await _db.Deleteable<TEntity>().In(ids).ExecuteCommandHasChangeAsync();
         }
-
 
 
         /// <summary>
@@ -284,6 +312,7 @@ namespace Blog.Core.Repository.Base
         {
             return await _db.Queryable<TEntity>().WhereIF(whereExpression != null, whereExpression).OrderByIF(orderByFields != null, orderByFields).ToListAsync();
         }
+
         /// <summary>
         /// 功能描述:查询一个列表
         /// </summary>
@@ -393,16 +422,14 @@ namespace Blog.Core.Repository.Base
         /// <param name="orderByFields">排序字段，如name asc,age desc</param>
         /// <returns>数据列表</returns>
         public async Task<List<TEntity>> Query(
-          string where,
-          int pageIndex,
-          int pageSize,
-
-          string orderByFields)
+            string where,
+            int pageIndex,
+            int pageSize,
+            string orderByFields)
         {
             return await _db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(orderByFields), orderByFields)
                 .WhereIF(!string.IsNullOrEmpty(where), where).ToPageListAsync(pageIndex, pageSize);
         }
-
 
 
         /// <summary>
@@ -415,12 +442,11 @@ namespace Blog.Core.Repository.Base
         /// <returns></returns>
         public async Task<PageModel<TEntity>> QueryPage(Expression<Func<TEntity, bool>> whereExpression, int pageIndex = 1, int pageSize = 20, string orderByFields = null)
         {
-
             RefAsync<int> totalCount = 0;
             var list = await _db.Queryable<TEntity>()
-             .OrderByIF(!string.IsNullOrEmpty(orderByFields), orderByFields)
-             .WhereIF(whereExpression != null, whereExpression)
-             .ToPageListAsync(pageIndex, pageSize, totalCount);
+                .OrderByIF(!string.IsNullOrEmpty(orderByFields), orderByFields)
+                .WhereIF(whereExpression != null, whereExpression)
+                .ToPageListAsync(pageIndex, pageSize, totalCount);
 
             return new PageModel<TEntity>(pageIndex, totalCount, pageSize, list);
         }
@@ -446,6 +472,7 @@ namespace Blog.Core.Repository.Base
             {
                 return await _db.Queryable(joinExpression).Select(selectExpression).ToListAsync();
             }
+
             return await _db.Queryable(joinExpression).Where(whereLambda).Select(selectExpression).ToListAsync();
         }
 
@@ -471,13 +498,12 @@ namespace Blog.Core.Repository.Base
             int pageSize = 20,
             string orderByFields = null)
         {
-
             RefAsync<int> totalCount = 0;
             var list = await _db.Queryable<T, T2>(joinExpression)
-             .Select(selectExpression)
-             .OrderByIF(!string.IsNullOrEmpty(orderByFields), orderByFields)
-             .WhereIF(whereExpression != null, whereExpression)
-             .ToPageListAsync(pageIndex, pageSize, totalCount);
+                .Select(selectExpression)
+                .OrderByIF(!string.IsNullOrEmpty(orderByFields), orderByFields)
+                .WhereIF(whereExpression != null, whereExpression)
+                .ToPageListAsync(pageIndex, pageSize, totalCount);
             return new PageModel<TResult>(pageIndex, totalCount, pageSize, list);
         }
 
@@ -506,10 +532,10 @@ namespace Blog.Core.Repository.Base
         {
             RefAsync<int> totalCount = 0;
             var list = await _db.Queryable<T, T2>(joinExpression).GroupBy(groupExpression)
-             .Select(selectExpression)
-             .OrderByIF(!string.IsNullOrEmpty(orderByFields), orderByFields)
-             .WhereIF(whereExpression != null, whereExpression)
-             .ToPageListAsync(pageIndex, pageSize, totalCount);
+                .Select(selectExpression)
+                .OrderByIF(!string.IsNullOrEmpty(orderByFields), orderByFields)
+                .WhereIF(whereExpression != null, whereExpression)
+                .ToPageListAsync(pageIndex, pageSize, totalCount);
             return new PageModel<TResult>(pageIndex, totalCount, pageSize, list);
         }
 
@@ -531,7 +557,5 @@ namespace Blog.Core.Repository.Base
         //        groupName = s.groupName,
         //        jobName = s.jobName
         //    }, exp, s => new { s.uID, s.uRealName, s.groupName, s.jobName }, model.currentPage, model.pageSize, model.orderField + " " + model.orderType);
-
     }
-
 }
