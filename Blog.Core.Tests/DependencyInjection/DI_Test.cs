@@ -54,7 +54,7 @@ namespace Blog.Core.Tests
         public IContainer DICollections()
         {
             var basePath = AppContext.BaseDirectory;
-            Appsettings.Init(basePath);
+            AppSettings.Init(basePath);
 
             IServiceCollection services = new ServiceCollection();
             services.AddAutoMapper(typeof(Startup));

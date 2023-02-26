@@ -9,7 +9,7 @@ using System.Linq;
 namespace Blog.Core.Common
 {
 
-    public static class Appsettings
+    public static class AppSettings
     {
         /// <summary>
         /// 配置

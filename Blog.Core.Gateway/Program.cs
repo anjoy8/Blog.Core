@@ -13,7 +13,7 @@ namespace Blog.Core.AdminMvc
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration(Appsettings.AddConfigureFiles)
+            .ConfigureAppConfiguration(AppSettings.AddConfigureFiles)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>().UseUrls("http://*:9000");

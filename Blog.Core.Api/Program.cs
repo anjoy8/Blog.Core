@@ -40,7 +40,7 @@ builder.Host
     builder.SetMinimumLevel(LogLevel.Error);
     builder.AddLog4Net(Path.Combine(Directory.GetCurrentDirectory(), "Log4net.config"));
 })
-.ConfigureAppConfiguration(Appsettings.AddConfigureFiles)
+.ConfigureAppConfiguration(AppSettings.AddConfigureFiles)
 .ConfigureAppConfiguration(config=> config.AddConfigurationApollo());
 
 // 2、配置服务

@@ -37,9 +37,9 @@ namespace Blog.Core.Extensions.Apollo
                 {
                     apolloBuilder.AddNamespace(item.Name, MatchConfigFileFormat(item.Format));
                 }
-                Appsettings.Configuration = builder.Build();
+                AppSettings.Configuration = builder.Build();
                 //监听apollo配置
-                Monitor((IConfigurationRoot)Appsettings.Configuration);
+                Monitor((IConfigurationRoot)AppSettings.Configuration);
             }
 
         }
