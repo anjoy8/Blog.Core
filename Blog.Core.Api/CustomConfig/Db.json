@@ -53,7 +53,7 @@
       "DBType": 0,
       "Enabled": true,
       "HitRate": 20,
-      "Connection": "server=.;Database=blogcore001;Uid=root;Pwd=123456;Port=3096;Allow User Variables=True;"
+      "Connection": "server=localhost;Database=blogcore001;Uid=root;Pwd=root;Port=3306;Allow User Variables=True;"
     },
     {
       "ConnId": "WMBLOG_ORACLE",
