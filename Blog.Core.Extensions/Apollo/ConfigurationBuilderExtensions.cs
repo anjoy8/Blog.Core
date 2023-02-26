@@ -7,6 +7,7 @@ using Com.Ctrip.Framework.Apollo.Enums;
 using Com.Ctrip.Framework.Apollo.Logging;
 using Microsoft.Extensions.Primitives;
 using System.Reflection;
+using Blog.Core.Common;
 
 namespace Blog.Core.Extensions.Apollo
 {
@@ -17,7 +18,7 @@ namespace Blog.Core.Extensions.Apollo
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="jsonPath">apollo配置文件路径 如果写入appsettings.json中 则jsonPath传null即可</param>
-        public static void AddConfigurationApollo(this IConfigurationBuilder builder,string jsonPath)
+        public static void AddConfigurationApollo(this IConfigurationBuilder builder,string jsonPath= null)
         {
             if (!string.IsNullOrEmpty(jsonPath))
             {
@@ -36,8 +37,9 @@ namespace Blog.Core.Extensions.Apollo
                 {
                     apolloBuilder.AddNamespace(item.Name, MatchConfigFileFormat(item.Format));
                 }
+                AppSettings.Configuration = builder.Build();
                 //监听apollo配置
-                Monitor(builder.Build());
+                Monitor((IConfigurationRoot)AppSettings.Configuration);
             }
 
         }

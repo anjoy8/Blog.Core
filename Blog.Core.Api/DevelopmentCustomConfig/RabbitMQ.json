@@ -1,0 +1,9 @@
+﻿{
+  "RabbitMQ": {
+    "Enabled": false,
+    "Connection": "118.25.251.13",
+    "UserName": "",
+    "Password": "!",
+    "RetryCount": 3
+  }
+}

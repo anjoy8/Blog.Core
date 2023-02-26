@@ -40,15 +40,11 @@ builder.Host
     builder.SetMinimumLevel(LogLevel.Error);
     builder.AddLog4Net(Path.Combine(Directory.GetCurrentDirectory(), "Log4net.config"));
 })
-.ConfigureAppConfiguration((hostingContext, config) =>
-{
-    config.Sources.Clear();
-    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
-    config.AddConfigurationApollo("appsettings.apollo.json");
-});
+.ConfigureAppConfiguration(AppSettings.AddConfigureFiles)
+.ConfigureAppConfiguration(config=> config.AddConfigurationApollo());
 
 // 2、配置服务
-builder.Services.AddSingleton(new AppSettings(builder.Configuration));
+// builder.Services.AddSingleton(new AppSettings(builder.Configuration));
 builder.Services.AddSingleton(new LogLock(builder.Environment.ContentRootPath));
 builder.Services.AddUiFilesZipSetup(builder.Environment);
 

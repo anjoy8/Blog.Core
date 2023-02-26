@@ -1,0 +1,40 @@
+﻿{
+  "IpRateLimiting": {
+    "EnableEndpointRateLimiting": true, //False: globally executed, true: executed for each
+    "StackBlockedRequests": false, //False: Number of rejections should be recorded on another counter
+    "RealIpHeader": "X-Real-IP",
+    "ClientIdHeader": "X-ClientId",
+    "IpWhitelist": [], //白名单
+    "EndpointWhitelist": [ "get:/api/xxx", "*:/api/yyy" ],
+    "ClientWhitelist": [ "dev-client-1", "dev-client-2" ],
+    "QuotaExceededResponse": {
+      "Content": "{{\"status\":429,\"msg\":\"访问过于频繁，请稍后重试\",\"success\":false}}",
+      "ContentType": "application/json",
+      "StatusCode": 429
+    },
+    "HttpStatusCode": 429, //返回状态码
+    "GeneralRules": [ //api规则,结尾一定要带*
+      {
+        "Endpoint": "*:/api/blog*",
+        "Period": "1m",
+        "Limit": 20
+      },
+      {
+        "Endpoint": "*/api/*",
+        "Period": "1s",
+        "Limit": 3
+      },
+      {
+        "Endpoint": "*/api/*",
+        "Period": "1m",
+        "Limit": 30
+      },
+      {
+        "Endpoint": "*/api/*",
+        "Period": "12h",
+        "Limit": 500
+      }
+    ]
+
+  }
+}

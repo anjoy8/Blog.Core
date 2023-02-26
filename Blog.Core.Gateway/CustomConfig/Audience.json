@@ -1,0 +1,8 @@
+{
+  "Audience": {
+    "Secret": "sdfsdfsrty45634kkhllghtdgdfss345t678fs",
+    "SecretFile": "C:\\my-file\\blog.core.audience.secret.txt",
+    "Issuer": "Blog.Core",
+    "Audience": "wr"
+  }
+}

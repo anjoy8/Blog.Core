@@ -1,0 +1,18 @@
+﻿{
+  //apollo 配置
+  "Apollo": {
+    "Enable": false,
+    "Config": {
+      "AppId": "blog.core",
+      "Env": "DEV",
+      "MetaServer": "http://localhost:8080/",
+      "ConfigServer": [ "http://localhost:8080/" ]
+    },
+    "Namespaces": [ //Namespaces的数据格式Properties,Xml,Json,Yml,Yaml,Txt
+      {
+        "Name": "test",
+        "Format": "json"
+      }
+    ]
+  }
+}

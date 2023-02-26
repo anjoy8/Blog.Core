@@ -1,0 +1,8 @@
+{
+  "Influxdb": {
+    "Endpoint": "http://*******:9328",
+    "uid": "root",
+    "pwd": "*****",
+    "dbname": "mndata"
+  }
+}

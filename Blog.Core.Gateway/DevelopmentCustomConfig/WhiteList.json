@@ -1,0 +1,8 @@
+{
+  "WhiteList": [
+    { "url": "/" },
+    { "url": "/illagal/****" },
+    { "url": "/api3/****" },
+    { "url": "/baseapi/swagger.json" }
+  ]
+}

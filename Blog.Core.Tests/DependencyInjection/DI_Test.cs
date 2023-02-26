@@ -54,11 +54,11 @@ namespace Blog.Core.Tests
         public IContainer DICollections()
         {
             var basePath = AppContext.BaseDirectory;
+            AppSettings.Init(basePath);
 
             IServiceCollection services = new ServiceCollection();
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddSingleton(new AppSettings(basePath));
             services.AddSingleton(new LogLock(basePath));
             services.AddScoped<DBSeed>();
             services.AddScoped<MyContext>();

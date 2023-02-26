@@ -1,20 +1,22 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Blog.Core.Common
 {
-    /// <summary>
-    /// appsettings.json操作类
-    /// </summary>
-    public class AppSettings
-    {
-        public static IConfiguration Configuration { get; set; }
-        static string contentPath { get; set; }
 
-        public AppSettings(string contentPath)
+    public static class AppSettings
+    {
+        /// <summary>
+        /// 配置
+        /// </summary>
+        public static IConfiguration Configuration { get; set; }
+
+        public static void Init(string contentPath)
         {
             string Path = "appsettings.json";
 
@@ -27,16 +29,69 @@ namespace Blog.Core.Common
                .Build();
         }
 
-        public AppSettings(IConfiguration configuration)
+
+        /// <summary>
+        /// 添加配置文件
+        /// </summary>
+        /// <param name="hostBuilder"></param>
+        /// <param name="builder"></param>
+        public static void AddConfigureFiles(HostBuilderContext hostBuilder, IConfigurationBuilder builder)
         {
-            Configuration = configuration;
+            //清除原配置，添加默认配置
+            builder.Sources.Clear();
+            GetDefaultConfigFiles().ForEach(file => builder.AddJsonFile(Path.Combine(AppContext.BaseDirectory, file)));
+            Configuration = builder.Build();
+
+            /// <summary>
+            /// 获取默认配置文件
+            /// </summary>
+            /// <returns></returns>
+            static List<string> GetDefaultConfigFiles()
+            {
+                List<string> configFiles = new() { "appsettings.json" };
+                string ASPNETCORE_ENVIRONMENT = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                if (ASPNETCORE_ENVIRONMENT?.Length > 0) configFiles.Add($"appsettings.{ASPNETCORE_ENVIRONMENT}.json");
+                return configFiles;
+            }
         }
 
+
+        #region 获取配置信息
+
+        /// <summary>
+        /// 判断节点是否存在
+        /// </summary>
+        /// <param name="configuration">配置</param>
+        /// <param name="sections">节点路径</param>
+        /// <returns>节点存在返回 true，否者 false</returns>
+        public static bool Exists(params string[] sections) => Configuration.Exists(sections);
+
+        /// <summary>
+        /// 读取节点字符串
+        /// </summary>
+        /// <param name="configuration">配置</param>
+        /// <param name="sections">节点路径</param>
+        /// <returns>和节点路径匹配的字符串</returns>
+        public static string Get(params string[] sections) => Configuration.Get(sections);
+
+        /// <summary>
+        /// 读取节点并转换成指定类型
+        /// </summary>
+        /// <typeparam name="T">返回的类型</typeparam>
+        /// <param name="configuration">配置</param>
+        /// <param name="sections">节点路径</param>
+        /// <returns>和节点路径匹配的T类型对象</returns>
+        public static T Get<T>(params string[] sections) => Configuration.Get<T>(sections);
+
+        #endregion 获取配置信息
+
+        #region 以前获取配置信息
         /// <summary>
         /// 封装要操作的字符
         /// </summary>
         /// <param name="sections">节点配置</param>
         /// <returns></returns>
+        [Obsolete("推荐使用 Get 方法")]
         public static string app(params string[] sections)
         {
             try
@@ -58,6 +113,7 @@ namespace Blog.Core.Common
         /// <typeparam name="T"></typeparam>
         /// <param name="sections"></param>
         /// <returns></returns>
+        [Obsolete("推荐使用 Get<T> 方法")]
         public static List<T> app<T>(params string[] sections)
         {
             List<T> list = new List<T>();
@@ -72,6 +128,7 @@ namespace Blog.Core.Common
         /// </summary>
         /// <param name="sectionsPath"></param>
         /// <returns></returns>
+        [Obsolete("推荐使用 Get 方法")]
         public static string GetValue(string sectionsPath)
         {
             try
@@ -83,5 +140,40 @@ namespace Blog.Core.Common
             return "";
 
         }
+        #endregion
+    }
+}
+
+namespace Microsoft.Extensions.Configuration
+{
+    /// <summary>
+    /// <see cref="IConfiguration"/>(配置) 拓展
+    /// </summary>
+    public static class IConfigurationExtensions
+    {
+        /// <summary>
+        /// 判断节点是否存在
+        /// </summary>
+        /// <param name="configuration">配置</param>
+        /// <param name="sections">节点路径</param>
+        /// <returns>节点存在返回 true，否者 false</returns>
+        public static bool Exists(this IConfiguration configuration, params string[] sections) => configuration.GetSection(string.Join(':', sections)).Exists();
+
+        /// <summary>
+        /// 读取节点字符串
+        /// </summary>
+        /// <param name="configuration">配置</param>
+        /// <param name="sections">节点路径</param>
+        /// <returns>和节点路径匹配的字符串</returns>
+        public static string Get(this IConfiguration configuration, params string[] sections) => configuration[string.Join(':', sections)];
+
+        /// <summary>
+        /// 读取节点并转换成指定类型
+        /// </summary>
+        /// <typeparam name="T">返回的类型</typeparam>
+        /// <param name="configuration">配置</param>
+        /// <param name="sections">节点路径</param>
+        /// <returns>和节点路径匹配的T类型对象</returns>
+        public static T Get<T>(this IConfiguration configuration, params string[] sections) => configuration.GetSection(string.Join(':', sections)).Get<T>();
     }
 }

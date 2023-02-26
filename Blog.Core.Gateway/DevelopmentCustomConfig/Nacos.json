@@ -1,0 +1,31 @@
+{
+  "nacos": {
+    "ServerAddresses": [ "http://******:8848/" ],
+    "ServiceName": "*****.****.Gateway",
+    "DefaultTimeOut": 15000,
+    "Namespace": "****",
+    "ListenInterval": 1000,
+    "GroupName": "DEFAULT_GROUP",
+    "ClusterName": "DEFAULT",
+    "Ip": "",
+    "PreferredNetworks": "",
+    "Port": 8090,
+    "Weight": 100,
+    "RegisterEnabled": true,
+    "InstanceEnabled": true,
+    "Ephemeral": true,
+    "Secure": false,
+    "AccessKey": "",
+    "SecretKey": "",
+    "UserName": "****",
+    "Password": "*****",
+    "NamingUseRpc": true,
+    "NamingLoadCacheAtStart": "",
+    "LBStrategy": "WeightRandom",
+    "Metadata": {
+      "aa": "bb",
+      "cc": "dd",
+      "endpoint33": "******:8090"
+    }
+  }
+}

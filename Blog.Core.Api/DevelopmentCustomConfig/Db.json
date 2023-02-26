@@ -1,0 +1,80 @@
+﻿{
+  // 请配置MainDB为你想要的主库的ConnId值,并设置对应的Enabled为true；
+  // *** 单库操作，把 MutiDBEnabled 设为false ***；
+  // *** 多库操作，把 MutiDBEnabled 设为true，其他的从库Enabled也为true **；
+  // 具体配置看视频：https://www.bilibili.com/video/BV1BJ411B7mn?p=6
+
+  "MainDB": "WMBLOG_SQLITE", //当前项目的主库，所对应的连接字符串的Enabled必须为true
+  "MutiDBEnabled": false, //是否开启多库模式
+  "CQRSEnabled": false, //是否开启读写分离模式,必须是单库模式，且数据库类型一致，比如都是SqlServer
+  "DBS": [
+    /*
+      对应下边的 DBType
+      MySql = 0,
+      SqlServer = 1,
+      Sqlite = 2,
+      Oracle = 3,
+      PostgreSQL = 4,
+      Dm = 5,//达梦
+      Kdbndp = 6,//人大金仓
+    */
+    {
+      "ConnId": "WMBLOG_SQLITE",
+      "DBType": 2,
+      "Enabled": true,
+      "HitRate": 50, // 值越大，优先级越高
+      "Connection": "WMBlog.db" //sqlite只写数据库名就行
+    },
+    {
+      "ConnId": "WMBLOG_MSSQL_1",
+      "DBType": 1,
+      "Enabled": false,
+      "HitRate": 40,
+      "Connection": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=WMBLOG_MSSQL_1;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
+      "ProviderName": "System.Data.SqlClient"
+    },
+    {
+      "ConnId": "WMBLOG_MSSQL_2",
+      "DBType": 1,
+      "Enabled": false,
+      "HitRate": 30,
+      "Connection": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=WMBLOG_MSSQL_2;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
+      "ProviderName": "System.Data.SqlClient"
+    },
+    {
+      "ConnId": "WMBLOG_MYSQL",
+      "DBType": 0,
+      "Enabled": false,
+      "HitRate": 20,
+      "Connection": "server=.;Database=ddd;Uid=root;Pwd=123456;Port=10060;Allow User Variables=True;"
+    },
+    {
+      "ConnId": "WMBLOG_MYSQL_2",
+      "DBType": 0,
+      "Enabled": true,
+      "HitRate": 20,
+      "Connection": "server=localhost;Database=blogcore001;Uid=root;Pwd=root;Port=3306;Allow User Variables=True;"
+    },
+    {
+      "ConnId": "WMBLOG_ORACLE",
+      "DBType": 3,
+      "Enabled": false,
+      "HitRate": 10,
+      "Connection": "Data Source=127.0.0.1/ops;User ID=OPS;Password=123456;Persist Security Info=True;Connection Timeout=60;"
+    },
+    {
+      "ConnId": "WMBLOG_DM",
+      "DBType": 5,
+      "Enabled": false,
+      "HitRate": 10,
+      "Connection": "PORT=5236;DATABASE=DAMENG;HOST=localhost;PASSWORD=SYSDBA;USER ID=SYSDBA;"
+    },
+    {
+      "ConnId": "WMBLOG_KDBNDP",
+      "DBType": 6,
+      "Enabled": true,
+      "HitRate": 10,
+      "Connection": "Server=127.0.0.1;Port=54321;UID=SYSTEM;PWD=system;database=SQLSUGAR4XTEST1;"
+    }
+  ]
+}

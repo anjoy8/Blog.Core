@@ -1,0 +1,8 @@
+﻿{
+  "Audience": {
+    "Secret": "sdfsdfsrty45634kkhllghtdgdfss345t678fs", //不要太短，16位+
+    "SecretFile": "C:\\my-file\\blog.core.audience.secret.txt", //安全。内容就是Secret
+    "Issuer": "Blog.Core",
+    "Audience": "wr"
+  }
+}

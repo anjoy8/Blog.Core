@@ -1,0 +1,9 @@
+{
+  "Startup": {
+    "Cors": {
+      "PolicyName": "CorsIpAccess",
+      "EnableAllIPs": false,
+      "IPs": "http://127.0.0.1:2364,http://localhost:2364"
+    }
+  }
+}

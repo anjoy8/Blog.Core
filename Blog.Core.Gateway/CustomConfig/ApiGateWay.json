@@ -1,0 +1,11 @@
+{
+  "ApiGateWay": {
+    "OcelotConfig": "OcelotConfig.json",
+    "OcelotConfigGroup": "DEFAULT_GROUP",
+    "AppConfig": "****.****.Gateway.json",
+    "AppConfigGroup": "DEFAULT_GROUP",
+    "PermissionServName": "****.****.Api",
+    "PermissionServGroup": "DEFAULT_GROUP",
+    "PermissionServUrl": "/api/Permission/GetPermissionlist"
+  }
+}

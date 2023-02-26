@@ -1,0 +1,12 @@
+﻿{
+  "LogFiedOutPutConfigs": {
+    "tcpAddressHost": "", // 输出elk的tcp连接地址
+    "tcpAddressPort": 0, // 输出elk的tcp端口号
+    "ConfigsInfo": [ // 配置的输出elk节点内容 常用语动态标识
+      {
+        "FiedName": "applicationName",
+        "FiedValue": "Blog.Core.Api"
+      }
+    ]
+  }
+}
