@@ -1,4 +1,3 @@
-git pull
 
 
 @echo off
