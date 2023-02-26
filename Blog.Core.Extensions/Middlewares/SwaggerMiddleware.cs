@@ -4,6 +4,7 @@ using System.Linq;
 using Blog.Core.Common;
 using log4net;
 using Microsoft.AspNetCore.Builder;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using static Blog.Core.Extensions.CustomApiVersion;
 
 namespace Blog.Core.Extensions.Middlewares
@@ -22,7 +23,7 @@ namespace Blog.Core.Extensions.Middlewares
             app.UseSwaggerUI(c =>
             {
                 //根据版本名称倒序 遍历展示
-                var apiName = Appsettings.app(new string[] { "Startup", "ApiName" });
+                var apiName = AppSettings.app(new string[] { "Startup", "ApiName" });
                 typeof(ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(version =>
                 {
                     c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{apiName} {version}");
@@ -38,6 +39,7 @@ namespace Blog.Core.Extensions.Middlewares
                     throw new Exception(msg);
                 }
                 c.IndexStream = streamHtml;
+                c.DocExpansion(DocExpansion.None); //->修改界面打开时自动折叠
 
                 if (Permissions.IsUseIds4)
                 {

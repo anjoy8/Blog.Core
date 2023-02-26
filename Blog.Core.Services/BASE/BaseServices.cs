@@ -13,13 +13,21 @@ namespace Blog.Core.Services.BASE
 {
     public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : class, new()
     {
+        public BaseServices(IBaseRepository<TEntity> BaseDal = null)
+        {
+            this.BaseDal = BaseDal;
+        }
+
         //public IBaseRepository<TEntity> baseDal = new BaseRepository<TEntity>();
-        public IBaseRepository<TEntity> BaseDal { get; set; }//通过在子类的构造函数中注入，这里是基类，不用构造函数
+        public IBaseRepository<TEntity> BaseDal { get; set; } //通过在子类的构造函数中注入，这里是基类，不用构造函数
+
+        public ISqlSugarClient Db => BaseDal.Db;
 
         public async Task<TEntity> QueryById(object objId)
         {
             return await BaseDal.QueryById(objId);
         }
+
         /// <summary>
         /// 功能描述:根据ID查询一条数据
         /// 作　　者:AZLinli.Blog.Core
@@ -72,21 +80,23 @@ namespace Blog.Core.Services.BASE
         {
             return await BaseDal.Update(entity);
         }
+
         public async Task<bool> Update(TEntity entity, string where)
         {
             return await BaseDal.Update(entity, where);
         }
+
         public async Task<bool> Update(object operateAnonymousObjects)
         {
             return await BaseDal.Update(operateAnonymousObjects);
         }
 
         public async Task<bool> Update(
-         TEntity entity,
-         List<string> lstColumns = null,
-         List<string> lstIgnoreColumns = null,
-         string where = ""
-            )
+            TEntity entity,
+            List<string> lstColumns = null,
+            List<string> lstIgnoreColumns = null,
+            string where = ""
+        )
         {
             return await BaseDal.Update(entity, lstColumns, lstIgnoreColumns, where);
         }
@@ -121,7 +131,6 @@ namespace Blog.Core.Services.BASE
         {
             return await BaseDal.DeleteByIds(ids);
         }
-
 
 
         /// <summary>
@@ -177,7 +186,7 @@ namespace Blog.Core.Services.BASE
         /// <param name="expression">查询实体条件</param>
         /// <param name="orderByFileds">排序条件</param>
         /// <returns></returns>
-        public async Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression, Expression<Func<TEntity, bool>> whereExpression,string orderByFileds)
+        public async Task<List<TResult>> Query<TResult>(Expression<Func<TEntity, TResult>> expression, Expression<Func<TEntity, bool>> whereExpression, string orderByFileds)
         {
             return await BaseDal.Query(expression, whereExpression, orderByFileds);
         }
@@ -220,7 +229,6 @@ namespace Blog.Core.Services.BASE
         public async Task<List<TEntity>> QuerySql(string sql, SugarParameter[] parameters = null)
         {
             return await BaseDal.QuerySql(sql, parameters);
-
         }
 
         /// <summary>
@@ -232,8 +240,8 @@ namespace Blog.Core.Services.BASE
         public async Task<DataTable> QueryTable(string sql, SugarParameter[] parameters = null)
         {
             return await BaseDal.QueryTable(sql, parameters);
-
         }
+
         /// <summary>
         /// 功能描述:查询前N条数据
         /// 作　　者:AZLinli.Blog.Core
@@ -279,10 +287,10 @@ namespace Blog.Core.Services.BASE
             string orderByFileds)
         {
             return await BaseDal.Query(
-              whereExpression,
-              pageIndex,
-              pageSize,
-              orderByFileds);
+                whereExpression,
+                pageIndex,
+                pageSize,
+                orderByFileds);
         }
 
         /// <summary>
@@ -295,34 +303,34 @@ namespace Blog.Core.Services.BASE
         /// <param name="orderByFileds">排序字段，如name asc,age desc</param>
         /// <returns>数据列表</returns>
         public async Task<List<TEntity>> Query(
-          string where,
-          int pageIndex,
-          int pageSize,
-          string orderByFileds)
+            string where,
+            int pageIndex,
+            int pageSize,
+            string orderByFileds)
         {
             return await BaseDal.Query(
-            where,
-            pageIndex,
-            pageSize,
-            orderByFileds);
+                where,
+                pageIndex,
+                pageSize,
+                orderByFileds);
         }
 
         public async Task<PageModel<TEntity>> QueryPage(Expression<Func<TEntity, bool>> whereExpression,
-        int pageIndex = 1, int pageSize = 20, string orderByFileds = null)
+            int pageIndex = 1, int pageSize = 20, string orderByFileds = null)
         {
             return await BaseDal.QueryPage(whereExpression,
-         pageIndex, pageSize, orderByFileds);
+                pageIndex, pageSize, orderByFileds);
         }
 
         public async Task<List<TResult>> QueryMuch<T, T2, T3, TResult>(Expression<Func<T, T2, T3, object[]>> joinExpression, Expression<Func<T, T2, T3, TResult>> selectExpression, Expression<Func<T, T2, T3, bool>> whereLambda = null) where T : class, new()
         {
             return await BaseDal.QueryMuch(joinExpression, selectExpression, whereLambda);
         }
+
         public async Task<PageModel<TEntity>> QueryPage(PaginationModel pagination)
         {
             var express = DynamicLinqFactory.CreateLambda<TEntity>(pagination.Conditions);
             return await QueryPage(express, pagination.PageIndex, pagination.PageSize, pagination.OrderByFileds);
         }
     }
-
 }

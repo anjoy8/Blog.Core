@@ -18,7 +18,7 @@ namespace Blog.Core.Extensions.Middlewares
 
             try
             {
-                if (Appsettings.app("Middleware", "IpRateLimit", "Enabled").ObjToBool())
+                if (AppSettings.app("Middleware", "IpRateLimit", "Enabled").ObjToBool())
                 {
                     app.UseIpRateLimiting();
                 }

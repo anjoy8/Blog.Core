@@ -1513,5 +1513,27 @@
     "ModifyBy": null,
     "ModifyTime": "\/Date(1546272000000+0800)\/",
     "Id": 71
+  },
+  {
+    "IsDeleted": 0,
+    "ParentId": null,
+    "Name": "菜单同步",
+    "LinkUrl": "\/api\/permission\/migratepermission",
+    "Area": null,
+    "Controller": null,
+    "Action": null,
+    "Icon": null,
+    "Code": null,
+    "OrderSort": 0,
+    "Description": null,
+    "IsMenu": 0,
+    "Enabled": 1,
+    "CreateId": 23,
+    "CreateBy": "后台总管理员",
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1546272000000+0800)\/",
+    "Id": 72
   }
 ]

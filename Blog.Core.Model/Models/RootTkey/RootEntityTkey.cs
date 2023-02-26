@@ -11,7 +11,5 @@ namespace Blog.Core.Model
         /// </summary>
         [SugarColumn(IsNullable = false, IsPrimaryKey = true)]
         public Tkey Id { get; set; }
-
-
     }
 }

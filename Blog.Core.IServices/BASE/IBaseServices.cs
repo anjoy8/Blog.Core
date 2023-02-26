@@ -10,6 +10,7 @@ namespace Blog.Core.IServices.BASE
 {
     public interface IBaseServices<TEntity> where TEntity : class
     {
+        ISqlSugarClient Db { get; }
 
         Task<TEntity> QueryById(object objId);
         Task<TEntity> QueryById(object objId, bool blnUseCache = false);

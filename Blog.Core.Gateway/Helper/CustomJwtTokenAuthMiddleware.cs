@@ -129,9 +129,9 @@ namespace Blog.Core.AuthHelper
         {
             try
             {
-                string PermissionServName = Appsettings.GetValue("ApiGateWay:PermissionServName");
-                string PermissionServGroup = Appsettings.GetValue("ApiGateWay:PermissionServGroup");
-                string PermissionServUrl = Appsettings.GetValue("ApiGateWay:PermissionServUrl");
+                string PermissionServName = AppSettings.GetValue("ApiGateWay:PermissionServName");
+                string PermissionServGroup = AppSettings.GetValue("ApiGateWay:PermissionServGroup");
+                string PermissionServUrl = AppSettings.GetValue("ApiGateWay:PermissionServUrl");
 
                 string requestdata = await NacosServClient.Cof_NaoceGet(PermissionServName, PermissionServGroup, PermissionServUrl);
                 if (string.IsNullOrEmpty(requestdata)) return null;
@@ -168,7 +168,7 @@ namespace Blog.Core.AuthHelper
         /// <returns></returns>
         public bool CheckWhiteList(string url)
         {
-            List<Urlobj> WhiteList = _cache.Cof_GetICaching<List<Urlobj>>("WhiteList", () => Appsettings.app<Urlobj>("WhiteList"), 10);
+            List<Urlobj> WhiteList = _cache.Cof_GetICaching<List<Urlobj>>("WhiteList", () => AppSettings.app<Urlobj>("WhiteList"), 10);
 
             if (!WhiteList.Cof_CheckAvailable()) return false;
             foreach (var Urlitem in WhiteList)
@@ -189,7 +189,7 @@ namespace Blog.Core.AuthHelper
 
         public bool CheckBlackList(string url)
         {
-            List<Urlobj> BlackList = _cache.Cof_GetICaching<List<Urlobj>>("BlackList", () => Appsettings.app<Urlobj>("BlackList"), 10);
+            List<Urlobj> BlackList = _cache.Cof_GetICaching<List<Urlobj>>("BlackList", () => AppSettings.app<Urlobj>("BlackList"), 10);
             
             if (!BlackList.Cof_CheckAvailable()) return false;
             foreach (var Urlitem in BlackList)

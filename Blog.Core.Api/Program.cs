@@ -1,11 +1,13 @@
-﻿
-// 以下为asp.net 6.0的写法，如果用5.0，请看Program.five.cs文件
+﻿// 以下为asp.net 6.0的写法，如果用5.0，请看Program.five.cs文件
+using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
+using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Blog.Core;
 using Blog.Core.Common;
+using Blog.Core.Common.Core;
 using Blog.Core.Common.LogHelper;
-using Blog.Core.Common.Seed;
 using Blog.Core.Extensions;
 using Blog.Core.Extensions.Apollo;
 using Blog.Core.Extensions.Middlewares;
@@ -13,7 +15,6 @@ using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
 using Blog.Core.Tasks;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -21,9 +22,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,13 +43,14 @@ builder.Host
 .ConfigureAppConfiguration(Appsettings.AddConfigureFiles)
 .ConfigureAppConfiguration(config=> config.AddConfigurationApollo());
 
-
 // 2、配置服务
+// builder.Services.AddSingleton(new AppSettings(builder.Configuration));
 builder.Services.AddSingleton(new LogLock(builder.Environment.ContentRootPath));
 builder.Services.AddUiFilesZipSetup(builder.Environment);
 
-Permissions.IsUseIds4 = Appsettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
-RoutePrefix.Name = Appsettings.app(new string[] { "AppSettings", "SvcName" }).ObjToString();
+Permissions.IsUseIds4 = AppSettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
+Permissions.IsUseAuthing = AppSettings.app(new string[] { "Startup", "Authing", "Enabled" }).ObjToBool();
+RoutePrefix.Name = AppSettings.app(new string[] { "AppSettings", "SvcName" }).ObjToString();
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -64,6 +63,7 @@ builder.Services.AddCorsSetup();
 builder.Services.AddMiniProfilerSetup();
 builder.Services.AddSwaggerSetup();
 builder.Services.AddJobSetup();
+//builder.Services.AddJobSetup_HostedService();
 builder.Services.AddHttpContextSetup();
 builder.Services.AddAppTableConfigSetup(builder.Environment);
 builder.Services.AddHttpApi();
@@ -72,11 +72,12 @@ builder.Services.AddRabbitMQSetup();
 builder.Services.AddKafkaSetup(builder.Configuration);
 builder.Services.AddEventBusSetup();
 builder.Services.AddNacosSetup(builder.Configuration);
-
+builder.Services.AddInitializationHostServiceSetup();
 builder.Services.AddAuthorizationSetup();
-if (Permissions.IsUseIds4)
+if (Permissions.IsUseIds4 || Permissions.IsUseAuthing)
 {
-    builder.Services.AddAuthentication_Ids4Setup();
+    if (Permissions.IsUseIds4) builder.Services.AddAuthentication_Ids4Setup();
+    else if (Permissions.IsUseAuthing) builder.Services.AddAuthentication_AuthingSetup();
 }
 else
 {
@@ -107,22 +108,23 @@ builder.Services.AddControllers(o =>
     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
     options.SerializerSettings.Converters.Add(new StringEnumConverter());
 })
-.AddFluentValidation(config =>
-{
-    //程序集方式添加验证
-    config.RegisterValidatorsFromAssemblyContaining(typeof(UserRegisterVoValidator));
-    //是否与MvcValidation共存
-    config.DisableDataAnnotationsValidation = true;
-});
+//.AddFluentValidation(config =>
+//{
+//    //程序集方式添加验证
+//    config.RegisterValidatorsFromAssemblyContaining(typeof(UserRegisterVoValidator));
+//    //是否与MvcValidation共存
+//    config.DisableDataAnnotationsValidation = true;
+//})
+;
 
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-
 // 3、配置中间件
 var app = builder.Build();
+app.ConfigureApplication();
 
 if (app.Environment.IsDevelopment())
 {
@@ -145,7 +147,7 @@ app.UseSession();
 app.UseSwaggerAuthorized();
 app.UseSwaggerMiddle(() => Assembly.GetExecutingAssembly().GetManifestResourceStream("Blog.Core.Api.index.html"));
 
-app.UseCors(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
+app.UseCors(AppSettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
 DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
 defaultFilesOptions.DefaultFileNames.Clear();
 defaultFilesOptions.DefaultFileNames.Add("index.html");
@@ -172,17 +174,6 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapHub<ChatHub>("/api2/chatHub");
 });
-
-
-var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-var myContext = scope.ServiceProvider.GetRequiredService<MyContext>();
-var tasksQzServices = scope.ServiceProvider.GetRequiredService<ITasksQzServices>();
-var schedulerCenter = scope.ServiceProvider.GetRequiredService<ISchedulerCenter>();
-var lifetime = scope.ServiceProvider.GetRequiredService<IHostApplicationLifetime>();
-app.UseSeedDataMiddle(myContext, builder.Environment.WebRootPath);
-app.UseQuartzJobMiddleware(tasksQzServices, schedulerCenter);
-app.UseConsulMiddle(builder.Configuration, lifetime);
-app.ConfigureEventBus();
 
 // 4、运行
 app.Run();

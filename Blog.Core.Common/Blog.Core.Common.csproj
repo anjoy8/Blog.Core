@@ -6,25 +6,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="HttpRestSharp\**" />
+    <EmbeddedResource Remove="HttpRestSharp\**" />
+    <None Remove="HttpRestSharp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="LogHelper\ILoggerHelper.cs" />
     <Compile Remove="LogHelper\LogHelper.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="InitQ" Version="1.0.0.7" />
-    <PackageReference Include="log4net" Version="2.0.13" />
+	<PackageReference Include="Magicodes.IE.Excel" Version="2.6.4" />
+    <PackageReference Include="InitQ" Version="1.0.0.12" />
+    <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="PinYinConverterCore" Version="1.0.2" />
-    <PackageReference Include="RestSharp" Version="106.11.8-alpha.0.13" />
-    <PackageReference Include="RSAExtensions" Version="1.0.3" />
+    <PackageReference Include="RestSharp" Version="108.0.1" />
+    <PackageReference Include="RSAExtensions" Version="1.1.0" />
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
-    <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.6.48" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.1" />
 
-    <PackageReference Include="Serilog" Version="2.10.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+    <PackageReference Include="Serilog" Version="2.11.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.1-dev-00771" />
     <PackageReference Include="WebApiClient.Extensions.DependencyInjection" Version="2.0.3" />
     <PackageReference Include="WebApiClient.JIT" Version="1.1.4" />
@@ -35,6 +42,10 @@
     <ProjectReference Include="..\Blog.Core.Model\Blog.Core.Model.csproj" />
     <ProjectReference Include="..\Blog.Core.Serilog.Es\Blog.Core.Serilog.Es.csproj" />
     <ProjectReference Include="..\Ocelot.Provider.Nacos\Ocelot.Provider.Nacos.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,6 @@
 using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.HttpPolly;
-using Blog.Core.Common.HttpRestSharp;
 using Blog.Core.Common.WebApiClients.HttpApis;
 using Blog.Core.EventBus;
 using Blog.Core.EventBus.EventHandling;
@@ -101,6 +100,12 @@ namespace Blog.Core.Controllers
             };
         }
 
+        /// <summary>
+        /// 测试SqlSugar二级缓存
+        /// 可设置过期时间
+        /// 或通过接口方式更新该数据，也会离开清除缓存
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<BlogArticle> TestSqlsugarWithCache()
@@ -301,27 +306,6 @@ namespace Blog.Core.Controllers
         }
 
         /// <summary>
-        /// 测试http请求 RestSharp Get
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("RestsharpGet")]
-        [AllowAnonymous]
-        public MessageModel<BlogViewModels> RestsharpGet()
-        {
-            return HttpHelper.GetApi<MessageModel<BlogViewModels>>("http://apk.neters.club/", "api/Blog/DetailNuxtNoPer", "id=1");
-        }
-        /// <summary>
-        /// 测试http请求 RestSharp Post
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("RestsharpPost")]
-        [AllowAnonymous]
-        public TestRestSharpPostDto RestsharpPost()
-        {
-            return HttpHelper.PostApi<TestRestSharpPostDto>("http://apk.neters.club/api/Values/TestPostPara?name=老张", new { age = 18 });
-        }
-
-        /// <summary>
         /// 测试多库连接
         /// </summary>
         /// <returns></returns>
@@ -408,7 +392,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<string> GetConfigByAppllo(string key)
         {
-            return await Task.FromResult(Appsettings.app(key));
+            return await Task.FromResult(AppSettings.app(key));
         }
         #endregion
 

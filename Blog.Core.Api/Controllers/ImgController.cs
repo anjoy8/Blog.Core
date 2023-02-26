@@ -1,12 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Blog.Core.Model;
+﻿using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Core.Controllers
@@ -19,18 +13,26 @@ namespace Blog.Core.Controllers
     [Authorize]
     public class ImgController : BaseApiController
     {
+        
+        private readonly IWebHostEnvironment _env;
+
+        public ImgController(IWebHostEnvironment webHostEnvironment)
+        {
+            _env = webHostEnvironment;
+        }
+
+
         // GET: api/Download
         /// <summary>
         /// 下载图片（支持中文字符）
         /// </summary>
-        /// <param name="environment"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("/images/Down/Pic")]
-        public FileStreamResult DownImg([FromServices] IWebHostEnvironment environment)
+        public FileStreamResult DownImg()
         {
             string foldername = "";
-            string filepath = Path.Combine(environment.WebRootPath, foldername, "测试下载中文名称的图片.png");
+            string filepath = Path.Combine(_env.WebRootPath, foldername, "测试下载中文名称的图片.png");
             var stream = System.IO.File.OpenRead(filepath);
             string fileExt = ".jpg";  // 这里可以写一个获取文件扩展名的方法，获取扩展名
             //获取文件的ContentType
@@ -45,12 +47,11 @@ namespace Blog.Core.Controllers
         /// <summary>
         /// 上传图片,多文件
         /// </summary>
-        /// <param name="environment"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("/images/Upload/Pic")]
-        public async Task<MessageModel<string>> InsertPicture([FromServices] IWebHostEnvironment environment, [FromForm]UploadFileDto dto)
+        public async Task<MessageModel<string>> InsertPicture([FromForm]UploadFileDto dto)
         {
             
             if (dto.Files == null || !dto.Files.Any()) return Failed("请选择上传的文件。");
@@ -62,7 +63,7 @@ namespace Blog.Core.Controllers
             if (allowedFile.Sum(c => c.Length) > 1024 * 1024 * 4) return Failed("图片过大");
 
             string foldername = "images";
-            string folderpath = Path.Combine(environment.WebRootPath, foldername);
+            string folderpath = Path.Combine(_env.WebRootPath, foldername);
             if (!Directory.Exists(folderpath))
             {
                 Directory.CreateDirectory(folderpath);
@@ -70,7 +71,7 @@ namespace Blog.Core.Controllers
             foreach (var file in allowedFile)
             {
                 string strpath = Path.Combine(foldername, DateTime.Now.ToString("MMddHHmmss") + Path.GetFileName(file.FileName));
-                var path = Path.Combine(environment.WebRootPath, strpath);
+                var path = Path.Combine(_env.WebRootPath, strpath);
 
                 using (var stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
@@ -95,14 +96,14 @@ namespace Blog.Core.Controllers
         [HttpGet]
         [Route("/images/Down/Bmd")]
         [AllowAnonymous]
-        public FileStreamResult DownBmd([FromServices] IWebHostEnvironment environment, string filename)
+        public FileStreamResult DownBmd(string filename)
         {
             if (string.IsNullOrEmpty(filename))
             {
                 return null;
             }
             // 前端 blob 接收，具体查看前端admin代码
-            string filepath = Path.Combine(environment.WebRootPath, Path.GetFileName(filename));
+            string filepath = Path.Combine(_env.WebRootPath, Path.GetFileName(filename));
             if (System.IO.File.Exists(filepath))
             {
                 var stream = System.IO.File.OpenRead(filepath);

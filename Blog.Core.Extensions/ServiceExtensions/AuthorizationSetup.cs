@@ -45,8 +45,8 @@ namespace Blog.Core.Extensions
             var symmetricKeyAsBase64 = AppSecretConfig.Audience_Secret_String;
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
             var signingKey = new SymmetricSecurityKey(keyByteArray);
-            var Issuer = Appsettings.app(new string[] { "Audience", "Issuer" });
-            var Audience = Appsettings.app(new string[] { "Audience", "Audience" });
+            var Issuer = AppSettings.app(new string[] { "Audience", "Issuer" });
+            var Audience = AppSettings.app(new string[] { "Audience", "Audience" });
 
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 

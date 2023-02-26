@@ -26,9 +26,9 @@ namespace Blog.Core.Extensions
             })
             .AddJwtBearer(options =>
             {
-                options.Authority = Appsettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" });
+                options.Authority = AppSettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" });
                 options.RequireHttpsMetadata = false;
-                options.Audience = Appsettings.app(new string[] { "Startup", "IdentityServer4", "ApiName" });
+                options.Audience = AppSettings.app(new string[] { "Startup", "IdentityServer4", "ApiName" });
             })
             .AddScheme<AuthenticationSchemeOptions, ApiResponseHandler>(nameof(ApiResponseHandler), o => { });
         }

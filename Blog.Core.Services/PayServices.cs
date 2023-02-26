@@ -20,13 +20,10 @@ namespace Blog.Core.Services
 {
     public partial class PayServices : BaseServices<RootEntityTkey<int>>, IPayServices
     {
-        IBaseRepository<RootEntityTkey<int>> _dal;
         IHttpContextAccessor _httpContextAccessor;
         ILogger<PayServices> _logger;
-        public PayServices(IBaseRepository<RootEntityTkey<int>> dal, ILogger<PayServices> logger, IHttpContextAccessor httpContextAccessor)
+        public PayServices(ILogger<PayServices> logger, IHttpContextAccessor httpContextAccessor)
         {
-            this._dal = dal;
-            base.BaseDal = dal;
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
         }

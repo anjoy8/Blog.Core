@@ -34,7 +34,7 @@ namespace Blog.Core.Extensions.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (Appsettings.app("Middleware", "SignalR", "Enabled").ObjToBool())
+            if (AppSettings.app("Middleware", "SignalR", "Enabled").ObjToBool())
             {
                 await _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()); 
             }

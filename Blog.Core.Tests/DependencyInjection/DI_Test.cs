@@ -11,6 +11,7 @@ using Blog.Core.Common.Seed;
 using Blog.Core.Extensions;
 using Blog.Core.IRepository.Base;
 using Blog.Core.Repository.Base;
+using Blog.Core.Repository.MongoRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace Blog.Core.Tests
 {
@@ -72,13 +74,13 @@ namespace Blog.Core.Tests
             var permission = new List<PermissionItem>();
 
             var permissionRequirement = new PermissionRequirement(
-            "/api/denied",
-            permission,
-            ClaimTypes.Role,
-            Appsettings.app(new string[] { "Audience", "Issuer" }),
-            Appsettings.app(new string[] { "Audience", "Audience" }),
-            signingCredentials,//签名凭据
-            expiration: TimeSpan.FromSeconds(60 * 60)//接口的过期时间
+                "/api/denied",
+                permission,
+                ClaimTypes.Role,
+                AppSettings.app(new string[] { "Audience", "Issuer" }),
+                AppSettings.app(new string[] { "Audience", "Audience" }),
+                signingCredentials,                       //签名凭据
+                expiration: TimeSpan.FromSeconds(60 * 60) //接口的过期时间
             );
             services.AddSingleton(permissionRequirement);
 
@@ -86,46 +88,51 @@ namespace Blog.Core.Tests
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(Permissions.Name,
-                         policy => policy.Requirements.Add(permissionRequirement));
+                    policy => policy.Requirements.Add(permissionRequirement));
             });
 
             services.AddScoped<SqlSugar.ISqlSugarClient>(o =>
             {
                 return new SqlSugar.SqlSugarScope(new SqlSugar.ConnectionConfig()
                 {
-                    ConnectionString = GetMainConnectionDb().Connection,//必填, 数据库连接字符串
-                    DbType = (SqlSugar.DbType)GetMainConnectionDb().DbType,//必填, 数据库类型
-                    IsAutoCloseConnection = true,//默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
-                    InitKeyType = SqlSugar.InitKeyType.SystemTable//默认SystemTable, 字段信息读取, 如：该属性是不是主键，标识列等等信息
+                    ConnectionString = GetMainConnectionDb().Connection,    //必填, 数据库连接字符串
+                    DbType = (SqlSugar.DbType)GetMainConnectionDb().DbType, //必填, 数据库类型
+                    IsAutoCloseConnection = true,                           //默认false, 时候知道关闭数据库连接, 设置为true无需使用using或者Close操作
                 });
             });
 
             //实例化 AutoFac  容器   
             var builder = new ContainerBuilder();
             //builder.RegisterType<AdvertisementServices>().As<IAdvertisementServices>();
+            builder.RegisterInstance(new LoggerFactory())
+                .As<ILoggerFactory>();
 
+            builder.RegisterGeneric(typeof(Logger<>))
+                .As(typeof(ILogger<>))
+                .SingleInstance();
             //指定已扫描程序集中的类型注册为提供所有其实现的接口。
 
-            builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();//注册仓储
+            builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();           //注册仓储
+            builder.RegisterGeneric(typeof(MongoBaseRepository<>)).As(typeof(IMongoBaseRepository<>)).InstancePerDependency(); //注册仓储
 
             // 属性注入
             var controllerBaseType = typeof(ControllerBase);
             builder.RegisterAssemblyTypes(typeof(Startup).Assembly)
                 .Where(t => controllerBaseType.IsAssignableFrom(t) && t != controllerBaseType)
                 .PropertiesAutowired();
-         
+
             var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
             var assemblysServices = Assembly.LoadFrom(servicesDllFile);
             builder.RegisterAssemblyTypes(assemblysServices)
-                         .AsImplementedInterfaces()
-                         .InstancePerLifetimeScope()
-                         .PropertiesAutowired()
-                         .EnableInterfaceInterceptors();
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope()
+                .PropertiesAutowired()
+                .EnableInterfaceInterceptors();
 
             var repositoryDllFile = Path.Combine(basePath, "Blog.Core.Repository.dll");
             var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
             builder.RegisterAssemblyTypes(assemblysRepository)
-                   .PropertiesAutowired().AsImplementedInterfaces();
+                .PropertiesAutowired().AsImplementedInterfaces();
 
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 

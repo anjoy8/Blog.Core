@@ -69,7 +69,7 @@ namespace Blog.Core.AdminMvc
 
             app.UseCustomSwaggerMildd();
 
-            app.UseCors(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
+            app.UseCors(AppSettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
 
             app.UseEndpoints(endpoints =>
             {
