@@ -21,7 +21,8 @@ namespace Blog.Core.Tasks
         private readonly IAccessTrendLogServices _accessTrendLogServices;
         private readonly IWebHostEnvironment _environment;
 
-        public Job_AccessTrendLog_Quartz(IAccessTrendLogServices accessTrendLogServices, ITasksQzServices tasksQzServices, IWebHostEnvironment environment)
+        public Job_AccessTrendLog_Quartz(IAccessTrendLogServices accessTrendLogServices, IWebHostEnvironment environment, ITasksQzServices tasksQzServices, ITasksLogServices tasksLogServices)
+            : base(tasksQzServices, tasksLogServices)
         {
             _accessTrendLogServices = accessTrendLogServices;
             _environment = environment;

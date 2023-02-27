@@ -1023,6 +1023,91 @@
             租户Id
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Models.TasksLog">
+            <summary>
+            任务日志表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.JobId">
+            <summary>
+            任务ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.TotalTime">
+            <summary>
+            任务耗时
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.RunResult">
+            <summary>
+            执行结果(0-失败 1-成功)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.RunTime">
+            <summary>
+            运行时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.EndTime">
+            <summary>
+            结束时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.RunPars">
+            <summary>
+            执行参数
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.ErrMessage">
+            <summary>
+            异常信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.ErrStackTrace">
+            <summary>
+            异常堆栈
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.CreateId">
+            <summary>
+            创建ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.CreateBy">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.ModifyId">
+            <summary>
+            修改ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.ModifyBy">
+            <summary>
+            修改者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.Name">
+            <summary>
+            任务名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksLog.JobGroup">
+            <summary>
+            任务分组
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.Models.TasksQz">
             <summary>
             任务计划表
@@ -1086,6 +1171,11 @@
         <member name="P:Blog.Core.Model.Models.TasksQz.CycleRunTimes">
             <summary>
             循环执行次数
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.TasksQz.CycleHasRunTimes">
+            <summary>
+            已循环次数
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.TasksQz.IsStart">

@@ -4,11 +4,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Blog.Core.Common.Extensions;
+using Blog.Core.Common.WebApiClients.HttpApis;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Blog.Core.Model.ViewModels;
 using Blog.Core.Repository.UnitOfWorks;
+using Blog.Core.Services;
 using Blog.Core.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,14 +25,16 @@ namespace Blog.Core.Controllers
     public class TasksQzController : ControllerBase
     {
         private readonly ITasksQzServices _tasksQzServices;
+        private readonly ITasksLogServices _tasksLogServices;
         private readonly ISchedulerCenter _schedulerCenter;
         private readonly IUnitOfWorkManage _unitOfWorkManage;
 
-        public TasksQzController(ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter, IUnitOfWorkManage unitOfWorkManage)
+        public TasksQzController(ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter, IUnitOfWorkManage unitOfWorkManage,ITasksLogServices tasksLogServices)
         {
             _unitOfWorkManage = unitOfWorkManage;
-            _tasksQzServices = tasksQzServices;
+            _tasksQzServices = tasksQzServices; 
             _schedulerCenter = schedulerCenter;
+            _tasksLogServices = tasksLogServices;
         }
 
         /// <summary>
@@ -522,6 +527,32 @@ namespace Blog.Core.Controllers
                 data.msg = "任务不存在";
             }
             return data;
+        }
+        /// <summary>
+        /// 获取任务运行日志
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<MessageModel<PageModel<TasksLog>>> GetTaskLogs(int jobId, int page = 1, int pageSize = 10, DateTime? runTimeStart =null, DateTime? runTimeEnd = null)
+        {
+            var model = await _tasksLogServices.GetTaskLogs(jobId, page, pageSize, runTimeStart, runTimeEnd);
+            return MessageModel<PageModel<TasksLog>>.Message(model.dataCount >= 0, "获取成功", model);
+        }
+        /// <summary>
+        /// 任务概况
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<MessageModel<object>> GetTaskOverview(int jobId, int page = 1, int pageSize = 10, DateTime? runTimeStart = null, DateTime? runTimeEnd = null, string type ="month")
+        {
+            var model = await _tasksLogServices.GetTaskOverview(jobId, runTimeStart, runTimeEnd, type);
+            return MessageModel<object>.Message(true, "获取成功", model);
         }
 
     }
