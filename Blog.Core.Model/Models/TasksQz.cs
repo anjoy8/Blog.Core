@@ -65,6 +65,10 @@ namespace Blog.Core.Model.Models
         /// </summary>
         public int CycleRunTimes { get; set; }
         /// <summary>
+        /// 已循环次数
+        /// </summary>
+        public int CycleHasRunTimes { get; set; }
+        /// <summary>
         /// 是否启动
         /// </summary>
         public bool IsStart { get; set; } = false;

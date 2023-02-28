@@ -12,10 +12,10 @@ namespace Blog.Core.Tasks
     {
         private readonly IBlogArticleServices _blogArticleServices;
 
-        public Job_Blogs_Quartz(IBlogArticleServices blogArticleServices, ITasksQzServices tasksQzServices)
+        public Job_Blogs_Quartz(IBlogArticleServices blogArticleServices, ITasksQzServices tasksQzServices, ITasksLogServices tasksLogServices)
+            : base(tasksQzServices, tasksLogServices)
         {
             _blogArticleServices = blogArticleServices;
-            _tasksQzServices = tasksQzServices;
         }
         public async Task Execute(IJobExecutionContext context)
         {

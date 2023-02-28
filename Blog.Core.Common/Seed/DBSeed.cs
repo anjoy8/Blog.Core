@@ -313,6 +313,19 @@ namespace Blog.Core.Common.Seed
 
                     #endregion
 
+                    #region TasksLog
+
+                    if (!await myContext.Db.Queryable<TasksLog>().AnyAsync())
+                    {
+                        Console.WriteLine("Table:TasksLog created success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Table:TasksLog already exists...");
+                    }
+
+                    #endregion
+
                     #region Department
 
                     if (!await myContext.Db.Queryable<Department>().AnyAsync())
