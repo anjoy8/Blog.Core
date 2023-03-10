@@ -9,17 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace Blog.Core.Api.Controllers.Tenant;
 
 /// <summary>
-/// 多租户-Id方案 测试
+/// 多租户-多表方案 测试
 /// </summary>
 [Produces("application/json")]
-[Route("api/Tenant/ById")]
+[Route("api/Tenant/ByTable")]
 [Authorize]
-public class TenantByIdController : BaseApiController
+public class TenantByTableController : BaseApiController
 {
-    private readonly IBaseServices<BusinessTable> _services;
+    private readonly IBaseServices<MultiBusinessTable> _services;
     private readonly IUser _user;
 
-    public TenantByIdController(IUser user, IBaseServices<BusinessTable> services)
+    public TenantByTableController(IUser user, IBaseServices<MultiBusinessTable> services)
     {
         _user = user;
         _services = services;
@@ -30,20 +30,28 @@ public class TenantByIdController : BaseApiController
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    public async Task<MessageModel<List<BusinessTable>>> GetAll()
+    public async Task<MessageModel<List<MultiBusinessTable>>> GetAll()
     {
-        var data = await _services.Query();
+        //查询
+        // var data = await _services.Query();
+
+        //关联查询
+        var data = await _services.Db
+            .Queryable<MultiBusinessTable>()
+            .Includes(s => s.Child)
+            .ToListAsync();
         return Success(data);
     }
 
     /// <summary>
-    /// 新增业务数据
+    /// 新增数据
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<MessageModel> Post([FromBody] BusinessTable data)
+    public async Task<MessageModel> Post(MultiBusinessTable data)
     {
         await _services.Db.Insertable(data).ExecuteReturnSnowflakeIdAsync();
+
         return Success();
     }
 }

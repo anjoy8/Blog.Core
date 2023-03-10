@@ -1,5 +1,6 @@
 ﻿using Blog.Core.Model.Models.RootTkey;
 using Blog.Core.Model.Models.RootTkey.Interface;
+using Blog.Core.Model.Tenants;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,10 @@ public class RepositorySetting
             return;
         }
 
+        //多租户 单表
         db.QueryFilter.AddTableFilter<ITenantEntity>(it => it.TenantId == App.User.TenantId || it.TenantId == 0);
+
+        //多租户 多表
+        db.SetTenantTable(App.User.TenantId.ToString());
     }
 }

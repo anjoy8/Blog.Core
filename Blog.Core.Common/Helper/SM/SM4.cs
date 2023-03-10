@@ -10,7 +10,9 @@ namespace Blog.Core.Common.Helper.SM
 
         private long GET_ULONG_BE(SByte[] b, int i)
         {
+#pragma warning disable CS0675 // 对进行了带符号扩展的操作数使用了按位或运算符
             long n2 = (b[i] & 0xFF) << 24 | (b[(i + 1)] & 0xFF) << 16 | (b[(i + 2)] & 0xFF) << 8 | b[(i + 3)] & 0xFF & 0xFFFFFFFF;
+#pragma warning restore CS0675 // 对进行了带符号扩展的操作数使用了按位或运算符
             return n2;
         }
 

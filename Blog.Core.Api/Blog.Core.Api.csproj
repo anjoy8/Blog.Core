@@ -96,7 +96,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Tenant\" />
     <Folder Include="wwwroot\BlogCore.Data.excel\" />
   </ItemGroup>
 

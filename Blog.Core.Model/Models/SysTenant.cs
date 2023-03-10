@@ -1,4 +1,4 @@
-﻿using Blog.Core.Model.CustomEnums;
+﻿using Blog.Core.Model.Tenants;
 using SqlSugar;
 
 namespace Blog.Core.Model.Models;

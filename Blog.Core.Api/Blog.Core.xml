@@ -374,12 +374,13 @@
             <param name="user"></param>
             <param name="requirement"></param>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.Get(System.Int32,System.String)">
+        <member name="M:Blog.Core.Controllers.PermissionController.Get(System.Int32,System.String,System.Int32)">
             <summary>
             获取菜单
             </summary>
             <param name="page"></param>
             <param name="key"></param>
+            <param name="pageSize"></param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.PermissionController.GetTreeTable(System.Int32,System.String)">
@@ -573,6 +574,24 @@
             立即执行任务
             </summary>
             <param name="jobId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.GetTaskLogs(System.Int32,System.Int32,System.Int32,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            获取任务运行日志
+            </summary>
+            <param name="jobId"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.TasksQzController.GetTaskOverview(System.Int32,System.Int32,System.Int32,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.String)">
+            <summary>
+            任务概况
+            </summary>
+            <param name="jobId"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.TopicController">
@@ -1236,9 +1255,26 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByDbController">
+            <summary>
+            多租户-多库方案 测试
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByDbController.GetAll">
+            <summary>
+            获取租户下全部业务数据 <br/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByDbController.Post(Blog.Core.Model.Models.SubLibraryBusinessTable)">
+            <summary>
+            新增数据
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByIdController">
             <summary>
-            多租户测试
+            多租户-Id方案 测试
             </summary>
         </member>
         <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.GetAll">
@@ -1250,6 +1286,61 @@
         <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.Post(Blog.Core.Model.Models.BusinessTable)">
             <summary>
             新增业务数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByTableController">
+            <summary>
+            多租户-多表方案 测试
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByTableController.GetAll">
+            <summary>
+            获取租户下全部业务数据 <br/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByTableController.Post(Blog.Core.Model.Models.MultiBusinessTable)">
+            <summary>
+            新增数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.Tenant.TenantManagerController">
+            <summary>
+            租户管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantManagerController.GetAll">
+            <summary>
+            获取全部租户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantManagerController.GetInfo(System.Int64)">
+            <summary>
+            获取租户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantManagerController.Post(Blog.Core.Model.Models.SysTenant)">
+            <summary>
+            新增租户信息 <br/>
+            此处只做演示，具体要以实际业务为准
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantManagerController.Put(Blog.Core.Model.Models.SysTenant)">
+            <summary>
+            修改租户信息 <br/>
+            此处只做演示，具体要以实际业务为准
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantManagerController.Delete(System.Int64)">
+            <summary>
+            删除租户 <br/>
+            此处只做演示，具体要以实际业务为准
             </summary>
             <returns></returns>
         </member>
