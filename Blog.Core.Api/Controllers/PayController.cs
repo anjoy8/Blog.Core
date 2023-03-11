@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-using Blog.Core.IServices;
+﻿using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Blog.Core.Controllers
 {
