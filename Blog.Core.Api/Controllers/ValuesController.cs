@@ -298,7 +298,6 @@ namespace Blog.Core.Controllers
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("TestPostPara")]
         [AllowAnonymous]
         public object TestPostPara(string name)
         {
