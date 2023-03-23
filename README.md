@@ -73,7 +73,8 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 
 #### 框架模块：  
 - [x] 采用`仓储+服务+接口`的形式封装框架；
-- [x] 异步 async/await 开发；
+- [x] 自定义项目模板 `CreateYourProject.bat` ，可以一键生成自己的项目；🎶  
+- [x] 异步 async/await 开发；  
 - [x] 接入国产数据库ORM组件 —— SqlSugar，封装数据库操作，支持级联操作；
 - [x] 支持自由切换多种数据库，MySql/SqlServer/Sqlite/Oracle/Postgresql/达梦/人大金仓；
 - [x] 实现项目启动，自动生成种子数据 ✨； 
