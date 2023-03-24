@@ -15,6 +15,7 @@ using Blog.Core.Model.Models;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 namespace Blog.Core.Controllers
 {
@@ -357,9 +358,12 @@ namespace Blog.Core.Controllers
         private string GetSplice(TrojanServers item,string passwordshow)
         {
             if ("0".Equals(item.servertype))
-                return $"trojan://{passwordshow}@{item.serveraddress}:{item.serverport}?allowinsecure=0&tfo=0&peer={(string.IsNullOrEmpty(item.serverpeer) ? item.serverpeer : item.serveraddress)}#{item.servername}";
+                return $"trojan://{passwordshow}@{item.serveraddress}:{item.serverport}?allowinsecure=0&tfo=0&fp=chrome&peer={(string.IsNullOrEmpty(item.serverpeer) ? item.serverpeer : item.serveraddress)}#{item.servername}";
             else if ("1".Equals(item.servertype))
-                return $"trojan://{passwordshow}@{item.serveraddress}:{item.serverport}?wspath={item.serverpath}&ws=1&peer={(string.IsNullOrEmpty(item.serverpeer) ? item.serverpeer : item.serveraddress)}#{item.servername}";
+            {
+                var sni = string.IsNullOrEmpty(item.serverpeer) ? item.serverpeer : item.serveraddress;
+                return $"trojan://{passwordshow}@{item.serveraddress}:{item.serverport}?wspath={item.serverpath}&ws=1&peer={sni}&path={item.serverpath}&host={sni}&fp=chrome&type=ws&sni={sni}#{item.servername}";
+            }
             else
                 return $"servertype:({item.servertype})错误";
         }
