@@ -357,11 +357,12 @@ namespace Blog.Core.Controllers
         }
         private string GetSplice(TrojanServers item,string passwordshow)
         {
+            var sni = string.IsNullOrEmpty(item.serverpeer) ? item.serveraddress : item.serverpeer;
             if ("0".Equals(item.servertype))
-                return $"trojan://{passwordshow}@{item.serveraddress}:{item.serverport}?allowinsecure=0&tfo=0&fp=chrome&peer={(string.IsNullOrEmpty(item.serverpeer) ? item.serverpeer : item.serveraddress)}#{item.servername}";
+                return $"trojan://{passwordshow}@{item.serveraddress}:{item.serverport}?allowinsecure=0&tfo=0&fp=chrome&peer={sni}&host={sni}&sni={sni}#{item.servername}";
             else if ("1".Equals(item.servertype))
             {
-                var sni = string.IsNullOrEmpty(item.serverpeer) ? item.serverpeer : item.serveraddress;
+                
                 return $"trojan://{passwordshow}@{item.serveraddress}:{item.serverport}?wspath={item.serverpath}&ws=1&peer={sni}&path={item.serverpath}&host={sni}&fp=chrome&type=ws&sni={sni}#{item.servername}";
             }
             else
