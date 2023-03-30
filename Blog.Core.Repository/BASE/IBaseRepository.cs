@@ -208,5 +208,45 @@ namespace Blog.Core.IRepository.Base
             int pageIndex = 1,
             int pageSize = 20,
             string orderByFields = null);
+
+        #region 分表
+        /// <summary>
+        /// 通过ID查询
+        /// </summary>
+        /// <param name="objId"></param>
+        /// <returns></returns>
+        Task<TEntity> QueryByIdSplit(object objId);
+        /// <summary>
+        /// 自动分表插入
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task<List<long>> AddSplit(TEntity entity);
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        Task<bool> DeleteSplit(TEntity entity, DateTime dateTime);
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        Task<bool> UpdateSplit(TEntity entity, DateTime dateTime);
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="whereExpression"></param>
+        /// <param name="beginTime"></param>
+        /// <param name="endTime"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="orderByFields"></param>
+        /// <returns></returns>
+        Task<PageModel<TEntity>> QueryPageSplit(Expression<Func<TEntity, bool>> whereExpression, DateTime beginTime, DateTime endTime, int pageIndex = 1, int pageSize = 20, string orderByFields = null);
+        #endregion
     }
 }
