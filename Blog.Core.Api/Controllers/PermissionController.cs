@@ -99,7 +99,7 @@ namespace Blog.Core.Controllers
             var permissionAll = await _permissionServices.Query(d => d.IsDeleted != true);
             foreach (var item in permissionsView)
             {
-                List<int> pidarr = new List<int>
+                List<long> pidarr = new()
                 {
                     item.Pid
                 };
@@ -177,7 +177,7 @@ namespace Blog.Core.Controllers
 
             foreach (var item in permissions)
             {
-                List<int> pidarr = new List<int> { };
+                List<long> pidarr = new() { };
                 var parent = permissionsList.FirstOrDefault(d => d.Id == item.Pid);
 
                 while (parent != null)
@@ -353,13 +353,13 @@ namespace Blog.Core.Controllers
         /// <param name="uid"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<NavigationBar>> GetNavigationBar(int uid)
+        public async Task<MessageModel<NavigationBar>> GetNavigationBar(long uid)
         {
 
             var data = new MessageModel<NavigationBar>();
 
             var uidInHttpcontext1 = 0;
-            var roleIds = new List<int>();
+            var roleIds = new List<long>();
             // ids4和jwt切换
             if (Permissions.IsUseIds4)
             {
@@ -369,13 +369,13 @@ namespace Blog.Core.Controllers
                                      select item.Value).FirstOrDefault().ObjToInt();
                 roleIds = (from item in _httpContext.HttpContext.User.Claims
                            where item.Type == "role"
-                           select item.Value.ObjToInt()).ToList();
+                           select item.Value.ObjToLong()).ToList();
             }
             else
             {
                 // jwt
                 uidInHttpcontext1 = ((JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid).ObjToInt();
-                roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToInt()).Distinct().ToList();
+                roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToLong()).Distinct().ToList();
             }
 
 
@@ -383,7 +383,7 @@ namespace Blog.Core.Controllers
             {
                 if (roleIds.Any())
                 {
-                    var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && roleIds.Contains(d.RoleId))).Select(d => d.PermissionId.ObjToInt()).Distinct();
+                    var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && roleIds.Contains(d.RoleId))).Select(d => d.PermissionId.ObjToLong()).Distinct();
                     if (pids.Any())
                     {
                         var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id))).OrderBy(c => c.OrderSort);
@@ -445,12 +445,12 @@ namespace Blog.Core.Controllers
         /// <param name="uid"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<List<NavigationBarPro>>> GetNavigationBarPro(int uid)
+        public async Task<MessageModel<List<NavigationBarPro>>> GetNavigationBarPro(long uid)
         {
             var data = new MessageModel<List<NavigationBarPro>>();
 
             var uidInHttpcontext1 = 0;
-            var roleIds = new List<int>();
+            var roleIds = new List<long>();
             // ids4和jwt切换
             if (Permissions.IsUseIds4)
             {
@@ -460,13 +460,13 @@ namespace Blog.Core.Controllers
                                      select item.Value).FirstOrDefault().ObjToInt();
                 roleIds = (from item in _httpContext.HttpContext.User.Claims
                            where item.Type == "role"
-                           select item.Value.ObjToInt()).ToList();
+                           select item.Value.ObjToLong()).ToList();
             }
             else
             {
                 // jwt
                 uidInHttpcontext1 = ((JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid).ObjToInt();
-                roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToInt()).Distinct().ToList();
+                roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToLong()).Distinct().ToList();
             }
 
             if (uid > 0 && uid == uidInHttpcontext1)
@@ -474,7 +474,7 @@ namespace Blog.Core.Controllers
                 if (roleIds.Any())
                 {
                     var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && roleIds.Contains(d.RoleId)))
-                                    .Select(d => d.PermissionId.ObjToInt()).Distinct();
+                                    .Select(d => d.PermissionId.ObjToLong()).Distinct();
                     if (pids.Any())
                     {
                         var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);

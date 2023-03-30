@@ -413,14 +413,14 @@
             <param name="needbtn"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBar(System.Int32)">
+        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBar(System.Int64)">
             <summary>
             获取路由树
             </summary>
             <param name="uid"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBarPro(System.Int32)">
+        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBarPro(System.Int64)">
             <summary>
             获取路由树
             </summary>

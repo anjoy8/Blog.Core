@@ -83,7 +83,7 @@ namespace Blog.Core.Api.Controllers
 
             foreach (var item in departments)
             {
-                List<int> pidarr = new() { };
+                List<long> pidarr = new() { };
                 var parent = departmentList.FirstOrDefault(d => d.Id == item.Pid);
 
                 while (parent != null)

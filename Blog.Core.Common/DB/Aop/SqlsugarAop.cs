@@ -1,4 +1,5 @@
-﻿using Blog.Core.Model.Models.RootTkey;
+﻿using Blog.Core.Model;
+using Blog.Core.Model.Models.RootTkey;
 using Blog.Core.Model.Tenants;
 using SqlSugar;
 using System;
@@ -14,6 +15,13 @@ public static class SqlSugarAop
             if (root.Id == 0)
             {
                 root.Id = SnowFlakeSingle.Instance.NextId();
+            }
+        }
+        if (entityInfo.EntityValue is RootEntityTkey<long> rootEntity)
+        {
+            if (rootEntity.Id == 0)
+            {
+                rootEntity.Id = SnowFlakeSingle.Instance.NextId();
             }
         }
 

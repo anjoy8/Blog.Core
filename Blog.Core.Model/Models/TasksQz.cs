@@ -8,7 +8,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 任务计划表
     /// </summary>
-    public class TasksQz : RootEntityTkey<int>
+    public class TasksQz : RootEntityTkey<long>
     {
         /// <summary>
         /// 任务名称

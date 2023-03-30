@@ -34,7 +34,7 @@ namespace Blog.Core.Model.ViewModels
         /// <summary>
         /// 上一篇id
         /// </summary>
-        public int previousID { get; set; }
+        public long previousID { get; set; }
 
         /// <summary>
         /// 下一篇
@@ -44,7 +44,7 @@ namespace Blog.Core.Model.ViewModels
         /// <summary>
         /// 下一篇id
         /// </summary>
-        public int nextID { get; set; }
+        public long nextID { get; set; }
 
         /// <summary>类别
         /// 

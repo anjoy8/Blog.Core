@@ -7,7 +7,7 @@ namespace Blog.Core.Model.Models;
 /// </summary>
 public class BlogArticleComment : RootEntityTkey<long>
 {
-    public int bID { get; set; }
+    public long bID { get; set; }
 
     public string Comment { get; set; }
 

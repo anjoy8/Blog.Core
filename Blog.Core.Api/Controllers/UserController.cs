@@ -103,15 +103,15 @@ namespace Blog.Core.Controllers
             return Success(data.ConvertTo<SysUserInfoDto>(_mapper));
         }
 
-        private (string, List<int>) GetFullDepartmentName(List<Department> departments, int departmentId)
+        private (string, List<long>) GetFullDepartmentName(List<Department> departments, int departmentId)
         {
             var departmentModel = departments.FirstOrDefault(d => d.Id == departmentId);
             if (departmentModel == null)
             {
-                return ("", new List<int>());
+                return ("", new List<long>());
             }
 
-            var pids = departmentModel.CodeRelationship?.TrimEnd(',').Split(',').Select(d => d.ObjToInt()).ToList();
+            var pids = departmentModel.CodeRelationship?.TrimEnd(',').Split(',').Select(d => d.ObjToLong()).ToList();
             pids.Add(departmentModel.Id);
             var pnams = departments.Where(d => pids.Contains(d.Id)).ToList().Select(d => d.Name).ToArray();
             var fullName = string.Join("/", pnams);

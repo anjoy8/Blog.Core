@@ -12,8 +12,8 @@ namespace Blog.Core.Model.Models
         ///<summary>
         ///ID
         ///</summary>
-        [SugarColumn(ColumnDescription = "ID", IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
-        public int Id { get; set; }
+        [SugarColumn(ColumnDescription = "ID", IsNullable = false, IsPrimaryKey = true, IsIdentity = false)]
+        public long Id { get; set; }
 
         ///<summary>
         ///HttpContext.TraceIdentifier 事件链路ID（获取或设置一个唯一标识符，用于在跟踪日志中表示此请求。）

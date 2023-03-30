@@ -1647,7 +1647,7 @@
     "ModifyId": null,
     "ModifyBy": null,
     "ModifyTime": "\/Date(1546272000000+0800)\/",
-    "Id": 128
+    "Id": 228
   },
   {
     "IsDeleted": false,
@@ -1658,7 +1658,7 @@
     "RoleId": 6,
     "ModuleId": 0,
     "PermissionId": 114,
-    "Id": 129
+    "Id": 229
   },
   {
     "IsDeleted": false,
@@ -1669,7 +1669,7 @@
     "RoleId": 6,
     "ModuleId": 66,
     "PermissionId": 115,
-    "Id": 130
+    "Id": 230
   },
   {
     "IsDeleted": false,
@@ -1680,7 +1680,7 @@
     "RoleId": 6,
     "ModuleId": 70,
     "PermissionId": 120,
-    "Id": 131
+    "Id": 231
   },
   {
     "IsDeleted": false,
@@ -1691,7 +1691,7 @@
     "RoleId": 6,
     "ModuleId": 66,
     "PermissionId": 116,
-    "Id": 132
+    "Id": 232
   },
   {
     "IsDeleted": false,
@@ -1702,6 +1702,6 @@
     "RoleId": 4,
     "ModuleId": 72,
     "PermissionId": 122,
-    "Id": 133
+    "Id": 233
   }
 ]

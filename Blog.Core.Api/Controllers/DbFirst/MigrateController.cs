@@ -81,7 +81,7 @@ namespace Blog.Core.Controllers
                     InitPermissionTree(permissions, permissionsAllList, apiList);
 
                     var actionPermissionIds = permissionsAllList.Where(d => d.Id >= filterPermissionId).Select(d => d.Id).ToList();
-                    List<int> filterPermissionIds = new();
+                    List<long> filterPermissionIds = new();
                     FilterPermissionTree(permissionsAllList, actionPermissionIds, filterPermissionIds);
                     permissions = permissions.Where(d => filterPermissionIds.Contains(d.Id)).ToList();
 
@@ -93,10 +93,10 @@ namespace Blog.Core.Controllers
                     // 1、保持菜单和接口
                     await SavePermissionTreeAsync(permissions, pms);
 
-                    var rid = 0;
-                    var pid = 0;
-                    var mid = 0;
-                    var rpmid = 0;
+                    long rid = 0;
+                    long pid = 0;
+                    long mid = 0;
+                    long rpmid = 0;
 
                     // 2、保存关系表
                     foreach (var item in rmps)
@@ -116,8 +116,8 @@ namespace Blog.Core.Controllers
                             }
                         }
 
-                        pid = (pms.FirstOrDefault(d => d.PidOld == item.PermissionId)?.PidNew).ObjToInt();
-                        mid = (pms.FirstOrDefault(d => d.MidOld == item.ModuleId)?.MidNew).ObjToInt();
+                        pid = (pms.FirstOrDefault(d => d.PidOld == item.PermissionId)?.PidNew).ObjToLong();
+                        mid = (pms.FirstOrDefault(d => d.MidOld == item.ModuleId)?.MidNew).ObjToLong();
                         // 关系
                         if (rid > 0 && pid > 0)
                         {
@@ -282,7 +282,7 @@ namespace Blog.Core.Controllers
             }
         }
 
-        private void FilterPermissionTree(List<Permission> permissionsAll, List<int> actionPermissionId, List<int> filterPermissionIds)
+        private void FilterPermissionTree(List<Permission> permissionsAll, List<long> actionPermissionId, List<long> filterPermissionIds)
         {
             actionPermissionId = actionPermissionId.Distinct().ToList();
             var doneIds = permissionsAll.Where(d => actionPermissionId.Contains(d.Id) && d.Pid == 0).Select(d => d.Id).ToList();
@@ -295,7 +295,7 @@ namespace Blog.Core.Controllers
             }
         }
 
-        private async Task SavePermissionTreeAsync(List<Permission> permissionsTree, List<PM> pms, int permissionId = 0)
+        private async Task SavePermissionTreeAsync(List<Permission> permissionsTree, List<PM> pms, long permissionId = 0)
         {
             var parendId = permissionId;
 
@@ -304,9 +304,9 @@ namespace Blog.Core.Controllers
                 PM pm = new PM();
                 // 保留原始主键id
                 pm.PidOld = item.Id;
-                pm.MidOld = (item.Module?.Id).ObjToInt();
+                pm.MidOld = (item.Module?.Id).ObjToLong();
 
-                var mid = 0;
+                long mid = 0;
                 // 接口
                 if (item.Module != null)
                 {
@@ -351,9 +351,9 @@ namespace Blog.Core.Controllers
 
     public class PM
     {
-        public int PidOld { get; set; }
-        public int MidOld { get; set; }
-        public int PidNew { get; set; }
-        public int MidNew { get; set; }
+        public long PidOld { get; set; }
+        public long MidOld { get; set; }
+        public long PidNew { get; set; }
+        public long MidNew { get; set; }
     }
 }
