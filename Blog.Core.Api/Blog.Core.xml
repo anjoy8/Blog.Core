@@ -1249,6 +1249,50 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Blog.Core.Api.Controllers.SplitDemoController">
+            <summary>
+            分表demo
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SplitDemoController.Get(System.DateTime,System.DateTime,System.Int32,System.String,System.Int32)">
+            <summary>
+            分页获取数据
+            </summary>
+            <param name="beginTime"></param>
+            <param name="endTime"></param>
+            <param name="page"></param>
+            <param name="key"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SplitDemoController.GetById(System.Int64)">
+            <summary>
+            根据ID获取信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SplitDemoController.Post(Blog.Core.Model.Models.SplitDemo)">
+            <summary>
+            添加一条测试数据
+            </summary>
+            <param name="splitDemo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SplitDemoController.Put(Blog.Core.Model.Models.SplitDemo)">
+            <summary>
+            修改一条测试数据
+            </summary>
+            <param name="splitDemo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SplitDemoController.Delete(System.Int64)">
+            <summary>
+            根据id删除数据
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByDbController">
             <summary>
             多租户-多库方案 测试
