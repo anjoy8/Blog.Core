@@ -109,7 +109,7 @@ namespace Blog.Core.Common.Seed
                     if (!myContext.Db.DbMaintenance.IsAnyTable(t.Name))
                     {
                         Console.WriteLine(t.Name);
-                        myContext.Db.CodeFirst.InitTables(t);
+                        myContext.Db.CodeFirst.SplitTables().InitTables(t);
                     }
                 });
                 ConsoleHelper.WriteSuccessLine($"Tables created successfully!");

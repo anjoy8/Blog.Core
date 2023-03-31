@@ -5,6 +5,7 @@ using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Blog.Core.Model.Tenants;
 using Blog.Core.Repository.UnitOfWorks;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -126,7 +127,6 @@ namespace Blog.Core.Repository.Base
 
             return await insert.ExecuteReturnIdentityAsync();
         }
-
 
         /// <summary>
         /// 写入实体数据
@@ -557,5 +557,75 @@ namespace Blog.Core.Repository.Base
         //        groupName = s.groupName,
         //        jobName = s.jobName
         //    }, exp, s => new { s.uID, s.uRealName, s.groupName, s.jobName }, model.currentPage, model.pageSize, model.orderField + " " + model.orderType);
+        #region Split分表基础接口 （基础CRUD）
+        /// <summary>
+        /// 分页查询[使用版本，其他分页未测试]
+        /// </summary>
+        /// <param name="whereExpression">条件表达式</param>
+        /// <param name="pageIndex">页码（下标0）</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="orderByFields">排序字段，如name asc,age desc</param>
+        /// <returns></returns>
+        public async Task<PageModel<TEntity>> QueryPageSplit(Expression<Func<TEntity, bool>> whereExpression, DateTime beginTime, DateTime endTime, int pageIndex = 1, int pageSize = 20, string orderByFields = null)
+        {
+            RefAsync<int> totalCount = 0;
+            var list = await _db.Queryable<TEntity>().SplitTable(beginTime, endTime)
+                .OrderByIF(!string.IsNullOrEmpty(orderByFields), orderByFields)
+                .WhereIF(whereExpression != null, whereExpression)
+                .ToPageListAsync(pageIndex, pageSize, totalCount);
+            var data= new PageModel<TEntity>(pageIndex, totalCount, pageSize, list);
+            return data;
+        }
+        /// <summary>
+        /// 写入实体数据
+        /// </summary>
+        /// <param name="entity">数据实体</param>
+        /// <returns></returns>
+        public async Task<List<long>> AddSplit(TEntity entity)
+        {
+            var insert = _db.Insertable(entity).SplitTable();
+            //插入并返回雪花ID并且自动赋值ID　
+            return await insert.ExecuteReturnSnowflakeIdListAsync();
+        }
+
+        /// <summary>
+        /// 更新实体数据
+        /// </summary>
+        /// <param name="entity">数据实体</param>
+        /// <returns></returns>
+        public async Task<bool> UpdateSplit(TEntity entity, DateTime dateTime)
+        {
+            //直接根据实体集合更新 （全自动 找表更新）
+            //return await _db.Updateable(entity).SplitTable().ExecuteCommandAsync();//,SplitTable不能少
+
+            //精准找单个表
+            var tableName = _db.SplitHelper<TEntity>().GetTableName(dateTime);//根据时间获取表名
+            return await _db.Updateable(entity).AS(tableName).ExecuteCommandHasChangeAsync();
+        }
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteSplit(TEntity entity,DateTime dateTime)
+        {
+            ////直接根据实体集合删除 （全自动 找表插入）,返回受影响数
+            //return await _db.Deleteable(entity).SplitTable().ExecuteCommandAsync();//,SplitTable不能少
+
+            //精准找单个表
+            var tableName = _db.SplitHelper<TEntity>().GetTableName(dateTime);//根据时间获取表名
+            return await _db.Deleteable<TEntity>().AS(tableName).Where(entity).ExecuteCommandHasChangeAsync();
+        }
+        /// <summary>
+        /// 根据ID查找数据
+        /// </summary>
+        /// <param name="objId"></param>
+        /// <returns></returns>
+        public async Task<TEntity> QueryByIdSplit(object objId)
+        {
+            return await _db.Queryable<TEntity>().In(objId).SplitTable(tabs => tabs).SingleAsync();
+        }
+        #endregion
     }
 }
