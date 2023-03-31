@@ -1,6 +1,7 @@
 ﻿using Blog.Core.Model;
 using Blog.Core.Model.Models.RootTkey;
 using Blog.Core.Model.Tenants;
+using NetTaste;
 using SqlSugar;
 using System;
 
@@ -67,6 +68,46 @@ public static class SqlSugarAop
 
                         break;
                 }
+            }
+        }
+        else
+        {
+            //兼容以前的表 
+            var getType = entityInfo.EntityValue.GetType();
+
+
+            switch (entityInfo.OperationType)
+            {
+
+                case DataFilterType.InsertByObject:
+                    var dyCreateBy = getType.GetProperty("CreateBy");
+                    var dyCreateId = getType.GetProperty("CreateId");
+                    var dyCreateTime = getType.GetProperty("CreateTime");
+
+                    if (App.User?.ID > 0 && dyCreateBy != null && dyCreateBy.GetValue(entityInfo.EntityValue) == null)
+                        dyCreateBy.SetValue(entityInfo.EntityValue, App.User.Name);
+
+                    if (App.User?.ID > 0 && dyCreateId != null && dyCreateId.GetValue(entityInfo.EntityValue) == null)
+                        dyCreateId.SetValue(entityInfo.EntityValue, App.User.ID);
+
+                    if (dyCreateTime != null && (DateTime)dyCreateTime.GetValue(entityInfo.EntityValue) == DateTime.MinValue)
+                        dyCreateTime.SetValue(entityInfo.EntityValue, DateTime.Now);
+
+                    break;
+                case DataFilterType.UpdateByObject:
+                    var dyModifyBy = getType.GetProperty("ModifyBy");
+                    var dyModifyId = getType.GetProperty("ModifyId");
+                    var dyModifyTime = getType.GetProperty("ModifyTime");
+
+                    if (App.User?.ID > 0 && dyModifyBy != null)
+                        dyModifyBy.SetValue(entityInfo.EntityValue, App.User.Name);
+
+                    if (App.User?.ID > 0 && dyModifyId != null)
+                        dyModifyId.SetValue(entityInfo.EntityValue, App.User.ID);
+
+                    if (dyModifyTime != null)
+                        dyModifyTime.SetValue(entityInfo.EntityValue, DateTime.Now);
+                    break;
             }
         }
     }

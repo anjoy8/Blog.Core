@@ -6,6 +6,8 @@ using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Repository.UnitOfWorks;
+using Blog.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -21,6 +23,7 @@ namespace Blog.Core.Controllers
     [Authorize(Permissions.Name)]
     public class PermissionController : BaseApiController
     {
+        readonly IUnitOfWorkManage _unitOfWorkManage;
         readonly IPermissionServices _permissionServices;
         readonly IModuleServices _moduleServices;
         readonly IRoleModulePermissionServices _roleModulePermissionServices;
@@ -37,16 +40,19 @@ namespace Blog.Core.Controllers
         /// <param name="moduleServices"></param>
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="userRoleServices"></param>
+        /// <param name="unitOfWorkManage"></param>
         /// <param name="httpClientFactory"></param>
         /// <param name="httpContext"></param>
         /// <param name="user"></param>
         /// <param name="requirement"></param>
         public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices,
             IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices,
+            IUnitOfWorkManage unitOfWorkManage,
             IHttpClientFactory httpClientFactory,
             IHttpContextAccessor httpContext, IUser user, PermissionRequirement requirement)
         {
             _permissionServices = permissionServices;
+            _unitOfWorkManage = unitOfWorkManage;
             _moduleServices = moduleServices;
             _roleModulePermissionServices = roleModulePermissionServices;
             _userRoleServices = userRoleServices;
@@ -239,25 +245,24 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         public async Task<MessageModel<string>> Assign([FromBody] AssignView assignView)
-        {
-            var data = new MessageModel<string>();
-
-
+        { 
             if (assignView.rid > 0)
             {
-                data.success = true;
-
-                var roleModulePermissions = await _roleModulePermissionServices.Query(d => d.RoleId == assignView.rid);
-
-                var remove = roleModulePermissions.Where(d => !assignView.pids.Contains(d.PermissionId.ObjToInt())).Select(c => (object)c.Id);
-                data.success &= remove.Any() ? await _roleModulePermissionServices.DeleteByIds(remove.ToArray()) : true;
-
-                foreach (var item in assignView.pids)
+                //开启事务
+                try
                 {
-                    var rmpitem = roleModulePermissions.Where(d => d.PermissionId == item);
-                    var moduleid = (await _permissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
-                    if (!rmpitem.Any())
+                    var old_rmps = await _roleModulePermissionServices.Query(d => d.RoleId == assignView.rid);
+
+                    _unitOfWorkManage.BeginTran();
+                    await _permissionServices.Db.Deleteable<RoleModulePermission>(t => t.RoleId == assignView.rid).ExecuteCommandAsync();
+                    var permissions = await _permissionServices.Query(d => d.IsDeleted == false);
+
+                    List<RoleModulePermission> new_rmps = new List<RoleModulePermission>();
+                    var nowTime =  _permissionServices.Db.GetDate();
+                    foreach (var item in assignView.pids)
                     {
+                        var moduleid = permissions.Find(p => p.Id == item)?.Mid;
+                        var find_old_rmps = old_rmps.Find(p => p.PermissionId == item);
 
                         RoleModulePermission roleModulePermission = new RoleModulePermission()
                         {
@@ -265,39 +270,31 @@ namespace Blog.Core.Controllers
                             RoleId = assignView.rid,
                             ModuleId = moduleid.ObjToInt(),
                             PermissionId = item,
+                            CreateId = find_old_rmps == null ? _user.ID : find_old_rmps.CreateId,
+                            CreateBy = find_old_rmps == null ? _user.Name : find_old_rmps.CreateBy,
+                            CreateTime = find_old_rmps == null ? nowTime : find_old_rmps.CreateTime,
+                            ModifyId = _user.ID,
+                            ModifyBy = _user.Name,
+                            ModifyTime = nowTime
+
                         };
-
-
-                        roleModulePermission.CreateId = _user.ID;
-                        roleModulePermission.CreateBy = _user.Name;
-
-                        data.success &= (await _roleModulePermissionServices.Add(roleModulePermission)) > 0;
-
+                        new_rmps.Add(roleModulePermission);
                     }
-                    else
-                    {
-                        foreach (var role in rmpitem)
-                        {
-                            if (!role.ModuleId.Equals(moduleid))
-                            {
-                                role.ModuleId = moduleid.Value;
-                                await _roleModulePermissionServices.Update(role, new List<string> { "ModuleId" });
-                            }
-                        }
-                    }
+                    if(new_rmps.Count>0) await _roleModulePermissionServices.Add(new_rmps);
+                    _unitOfWorkManage.CommitTran();
                 }
-
-                if (data.success)
+                catch (Exception)
                 {
-                    _requirement.Permissions.Clear();
-                    data.response = "";
-                    data.msg = "保存成功";
+                    _unitOfWorkManage.RollbackTran();
+                    throw;
                 }
-
+                _requirement.Permissions.Clear();
+                return Success<string>("保存成功");
             }
-
-
-            return data;
+            else
+            {
+                return Failed<string>("请选择要操作的角色");
+            } 
         }
 
 
