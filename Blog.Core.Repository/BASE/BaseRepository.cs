@@ -170,6 +170,15 @@ namespace Blog.Core.Repository.Base
             //这种方式会以主键为条件
             return await _db.Updateable(entity).ExecuteCommandHasChangeAsync();
         }
+        /// <summary>
+        /// 更新实体数据
+        /// </summary>
+        /// <param name="entity">博文实体类</param>
+        /// <returns></returns>
+        public async Task<bool> Update(List<TEntity> entity)
+        {
+            return await _db.Updateable(entity).ExecuteCommandHasChangeAsync();
+        }
 
         public async Task<bool> Update(TEntity entity, string where)
         {

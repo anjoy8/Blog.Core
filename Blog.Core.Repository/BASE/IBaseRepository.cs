@@ -69,6 +69,12 @@ namespace Blog.Core.IRepository.Base
         /// <param name="model"></param>
         /// <returns></returns>
         Task<bool> Update(TEntity model);
+        /// <summary>
+        /// 更新model
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        Task<bool> Update(List<TEntity> model);
 
         /// <summary>
         /// 根据model，更新，带where条件
