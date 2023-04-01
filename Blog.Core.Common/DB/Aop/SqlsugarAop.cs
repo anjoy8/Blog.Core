@@ -1,7 +1,6 @@
 ﻿using Blog.Core.Model;
 using Blog.Core.Model.Models.RootTkey;
 using Blog.Core.Model.Tenants;
-using NetTaste;
 using SqlSugar;
 using System;
 
@@ -11,13 +10,6 @@ public static class SqlSugarAop
 {
     public static void DataExecuting(object oldValue, DataFilterModel entityInfo)
     {
-        if (entityInfo.EntityValue is BaseEntity root)
-        {
-            if (root.Id == 0)
-            {
-                root.Id = SnowFlakeSingle.Instance.NextId();
-            }
-        }
         if (entityInfo.EntityValue is RootEntityTkey<long> rootEntity)
         {
             if (rootEntity.Id == 0)
@@ -73,12 +65,15 @@ public static class SqlSugarAop
         else
         {
             //兼容以前的表 
-            var getType = entityInfo.EntityValue.GetType();
+            //这里要小心 在AOP里用反射 数据量多性能就会有问题
+            //要么都统一使用基类
+            //要么考虑老的表没必要兼容老的表
+            //
 
+            var getType = entityInfo.EntityValue.GetType();
 
             switch (entityInfo.OperationType)
             {
-
                 case DataFilterType.InsertByObject:
                     var dyCreateBy = getType.GetProperty("CreateBy");
                     var dyCreateId = getType.GetProperty("CreateId");

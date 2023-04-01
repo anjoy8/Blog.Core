@@ -56,7 +56,7 @@ namespace Blog.Core.Services.BASE
         /// </summary>
         /// <param name="entity">博文实体类</param>
         /// <returns></returns>
-        public async Task<int> Add(TEntity entity)
+        public async Task<long> Add(TEntity entity)
         {
             return await BaseDal.Add(entity);
         }
@@ -66,7 +66,7 @@ namespace Blog.Core.Services.BASE
         /// </summary>
         /// <param name="listEntity">实体集合</param>
         /// <returns>影响行数</returns>
-        public async Task<int> Add(List<TEntity> listEntity)
+        public async Task<List<long>> Add(List<TEntity> listEntity)
         {
             return await BaseDal.Add(listEntity);
         }
@@ -332,11 +332,14 @@ namespace Blog.Core.Services.BASE
             var express = DynamicLinqFactory.CreateLambda<TEntity>(pagination.Conditions);
             return await QueryPage(express, pagination.PageIndex, pagination.PageSize, pagination.OrderByFileds);
         }
+
         #region 分表
+
         public async Task<List<long>> AddSplit(TEntity entity)
         {
             return await BaseDal.AddSplit(entity);
         }
+
         public async Task<bool> UpdateSplit(TEntity entity, DateTime dateTime)
         {
             return await BaseDal.UpdateSplit(entity, dateTime);
@@ -356,12 +359,14 @@ namespace Blog.Core.Services.BASE
         {
             return await BaseDal.QueryByIdSplit(objId);
         }
-        public async Task<PageModel<TEntity>> QueryPageSplit(Expression<Func<TEntity, bool>> whereExpression, DateTime beginTime, DateTime endTime, 
+
+        public async Task<PageModel<TEntity>> QueryPageSplit(Expression<Func<TEntity, bool>> whereExpression, DateTime beginTime, DateTime endTime,
             int pageIndex = 1, int pageSize = 20, string orderByFields = null)
         {
             return await BaseDal.QueryPageSplit(whereExpression, beginTime, endTime,
                 pageIndex, pageSize, orderByFields);
         }
+
         #endregion
     }
 }

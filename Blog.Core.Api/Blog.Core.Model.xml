@@ -832,11 +832,6 @@
             修改时间
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Id">
-            <summary>
-            雪花Id
-            </summary>
-        </member>
         <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Enabled">
             <summary>
             状态 <br/>

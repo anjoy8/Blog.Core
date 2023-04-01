@@ -33,14 +33,14 @@ namespace Blog.Core.IRepository.Base
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Task<int> Add(TEntity model);
+        Task<long> Add(TEntity model);
 
         /// <summary>
         /// 批量添加
         /// </summary>
         /// <param name="listEntity"></param>
         /// <returns></returns>
-        Task<int> Add(List<TEntity> listEntity);
+        Task<List<long>> Add(List<TEntity> listEntity);
 
         /// <summary>
         /// 根据id 删除某一实体

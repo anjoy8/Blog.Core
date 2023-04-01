@@ -114,7 +114,7 @@ namespace Blog.Core.Repository.Base
         /// </summary>
         /// <param name="entity">博文实体类</param>
         /// <returns></returns>
-        public async Task<int> Add(TEntity entity)
+        public async Task<long> Add(TEntity entity)
         {
             //var i = await Task.Run(() => _db.Insertable(entity).ExecuteReturnBigIdentity());
             ////返回的i是long类型,这里你可以根据你的业务需要进行处理
@@ -125,7 +125,7 @@ namespace Blog.Core.Repository.Base
             //这里你可以返回TEntity，这样的话就可以获取id值，无论主键是什么类型
             //var return3 = await insert.ExecuteReturnEntityAsync();
 
-            return await insert.ExecuteReturnIdentityAsync();
+            return await insert.ExecuteReturnSnowflakeIdAsync();
         }
 
         /// <summary>
@@ -134,16 +134,16 @@ namespace Blog.Core.Repository.Base
         /// <param name="entity">实体类</param>
         /// <param name="insertColumns">指定只插入列</param>
         /// <returns>返回自增量列</returns>
-        public async Task<int> Add(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null)
+        public async Task<long> Add(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null)
         {
             var insert = _db.Insertable(entity);
             if (insertColumns == null)
             {
-                return await insert.ExecuteReturnIdentityAsync();
+                return await insert.ExecuteReturnSnowflakeIdAsync();
             }
             else
             {
-                return await insert.InsertColumns(insertColumns).ExecuteReturnIdentityAsync();
+                return await insert.InsertColumns(insertColumns).ExecuteReturnSnowflakeIdAsync();
             }
         }
 
@@ -152,9 +152,9 @@ namespace Blog.Core.Repository.Base
         /// </summary>
         /// <param name="listEntity">实体集合</param>
         /// <returns>影响行数</returns>
-        public async Task<int> Add(List<TEntity> listEntity)
+        public async Task<List<long>> Add(List<TEntity> listEntity)
         {
-            return await _db.Insertable(listEntity.ToArray()).ExecuteCommandAsync();
+            return await _db.Insertable(listEntity.ToArray()).ExecuteReturnSnowflakeIdListAsync();
         }
 
         /// <summary>
@@ -557,7 +557,9 @@ namespace Blog.Core.Repository.Base
         //        groupName = s.groupName,
         //        jobName = s.jobName
         //    }, exp, s => new { s.uID, s.uRealName, s.groupName, s.jobName }, model.currentPage, model.pageSize, model.orderField + " " + model.orderType);
+
         #region Split分表基础接口 （基础CRUD）
+
         /// <summary>
         /// 分页查询[使用版本，其他分页未测试]
         /// </summary>
@@ -573,9 +575,10 @@ namespace Blog.Core.Repository.Base
                 .OrderByIF(!string.IsNullOrEmpty(orderByFields), orderByFields)
                 .WhereIF(whereExpression != null, whereExpression)
                 .ToPageListAsync(pageIndex, pageSize, totalCount);
-            var data= new PageModel<TEntity>(pageIndex, totalCount, pageSize, list);
+            var data = new PageModel<TEntity>(pageIndex, totalCount, pageSize, list);
             return data;
         }
+
         /// <summary>
         /// 写入实体数据
         /// </summary>
@@ -599,24 +602,26 @@ namespace Blog.Core.Repository.Base
             //return await _db.Updateable(entity).SplitTable().ExecuteCommandAsync();//,SplitTable不能少
 
             //精准找单个表
-            var tableName = _db.SplitHelper<TEntity>().GetTableName(dateTime);//根据时间获取表名
+            var tableName = _db.SplitHelper<TEntity>().GetTableName(dateTime); //根据时间获取表名
             return await _db.Updateable(entity).AS(tableName).ExecuteCommandHasChangeAsync();
         }
+
         /// <summary>
         /// 删除数据
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        public async Task<bool> DeleteSplit(TEntity entity,DateTime dateTime)
+        public async Task<bool> DeleteSplit(TEntity entity, DateTime dateTime)
         {
             ////直接根据实体集合删除 （全自动 找表插入）,返回受影响数
             //return await _db.Deleteable(entity).SplitTable().ExecuteCommandAsync();//,SplitTable不能少
 
             //精准找单个表
-            var tableName = _db.SplitHelper<TEntity>().GetTableName(dateTime);//根据时间获取表名
+            var tableName = _db.SplitHelper<TEntity>().GetTableName(dateTime); //根据时间获取表名
             return await _db.Deleteable<TEntity>().AS(tableName).Where(entity).ExecuteCommandHasChangeAsync();
         }
+
         /// <summary>
         /// 根据ID查找数据
         /// </summary>
@@ -626,6 +631,7 @@ namespace Blog.Core.Repository.Base
         {
             return await _db.Queryable<TEntity>().In(objId).SplitTable(tabs => tabs).SingleAsync();
         }
+
         #endregion
     }
 }

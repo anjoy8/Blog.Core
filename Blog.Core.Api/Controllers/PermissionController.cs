@@ -754,11 +754,11 @@ namespace Blog.Core.Controllers
                     List<Modules> modules = await _moduleServices.Query(d => d.LinkUrl != null && d.LinkUrl.ToLower() == item.Module.LinkUrl);
                     if (!modules.Any())
                     {
-                        int mid = await _moduleServices.Add(item.Module);
+                        var mid = await _moduleServices.Add(item.Module);
                         if (mid > 0)
                         {
                             item.Mid = mid;
-                            int permissionid = await _permissionServices.Add(item);
+                            var permissionid = await _permissionServices.Add(item);
                         }
 
                     }
