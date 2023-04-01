@@ -1,6 +1,7 @@
 ﻿using Blog.Core.Common;
+using Blog.Core.Common.Const;
 using Blog.Core.Common.DB;
-using Blog.Core.Common.Helper;
+using Blog.Core.Common.DB.Aop;
 using Blog.Core.Common.LogHelper;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +10,6 @@ using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Blog.Core.Common.DB.Aop;
 
 namespace Blog.Core.Extensions
 {
@@ -48,7 +48,7 @@ namespace Blog.Core.Extensions
 
                 BaseDBConfig.MutiConnectionString.allDbs.ForEach(m =>
                 {
-                    listConfig.Add(new ConnectionConfig()
+                    var config = new ConnectionConfig()
                     {
                         ConfigId = m.ConnId.ObjToString().ToLower(),
                         ConnectionString = m.Connection,
@@ -56,29 +56,6 @@ namespace Blog.Core.Extensions
                         IsAutoCloseConnection = true,
                         // Check out more information: https://github.com/anjoy8/Blog.Core/issues/122
                         //IsShardSameThread = false,
-                        AopEvents = new AopEvents
-                        {
-                            OnLogExecuting = (sql, p) =>
-                            {
-                                if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
-                                {
-                                    if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToFile", "Enabled" }).ObjToBool())
-                                    {
-                                        Parallel.For(0, 1, e =>
-                                        {
-                                            MiniProfiler.Current.CustomTiming("SQL：", GetParas(p) + "【SQL语句】：" + sql);
-                                            //LogLock.OutSql2Log("SqlLog", new string[] { GetParas(p), "【SQL语句】：" + sql });
-                                            LogLock.OutLogAOP("SqlLog", "", new string[] { sql.GetType().ToString(), GetParas(p), "【SQL语句】：" + sql });
-
-                                        });
-                                    }
-                                    if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToConsole", "Enabled" }).ObjToBool())
-                                    {
-                                        ConsoleHelper.WriteColorLine(string.Join("\r\n", new string[] { "--------", $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} ：" + GetWholeSql(p, sql) }), ConsoleColor.DarkCyan);
-                                    }
-                                }
-                            },
-                        },
                         MoreSettings = new ConnMoreSettings()
                         {
                             //IsWithNoLockQuery = true,
@@ -99,14 +76,28 @@ namespace Blog.Core.Extensions
                             }
                         },
                         InitKeyType = InitKeyType.Attribute
+                    };
+                    if (SqlSugarConst.LogConfigId.Equals(m.ConnId))
+                    {
+                        BaseDBConfig.LogConfig = config;
                     }
-                   );
+
+                    listConfig.Add(config);
                 });
+
+                if (BaseDBConfig.LogConfig is null)
+                {
+                    throw new ApplicationException("未配置Log库连接");
+                }
+
                 return new SqlSugarScope(listConfig, db =>
                 {
                     listConfig.ForEach(config =>
                     {
                         var dbProvider = db.GetConnectionScope((string)config.ConfigId);
+
+                        // 打印SQL语句
+                        dbProvider.Aop.OnLogExecuting = (s, parameters) => SqlSugarAop.OnLogExecuting(dbProvider,s, parameters, config);
 
                         // 数据审计
                         dbProvider.Aop.DataExecuting = SqlSugarAop.DataExecuting;

@@ -1,4 +1,4 @@
-﻿using Blog.Core.Common.HttpPolly;
+﻿using Blog.Core.Common.Https.HttpPolly;
 using Blog.Core.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;

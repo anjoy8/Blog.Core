@@ -17,19 +17,21 @@ namespace Blog.Core.Tasks
 {
     public class Job_OperateLog_Quartz : JobBase, IJob
     {
-        private readonly IOperateLogServices _operateLogServices; 
+        private readonly IOperateLogServices _operateLogServices;
         private readonly IWebHostEnvironment _environment;
 
-        public Job_OperateLog_Quartz(IOperateLogServices operateLogServices,IWebHostEnvironment environment, ITasksQzServices tasksQzServices,ITasksLogServices tasksLogServices)
-            :base(tasksQzServices, tasksLogServices)
+        public Job_OperateLog_Quartz(IOperateLogServices operateLogServices, IWebHostEnvironment environment, ITasksQzServices tasksQzServices, ITasksLogServices tasksLogServices)
+            : base(tasksQzServices, tasksLogServices)
         {
-            _operateLogServices = operateLogServices; 
-            _environment = environment; 
+            _operateLogServices = operateLogServices;
+            _environment = environment;
         }
+
         public async Task Execute(IJobExecutionContext context)
         {
             var executeLog = await ExecuteJob(context, async () => await Run(context));
         }
+
         public async Task Run(IJobExecutionContext context)
         {
 
@@ -78,7 +80,4 @@ namespace Blog.Core.Tasks
             }
         }
     }
-
-
-
 }

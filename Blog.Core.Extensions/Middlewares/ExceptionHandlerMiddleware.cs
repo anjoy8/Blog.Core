@@ -4,14 +4,13 @@ using System.Threading.Tasks;
 using Blog.Core.Model;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace Blog.Core.Extensions.Middlewares
 {
     public class ExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
-        private static readonly log4net.ILog Log =
-        log4net.LogManager.GetLogger(typeof(ExceptionHandlerMiddleware));
 
         public ExceptionHandlerMiddleware(RequestDelegate next)
         {
@@ -48,7 +47,9 @@ namespace Blog.Core.Extensions.Middlewares
 
             context.Response.ContentType = "application/json";
 
-            await context.Response.WriteAsync(JsonConvert.SerializeObject((new ApiResponse(StatusCode.CODE500, e.Message)).MessageModel)).ConfigureAwait(false);
+            await context.Response
+                .WriteAsync(JsonConvert.SerializeObject(new ApiResponse(StatusCode.CODE500, e.Message).MessageModel))
+                .ConfigureAwait(false);
         }
     }
 }

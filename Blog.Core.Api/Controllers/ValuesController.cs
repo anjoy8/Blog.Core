@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
-using Blog.Core.Common.HttpPolly;
+using Blog.Core.Common.Https.HttpPolly;
 using Blog.Core.Common.WebApiClients.HttpApis;
 using Blog.Core.EventBus;
 using Blog.Core.EventBus.EventHandling;

@@ -1,8 +1,8 @@
-﻿using System;
-using AspNetCoreRateLimit;
+﻿using AspNetCoreRateLimit;
 using Blog.Core.Common;
-using log4net;
 using Microsoft.AspNetCore.Builder;
+using System;
+using Serilog;
 
 namespace Blog.Core.Extensions.Middlewares
 {
@@ -11,7 +11,6 @@ namespace Blog.Core.Extensions.Middlewares
     /// </summary>
     public static class IpLimitMiddleware
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(IpLimitMiddleware));
         public static void UseIpLimitMiddle(this IApplicationBuilder app)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));

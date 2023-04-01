@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Common.HttpPolly
+namespace Blog.Core.Common.Https.HttpPolly
 {
     public interface IHttpPollyHelper
     {

@@ -34,7 +34,7 @@ namespace Blog.Core.Tasks
         }
         public async Task Run(IJobExecutionContext context)
         {
-
+            
             // 可以直接获取 JobDetail 的值
             var jobKey = context.JobDetail.Key;
             var jobId = jobKey.Name;
@@ -94,7 +94,7 @@ namespace Blog.Core.Tasks
 
             Parallel.For(0, 1, e =>
             {
-                LogLock.OutLogAOP("ACCESSTRENDLOG","",new string[] { activeUserVMs.GetType().ToString(), JsonConvert.SerializeObject(activeUserVMs) }, false);
+                LogLock.OutLogAOP("ACCESSTRENDLOG", "", new string[] { activeUserVMs.GetType().ToString(), JsonConvert.SerializeObject(activeUserVMs) }, false);
             });
         }
 

@@ -1,12 +1,40 @@
-﻿using Blog.Core.Model.Models.RootTkey;
+﻿using Blog.Core.Common.LogHelper;
+using Blog.Core.Model.Models.RootTkey;
 using Blog.Core.Model.Tenants;
 using SqlSugar;
+using StackExchange.Profiling;
 using System;
+using Serilog;
 
 namespace Blog.Core.Common.DB.Aop;
 
 public static class SqlSugarAop
 {
+    public static void OnLogExecuting(ISqlSugarClient sqlSugarScopeProvider, string sql, SugarParameter[] p, ConnectionConfig config)
+    {
+        try
+        {
+            MiniProfiler.Current.CustomTiming($"ConnId:[{config.ConfigId}] SQL：", GetParas(p) + "【SQL语句】：" + sql);
+
+            if (!AppSettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool()) return;
+
+            if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToConsole", "Enabled" }).ObjToBool() ||
+                AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToFile", "Enabled" }).ObjToBool() ||
+                AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToDB", "Enabled" }).ObjToBool())
+            {
+                using (LogContextExtension.Create.SqlAopPushProperty(sqlSugarScopeProvider))
+                {
+                    Log.Information("------------------ \r\n ConnId:[{ConnId}]【SQL语句】: \r\n {Sql}",
+                        config.ConfigId, UtilMethods.GetSqlString(config.DbType, sql, p));
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error("Error occured OnLogExcuting:" + e);
+        }
+    }
+
     public static void DataExecuting(object oldValue, DataFilterModel entityInfo)
     {
         if (entityInfo.EntityValue is BaseEntity root)

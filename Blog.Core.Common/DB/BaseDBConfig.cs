@@ -12,6 +12,7 @@ namespace Blog.Core.Common.DB
          * 目前是多库操作，默认加载的是appsettings.json设置为true的第一个db连接。
          */
         public static (List<MutiDBOperate> allDbs, List<MutiDBOperate> slaveDbs) MutiConnectionString => MutiInitConn();
+        public static ConnectionConfig LogConfig; //日志库
 
         private static string DifDBConnOfSecurity(params string[] conn)
         {
@@ -107,8 +108,6 @@ namespace Blog.Core.Common.DB
 
             return mutiDBOperate;
         }
-
-        
     }
 
 
