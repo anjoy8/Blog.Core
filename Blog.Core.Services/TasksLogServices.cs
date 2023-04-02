@@ -14,7 +14,7 @@ namespace Blog.Core.Services
 {
     public partial class TasksLogServices : BaseServices<TasksLog>, ITasksLogServices
     {
-        public async Task<PageModel<TasksLog>> GetTaskLogs(int jobId, int page, int intPageSize, DateTime? runTime, DateTime? endTime)
+        public async Task<PageModel<TasksLog>> GetTaskLogs(long jobId, int page, int intPageSize, DateTime? runTime, DateTime? endTime)
         {
             RefAsync<int> totalCount = 0;
             Expression<Func<TasksLog, bool>> whereExpression = log => true;
@@ -41,7 +41,7 @@ namespace Blog.Core.Services
                 .ToPageListAsync(page, intPageSize, totalCount);
             return new PageModel<TasksLog>(page, totalCount, intPageSize, data);
         }
-        public async Task<object> GetTaskOverview(int jobId, DateTime? runTime, DateTime? endTime, string type)
+        public async Task<object> GetTaskOverview(long jobId, DateTime? runTime, DateTime? endTime, string type)
         {
             //按年
             if ("year".Equals(type))

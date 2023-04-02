@@ -119,7 +119,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
-        public async Task<MessageModel<string>> Delete(int id)
+        public async Task<MessageModel<string>> Delete(long id)
         {
             if (id <= 0)
                 return Failed("缺少参数");

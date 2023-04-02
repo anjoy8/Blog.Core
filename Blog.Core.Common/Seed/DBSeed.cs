@@ -175,7 +175,11 @@ namespace Blog.Core.Common.Seed
                     {
                         var data = JsonConvert.DeserializeObject<List<Permission>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Permission"), Encoding.UTF8), setting);
 
-                        myContext.GetEntityDB<Permission>().InsertRange(data);
+                        foreach (var item in data)
+                        {
+                            Console.WriteLine($"{item.Name}:{item.Id}");
+                            myContext.GetEntityDB<Permission>().Insert(item);
+                        }
                         Console.WriteLine("Table:Permission created success!");
                     }
                     else
@@ -190,10 +194,10 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<Role>().AnyAsync())
                     {
-                        //var data = JsonConvert.DeserializeObject<List<Role>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Role"), Encoding.UTF8), setting);
-                        using var stream = new FileStream(Path.Combine(WebRootPath, "BlogCore.Data.excel", "Role.xlsx"), FileMode.Open);
-                        var result = await importer.Import<Role>(stream);
-                        var data = result.Data.ToList();
+                        var data = JsonConvert.DeserializeObject<List<Role>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Role"), Encoding.UTF8), setting);
+                        //using var stream = new FileStream(Path.Combine(WebRootPath, "BlogCore.Data.excel", "Role.xlsx"), FileMode.Open);
+                        //var result = await importer.Import<Role>(stream);
+                        //var data = result.Data.ToList();
 
                         myContext.GetEntityDB<Role>().InsertRange(data);
                         Console.WriteLine("Table:Role created success!");
@@ -212,7 +216,11 @@ namespace Blog.Core.Common.Seed
                     {
                         var data = JsonConvert.DeserializeObject<List<RoleModulePermission>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "RoleModulePermission"), Encoding.UTF8), setting);
 
-                        myContext.GetEntityDB<RoleModulePermission>().InsertRange(data);
+                        foreach (var item in data)
+                        {
+                            Console.WriteLine($"{item.Id}");
+                            myContext.GetEntityDB<RoleModulePermission>().Insert(item);
+                        }
                         Console.WriteLine("Table:RoleModulePermission created success!");
                     }
                     else
@@ -261,10 +269,7 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<UserRole>().AnyAsync())
                     {
-                        //var data = JsonConvert.DeserializeObject<List<UserRole>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "UserRole"), Encoding.UTF8), setting);
-                        using var stream = new FileStream(Path.Combine(WebRootPath, "BlogCore.Data.excel", "UserRole.xlsx"), FileMode.Open);
-                        var result = await importer.Import<UserRole>(stream);
-                        var data = result.Data.ToList();
+                        var data = JsonConvert.DeserializeObject<List<UserRole>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "UserRole"), Encoding.UTF8), setting);
 
                         myContext.GetEntityDB<UserRole>().InsertRange(data);
                         Console.WriteLine("Table:UserRole created success!");
@@ -281,10 +286,7 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<SysUserInfo>().AnyAsync())
                     {
-                        //var data = JsonConvert.DeserializeObject<List<SysUserInfo>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "sysUserInfo"), Encoding.UTF8), setting);
-                        using var stream = new FileStream(Path.Combine(WebRootPath, "BlogCore.Data.excel", "SysUserInfo.xlsx"), FileMode.Open);
-                        var result = await importer.Import<SysUserInfo>(stream);
-                        var data = result.Data.ToList();
+                        var data = JsonConvert.DeserializeObject<List<SysUserInfo>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "sysUserInfo"), Encoding.UTF8), setting);
 
                         myContext.GetEntityDB<SysUserInfo>().InsertRange(data);
                         Console.WriteLine("Table:sysUserInfo created success!");

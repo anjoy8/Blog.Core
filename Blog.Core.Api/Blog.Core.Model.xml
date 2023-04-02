@@ -832,11 +832,6 @@
             修改时间
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Id">
-            <summary>
-            雪花Id
-            </summary>
-        </member>
         <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Enabled">
             <summary>
             状态 <br/>
@@ -1793,11 +1788,6 @@
         <member name="P:Blog.Core.Model.Models.WeChatUploadFile.ModifyTime">
             <summary>
             修改时间
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.RootEntity.Id">
-            <summary>
-            ID
             </summary>
         </member>
         <member name="T:Blog.Core.Model.DepartmentRoot`1">

@@ -7,7 +7,7 @@ namespace Blog.Core.Model.Models
     ///<summary>
     /// 部门表
     ///</summary>
-    public class Department : DepartmentRoot<int>
+    public class Department : DepartmentRoot<long>
     {
         /// <summary>
         /// Desc:部门关系编码

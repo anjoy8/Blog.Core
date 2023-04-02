@@ -8,7 +8,7 @@ namespace Blog.Core.Common.Helper
     /// </summary>
     public static class RecursionHelper
     {
-        public static void LoopToAppendChildren(List<PermissionTree> all, PermissionTree curItem, int pid, bool needbtn)
+        public static void LoopToAppendChildren(List<PermissionTree> all, PermissionTree curItem, long pid, bool needbtn)
         {
 
             var subItems = all.Where(ee => ee.Pid == curItem.value).ToList();
@@ -52,7 +52,7 @@ namespace Blog.Core.Common.Helper
                 LoopToAppendChildren(all, subItem, pid, needbtn);
             }
         }
-        public static void LoopToAppendChildren(List<DepartmentTree> all, DepartmentTree curItem, int pid)
+        public static void LoopToAppendChildren(List<DepartmentTree> all, DepartmentTree curItem, long pid)
         {
 
             var subItems = all.Where(ee => ee.Pid == curItem.value).ToList();
@@ -117,8 +117,8 @@ namespace Blog.Core.Common.Helper
 
     public class PermissionTree
     {
-        public int value { get; set; }
-        public int Pid { get; set; }
+        public long value { get; set; }
+        public long Pid { get; set; }
         public string label { get; set; }
         public int order { get; set; }
         public bool isbtn { get; set; }
@@ -139,8 +139,8 @@ namespace Blog.Core.Common.Helper
 
     public class NavigationBar
     {
-        public int id { get; set; }
-        public int pid { get; set; }
+        public long id { get; set; }
+        public long pid { get; set; }
         public int order { get; set; }
         public string name { get; set; }
         public bool IsHide { get; set; } = false;
@@ -165,8 +165,8 @@ namespace Blog.Core.Common.Helper
 
     public class NavigationBarPro
     {
-        public int id { get; set; }
-        public int parentId { get; set; }
+        public long id { get; set; }
+        public long parentId { get; set; }
         public int order { get; set; }
         public string name { get; set; }
         public bool IsHide { get; set; } = false;

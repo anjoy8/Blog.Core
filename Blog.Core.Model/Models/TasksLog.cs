@@ -6,12 +6,12 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 任务日志表
     /// </summary>
-    public class TasksLog : RootEntityTkey<int>
+    public class TasksLog : RootEntityTkey<long>
     {
         /// <summary>
         /// 任务ID
         /// </summary>
-        public int JobId { get; set; }
+        public long JobId { get; set; }
         /// <summary>
         /// 任务耗时
         /// </summary>

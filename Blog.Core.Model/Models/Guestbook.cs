@@ -3,13 +3,13 @@ using System;
 
 namespace Blog.Core.Model.Models
 {
-    public class Guestbook:RootEntityTkey<int>
+    public class Guestbook : RootEntityTkey<long>
     {
-        
+
         /// <summary>博客ID
         /// 
         /// </summary>
-        public int? blogId { get; set; }
+        public long? blogId { get; set; }
         /// <summary>创建时间
         /// 
         /// </summary>

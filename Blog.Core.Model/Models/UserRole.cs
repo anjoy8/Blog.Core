@@ -6,11 +6,11 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 用户跟角色关联表
     /// </summary>
-    public class UserRole : UserRoleRoot<int>
+    public class UserRole : UserRoleRoot<long>
     {
         public UserRole() { }
 
-        public UserRole(int uid, int rid)
+        public UserRole(long uid, long rid)
         {
             UserId = uid;
             RoleId = rid;
@@ -31,7 +31,7 @@ namespace Blog.Core.Model.Models
         /// 创建ID
         /// </summary>
         [SugarColumn(IsNullable = true)]
-        public int? CreateId { get; set; }
+        public long? CreateId { get; set; }
         /// <summary>
         /// 创建者
         /// </summary>

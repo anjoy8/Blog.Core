@@ -9,7 +9,7 @@ namespace Blog.Core.Model.Models
     /// </summary>
     //[SugarTable("SysUserInfo")]
     [SugarTable("SysUserInfo", "用户表")] //('数据库表名'，'数据库表备注')
-    public class SysUserInfo : SysUserInfoRoot<int>
+    public class SysUserInfo : SysUserInfoRoot<long>
     {
         public SysUserInfo()
         {
@@ -133,7 +133,7 @@ namespace Blog.Core.Model.Models
         public List<string> RoleNames { get; set; }
 
         [SugarColumn(IsIgnore = true)]
-        public List<int> Dids { get; set; }
+        public List<long> Dids { get; set; }
 
         [SugarColumn(IsIgnore = true)]
         public string DepartmentName { get; set; }

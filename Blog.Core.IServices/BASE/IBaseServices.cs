@@ -16,9 +16,9 @@ namespace Blog.Core.IServices.BASE
         Task<TEntity> QueryById(object objId, bool blnUseCache = false);
         Task<List<TEntity>> QueryByIDs(object[] lstIds);
 
-        Task<int> Add(TEntity model);
+        Task<long> Add(TEntity model);
 
-        Task<int> Add(List<TEntity> listEntity);
+        Task<List<long>> Add(List<TEntity> listEntity);
 
         Task<bool> DeleteById(object id);
 
@@ -27,6 +27,7 @@ namespace Blog.Core.IServices.BASE
         Task<bool> DeleteByIds(object[] ids);
 
         Task<bool> Update(TEntity model);
+        Task<bool> Update(List<TEntity> model);
         Task<bool> Update(TEntity entity, string where);
 
         Task<bool> Update(object operateAnonymousObjects);
