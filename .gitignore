@@ -358,3 +358,4 @@ Blog.Core.Api/wwwroot/ui/
 *.db
 /Blog.Core.Api/WMBlog.db-journal
 Logs
+*.db
