@@ -77,7 +77,7 @@ namespace Blog.Core.Api.Controllers
         public async Task<MessageModel<string>> Post([FromBody] SplitDemo splitDemo)
         {
             var data = new MessageModel<string>();
-            unitOfWorkManage.BeginTran();
+            //unitOfWorkManage.BeginTran();
             var id = (await splitDemoServices.AddSplit(splitDemo));
             data.success = (id == null ? false : true);
             try
@@ -98,10 +98,10 @@ namespace Blog.Core.Api.Controllers
             }
             finally
             {
-                if (data.success)
-                    unitOfWorkManage.CommitTran();
-                else
-                    unitOfWorkManage.RollbackTran();
+                //if (data.success)
+                //    unitOfWorkManage.CommitTran();
+                //else
+                //    unitOfWorkManage.RollbackTran();
             }
             return data;
         }
