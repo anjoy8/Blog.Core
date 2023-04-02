@@ -95,7 +95,7 @@ namespace Blog.Core.Controllers
 
         // GET: api/Transaction/5
         [HttpGet("{id}")]
-        public async Task<MessageModel<string>> Get(int id)
+        public async Task<MessageModel<string>> Get(long id)
         {
             return await _guestbookServices.TestTranInRepository();
         }
@@ -126,7 +126,7 @@ namespace Blog.Core.Controllers
 
         // PUT: api/Transaction/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(long id, [FromBody] string value)
         {
         }
 
@@ -136,7 +136,7 @@ namespace Blog.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<bool> Delete(int id)
+        public async Task<bool> Delete(long id)
         {
             return await _guestbookServices.TestTranInRepositoryAOP();
         }

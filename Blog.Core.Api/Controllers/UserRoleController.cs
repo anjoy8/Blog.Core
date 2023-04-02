@@ -80,7 +80,7 @@ namespace Blog.Core.Controllers
         /// <param name="rid"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<UserRole>> AddUserRole(int uid, int rid)
+        public async Task<MessageModel<UserRole>> AddUserRole(long uid, long rid)
         {
             return new MessageModel<UserRole>()
             {

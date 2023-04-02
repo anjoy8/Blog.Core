@@ -42,7 +42,7 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<MessageModel<PageModel<TopicDetail>>> Get(int page = 1, string tname = "", string key = "", int intPageSize = 12)
         {
-            int tid = 0;
+            long tid = 0;
 
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -56,7 +56,7 @@ namespace Blog.Core.Controllers
 
             if (!string.IsNullOrEmpty(tname))
             {
-                tid = ((await _topicServices.Query(ts => ts.tName == tname)).FirstOrDefault()?.Id).ObjToInt();
+                tid = ((await _topicServices.Query(ts => ts.tName == tname)).FirstOrDefault()?.Id).ObjToLong();
             }
 
 
@@ -81,7 +81,7 @@ namespace Blog.Core.Controllers
         // GET: api/TopicDetail/5
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<MessageModel<TopicDetail>> Get(int id)
+        public async Task<MessageModel<TopicDetail>> Get(long id)
         {
             var data = new MessageModel<TopicDetail>();
             var response = id > 0 ? await _topicDetailServices.QueryById(id) : new TopicDetail();
@@ -154,7 +154,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
-        public async Task<MessageModel<string>> Delete(int id)
+        public async Task<MessageModel<string>> Delete(long id)
         {
             var data = new MessageModel<string>();
             if (id > 0)

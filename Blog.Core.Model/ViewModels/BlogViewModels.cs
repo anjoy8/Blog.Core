@@ -10,7 +10,7 @@ namespace Blog.Core.Model.ViewModels
         /// <summary>
         /// 
         /// </summary>
-        public int bID { get; set; }
+        public long bID { get; set; }
         /// <summary>创建人
         /// 
         /// </summary>

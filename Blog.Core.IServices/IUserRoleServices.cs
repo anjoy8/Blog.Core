@@ -10,8 +10,8 @@ namespace Blog.Core.IServices
     public interface IUserRoleServices :IBaseServices<UserRole>
 	{
 
-        Task<UserRole> SaveUserRole(int uid, int rid);
-        Task<int> GetRoleIdByUid(int uid);
+        Task<UserRole> SaveUserRole(long uid, long rid);
+        Task<int> GetRoleIdByUid(long uid);
     }
 }
 

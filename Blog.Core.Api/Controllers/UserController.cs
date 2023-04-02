@@ -103,7 +103,7 @@ namespace Blog.Core.Controllers
             return Success(data.ConvertTo<SysUserInfoDto>(_mapper));
         }
 
-        private (string, List<long>) GetFullDepartmentName(List<Department> departments, int departmentId)
+        private (string, List<long>) GetFullDepartmentName(List<Department> departments, long departmentId)
         {
             var departmentModel = departments.FirstOrDefault(d => d.Id == departmentId);
             if (departmentModel == null)
@@ -265,7 +265,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
-        public async Task<MessageModel<string>> Delete(int id)
+        public async Task<MessageModel<string>> Delete(long id)
         {
             var data = new MessageModel<string>();
             if (id > 0)

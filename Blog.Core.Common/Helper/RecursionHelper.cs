@@ -8,7 +8,7 @@ namespace Blog.Core.Common.Helper
     /// </summary>
     public static class RecursionHelper
     {
-        public static void LoopToAppendChildren(List<PermissionTree> all, PermissionTree curItem, int pid, bool needbtn)
+        public static void LoopToAppendChildren(List<PermissionTree> all, PermissionTree curItem, long pid, bool needbtn)
         {
 
             var subItems = all.Where(ee => ee.Pid == curItem.value).ToList();
@@ -52,7 +52,7 @@ namespace Blog.Core.Common.Helper
                 LoopToAppendChildren(all, subItem, pid, needbtn);
             }
         }
-        public static void LoopToAppendChildren(List<DepartmentTree> all, DepartmentTree curItem, int pid)
+        public static void LoopToAppendChildren(List<DepartmentTree> all, DepartmentTree curItem, long pid)
         {
 
             var subItems = all.Where(ee => ee.Pid == curItem.value).ToList();
