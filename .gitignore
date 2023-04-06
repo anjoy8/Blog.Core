@@ -355,7 +355,6 @@ Blog.Core/WMBlog.db
 Blog.Core/Blog.Core*.xml
 Blog.Core.Api/WMBlog.db
 Blog.Core.Api/wwwroot/ui/
+Blog.Core.Api/Logs
 *.db
 /Blog.Core.Api/WMBlog.db-journal
-Logs
-*.db
