@@ -33,8 +33,6 @@ namespace Blog.Core.Extensions
             {
                 var memoryCache = o.GetRequiredService<IMemoryCache>();
 
-                // 连接字符串
-                var listConfig = new List<ConnectionConfig>();
                 // 从库
                 var listConfig_Slave = new List<SlaveConnectionConfig>();
                 BaseDBConfig.MutiConnectionString.slaveDbs.ForEach(s =>
@@ -77,12 +75,16 @@ namespace Blog.Core.Extensions
                         },
                         InitKeyType = InitKeyType.Attribute
                     };
-                    if (SqlSugarConst.LogConfigId.Equals(m.ConnId))
+                    if (SqlSugarConst.LogConfigId.ToLower().Equals(m.ConnId.ToLower()))
                     {
                         BaseDBConfig.LogConfig = config;
                     }
+                    else
+                    {
+                        BaseDBConfig.ValidConfig.Add(config);
+                    }
 
-                    listConfig.Add(config);
+                    BaseDBConfig.AllConfig.Add(config);
                 });
 
                 if (BaseDBConfig.LogConfig is null)
@@ -90,14 +92,14 @@ namespace Blog.Core.Extensions
                     throw new ApplicationException("未配置Log库连接");
                 }
 
-                return new SqlSugarScope(listConfig, db =>
+                return new SqlSugarScope(BaseDBConfig.AllConfig, db =>
                 {
-                    listConfig.ForEach(config =>
+                    BaseDBConfig.ValidConfig.ForEach(config =>
                     {
                         var dbProvider = db.GetConnectionScope((string)config.ConfigId);
 
                         // 打印SQL语句
-                        dbProvider.Aop.OnLogExecuting = (s, parameters) => SqlSugarAop.OnLogExecuting(dbProvider,s, parameters, config);
+                        dbProvider.Aop.OnLogExecuting = (s, parameters) => SqlSugarAop.OnLogExecuting(dbProvider, s, parameters, config);
 
                         // 数据审计
                         dbProvider.Aop.DataExecuting = SqlSugarAop.DataExecuting;

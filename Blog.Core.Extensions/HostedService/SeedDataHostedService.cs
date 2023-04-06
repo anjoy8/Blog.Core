@@ -39,6 +39,9 @@ public sealed class SeedDataHostedService : IHostedService
             {
                 await DBSeed.SeedAsync(_myContext, _webRootPath);
 
+                //日志
+                DBSeed.MigrationLogs(_myContext);
+
                 //多租户 同步
                 await DBSeed.TenantSeedAsync(_myContext);
             }

@@ -9,45 +9,6 @@ namespace Blog.Core.Serilog.Extensions;
 
 public static class LoggerConfigurationExtensions
 {
-    public static LoggerConfiguration WriteToSqlServer(this LoggerConfiguration loggerConfiguration)
-    {
-        var logConnectionStrings = AppSettings.app("LogConnectionStrings");
-        if (logConnectionStrings.IsNullOrEmpty()) return loggerConfiguration;
-
-        //输出SQL
-        //loggerConfiguration = loggerConfiguration.WriteTo.Logger(lg =>
-        //    lg.FilterSqlLog().WriteTo.MSSqlServer(logConnectionStrings, new MSSqlServerSinkOptions()
-        //    {
-        //        TableName = "SqlLog",
-        //        AutoCreateSqlTable = true
-        //    }));
-
-        //输出普通日志
-        //loggerConfiguration = loggerConfiguration.WriteTo.Logger(lg =>
-        //    lg.FilterRemoveSqlLog().Filter.ByIncludingOnly(p => p.Level >= LogEventLevel.Error)
-        //        .WriteTo.MSSqlServer(logConnectionStrings, new MSSqlServerSinkOptions()
-        //        {
-        //            TableName = "ErrorLog",
-        //            AutoCreateSqlTable = true
-        //        }));
-        //loggerConfiguration = loggerConfiguration.WriteTo.Logger(lg =>
-        //    lg.FilterRemoveSqlLog().Filter.ByIncludingOnly(p => p.Level == LogEventLevel.Warning)
-        //        .WriteTo.MSSqlServer(logConnectionStrings, new MSSqlServerSinkOptions()
-        //        {
-        //            TableName = "WarningLog",
-        //            AutoCreateSqlTable = true
-        //        }));
-        //loggerConfiguration = loggerConfiguration.WriteTo.Logger(lg =>
-        //    lg.FilterRemoveSqlLog().Filter.ByIncludingOnly(p => p.Level <= LogEventLevel.Information)
-        //        .WriteTo.MSSqlServer(logConnectionStrings, new MSSqlServerSinkOptions()
-        //        {
-        //            TableName = "InformationLog",
-        //            AutoCreateSqlTable = true
-        //        }));
-
-        return loggerConfiguration;
-    }
-
     public static LoggerConfiguration WriteToConsole(this LoggerConfiguration loggerConfiguration)
     {
         //输出普通日志
@@ -84,6 +45,7 @@ public static class LoggerConfigurationExtensions
 
     public static IEnumerable<LogEvent> FilterSqlLog(this IEnumerable<LogEvent> batch)
     {
+        //只记录 Insert、Update、Delete语句
         return batch.Where(s => s.WithProperty<string>(LogContextStatic.LogSource, q => LogContextStatic.AopSql.Equals(q)))
             .Where(s => s.WithProperty<SugarActionType>(LogContextStatic.SugarActionType,
                 q => !new[] { SugarActionType.UnKnown, SugarActionType.Query }.Contains(q)));

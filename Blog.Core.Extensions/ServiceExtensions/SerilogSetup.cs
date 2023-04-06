@@ -1,5 +1,6 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
+using Blog.Core.Serilog.Configuration;
 using Blog.Core.Serilog.Extensions;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -21,9 +22,9 @@ public static class SerilogSetup
             //输出到控制台
             .WriteToConsole()
             //将日志保存到文件中
-            .WriteToFile();
+            .WriteToFile()
             //配置日志库
-            //.WriteToLogBatching();
+            .WriteToLogBatching();
 
         Log.Logger = loggerConfiguration.CreateLogger();
         

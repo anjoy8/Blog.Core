@@ -24,7 +24,7 @@ public class LogContextExtension : IDisposable
         AddStock(LogContext.PushProperty(LogContextStatic.SqlOutToFile,
             AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToFile", "Enabled" }).ObjToBool()));
         AddStock(LogContext.PushProperty(LogContextStatic.OutToDb,
-            AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToDb", "Enabled" }).ObjToBool()));
+            AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToDB", "Enabled" }).ObjToBool()));
 
         AddStock(LogContext.PushProperty(LogContextStatic.SugarActionType, db.SugarActionType));
 
