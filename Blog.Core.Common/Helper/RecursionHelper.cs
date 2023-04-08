@@ -54,8 +54,7 @@ namespace Blog.Core.Common.Helper
                 LoopToAppendChildren(all, subItem, pid, needbtn);
             }
         }
-
-        public static void LoopToAppendChildren(List<DepartmentTree> all, DepartmentTree curItem, int pid)
+        public static void LoopToAppendChildren(List<DepartmentTree> all, DepartmentTree curItem, long pid)
         {
             var subItems = all.Where(ee => ee.Pid == curItem.value).ToList();
 

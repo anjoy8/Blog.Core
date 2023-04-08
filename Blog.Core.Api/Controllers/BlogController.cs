@@ -83,7 +83,7 @@ namespace Blog.Core.Controllers
         [HttpGet("{id}")]
         //[Authorize(Policy = "Scope_BlogModule_Policy")]
         [Authorize]
-        public async Task<MessageModel<BlogViewModels>> Get(int id)
+        public async Task<MessageModel<BlogViewModels>> Get(long id)
         {
             return Success(await _blogArticleServices.GetBlogDetails(id));
         }
@@ -96,7 +96,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("DetailNuxtNoPer")]
-        public async Task<MessageModel<BlogViewModels>> DetailNuxtNoPer(int id)
+        public async Task<MessageModel<BlogViewModels>> DetailNuxtNoPer(long id)
         {
             _logger.LogInformation("xxxxxxxxxxxxxxxxxxx");
             return Success(await _blogArticleServices.GetBlogDetails(id));
@@ -104,7 +104,7 @@ namespace Blog.Core.Controllers
 
         [HttpGet]
         [Route("GoUrl")]
-        public async Task<IActionResult> GoUrl(int id = 0)
+        public async Task<IActionResult> GoUrl(long id = 0)
         {
             var response = await _blogArticleServices.QueryById(id);
             if (response != null && response.bsubmitter.IsNotEmptyOrNull())
@@ -136,7 +136,7 @@ namespace Blog.Core.Controllers
 
         [HttpGet]
         [Route("GetBlogByIdForMVP")]
-        public async Task<MessageModel<BlogArticle>> GetBlogByIdForMVP(int id = 0)
+        public async Task<MessageModel<BlogArticle>> GetBlogByIdForMVP(long id = 0)
         {
             if (id > 0)
             {
@@ -247,7 +247,7 @@ namespace Blog.Core.Controllers
         [HttpDelete]
         [Authorize(Permissions.Name)]
         [Route("Delete")]
-        public async Task<MessageModel<string>> Delete(int id)
+        public async Task<MessageModel<string>> Delete(long id)
         {
             if (id > 0)
             {

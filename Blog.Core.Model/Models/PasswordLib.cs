@@ -10,8 +10,8 @@ namespace Blog.Core.Model.Models
     //[TenantAttribute("WMBLOG_MYSQL_2")] //('代表是哪个数据库，名字是appsettings.json 的 ConnId')
     public class PasswordLib
     {
-        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
-        public int PLID { get; set; }
+        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = false)]
+        public long PLID { get; set; }
 
         /// <summary>
         ///获取或设置是否禁用，逻辑上的删除，非物理删除

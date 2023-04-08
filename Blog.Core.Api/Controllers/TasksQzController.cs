@@ -172,7 +172,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<MessageModel<string>> Delete(int jobId)
+        public async Task<MessageModel<string>> Delete(long jobId)
         {
             var data = new MessageModel<string>();
 
@@ -221,7 +221,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<string>> StartJob(int jobId)
+        public async Task<MessageModel<string>> StartJob(long jobId)
         {
             var data = new MessageModel<string>();
 
@@ -278,7 +278,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>        
         [HttpGet]
-        public async Task<MessageModel<string>> StopJob(int jobId)
+        public async Task<MessageModel<string>> StopJob(long jobId)
         {
             var data = new MessageModel<string>();
 
@@ -318,7 +318,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>        
         [HttpGet]
-        public async Task<MessageModel<string>> PauseJob(int jobId)
+        public async Task<MessageModel<string>> PauseJob(long jobId)
         {
             var data = new MessageModel<string>();
             var model = await _tasksQzServices.QueryById(jobId);
@@ -372,7 +372,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>        
         [HttpGet]
-        public async Task<MessageModel<string>> ResumeJob(int jobId)
+        public async Task<MessageModel<string>> ResumeJob(long jobId)
         {
             var data = new MessageModel<string>();
 
@@ -428,7 +428,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<string>> ReCovery(int jobId)
+        public async Task<MessageModel<string>> ReCovery(long jobId)
         {
             var data = new MessageModel<string>();
             var model = await _tasksQzServices.QueryById(jobId);
@@ -507,7 +507,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<string>> ExecuteJob(int jobId)
+        public async Task<MessageModel<string>> ExecuteJob(long jobId)
         {
             var data = new MessageModel<string>();
 
@@ -527,7 +527,7 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<PageModel<TasksLog>>> GetTaskLogs(int jobId, int page = 1, int pageSize = 10, DateTime? runTimeStart = null, DateTime? runTimeEnd = null)
+        public async Task<MessageModel<PageModel<TasksLog>>> GetTaskLogs(long jobId, int page = 1, int pageSize = 10, DateTime? runTimeStart = null, DateTime? runTimeEnd = null)
         {
             var model = await _tasksLogServices.GetTaskLogs(jobId, page, pageSize, runTimeStart, runTimeEnd);
             return MessageModel<PageModel<TasksLog>>.Message(model.dataCount >= 0, "获取成功", model);
@@ -537,7 +537,7 @@ namespace Blog.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<object>> GetTaskOverview(int jobId, int page = 1, int pageSize = 10, DateTime? runTimeStart = null, DateTime? runTimeEnd = null, string type = "month")
+        public async Task<MessageModel<object>> GetTaskOverview(long jobId, int page = 1, int pageSize = 10, DateTime? runTimeStart = null, DateTime? runTimeEnd = null, string type = "month")
         {
             var model = await _tasksLogServices.GetTaskOverview(jobId, runTimeStart, runTimeEnd, type);
             return MessageModel<object>.Message(true, "获取成功", model);

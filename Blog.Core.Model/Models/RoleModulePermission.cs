@@ -6,7 +6,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 按钮跟权限关联表
     /// </summary>
-    public class RoleModulePermission : RoleModulePermissionRoot<int>
+    public class RoleModulePermission : RoleModulePermissionRoot<long>
     {
         public RoleModulePermission()
         {

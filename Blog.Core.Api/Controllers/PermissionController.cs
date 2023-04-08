@@ -6,6 +6,8 @@ using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Repository.UnitOfWorks;
+using Blog.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -21,6 +23,7 @@ namespace Blog.Core.Controllers
     [Authorize(Permissions.Name)]
     public class PermissionController : BaseApiController
     {
+        readonly IUnitOfWorkManage _unitOfWorkManage;
         readonly IPermissionServices _permissionServices;
         readonly IModuleServices _moduleServices;
         readonly IRoleModulePermissionServices _roleModulePermissionServices;
@@ -37,16 +40,19 @@ namespace Blog.Core.Controllers
         /// <param name="moduleServices"></param>
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="userRoleServices"></param>
+        /// <param name="unitOfWorkManage"></param>
         /// <param name="httpClientFactory"></param>
         /// <param name="httpContext"></param>
         /// <param name="user"></param>
         /// <param name="requirement"></param>
         public PermissionController(IPermissionServices permissionServices, IModuleServices moduleServices,
             IRoleModulePermissionServices roleModulePermissionServices, IUserRoleServices userRoleServices,
+            IUnitOfWorkManage unitOfWorkManage,
             IHttpClientFactory httpClientFactory,
             IHttpContextAccessor httpContext, IUser user, PermissionRequirement requirement)
         {
             _permissionServices = permissionServices;
+            _unitOfWorkManage = unitOfWorkManage;
             _moduleServices = moduleServices;
             _roleModulePermissionServices = roleModulePermissionServices;
             _userRoleServices = userRoleServices;
@@ -73,21 +79,6 @@ namespace Blog.Core.Controllers
                 key = "";
             }
 
-            #region 舍弃
-            //var permissions = await _permissionServices.Query(a => a.IsDeleted != true);
-            //if (!string.IsNullOrEmpty(key))
-            //{
-            //    permissions = permissions.Where(t => (t.Name != null && t.Name.Contains(key))).ToList();
-            //}
-            ////筛选后的数据总数
-            //totalCount = permissions.Count;
-            ////筛选后的总页数
-            //pageCount = (Math.Ceiling(totalCount.ObjToDecimal() / intTotalCount.ObjToDecimal())).ObjToInt();
-            //permissions = permissions.OrderByDescending(d => d.Id).Skip((page - 1) * intTotalCount).Take(intTotalCount).ToList(); 
-            #endregion
-
-
-
             permissions = await _permissionServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, pageSize, " Id desc ");
 
 
@@ -99,7 +90,7 @@ namespace Blog.Core.Controllers
             var permissionAll = await _permissionServices.Query(d => d.IsDeleted != true);
             foreach (var item in permissionsView)
             {
-                List<int> pidarr = new List<int>
+                List<long> pidarr = new()
                 {
                     item.Pid
                 };
@@ -156,7 +147,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<MessageModel<List<Permission>>> GetTreeTable(int f = 0, string key = "")
+        public async Task<MessageModel<List<Permission>>> GetTreeTable(long f = 0, string key = "")
         {
             List<Permission> permissions = new List<Permission>();
             var apiList = await _moduleServices.Query(d => d.IsDeleted == false);
@@ -177,7 +168,7 @@ namespace Blog.Core.Controllers
 
             foreach (var item in permissions)
             {
-                List<int> pidarr = new List<int> { };
+                List<long> pidarr = new() { };
                 var parent = permissionsList.FirstOrDefault(d => d.Id == item.Pid);
 
                 while (parent != null)
@@ -240,64 +231,55 @@ namespace Blog.Core.Controllers
         [HttpPost]
         public async Task<MessageModel<string>> Assign([FromBody] AssignView assignView)
         {
-            var data = new MessageModel<string>();
-
-
             if (assignView.rid > 0)
             {
-                data.success = true;
-
-                var roleModulePermissions = await _roleModulePermissionServices.Query(d => d.RoleId == assignView.rid);
-
-                var remove = roleModulePermissions.Where(d => !assignView.pids.Contains(d.PermissionId.ObjToInt())).Select(c => (object)c.Id);
-                data.success &= remove.Any() ? await _roleModulePermissionServices.DeleteByIds(remove.ToArray()) : true;
-
-                foreach (var item in assignView.pids)
+                //开启事务
+                try
                 {
-                    var rmpitem = roleModulePermissions.Where(d => d.PermissionId == item);
-                    var moduleid = (await _permissionServices.Query(p => p.Id == item)).FirstOrDefault()?.Mid;
-                    if (!rmpitem.Any())
+                    var old_rmps = await _roleModulePermissionServices.Query(d => d.RoleId == assignView.rid);
+
+                    _unitOfWorkManage.BeginTran();
+                    await _permissionServices.Db.Deleteable<RoleModulePermission>(t => t.RoleId == assignView.rid).ExecuteCommandAsync();
+                    var permissions = await _permissionServices.Query(d => d.IsDeleted == false);
+
+                    List<RoleModulePermission> new_rmps = new List<RoleModulePermission>();
+                    var nowTime = _permissionServices.Db.GetDate();
+                    foreach (var item in assignView.pids)
                     {
+                        var moduleid = permissions.Find(p => p.Id == item)?.Mid;
+                        var find_old_rmps = old_rmps.Find(p => p.PermissionId == item);
 
                         RoleModulePermission roleModulePermission = new RoleModulePermission()
                         {
                             IsDeleted = false,
                             RoleId = assignView.rid,
-                            ModuleId = moduleid.ObjToInt(),
+                            ModuleId = moduleid.ObjToLong(),
                             PermissionId = item,
+                            CreateId = find_old_rmps == null ? _user.ID : find_old_rmps.CreateId,
+                            CreateBy = find_old_rmps == null ? _user.Name : find_old_rmps.CreateBy,
+                            CreateTime = find_old_rmps == null ? nowTime : find_old_rmps.CreateTime,
+                            ModifyId = _user.ID,
+                            ModifyBy = _user.Name,
+                            ModifyTime = nowTime
+
                         };
-
-
-                        roleModulePermission.CreateId = _user.ID;
-                        roleModulePermission.CreateBy = _user.Name;
-
-                        data.success &= (await _roleModulePermissionServices.Add(roleModulePermission)) > 0;
-
+                        new_rmps.Add(roleModulePermission);
                     }
-                    else
-                    {
-                        foreach (var role in rmpitem)
-                        {
-                            if (!role.ModuleId.Equals(moduleid))
-                            {
-                                role.ModuleId = moduleid.Value;
-                                await _roleModulePermissionServices.Update(role, new List<string> { "ModuleId" });
-                            }
-                        }
-                    }
+                    if (new_rmps.Count > 0) await _roleModulePermissionServices.Add(new_rmps);
+                    _unitOfWorkManage.CommitTran();
                 }
-
-                if (data.success)
+                catch (Exception)
                 {
-                    _requirement.Permissions.Clear();
-                    data.response = "";
-                    data.msg = "保存成功";
+                    _unitOfWorkManage.RollbackTran();
+                    throw;
                 }
-
+                _requirement.Permissions.Clear();
+                return Success<string>("保存成功");
             }
-
-
-            return data;
+            else
+            {
+                return Failed<string>("请选择要操作的角色");
+            }
         }
 
 
@@ -308,7 +290,7 @@ namespace Blog.Core.Controllers
         /// <param name="needbtn"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<PermissionTree>> GetPermissionTree(int pid = 0, bool needbtn = false)
+        public async Task<MessageModel<PermissionTree>> GetPermissionTree(long pid = 0, bool needbtn = false)
         {
             //var data = new MessageModel<PermissionTree>();
 
@@ -353,29 +335,29 @@ namespace Blog.Core.Controllers
         /// <param name="uid"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<NavigationBar>> GetNavigationBar(int uid)
+        public async Task<MessageModel<NavigationBar>> GetNavigationBar(long uid)
         {
 
             var data = new MessageModel<NavigationBar>();
 
-            var uidInHttpcontext1 = 0;
-            var roleIds = new List<int>();
+            long uidInHttpcontext1 = 0;
+            var roleIds = new List<long>();
             // ids4和jwt切换
             if (Permissions.IsUseIds4)
             {
                 // ids4
                 uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
                                      where item.Type == "sub"
-                                     select item.Value).FirstOrDefault().ObjToInt();
+                                     select item.Value).FirstOrDefault().ObjToLong();
                 roleIds = (from item in _httpContext.HttpContext.User.Claims
                            where item.Type == "role"
-                           select item.Value.ObjToInt()).ToList();
+                           select item.Value.ObjToLong()).ToList();
             }
             else
             {
                 // jwt
-                uidInHttpcontext1 = ((JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid).ObjToInt();
-                roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToInt()).Distinct().ToList();
+                uidInHttpcontext1 = ((JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid).ObjToLong();
+                roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToLong()).Distinct().ToList();
             }
 
 
@@ -383,7 +365,7 @@ namespace Blog.Core.Controllers
             {
                 if (roleIds.Any())
                 {
-                    var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && roleIds.Contains(d.RoleId))).Select(d => d.PermissionId.ObjToInt()).Distinct();
+                    var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && roleIds.Contains(d.RoleId))).Select(d => d.PermissionId.ObjToLong()).Distinct();
                     if (pids.Any())
                     {
                         var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id))).OrderBy(c => c.OrderSort);
@@ -445,28 +427,28 @@ namespace Blog.Core.Controllers
         /// <param name="uid"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<List<NavigationBarPro>>> GetNavigationBarPro(int uid)
+        public async Task<MessageModel<List<NavigationBarPro>>> GetNavigationBarPro(long uid)
         {
             var data = new MessageModel<List<NavigationBarPro>>();
 
-            var uidInHttpcontext1 = 0;
-            var roleIds = new List<int>();
+            long uidInHttpcontext1 = 0;
+            var roleIds = new List<long>();
             // ids4和jwt切换
             if (Permissions.IsUseIds4)
             {
                 // ids4
                 uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
                                      where item.Type == "sub"
-                                     select item.Value).FirstOrDefault().ObjToInt();
+                                     select item.Value).FirstOrDefault().ObjToLong();
                 roleIds = (from item in _httpContext.HttpContext.User.Claims
                            where item.Type == "role"
-                           select item.Value.ObjToInt()).ToList();
+                           select item.Value.ObjToLong()).ToList();
             }
             else
             {
                 // jwt
-                uidInHttpcontext1 = ((JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid).ObjToInt();
-                roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToInt()).Distinct().ToList();
+                uidInHttpcontext1 = ((JwtHelper.SerializeJwt(_httpContext.HttpContext.Request.Headers["Authorization"].ObjToString().Replace("Bearer ", "")))?.Uid).ObjToLong();
+                roleIds = (await _userRoleServices.Query(d => d.IsDeleted == false && d.UserId == uid)).Select(d => d.RoleId.ObjToLong()).Distinct().ToList();
             }
 
             if (uid > 0 && uid == uidInHttpcontext1)
@@ -474,7 +456,7 @@ namespace Blog.Core.Controllers
                 if (roleIds.Any())
                 {
                     var pids = (await _roleModulePermissionServices.Query(d => d.IsDeleted == false && roleIds.Contains(d.RoleId)))
-                                    .Select(d => d.PermissionId.ObjToInt()).Distinct();
+                                    .Select(d => d.PermissionId.ObjToLong()).Distinct();
                     if (pids.Any())
                     {
                         var rolePermissionMoudles = (await _permissionServices.Query(d => pids.Contains(d.Id) && d.IsButton == false)).OrderBy(c => c.OrderSort);
@@ -522,14 +504,14 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<MessageModel<AssignShow>> GetPermissionIdByRoleId(int rid = 0)
+        public async Task<MessageModel<AssignShow>> GetPermissionIdByRoleId(long rid = 0)
         {
             //var data = new MessageModel<AssignShow>();
 
             var rmps = await _roleModulePermissionServices.Query(d => d.IsDeleted == false && d.RoleId == rid);
             var permissionTrees = (from child in rmps
                                    orderby child.Id
-                                   select child.PermissionId.ObjToInt()).ToList();
+                                   select child.PermissionId.ObjToLong()).ToList();
 
             var permissions = await _permissionServices.Query(d => d.IsDeleted == false);
             List<string> assignbtns = new List<string>();
@@ -595,7 +577,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
-        public async Task<MessageModel<string>> Delete(int id)
+        public async Task<MessageModel<string>> Delete(long id)
         {
             var data = new MessageModel<string>();
             if (id > 0)
@@ -657,7 +639,7 @@ namespace Blog.Core.Controllers
         /// <param name="isAction">是否执行迁移到数据</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<List<Permission>>> MigratePermission(string action = "", string controllerName = "", int pid = 0, bool isAction = false)
+        public async Task<MessageModel<List<Permission>>> MigratePermission(string action = "", string controllerName = "", long pid = 0, bool isAction = false)
         {
             var data = new MessageModel<List<Permission>>();
             if (controllerName.IsNullOrEmpty())
@@ -757,11 +739,11 @@ namespace Blog.Core.Controllers
                     List<Modules> modules = await _moduleServices.Query(d => d.LinkUrl != null && d.LinkUrl.ToLower() == item.Module.LinkUrl);
                     if (!modules.Any())
                     {
-                        int mid = await _moduleServices.Add(item.Module);
+                        var mid = await _moduleServices.Add(item.Module);
                         if (mid > 0)
                         {
                             item.Mid = mid;
-                            int permissionid = await _permissionServices.Add(item);
+                            var permissionid = await _permissionServices.Add(item);
                         }
 
                     }
@@ -779,12 +761,12 @@ namespace Blog.Core.Controllers
 
     public class AssignView
     {
-        public List<int> pids { get; set; }
-        public int rid { get; set; }
+        public List<long> pids { get; set; }
+        public long rid { get; set; }
     }
     public class AssignShow
     {
-        public List<int> permissionids { get; set; }
+        public List<long> permissionids { get; set; }
         public List<string> assignbtns { get; set; }
     }
 

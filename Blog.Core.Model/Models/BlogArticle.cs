@@ -13,8 +13,8 @@ namespace Blog.Core.Model.Models
         /// 主键
         /// </summary>
         /// 这里之所以没用RootEntity，是想保持和之前的数据库一致，主键是bID，不是Id
-        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
-        public int bID { get; set; }
+        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = false)]
+        public long bID { get; set; }
 
         /// <summary>
         /// 创建人
