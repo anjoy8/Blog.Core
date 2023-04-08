@@ -445,7 +445,9 @@ namespace Blog.Core.Common.Seed
             }
 
             var logDb = myContext.Db.GetConnection(SqlSugarConst.LogConfigId.ToLower());
-
+            Console.WriteLine($"Create log Database(The Db Id:{SqlSugarConst.LogConfigId.ToLower()})...");
+            logDb.DbMaintenance.CreateDatabase();
+            ConsoleHelper.WriteSuccessLine($"Log Database created successfully!");
             var path = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
             var referencedAssemblies = System.IO.Directory.GetFiles(path, "Blog.Core.Model.dll").Select(Assembly.LoadFrom).ToArray();
             var modelTypes = referencedAssemblies
