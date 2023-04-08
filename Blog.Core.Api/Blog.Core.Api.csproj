@@ -52,7 +52,6 @@
 
   <ItemGroup>
     <None Remove="index.html" />
-    <None Remove="WMBlogLog.db" />
   </ItemGroup>
 
   <ItemGroup>
