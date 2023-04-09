@@ -7,7 +7,6 @@ using Blog.Core.Common.LogHelper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Ubiety.Dns.Core.Common;
 
 namespace Blog.Core.Extensions.Middlewares
 {

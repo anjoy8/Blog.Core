@@ -1,12 +1,7 @@
 ﻿using Blog.Core.Common.Helper;
-using Blog.Core.Repository.UnitOfWorks;
 using Blog.Core.IServices;
-using Blog.Core.IServices.BASE;
-using Blog.Core.Model.Models;
 using Microsoft.Extensions.Logging;
 using Quartz;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -18,7 +13,8 @@ namespace Blog.Core.Tasks
     {
         private readonly ILogger<Job_URL_Quartz> _logger;
 
-        public Job_URL_Quartz(ITasksQzServices tasksQzServices, ILogger<Job_URL_Quartz> logger)
+        public Job_URL_Quartz(ILogger<Job_URL_Quartz> logger, ITasksQzServices tasksQzServices, ITasksLogServices tasksLogServices)
+            : base(tasksQzServices, tasksLogServices)
         {
             _tasksQzServices = tasksQzServices;
             _logger = logger;

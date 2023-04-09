@@ -23,7 +23,7 @@ namespace Blog.Core.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<BlogViewModels> GetBlogDetails(int id)
+        public async Task<BlogViewModels> GetBlogDetails(long id)
         {
             // 此处想获取上一条下一条数据，因此将全部数据list出来，有好的想法请提出
             //var bloglist = await base.Query(a => a.IsDeleted==false, a => a.bID);

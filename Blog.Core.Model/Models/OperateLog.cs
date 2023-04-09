@@ -6,7 +6,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 日志记录
     /// </summary>
-    public class OperateLog : RootEntityTkey<int>
+    public class OperateLog : RootEntityTkey<long>
     {
 
         /// <summary>

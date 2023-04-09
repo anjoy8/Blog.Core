@@ -20,11 +20,11 @@ namespace Blog.Core.Tasks
         private readonly IOperateLogServices _operateLogServices; 
         private readonly IWebHostEnvironment _environment;
 
-        public Job_OperateLog_Quartz(IOperateLogServices operateLogServices, ITasksQzServices tasksQzServices, IWebHostEnvironment environment)
+        public Job_OperateLog_Quartz(IOperateLogServices operateLogServices,IWebHostEnvironment environment, ITasksQzServices tasksQzServices,ITasksLogServices tasksLogServices)
+            :base(tasksQzServices, tasksLogServices)
         {
             _operateLogServices = operateLogServices; 
-            _environment = environment;
-            _tasksQzServices = tasksQzServices;
+            _environment = environment; 
         }
         public async Task Execute(IJobExecutionContext context)
         {

@@ -9,7 +9,7 @@ namespace Blog.Core.IServices
     public interface IBlogArticleServices :IBaseServices<BlogArticle>
     {
         Task<List<BlogArticle>> GetBlogs();
-        Task<BlogViewModels> GetBlogDetails(int id);
+        Task<BlogViewModels> GetBlogDetails(long id);
 
     }
 

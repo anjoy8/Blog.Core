@@ -6,7 +6,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// Tibug 博文
     /// </summary>
-    public class TopicDetail : TopicDetailRoot<int>
+    public class TopicDetail : TopicDetailRoot<long>
     {
         public TopicDetail()
         {

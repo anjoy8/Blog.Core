@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -81,7 +80,7 @@ namespace Blog.Core.Controllers
         /// <param name="rid"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<UserRole>> AddUserRole(int uid, int rid)
+        public async Task<MessageModel<UserRole>> AddUserRole(long uid, long rid)
         {
             return new MessageModel<UserRole>()
             {

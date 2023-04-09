@@ -1,7 +1,8 @@
-﻿using Blog.Core.Repository.UnitOfWorks;
+﻿ 
 using Blog.Core.IServices;
 using Blog.Core.IServices.BASE;
 using Blog.Core.Model.Models;
+using Blog.Core.Repository.UnitOfWorks;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using System;
@@ -20,7 +21,8 @@ namespace Blog.Core.Tasks
         private readonly ITrojanUsersServices _TrojanUsers; 
         private readonly ILogger<Job_Trojan_Quartz> _logger;
 
-        public Job_Trojan_Quartz(IUnitOfWorkManage unitOfWorkManage, IBaseServices<TrojanDetails> iusers_DetailServices, ITrojanUsersServices trojanUsers, ITasksQzServices tasksQzServices, ILogger<Job_Trojan_Quartz> logger)
+        public Job_Trojan_Quartz(IUnitOfWorkManage unitOfWorkManage, IBaseServices<TrojanDetails> iusers_DetailServices, ITrojanUsersServices trojanUsers, ILogger<Job_Trojan_Quartz> logger, ITasksQzServices tasksQzServices, ITasksLogServices tasksLogServices)
+            : base(tasksQzServices, tasksLogServices)
         {
             _tasksQzServices = tasksQzServices;
             _unitOfWorkManage = unitOfWorkManage;

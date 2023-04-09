@@ -7,7 +7,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// Tibug 类别
     /// </summary>
-    public class Topic : RootEntityTkey<int>
+    public class Topic : RootEntityTkey<long>
     {
         public Topic()
         {

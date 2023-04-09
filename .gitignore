@@ -35,6 +35,9 @@ bld/
 # Visual Studio 2017 auto generated files
 Generated\ Files/
 
+# Visual Studio Code 
+.vscode
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -352,3 +355,4 @@ Blog.Core/WMBlog.db
 Blog.Core/Blog.Core*.xml
 Blog.Core.Api/WMBlog.db
 Blog.Core.Api/wwwroot/ui/
+*.db

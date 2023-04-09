@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading.Tasks;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -22,14 +18,16 @@ namespace Blog.Core.Controllers
     public class TasksQzController : ControllerBase
     {
         private readonly ITasksQzServices _tasksQzServices;
+        private readonly ITasksLogServices _tasksLogServices;
         private readonly ISchedulerCenter _schedulerCenter;
         private readonly IUnitOfWorkManage _unitOfWorkManage;
 
-        public TasksQzController(ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter, IUnitOfWorkManage unitOfWorkManage)
+        public TasksQzController(ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter, IUnitOfWorkManage unitOfWorkManage, ITasksLogServices tasksLogServices)
         {
             _unitOfWorkManage = unitOfWorkManage;
             _tasksQzServices = tasksQzServices;
             _schedulerCenter = schedulerCenter;
+            _tasksLogServices = tasksLogServices;
         }
 
         /// <summary>
@@ -58,7 +56,7 @@ namespace Blog.Core.Controllers
                     item.Triggers = await _schedulerCenter.GetTaskStaus(item);
                 }
             }
-            return MessageModel<PageModel<TasksQz>>.Message(data.dataCount >= 0, "获取成功", data); 
+            return MessageModel<PageModel<TasksQz>>.Message(data.dataCount >= 0, "获取成功", data);
         }
 
         /// <summary>
@@ -86,32 +84,33 @@ namespace Blog.Core.Controllers
                         var ResuleModel = await _schedulerCenter.AddScheduleJobAsync(tasksQz);
                         data.success = ResuleModel.success;
                         if (ResuleModel.success)
-                        { 
+                        {
                             data.msg = $"{data.msg}=>启动成功=>{ResuleModel.msg}";
                         }
                         else
-                        { 
+                        {
                             data.msg = $"{data.msg}=>启动失败=>{ResuleModel.msg}";
                         }
                     }
                 }
                 else
-                { 
+                {
                     data.msg = "添加失败";
 
-                } 
+                }
             }
             catch (Exception)
             {
                 throw;
             }
             finally
-            {   if(data.success)
+            {
+                if (data.success)
                     _unitOfWorkManage.CommitTran();
                 else
                     _unitOfWorkManage.RollbackTran();
             }
-            return data; 
+            return data;
         }
 
 
@@ -135,7 +134,7 @@ namespace Blog.Core.Controllers
                         data.msg = "修改成功";
                         data.response = tasksQz?.Id.ObjToString();
                         if (tasksQz.IsStart)
-                        { 
+                        {
                             var ResuleModelStop = await _schedulerCenter.StopScheduleJobAsync(tasksQz);
                             data.msg = $"{data.msg}=>停止:{ResuleModelStop.msg}";
                             var ResuleModelStar = await _schedulerCenter.AddScheduleJobAsync(tasksQz);
@@ -163,7 +162,7 @@ namespace Blog.Core.Controllers
                         _unitOfWorkManage.CommitTran();
                     else
                         _unitOfWorkManage.RollbackTran();
-                } 
+                }
             }
             return data;
         }
@@ -173,7 +172,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<MessageModel<string>> Delete(int jobId)
+        public async Task<MessageModel<string>> Delete(long jobId)
         {
             var data = new MessageModel<string>();
 
@@ -207,7 +206,7 @@ namespace Blog.Core.Controllers
                         _unitOfWorkManage.CommitTran();
                     else
                         _unitOfWorkManage.RollbackTran();
-                } 
+                }
             }
             else
             {
@@ -222,14 +221,14 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<string>> StartJob(int jobId)
+        public async Task<MessageModel<string>> StartJob(long jobId)
         {
             var data = new MessageModel<string>();
 
             var model = await _tasksQzServices.QueryById(jobId);
             if (model != null)
             {
-                _unitOfWorkManage.BeginTran(); 
+                _unitOfWorkManage.BeginTran();
                 try
                 {
                     model.IsStart = true;
@@ -265,7 +264,7 @@ namespace Blog.Core.Controllers
                         _unitOfWorkManage.CommitTran();
                     else
                         _unitOfWorkManage.RollbackTran();
-                } 
+                }
             }
             else
             {
@@ -279,7 +278,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>        
         [HttpGet]
-        public async Task<MessageModel<string>> StopJob(int jobId)
+        public async Task<MessageModel<string>> StopJob(long jobId)
         {
             var data = new MessageModel<string>();
 
@@ -319,12 +318,12 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>        
         [HttpGet]
-        public async Task<MessageModel<string>> PauseJob(int jobId)
+        public async Task<MessageModel<string>> PauseJob(long jobId)
         {
-            var data = new MessageModel<string>(); 
+            var data = new MessageModel<string>();
             var model = await _tasksQzServices.QueryById(jobId);
             if (model != null)
-            { 
+            {
                 _unitOfWorkManage.BeginTran();
                 try
                 {
@@ -359,7 +358,7 @@ namespace Blog.Core.Controllers
                         _unitOfWorkManage.CommitTran();
                     else
                         _unitOfWorkManage.RollbackTran();
-                } 
+                }
             }
             else
             {
@@ -373,13 +372,13 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>        
         [HttpGet]
-        public async Task<MessageModel<string>> ResumeJob(int jobId)
+        public async Task<MessageModel<string>> ResumeJob(long jobId)
         {
             var data = new MessageModel<string>();
 
             var model = await _tasksQzServices.QueryById(jobId);
             if (model != null)
-            { 
+            {
                 _unitOfWorkManage.BeginTran();
                 try
                 {
@@ -415,7 +414,7 @@ namespace Blog.Core.Controllers
                         _unitOfWorkManage.CommitTran();
                     else
                         _unitOfWorkManage.RollbackTran();
-                } 
+                }
             }
             else
             {
@@ -429,7 +428,7 @@ namespace Blog.Core.Controllers
         /// <param name="jobId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<string>> ReCovery(int jobId)
+        public async Task<MessageModel<string>> ReCovery(long jobId)
         {
             var data = new MessageModel<string>();
             var model = await _tasksQzServices.QueryById(jobId);
@@ -475,7 +474,7 @@ namespace Blog.Core.Controllers
                         _unitOfWorkManage.CommitTran();
                     else
                         _unitOfWorkManage.RollbackTran();
-                }  
+                }
             }
             else
             {
@@ -488,7 +487,7 @@ namespace Blog.Core.Controllers
         /// 获取任务命名空间
         /// </summary>
         /// <returns></returns>
-        [HttpGet] 
+        [HttpGet]
         public MessageModel<List<QuartzReflectionViewModel>> GetTaskNameSpace()
         {
             var baseType = typeof(IJob);
@@ -501,14 +500,14 @@ namespace Blog.Core.Controllers
             var implementTypes = types.Where(x => x.IsClass).Select(item => new QuartzReflectionViewModel { nameSpace = item.Namespace, nameClass = item.Name, remark = "" }).ToList();
             return MessageModel<List<QuartzReflectionViewModel>>.Success("获取成功", implementTypes);
         }
-        
+
         /// <summary>
         /// 立即执行任务
         /// </summary>
         /// <param name="jobId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<string>> ExecuteJob(int jobId)
+        public async Task<MessageModel<string>> ExecuteJob(long jobId)
         {
             var data = new MessageModel<string>();
 
@@ -522,6 +521,26 @@ namespace Blog.Core.Controllers
                 data.msg = "任务不存在";
             }
             return data;
+        }
+        /// <summary>
+        /// 获取任务运行日志
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<MessageModel<PageModel<TasksLog>>> GetTaskLogs(long jobId, int page = 1, int pageSize = 10, DateTime? runTimeStart = null, DateTime? runTimeEnd = null)
+        {
+            var model = await _tasksLogServices.GetTaskLogs(jobId, page, pageSize, runTimeStart, runTimeEnd);
+            return MessageModel<PageModel<TasksLog>>.Message(model.dataCount >= 0, "获取成功", model);
+        }
+        /// <summary>
+        /// 任务概况
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<MessageModel<object>> GetTaskOverview(long jobId, int page = 1, int pageSize = 10, DateTime? runTimeStart = null, DateTime? runTimeEnd = null, string type = "month")
+        {
+            var model = await _tasksLogServices.GetTaskOverview(jobId, runTimeStart, runTimeEnd, type);
+            return MessageModel<object>.Message(true, "获取成功", model);
         }
 
     }

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Blog.Core.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using SqlSugar.Extensions;
 
 namespace Blog.Core.Common.HttpContextUser
 {
@@ -40,6 +41,7 @@ namespace Blog.Core.Common.HttpContextUser
         }
 
         public int ID => GetClaimValueByType("jti").FirstOrDefault().ObjToInt();
+        public long TenantId => GetClaimValueByType("TenantId").FirstOrDefault().ObjToLong();
 
         public bool IsAuthenticated()
         {
@@ -87,11 +89,9 @@ namespace Blog.Core.Common.HttpContextUser
 
         public List<string> GetClaimValueByType(string ClaimType)
         {
-
             return (from item in GetClaimsIdentity()
                     where item.Type == ClaimType
                     select item.Value).ToList();
-
         }
     }
 }

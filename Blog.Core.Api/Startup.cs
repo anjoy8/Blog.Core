@@ -1,34 +1,30 @@
-﻿using Autofac;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
+using System.Text;
+using Autofac;
 using Blog.Core.Common;
+using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Common.Seed;
 using Blog.Core.Extensions;
+using Blog.Core.Extensions.Middlewares;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
+using Blog.Core.Model;
 using Blog.Core.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
-using System.Text;
-using Blog.Core.Extensions.Middlewares;
 
 namespace Blog.Core
 {
     public class Startup
     {
-
         private IServiceCollection _services;
 
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
@@ -75,7 +71,7 @@ namespace Blog.Core
             services.AddEventBusSetup();
 
             services.AddNacosSetup(Configuration);
-           
+            services.AddInitializationHostServiceSetup();
             // 授权+认证 (jwt or ids4)
             services.AddAuthorizationSetup();
             if (Permissions.IsUseIds4)
@@ -95,7 +91,7 @@ namespace Blog.Core
 
             services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
                     .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
-            
+
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddHttpPollySetup();
@@ -129,12 +125,14 @@ namespace Blog.Core
                 options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
                 //添加Enum转string
                 options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                //将long类型转为string
+                options.SerializerSettings.Converters.Add(new NumberConverter(NumberConverterShip.Int64));
             });
 
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
             _services = services;
-            //支持编码大全 例如:支持 System.Text.Encoding.GetEncoding("GB2312")  System.Text.Encoding.GetEncoding("GB18030") 
+            //支持编码大全 例如:支持 System.Text.Encoding.GetEncoding("GB2312")  System.Text.Encoding.GetEncoding("GB18030")
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
@@ -150,11 +148,11 @@ namespace Blog.Core
         {
             // Ip限流,尽量放管道外层
             app.UseIpLimitMiddle();
-            // 记录请求与返回数据 
+            // 记录请求与返回数据
             app.UseRequestResponseLogMiddle();
             // 用户访问记录(必须放到外层，不然如果遇到异常，会报错，因为不能返回流)
             app.UseRecordAccessLogsMiddle();
-            // signalr 
+            // signalr
             app.UseSignalRSendMiddle();
             // 记录ip请求
             app.UseIpLogMiddle();
@@ -214,7 +212,6 @@ namespace Blog.Core
             // 开启异常中间件，要放到最后
             //app.UseExceptionHandlerMidd();
 
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -225,15 +222,13 @@ namespace Blog.Core
             });
 
             // 生成种子数据
-            app.UseSeedDataMiddle(myContext, Env.WebRootPath);
+            //app.UseSeedDataMiddle(myContext, Env.WebRootPath);
             // 开启QuartzNetJob调度服务
-            app.UseQuartzJobMiddleware(tasksQzServices, schedulerCenter);
+            //app.UseQuartzJobMiddleware(tasksQzServices, schedulerCenter);
             // 服务注册
-            app.UseConsulMiddle(Configuration, lifetime);
+            //app.UseConsulMiddle(Configuration, lifetime);
             // 事件总线，订阅服务
-            app.ConfigureEventBus();
-
+            //app.ConfigureEventBus();
         }
-
     }
 }

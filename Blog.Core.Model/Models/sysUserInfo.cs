@@ -8,8 +8,8 @@ namespace Blog.Core.Model.Models
     /// 用户信息表
     /// </summary>
     //[SugarTable("SysUserInfo")]
-    [SugarTable("SysUserInfo", "用户表")]//('数据库表名'，'数据库表备注')
-    public class SysUserInfo : SysUserInfoRoot<int>
+    [SugarTable("SysUserInfo", "用户表")] //('数据库表名'，'数据库表备注')
+    public class SysUserInfo : SysUserInfoRoot<long>
     {
         public SysUserInfo()
         {
@@ -120,12 +120,20 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public bool IsDeleted { get; set; }
 
+        /// <summary>
+        /// 租户Id
+        /// </summary>
+        [SugarColumn(IsNullable = false,DefaultValue = "0")]
+        public long TenantId { get; set; }
+
+        [Navigate(NavigateType.OneToOne, nameof(TenantId))]
+        public SysTenant Tenant { get; set; }
 
         [SugarColumn(IsIgnore = true)]
         public List<string> RoleNames { get; set; }
 
         [SugarColumn(IsIgnore = true)]
-        public List<int> Dids { get; set; }
+        public List<long> Dids { get; set; }
 
         [SugarColumn(IsIgnore = true)]
         public string DepartmentName { get; set; }

@@ -4,17 +4,10 @@ using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Core.Api.Controllers
 {
@@ -90,7 +83,7 @@ namespace Blog.Core.Api.Controllers
 
             foreach (var item in departments)
             {
-                List<int> pidarr = new() { };
+                List<long> pidarr = new() { };
                 var parent = departmentList.FirstOrDefault(d => d.Id == item.Pid);
 
                 while (parent != null)
@@ -116,7 +109,7 @@ namespace Blog.Core.Api.Controllers
         /// <param name="pid"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<DepartmentTree>> GetDepartmentTree(int pid = 0)
+        public async Task<MessageModel<DepartmentTree>> GetDepartmentTree(long pid = 0)
         {
             var departments = await _departmentServices.Query(d => d.IsDeleted == false);
             var departmentTrees = (from child in departments
@@ -175,7 +168,7 @@ namespace Blog.Core.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<MessageModel<string>> Delete(int id)
+        public async Task<MessageModel<string>> Delete(long id)
         {
             var data = new MessageModel<string>();
             var model = await _departmentServices.QueryById(id);

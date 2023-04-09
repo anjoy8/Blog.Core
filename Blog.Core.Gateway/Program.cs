@@ -15,7 +15,9 @@ namespace Blog.Core.AdminMvc
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.AddJsonFile("ocelot.json", optional: true, reloadOnChange: true)
+                    config.AddJsonFile("appsettings.gw.json", optional: true, reloadOnChange: false)
+                        .AddJsonFile($"appsettings.gw.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: false)
+                        .AddJsonFile("ocelot.json", optional: true, reloadOnChange: true)
                         .AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

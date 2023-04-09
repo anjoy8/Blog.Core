@@ -8,7 +8,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 任务计划表
     /// </summary>
-    public class TasksQz : RootEntityTkey<int>
+    public class TasksQz : RootEntityTkey<long>
     {
         /// <summary>
         /// 任务名称
@@ -64,6 +64,10 @@ namespace Blog.Core.Model.Models
         /// 循环执行次数
         /// </summary>
         public int CycleRunTimes { get; set; }
+        /// <summary>
+        /// 已循环次数
+        /// </summary>
+        public int CycleHasRunTimes { get; set; }
         /// <summary>
         /// 是否启动
         /// </summary>

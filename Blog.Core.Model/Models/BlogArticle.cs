@@ -1,5 +1,6 @@
 ﻿using SqlSugar;
 using System;
+using System.Collections.Generic;
 
 namespace Blog.Core.Model.Models
 {
@@ -12,13 +13,17 @@ namespace Blog.Core.Model.Models
         /// 主键
         /// </summary>
         /// 这里之所以没用RootEntity，是想保持和之前的数据库一致，主键是bID，不是Id
-        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
-        public int bID { get; set; }
+        [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = false)]
+        public long bID { get; set; }
+
         /// <summary>
         /// 创建人
         /// </summary>
         [SugarColumn(Length = 600, IsNullable = true)]
         public string bsubmitter { get; set; }
+
+        [Navigate(NavigateType.OneToOne, nameof(bsubmitter))]
+        public SysUserInfo User { get; set; }
 
         /// <summary>
         /// 标题blog
@@ -57,6 +62,7 @@ namespace Blog.Core.Model.Models
         /// 创建时间
         /// </summary>
         public System.DateTime bCreateTime { get; set; }
+
         /// <summary>
         /// 备注
         /// </summary>
@@ -69,5 +75,11 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public bool? IsDeleted { get; set; }
 
+
+        /// <summary>
+        /// 评论
+        /// </summary>
+        [Navigate(NavigateType.OneToMany, nameof(BlogArticleComment.bID))]
+        public List<BlogArticleComment> Comments { get; set; }
     }
 }
