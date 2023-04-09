@@ -26,14 +26,14 @@
             <param name="key"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int32)">
+        <member name="M:Blog.Core.Controllers.BlogController.Get(System.Int64)">
             <summary>
             获取博客详情
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.DetailNuxtNoPer(System.Int32)">
+        <member name="M:Blog.Core.Controllers.BlogController.DetailNuxtNoPer(System.Int64)">
             <summary>
             获取详情【无权限】
             </summary>
@@ -67,7 +67,7 @@
             <param name="BlogArticle"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.BlogController.Delete(System.Int32)">
+        <member name="M:Blog.Core.Controllers.BlogController.Delete(System.Int64)">
             <summary>
             删除博客
             </summary>
@@ -276,7 +276,7 @@
             <param name="module"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.ModuleController.Delete(System.Int32)">
+        <member name="M:Blog.Core.Controllers.ModuleController.Delete(System.Int64)">
             <summary>
             删除一条接口
             </summary>
@@ -361,7 +361,7 @@
             菜单管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,System.Net.Http.IHttpClientFactory,Microsoft.AspNetCore.Http.IHttpContextAccessor,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.AuthHelper.PermissionRequirement)">
+        <member name="M:Blog.Core.Controllers.PermissionController.#ctor(Blog.Core.IServices.IPermissionServices,Blog.Core.IServices.IModuleServices,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.Repository.UnitOfWorks.IUnitOfWorkManage,System.Net.Http.IHttpClientFactory,Microsoft.AspNetCore.Http.IHttpContextAccessor,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.AuthHelper.PermissionRequirement)">
             <summary>
             构造函数
             </summary>
@@ -369,6 +369,7 @@
             <param name="moduleServices"></param>
             <param name="roleModulePermissionServices"></param>
             <param name="userRoleServices"></param>
+            <param name="unitOfWorkManage"></param>
             <param name="httpClientFactory"></param>
             <param name="httpContext"></param>
             <param name="user"></param>
@@ -383,7 +384,7 @@
             <param name="pageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.GetTreeTable(System.Int32,System.String)">
+        <member name="M:Blog.Core.Controllers.PermissionController.GetTreeTable(System.Int64,System.String)">
             <summary>
             查询树形 Table
             </summary>
@@ -405,7 +406,7 @@
             <param name="assignView"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.GetPermissionTree(System.Int32,System.Boolean)">
+        <member name="M:Blog.Core.Controllers.PermissionController.GetPermissionTree(System.Int64,System.Boolean)">
             <summary>
             获取菜单树
             </summary>
@@ -413,21 +414,21 @@
             <param name="needbtn"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBar(System.Int32)">
+        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBar(System.Int64)">
             <summary>
             获取路由树
             </summary>
             <param name="uid"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBarPro(System.Int32)">
+        <member name="M:Blog.Core.Controllers.PermissionController.GetNavigationBarPro(System.Int64)">
             <summary>
             获取路由树
             </summary>
             <param name="uid"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.GetPermissionIdByRoleId(System.Int32)">
+        <member name="M:Blog.Core.Controllers.PermissionController.GetPermissionIdByRoleId(System.Int64)">
             <summary>
             通过角色获取菜单
             </summary>
@@ -441,7 +442,7 @@
             <param name="permission"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.Delete(System.Int32)">
+        <member name="M:Blog.Core.Controllers.PermissionController.Delete(System.Int64)">
             <summary>
             删除菜单
             </summary>
@@ -455,7 +456,7 @@
             <param name="permissions"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.MigratePermission(System.String,System.String,System.Int32,System.Boolean)">
+        <member name="M:Blog.Core.Controllers.PermissionController.MigratePermission(System.String,System.String,System.Int64,System.Boolean)">
             <summary>
             系统接口菜单同步接口
             </summary>
@@ -492,7 +493,7 @@
             <param name="role"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.RoleController.Delete(System.Int32)">
+        <member name="M:Blog.Core.Controllers.RoleController.Delete(System.Int64)">
             <summary>
             删除角色
             </summary>
@@ -521,42 +522,42 @@
             <param name="tasksQz"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.TasksQzController.Delete(System.Int32)">
+        <member name="M:Blog.Core.Controllers.TasksQzController.Delete(System.Int64)">
             <summary>
             删除一个任务
             </summary>
             <param name="jobId"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.TasksQzController.StartJob(System.Int32)">
+        <member name="M:Blog.Core.Controllers.TasksQzController.StartJob(System.Int64)">
             <summary>
             启动计划任务
             </summary>
             <param name="jobId"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.TasksQzController.StopJob(System.Int32)">
+        <member name="M:Blog.Core.Controllers.TasksQzController.StopJob(System.Int64)">
             <summary>
             停止一个计划任务
             </summary>
             <param name="jobId"></param>
             <returns></returns>        
         </member>
-        <member name="M:Blog.Core.Controllers.TasksQzController.PauseJob(System.Int32)">
+        <member name="M:Blog.Core.Controllers.TasksQzController.PauseJob(System.Int64)">
             <summary>
             暂停一个计划任务
             </summary>
             <param name="jobId"></param>
             <returns></returns>        
         </member>
-        <member name="M:Blog.Core.Controllers.TasksQzController.ResumeJob(System.Int32)">
+        <member name="M:Blog.Core.Controllers.TasksQzController.ResumeJob(System.Int64)">
             <summary>
             恢复一个计划任务
             </summary>
             <param name="jobId"></param>
             <returns></returns>        
         </member>
-        <member name="M:Blog.Core.Controllers.TasksQzController.ReCovery(System.Int32)">
+        <member name="M:Blog.Core.Controllers.TasksQzController.ReCovery(System.Int64)">
             <summary>
             重启一个计划任务
             </summary>
@@ -569,29 +570,23 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.TasksQzController.ExecuteJob(System.Int32)">
+        <member name="M:Blog.Core.Controllers.TasksQzController.ExecuteJob(System.Int64)">
             <summary>
             立即执行任务
             </summary>
             <param name="jobId"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.TasksQzController.GetTaskLogs(System.Int32,System.Int32,System.Int32,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+        <member name="M:Blog.Core.Controllers.TasksQzController.GetTaskLogs(System.Int64,System.Int32,System.Int32,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
             <summary>
             获取任务运行日志
             </summary>
-            <param name="jobId"></param>
-            <param name="page"></param>
-            <param name="pageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.TasksQzController.GetTaskOverview(System.Int32,System.Int32,System.Int32,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.String)">
+        <member name="M:Blog.Core.Controllers.TasksQzController.GetTaskOverview(System.Int64,System.Int32,System.Int32,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.String)">
             <summary>
             任务概况
             </summary>
-            <param name="jobId"></param>
-            <param name="page"></param>
-            <param name="pageSize"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.TopicController">
@@ -634,7 +629,7 @@
             <param name="intPageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.TopicDetailController.Get(System.Int32)">
+        <member name="M:Blog.Core.Controllers.TopicDetailController.Get(System.Int64)">
             <summary>
             获取详情【无权限】
             </summary>
@@ -655,14 +650,14 @@
             <param name="topicDetail"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.TopicDetailController.Delete(System.Int32)">
+        <member name="M:Blog.Core.Controllers.TopicDetailController.Delete(System.Int64)">
             <summary>
             删除 bug
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.TransactionController.Delete(System.Int32)">
+        <member name="M:Blog.Core.Controllers.TransactionController.Delete(System.Int64)">
             <summary>
             测试事务在AOP中的使用
             </summary>
@@ -717,7 +712,7 @@
             <param name="sysUserInfo"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.Delete(System.Int32)">
+        <member name="M:Blog.Core.Controllers.UserController.Delete(System.Int64)">
             <summary>
             删除用户
             </summary>
@@ -753,7 +748,7 @@
             <param name="roleName"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserRoleController.AddUserRole(System.Int32,System.Int32)">
+        <member name="M:Blog.Core.Controllers.UserRoleController.AddUserRole(System.Int64,System.Int64)">
             <summary>
             新建用户角色关系
             </summary>
@@ -1208,7 +1203,7 @@
             <param name="key">关键字</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Api.Controllers.DepartmentController.GetDepartmentTree(System.Int32)">
+        <member name="M:Blog.Core.Api.Controllers.DepartmentController.GetDepartmentTree(System.Int64)">
             <summary>
             获取部门树
             </summary>
@@ -1253,6 +1248,50 @@
             <summary>
             服务下线
             </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.SplitDemoController">
+            <summary>
+            分表demo
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SplitDemoController.Get(System.DateTime,System.DateTime,System.Int32,System.String,System.Int32)">
+            <summary>
+            分页获取数据
+            </summary>
+            <param name="beginTime"></param>
+            <param name="endTime"></param>
+            <param name="page"></param>
+            <param name="key"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SplitDemoController.GetById(System.Int64)">
+            <summary>
+            根据ID获取信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SplitDemoController.Post(Blog.Core.Model.Models.SplitDemo)">
+            <summary>
+            添加一条测试数据
+            </summary>
+            <param name="splitDemo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SplitDemoController.Put(Blog.Core.Model.Models.SplitDemo)">
+            <summary>
+            修改一条测试数据
+            </summary>
+            <param name="splitDemo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SplitDemoController.Delete(System.Int64)">
+            <summary>
+            根据id删除数据
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByDbController">

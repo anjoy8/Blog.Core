@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Blog.Core.Common.HttpContextUser;
+﻿using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
@@ -113,7 +112,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
-        public async Task<MessageModel<string>> Delete(int id)
+        public async Task<MessageModel<string>> Delete(long id)
         {
             
             var data = new MessageModel<string>();

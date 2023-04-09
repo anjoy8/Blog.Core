@@ -19,7 +19,7 @@ namespace Blog.Core.Services
         /// <param name="uid"></param>
         /// <param name="rid"></param>
         /// <returns></returns>
-        public async Task<UserRole> SaveUserRole(int uid, int rid)
+        public async Task<UserRole> SaveUserRole(long uid, long rid)
         {
             UserRole userRole = new UserRole(uid, rid);
 
@@ -42,7 +42,7 @@ namespace Blog.Core.Services
 
 
         [Caching(AbsoluteExpiration = 30)]
-        public async Task<int> GetRoleIdByUid(int uid)
+        public async Task<int> GetRoleIdByUid(long uid)
         {
             return ((await base.Query(d => d.UserId == uid)).OrderByDescending(d => d.Id).LastOrDefault()?.RoleId).ObjToInt();
         }

@@ -7,7 +7,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 路由菜单表
     /// </summary>
-    public class Permission : PermissionRoot<int>
+    public class Permission : PermissionRoot<long>
     {
         public Permission()
         {

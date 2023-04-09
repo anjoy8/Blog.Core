@@ -53,7 +53,7 @@ namespace Blog.Core.Tests
         [Fact]
         public async void Get_Blog_Test()
         {
-            MessageModel<BlogViewModels> blogVo = await blogController.Get(1);
+            MessageModel<BlogViewModels> blogVo = await blogController.Get(1.ObjToLong());
 
             Assert.NotNull(blogVo);
         }
