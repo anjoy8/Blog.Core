@@ -52,6 +52,11 @@
 
   <ItemGroup>
     <None Remove="index.html" />
+    <None Remove="WangWu.db" />
+    <None Remove="WMBlog.db" />
+    <None Remove="WMBlogLog.db" />
+    <None Remove="WMBlogLog.db-journal" />
+    <None Remove="ZhaoLiu.db" />
   </ItemGroup>
 
   <ItemGroup>
