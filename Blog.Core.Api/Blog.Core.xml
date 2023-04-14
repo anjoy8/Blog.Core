@@ -1299,6 +1299,46 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="T:Blog.Core.Api.Controllers.Systems.DataBaseController">
+            <summary>
+            数据库管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DataBaseController.GetAllConfig">
+            <summary>
+            获取库配置
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DataBaseController.GetTableInfoList(System.String,Blog.Core.Model.Systems.DataBase.DataBaseReadType)">
+            <summary>
+            获取表信息
+            </summary>
+            <param name="configId">配置Id</param>
+            <param name="readType">读取类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DataBaseController.GetColumnInfosByTableName(System.String,System.String,Blog.Core.Model.Systems.DataBase.DataBaseReadType)">
+            <summary>
+            获取表字段
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="configId">ConfigId</param>
+            <param name="readType">读取类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DataBaseController.PutTableEditRemark(Blog.Core.Model.Systems.DataBase.EditTableInput)">
+            <summary>
+            编辑表备注
+            </summary>
+            <param name="input"></param>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DataBaseController.PutColumnEditRemark(Blog.Core.Model.Systems.DataBase.EditColumnInput)">
+            <summary>
+            编辑列备注
+            </summary>
+            <param name="input"></param>
+        </member>
         <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByDbController">
             <summary>
             多租户-多库方案 测试
