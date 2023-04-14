@@ -29,7 +29,6 @@ using Blog.Core.Serilog.Utility;
 var builder = WebApplication.CreateBuilder(args);
 
 
-
 // 1、配置host与容器
 builder.Host
     .UseServiceProviderFactory(new AutofacServiceProviderFactory())
@@ -48,7 +47,6 @@ builder.ConfigureApplication();
 
 // 2、配置服务
 builder.Services.AddSingleton(new AppSettings(builder.Configuration));
-
 
 
 builder.Services.AddUiFilesZipSetup(builder.Environment);
@@ -102,30 +100,30 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddHttpPollySetup();
 builder.Services.AddControllers(o =>
-{
-    o.Filters.Add(typeof(GlobalExceptionsFilter));
-    //o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
-    o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
-})
-.AddNewtonsoftJson(options =>
-{
-    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
-    //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-    options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
-    options.SerializerSettings.Converters.Add(new StringEnumConverter());
-    //将long类型转为string
-    options.SerializerSettings.Converters.Add(new NumberConverter(NumberConverterShip.Int64));
-})
-//.AddFluentValidation(config =>
-//{
-//    //程序集方式添加验证
-//    config.RegisterValidatorsFromAssemblyContaining(typeof(UserRegisterVoValidator));
-//    //是否与MvcValidation共存
-//    config.DisableDataAnnotationsValidation = true;
-//})
-;
+    {
+        o.Filters.Add(typeof(GlobalExceptionsFilter));
+        //o.Conventions.Insert(0, new GlobalRouteAuthorizeConvention());
+        o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
+    })
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+        options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+        //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+        options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
+        options.SerializerSettings.Converters.Add(new StringEnumConverter());
+        //将long类型转为string
+        options.SerializerSettings.Converters.Add(new NumberConverter(NumberConverterShip.Int64));
+    })
+    //.AddFluentValidation(config =>
+    //{
+    //    //程序集方式添加验证
+    //    config.RegisterValidatorsFromAssemblyContaining(typeof(UserRegisterVoValidator));
+    //    //是否与MvcValidation共存
+    //    config.DisableDataAnnotationsValidation = true;
+    //})
+    ;
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -167,13 +165,9 @@ app.UseCookiePolicy();
 app.UseStatusCodePages();
 app.UseSerilogRequestLogging(options =>
 {
+    options.MessageTemplate = SerilogRequestUtility.HttpMessageTemplate;
     options.GetLevel = SerilogRequestUtility.GetRequestLevel;
-    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
-    {
-        diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
-        diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
-        diagnosticContext.Set("RequestIp", httpContext.GetRequestIp());
-    };
+    options.EnrichDiagnosticContext = SerilogRequestUtility.EnrichFromRequest;
 });
 app.UseRouting();
 

@@ -1,6 +1,8 @@
 ﻿using Blog.Core.Common;
 using Blog.Core.Common.Helper;
+using Blog.Core.Common.HttpContextUser;
 using Blog.Core.IServices;
+using Blog.Core.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,8 +14,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Blog.Core.Common.HttpContextUser;
-using Blog.Core.Model;
 
 namespace Blog.Core.AuthHelper
 {
