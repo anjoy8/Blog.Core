@@ -50,7 +50,7 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 推送内容
         /// </summary>
-        [SugarColumn(IsNullable = true)]
+        [SugarColumn(Length = 2000, IsNullable = true)]
         public string PushLogContent { get; set; }
 
         /// <summary>
