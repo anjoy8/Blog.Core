@@ -2,6 +2,7 @@
 using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.Https.HttpPolly;
+using Blog.Core.Common.Option;
 using Blog.Core.Common.WebApiClients.HttpApis;
 using Blog.Core.EventBus;
 using Blog.Core.EventBus.EventHandling;
@@ -13,6 +14,7 @@ using Blog.Core.Model.Models;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 
@@ -40,6 +42,7 @@ namespace Blog.Core.Controllers
         private readonly IDoubanApi _doubanApi;
         readonly IBlogArticleServices _blogArticleServices;
         private readonly IHttpPollyHelper _httpPollyHelper;
+        private readonly SeqOptions _seqOptions;
 
         /// <summary>
         /// ValuesController
@@ -62,7 +65,8 @@ namespace Blog.Core.Controllers
             , IUser user, IPasswordLibServices passwordLibServices
             , IBlogApi blogApi
             , IDoubanApi doubanApi
-            , IHttpPollyHelper httpPollyHelper)
+            , IHttpPollyHelper httpPollyHelper
+            , IOptions<SeqOptions> seqOptions)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
@@ -82,6 +86,7 @@ namespace Blog.Core.Controllers
             _blogArticleServices = blogArticleServices;
             // httpPolly
             _httpPollyHelper = httpPollyHelper;
+            _seqOptions = seqOptions.Value;
         }
 
         [HttpGet]
@@ -127,7 +132,9 @@ namespace Blog.Core.Controllers
             /*
              *  测试 sql 查询
              */
-            var queryBySql = await _blogArticleServices.QuerySql("SELECT bsubmitter,btitle,bcontent,bCreateTime FROM BlogArticle WHERE bID>5");
+            var queryBySql =
+                await _blogArticleServices.QuerySql(
+                    "SELECT bsubmitter,btitle,bcontent,bCreateTime FROM BlogArticle WHERE bID>5");
 
             /*
              *  测试按照指定列查询
@@ -151,7 +158,8 @@ namespace Blog.Core.Controllers
              * 【SQL语句】：UPDATE `BlogArticle`  SET
              *  `bsubmitter`=@bsubmitter,`IsDeleted`=@IsDeleted  WHERE `bID`=@bID
              */
-            var updateSql = await _blogArticleServices.Update(new { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", IsDeleted = false, bID = 5 });
+            var updateSql = await _blogArticleServices.Update(new
+                { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", IsDeleted = false, bID = 5 });
 
 
             // 测试模拟异常，全局异常过滤器拦截
@@ -364,6 +372,7 @@ namespace Blog.Core.Controllers
         public void Put(int id, [FromBody] string value)
         {
         }
+
         /// <summary>
         /// Delete方法
         /// </summary>
@@ -375,15 +384,18 @@ namespace Blog.Core.Controllers
         }
 
         #region Apollo 配置
+
         /// <summary>
         /// 测试接入Apollo获取配置信息
         /// </summary>
         [HttpGet("/apollo")]
         [AllowAnonymous]
-        public async Task<IEnumerable<KeyValuePair<string, string>>> GetAllConfigByAppllo([FromServices] IConfiguration configuration)
+        public async Task<IEnumerable<KeyValuePair<string, string>>> GetAllConfigByAppllo(
+            [FromServices] IConfiguration configuration)
         {
             return await Task.FromResult(configuration.AsEnumerable());
         }
+
         /// <summary>
         /// 通过此处的key格式为 xx:xx:x
         /// </summary>
@@ -393,14 +405,17 @@ namespace Blog.Core.Controllers
         {
             return await Task.FromResult(AppSettings.app(key));
         }
+
         #endregion
 
         #region HttpPolly
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<string> HttpPollyPost()
         {
-            var response = await _httpPollyHelper.PostAsync(HttpEnum.LocalHost, "/api/ElasticDemo/EsSearchTest", "{\"from\": 0,\"size\": 10,\"word\": \"非那雄安\"}");
+            var response = await _httpPollyHelper.PostAsync(HttpEnum.LocalHost, "/api/ElasticDemo/EsSearchTest",
+                "{\"from\": 0,\"size\": 10,\"word\": \"非那雄安\"}");
 
             return response;
         }
@@ -409,14 +424,24 @@ namespace Blog.Core.Controllers
         [AllowAnonymous]
         public async Task<string> HttpPollyGet()
         {
-            return await _httpPollyHelper.GetAsync(HttpEnum.LocalHost, "/api/ElasticDemo/GetDetailInfo?esid=3130&esindex=chinacodex");
+            return await _httpPollyHelper.GetAsync(HttpEnum.LocalHost,
+                "/api/ElasticDemo/GetDetailInfo?esid=3130&esindex=chinacodex");
         }
+
         #endregion
 
         [HttpPost]
         [AllowAnonymous]
         public string TestEnum(EnumDemoDto dto) => dto.Type.ToString();
+
+        [HttpGet]
+        [AllowAnonymous]
+        public string TestOption()
+        {
+            return _seqOptions.ToJson();
+        }
     }
+
     public class ClaimDto
     {
         public string Type { get; set; }

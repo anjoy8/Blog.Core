@@ -12,6 +12,7 @@ using Blog.Core.Extensions.Middlewares;
 using Blog.Core.Extensions.ServiceExtensions;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
+using Blog.Core.Serilog.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -23,8 +24,6 @@ using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
-using Blog.Core.Common.Https;
-using Blog.Core.Serilog.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +38,7 @@ builder.Host
     })
     .ConfigureAppConfiguration((hostingContext, config) =>
     {
+        hostingContext.Configuration.ConfigureApplication();
         config.Sources.Clear();
         config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
         config.AddConfigurationApollo("appsettings.apollo.json");
@@ -47,7 +47,7 @@ builder.ConfigureApplication();
 
 // 2、配置服务
 builder.Services.AddSingleton(new AppSettings(builder.Configuration));
-
+builder.Services.AddAllOptionRegister();
 
 builder.Services.AddUiFilesZipSetup(builder.Environment);
 
@@ -133,6 +133,7 @@ Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 // 3、配置中间件
 var app = builder.Build();
 app.ConfigureApplication();
+app.UseApplicationSetup();
 
 if (app.Environment.IsDevelopment())
 {

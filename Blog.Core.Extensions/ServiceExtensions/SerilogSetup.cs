@@ -8,6 +8,7 @@ using Serilog.Debugging;
 using Serilog.Events;
 using System;
 using System.IO;
+using Blog.Core.Common.Option;
 
 namespace Blog.Core.Extensions.ServiceExtensions;
 
@@ -27,11 +28,12 @@ public static class SerilogSetup
             //配置日志库
             .WriteToLogBatching();
 
+        var option = App.GetOptions<SeqOptions>();
         //配置Seq日志中心
-        if (AppSettings.app("Seq", "Enabled").ObjToBool())
+        if (option.Enabled)
         {
-            var address = AppSettings.app("Seq", "Address");
-            var apiKey = AppSettings.app("Seq", "ApiKey");
+            var address = option.Address;
+            var apiKey = option.ApiKey;
             if (!address.IsNullOrEmpty())
             {
                 loggerConfiguration =
