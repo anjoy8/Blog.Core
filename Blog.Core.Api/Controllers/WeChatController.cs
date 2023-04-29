@@ -8,8 +8,6 @@ namespace Blog.Core.Controllers
 {
     /// <summary>
     /// 微信公众号管理 
-    /// 作者:胡丁文
-    /// 时间:2020-3-29 21:24:12
     /// </summary>   
     [Route("api/[controller]/[action]")]
     [ApiController]
