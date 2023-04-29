@@ -51,13 +51,13 @@ namespace Blog.Core.Model.Models
         /// <summary>
         /// 公众号推送token
         /// </summary>
-        [SugarColumn(Length = 100, IsNullable = true)]
+        [SugarColumn(Length = 500, IsNullable = true)]
         public string token { get; set; }
 
         /// <summary>
         /// 验证秘钥(验证消息是否真实)
         /// </summary>
-        [SugarColumn(Length = 100, IsNullable = false)]
+        [SugarColumn(Length = 500, IsNullable = false)]
         public string interactiveToken { get; set; }
 
         /// <summary>
