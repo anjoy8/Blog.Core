@@ -51,9 +51,15 @@ public class SerilogRequestUtility
         diagnosticContext.Set("Protocol", request.Protocol);
         diagnosticContext.Set("RequestIp", httpContext.GetRequestIp());
 
-        diagnosticContext.Set("QueryString", request.QueryString.HasValue ? request.QueryString.Value : string.Empty);
-        diagnosticContext.Set("Body", request.ContentLength > 0 ? request.GetRequestBody() : string.Empty);
-
+        if (request.Method == HttpMethods.Get)
+        {
+            diagnosticContext.Set("QueryString", request.QueryString.HasValue ? request.QueryString.Value : string.Empty);
+        }
+        else
+        {
+            diagnosticContext.Set("QueryString", request.QueryString.HasValue ? request.QueryString.Value : string.Empty);
+            diagnosticContext.Set("Body", request.ContentLength > 0 ? request.GetRequestBody() : string.Empty);
+        }
         diagnosticContext.Set("ContentType", httpContext.Response.ContentType);
 
         var endpoint = httpContext.GetEndpoint();
