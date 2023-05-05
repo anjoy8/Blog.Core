@@ -40,7 +40,7 @@ namespace Blog.Core.Common.HttpContextUser
             return "";
         }
 
-        public int ID => GetClaimValueByType("jti").FirstOrDefault().ObjToInt();
+        public long ID => GetClaimValueByType("jti").FirstOrDefault().ObjToLong();
         public long TenantId => GetClaimValueByType("TenantId").FirstOrDefault().ObjToLong();
 
         public bool IsAuthenticated()
