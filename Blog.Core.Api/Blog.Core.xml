@@ -994,8 +994,6 @@
         <member name="T:Blog.Core.Controllers.WeChatController">
             <summary>
             微信公众号管理 
-            作者:胡丁文
-            时间:2020-3-29 21:24:12
             </summary>   
         </member>
         <member name="M:Blog.Core.Controllers.WeChatController.#ctor(Blog.Core.IServices.IWeChatConfigServices,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.WeChatController})">
@@ -1070,6 +1068,13 @@
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.WeChatController.PushCardMsg(Blog.Core.Model.ViewModels.WeChatCardMsgDataDto)">
+            <summary>
+            推送卡片消息接口
+            </summary>
+            <param name="msg">卡片消息对象</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.WeChatController.PushCardMsgGet(Blog.Core.Model.ViewModels.WeChatCardMsgDataDto)">
             <summary>
             推送卡片消息接口
             </summary>
