@@ -8,6 +8,16 @@ public static class HttpRequestExtension
 {
     public static string GetRequestBody(this HttpRequest request)
     {
+        if (!request.Body.CanRead)
+        {
+            return default;
+        }
+
+        if (!request.Body.CanSeek)
+        {
+            return default;
+        }
+
         if (request.Body.Length < 1)
         {
             return default;
