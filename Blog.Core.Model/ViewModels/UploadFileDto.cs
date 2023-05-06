@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Core.Model.ViewModels
 {
@@ -12,7 +7,7 @@ namespace Blog.Core.Model.ViewModels
     {
         //多文件
         [Required]
-        public IFormFileCollection Files { get; set; }
+        public IFormFileCollection file { get; set; }
 
         //单文件
         //public IFormFile File { get; set; }
