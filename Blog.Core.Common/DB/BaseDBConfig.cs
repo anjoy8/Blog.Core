@@ -12,8 +12,8 @@ namespace Blog.Core.Common.DB
          * 目前是多库操作，默认加载的是appsettings.json设置为true的第一个db连接。
          */
         public static (List<MutiDBOperate> allDbs, List<MutiDBOperate> slaveDbs) MutiConnectionString => MutiInitConn();
-        public static List<ConnectionConfig> AllConfig=new();   //所有的库连接
-        public static List<ConnectionConfig> ValidConfig=new(); //有效的库连接(除去Log库)
+        public static List<ConnectionConfig> AllConfig = new();   //所有的库连接
+        public static List<ConnectionConfig> ValidConfig = new(); //有效的库连接(除去Log库)
         public static ConnectionConfig LogConfig;               //日志库
 
         private static string DifDBConnOfSecurity(params string[] conn)
@@ -40,6 +40,11 @@ namespace Blog.Core.Common.DB
         {
             List<MutiDBOperate> listdatabase = AppSettings.app<MutiDBOperate>("DBS")
                 .Where(i => i.Enabled).ToList();
+            var mainDbId = AppSettings.app(new string[] { "MainDB" }).ObjToString();
+            var mainDbModel = listdatabase.Single(d => d.ConnId == mainDbId);
+            listdatabase.Remove(mainDbModel);
+            listdatabase.Insert(0, mainDbModel);
+
             foreach (var i in listdatabase)
             {
                 SpecialDbString(i);

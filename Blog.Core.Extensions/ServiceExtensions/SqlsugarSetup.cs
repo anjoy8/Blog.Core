@@ -57,7 +57,8 @@ namespace Blog.Core.Extensions
                         MoreSettings = new ConnMoreSettings()
                         {
                             //IsWithNoLockQuery = true,
-                            IsAutoRemoveDataCache = true
+                            IsAutoRemoveDataCache = true,
+                            SqlServerCodeFirstNvarchar = true,
                         },
                         // 从库
                         SlaveConnectionConfigs = listConfig_Slave,

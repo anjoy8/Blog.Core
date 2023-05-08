@@ -44,9 +44,9 @@ namespace Blog.Core.Common.Seed
                 Console.WriteLine($"Is multi-DataBase: {AppSettings.app(new string[] { "MutiDBEnabled" })}");
                 Console.WriteLine($"Is CQRS: {AppSettings.app(new string[] { "CQRSEnabled" })}");
                 Console.WriteLine();
-                Console.WriteLine($"Master DB ConId: {MyContext.ConnId}");
-                Console.WriteLine($"Master DB Type: {MyContext.DbType}");
-                Console.WriteLine($"Master DB ConnectString: {MyContext.ConnectionString}");
+                Console.WriteLine($"Master DB ConId: {myContext.Db.CurrentConnectionConfig.ConfigId}");
+                Console.WriteLine($"Master DB Type: {myContext.Db.CurrentConnectionConfig.DbType}");
+                Console.WriteLine($"Master DB ConnectString: {myContext.Db.CurrentConnectionConfig.ConnectionString}");
                 Console.WriteLine();
                 if (AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {
