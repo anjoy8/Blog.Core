@@ -29,7 +29,7 @@ public class DataBaseController : BaseApiController
 	}
 
 	[return: NotNull]
-	public ISqlSugarClient GetTenantDb(string configId)
+	private ISqlSugarClient GetTenantDb(string configId)
 	{
 		if (!_db.AsTenant().IsAnyConnection(configId))
 		{
@@ -88,6 +88,8 @@ public class DataBaseController : BaseApiController
 			configId = MainDb.CurrentDbConnId;
 		}
 
+		configId = configId.ToLower();
+
 		var provider = GetTenantDb(configId);
 		List<DbTableInfo> data = null;
 		switch (readType)
@@ -129,7 +131,9 @@ public class DataBaseController : BaseApiController
 			configId = MainDb.CurrentDbConnId;
 		}
 
-		List<DbColumnInfoOutput> data = null;
+        configId = configId.ToLower();
+
+        List<DbColumnInfoOutput> data = null;
 		var provider = GetTenantDb(configId);
 		switch (readType)
 		{
