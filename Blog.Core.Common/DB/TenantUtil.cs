@@ -47,7 +47,8 @@ public static class TenantUtil
             IsAutoCloseConnection = true,
             MoreSettings = new ConnMoreSettings()
             {
-                IsAutoRemoveDataCache = true
+                IsAutoRemoveDataCache = true,
+                SqlServerCodeFirstNvarchar = true,
             },
         };
     }

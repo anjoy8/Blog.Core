@@ -18,10 +18,11 @@
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="6.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="6.1.0" />
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
     <PackageReference Include="NetDevPack.Security.JwtExtensions" Version="6.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.5" />
 
@@ -35,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Blog.Core.EventBus\Blog.Core.EventBus.csproj" />
+    <ProjectReference Include="..\Blog.Core.Serilog\Blog.Core.Serilog.csproj" />
     <ProjectReference Include="..\Blog.Core.Services\Blog.Core.Services.csproj" />
     <ProjectReference Include="..\Blog.Core.Tasks\Blog.Core.Tasks.csproj" />
   </ItemGroup>

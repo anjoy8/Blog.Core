@@ -54,11 +54,11 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<string>> InsertPicture([FromForm]UploadFileDto dto)
         {
             
-            if (dto.Files == null || !dto.Files.Any()) return Failed("请选择上传的文件。");
+            if (dto.file == null || !dto.file.Any()) return Failed("请选择上传的文件。");
             //格式限制
             var allowType = new string[] { "image/jpg", "image/png", "image/jpeg" };
             
-            var allowedFile = dto.Files.Where(c => allowType.Contains(c.ContentType));
+            var allowedFile = dto.file.Where(c => allowType.Contains(c.ContentType));
             if (!allowedFile.Any()) return Failed("图片格式错误");
             if (allowedFile.Sum(c => c.Length) > 1024 * 1024 * 4) return Failed("图片过大");
 
@@ -79,7 +79,7 @@ namespace Blog.Core.Controllers
                 }
             }
 
-            var excludeFiles = dto.Files.Except(allowedFile);
+            var excludeFiles = dto.file.Except(allowedFile);
 
             if (excludeFiles.Any())
             {

@@ -8,11 +8,13 @@ using Newtonsoft.Json;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Blog.Core.Common.Const;
 
 namespace Blog.Core.Common.Seed
 {
@@ -42,9 +44,9 @@ namespace Blog.Core.Common.Seed
                 Console.WriteLine($"Is multi-DataBase: {AppSettings.app(new string[] { "MutiDBEnabled" })}");
                 Console.WriteLine($"Is CQRS: {AppSettings.app(new string[] { "CQRSEnabled" })}");
                 Console.WriteLine();
-                Console.WriteLine($"Master DB ConId: {MyContext.ConnId}");
-                Console.WriteLine($"Master DB Type: {MyContext.DbType}");
-                Console.WriteLine($"Master DB ConnectString: {MyContext.ConnectionString}");
+                Console.WriteLine($"Master DB ConId: {myContext.Db.CurrentConnectionConfig.ConfigId}");
+                Console.WriteLine($"Master DB Type: {myContext.Db.CurrentConnectionConfig.DbType}");
+                Console.WriteLine($"Master DB ConnectString: {myContext.Db.CurrentConnectionConfig.ConnectionString}");
                 Console.WriteLine();
                 if (AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
                 {
@@ -428,6 +430,58 @@ namespace Blog.Core.Common.Seed
             }
         }
 
+        /// <summary>
+        /// 迁移日志数据库
+        /// </summary>
+        /// <returns></returns>
+        public static void MigrationLogs(MyContext myContext)
+        {
+            // 创建数据库表，遍历指定命名空间下的class，
+            // 注意不要把其他命名空间下的也添加进来。
+            Console.WriteLine("Create Log Tables...");
+            if (!myContext.Db.IsAnyConnection(SqlSugarConst.LogConfigId.ToLower()))
+            {
+                throw new ApplicationException("未配置日志数据库，请在appsettings.json中DBS节点中配置");
+            }
+
+            var logDb = myContext.Db.GetConnection(SqlSugarConst.LogConfigId.ToLower());
+            Console.WriteLine($"Create log Database(The Db Id:{SqlSugarConst.LogConfigId.ToLower()})...");
+            logDb.DbMaintenance.CreateDatabase();
+            ConsoleHelper.WriteSuccessLine($"Log Database created successfully!");
+            var path = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
+            var referencedAssemblies = System.IO.Directory.GetFiles(path, "Blog.Core.Model.dll").Select(Assembly.LoadFrom).ToArray();
+            var modelTypes = referencedAssemblies
+                .SelectMany(a => a.DefinedTypes)
+                .Select(type => type.AsType())
+                .Where(x => x.IsClass && x.Namespace != null && x.Namespace.StartsWith("Blog.Core.Model.Logs")).ToList();
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var tables = logDb.DbMaintenance.GetTableInfoList();
+
+            modelTypes.ForEach(t =>
+            {
+                // 这里只支持添加修改表，不支持删除
+                // 如果想要删除，数据库直接右键删除，或者联系SqlSugar作者；
+                if (!tables.Any(s => s.Name.Contains(t.Name)))
+                {
+                    Console.WriteLine(t.Name);
+                    if (t.GetCustomAttribute<SplitTableAttribute>() != null)
+                    {
+                        logDb.CodeFirst.SplitTables().InitTables(t);
+                    }
+                    else
+                    {
+                        logDb.CodeFirst.InitTables(t);
+                    }
+                }
+            });
+
+            sw.Stop();
+
+            $"Log Tables created successfully! {sw.ElapsedMilliseconds}ms".WriteSuccessLine();
+            Console.WriteLine();
+        }
+
 
         /// <summary>
         /// 初始化 多租户
@@ -525,6 +579,8 @@ namespace Blog.Core.Common.Seed
 
         #endregion
 
+        #region 多租户 种子数据 初始化
+
         private static async Task TenantSeedDataAsync(ISqlSugarClient db, TenantTypeEnum tenantType)
         {
             // 获取所有种子配置-初始化数据
@@ -580,5 +636,7 @@ namespace Blog.Core.Common.Seed
                 }
             }
         }
+
+        #endregion
     }
 }
