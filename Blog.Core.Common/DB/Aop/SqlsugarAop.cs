@@ -113,7 +113,7 @@ public static class SqlSugarAop
                     if (App.User?.ID > 0 && dyCreateId != null && dyCreateId.GetValue(entityInfo.EntityValue) == null)
                         dyCreateId.SetValue(entityInfo.EntityValue, App.User.ID);
 
-                    if (dyCreateTime != null && (DateTime)dyCreateTime.GetValue(entityInfo.EntityValue) == DateTime.MinValue)
+                    if (dyCreateTime != null && dyCreateTime.GetValue(entityInfo.EntityValue) != null && (DateTime)dyCreateTime.GetValue(entityInfo.EntityValue) == DateTime.MinValue)
                         dyCreateTime.SetValue(entityInfo.EntityValue, DateTime.Now);
 
                     break;
