@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using Blog.Core.Common.Swagger;
 using Blog.Core.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -51,7 +53,25 @@ namespace Blog.Core.Common.HttpContextUser
 
         public string GetToken()
         {
-            return _accessor.HttpContext?.Request?.Headers["Authorization"].ObjToString().Replace("Bearer ", "");
+            var token = _accessor.HttpContext?.Request?.Headers["Authorization"].ObjToString().Replace("Bearer ", "");
+            if (!token.IsNullOrEmpty())
+            {
+                return token;
+            }
+		
+            if (_accessor.HttpContext?.IsSuccessSwagger() == true)
+            {
+                token = _accessor.HttpContext.GetSuccessSwaggerJwt();
+                if (token.IsNotEmptyOrNull())
+                {
+                    var claims = new ClaimsIdentity(GetClaimsIdentity(token));
+                    _accessor.HttpContext.User.AddIdentity(claims);
+
+                    return token;
+                }
+            }
+
+            return token;
         }
 
         public List<string> GetUserInfoFromToken(string ClaimType)
@@ -77,6 +97,10 @@ namespace Blog.Core.Common.HttpContextUser
 
         public IEnumerable<Claim> GetClaimsIdentity()
         {
+            if (_accessor.HttpContext == null) return ArraySegment<Claim>.Empty;
+
+            if (!IsAuthenticated()) return GetClaimsIdentity(GetToken());
+            
             var claims = _accessor.HttpContext.User.Claims.ToList();
             var headers = _accessor.HttpContext.Request.Headers;
             foreach (var header in headers)
@@ -85,6 +109,19 @@ namespace Blog.Core.Common.HttpContextUser
             }
 
             return claims;
+        }
+        public IEnumerable<Claim> GetClaimsIdentity(string token)
+        {
+            var jwtHandler = new JwtSecurityTokenHandler();
+            // token校验
+            if (token.IsNotEmptyOrNull() && jwtHandler.CanReadToken(token))
+            {
+                var jwtToken = jwtHandler.ReadJwtToken(token);
+
+                return jwtToken.Claims;
+            }
+
+            return new List<Claim>();
         }
 
         public List<string> GetClaimValueByType(string ClaimType)

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Blog.Core.Common.Swagger;
 using Blog.Core.Model.Models;
 
 namespace Blog.Core.AuthHelper
@@ -116,7 +117,7 @@ namespace Blog.Core.AuthHelper
 						return;
 					}
 				}
-				
+
 				//判断请求是否拥有凭据，即有没有登录
 				var defaultAuthenticate = await Schemes.GetDefaultAuthenticateSchemeAsync();
 				if (defaultAuthenticate != null)
@@ -127,9 +128,78 @@ namespace Blog.Core.AuthHelper
 					var isTestCurrent = AppSettings.app(new string[] {"AppSettings", "UseLoadTest"}).ObjToBool();
 
 					//result?.Principal不为空即登录成功
-					if (result?.Principal != null || isTestCurrent)
+					if (result?.Principal != null || isTestCurrent || httpContext.IsSuccessSwagger())
 					{
 						if (!isTestCurrent) httpContext.User = result.Principal;
+
+						//应该要先校验用户的信息 再校验菜单权限相关的
+
+						//校验用户
+						var user = await _userServices.QueryById(_user.ID, true);
+						if (user == null)
+						{
+							_user.MessageModel = new ApiResponse(StatusCode.CODE401, "用户不存在或已被删除").MessageModel;
+							context.Fail(new AuthorizationFailureReason(this, _user.MessageModel.msg));
+							return;
+						}
+
+						if (user.IsDeleted)
+						{
+							_user.MessageModel = new ApiResponse(StatusCode.CODE401, "用户已被删除,禁止登陆!").MessageModel;
+							context.Fail(new AuthorizationFailureReason(this, _user.MessageModel.msg));
+							return;
+						}
+
+						if (!user.Enable)
+						{
+							_user.MessageModel = new ApiResponse(StatusCode.CODE401, "用户已被禁用!禁止登陆!").MessageModel;
+							context.Fail(new AuthorizationFailureReason(this, _user.MessageModel.msg));
+							return;
+						}
+
+						// 判断token是否过期，过期则重新登录
+						var isExp = false;
+						// ids4和jwt切换
+						// ids4
+						if (Permissions.IsUseIds4)
+						{
+							isExp = (httpContext.User.Claims.FirstOrDefault(s => s.Type == "exp")?.Value) != null &&
+									DateHelper.StampToDateTime(httpContext.User.Claims
+										.FirstOrDefault(s => s.Type == "exp")?.Value) >= DateTime.Now;
+						}
+						else
+						{
+							// jwt
+							isExp =
+								(httpContext.User.Claims.FirstOrDefault(s => s.Type == ClaimTypes.Expiration)
+									?.Value) != null &&
+								DateTime.Parse(httpContext.User.Claims
+									.FirstOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value) >= DateTime.Now;
+						}
+
+						if (!isExp)
+						{
+							context.Fail(new AuthorizationFailureReason(this, "授权已过期,请重新授权"));
+							return;
+						}
+
+
+						//校验签发时间
+						if (!Permissions.IsUseIds4)
+						{
+							var value = httpContext.User.Claims
+								.FirstOrDefault(s => s.Type == JwtRegisteredClaimNames.Iat)?.Value;
+							if (value != null)
+							{
+								if (user.CriticalModifyTime > value.ObjToDate())
+								{
+									_user.MessageModel = new ApiResponse(StatusCode.CODE401, "很抱歉,授权已失效,请重新授权")
+										.MessageModel;
+									context.Fail(new AuthorizationFailureReason(this, _user.MessageModel.msg));
+									return;
+								}
+							}
+						}
 
 						// 获取当前用户的角色信息
 						var currentUserRoles = new List<string>();
@@ -153,7 +223,8 @@ namespace Blog.Core.AuthHelper
 						if (currentUserRoles.All(s => s != "SuperAdmin"))
 						{
 							var isMatchRole = false;
-							var permisssionRoles = requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role));
+							var permisssionRoles =
+								requirement.Permissions.Where(w => currentUserRoles.Contains(w.Role));
 							foreach (var item in permisssionRoles)
 							{
 								try
@@ -177,50 +248,7 @@ namespace Blog.Core.AuthHelper
 								return;
 							}
 						}
-						
-						// 判断token是否过期，过期则重新登录
-						var isExp = false;
-						// ids4和jwt切换
-						// ids4
-						if (Permissions.IsUseIds4)
-						{
-							isExp = (httpContext.User.Claims.SingleOrDefault(s => s.Type == "exp")?.Value) != null &&
-									DateHelper.StampToDateTime(httpContext.User.Claims
-										.SingleOrDefault(s => s.Type == "exp")?.Value) >= DateTime.Now;
-						}
-						else
-						{
-							// jwt
-							isExp =
-								(httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)
-									?.Value) != null &&
-								DateTime.Parse(httpContext.User.Claims
-									.SingleOrDefault(s => s.Type == ClaimTypes.Expiration)?.Value) >= DateTime.Now;
-						}
 
-						if (!isExp)
-						{
-							context.Fail(new AuthorizationFailureReason(this, "授权已过期,请重新授权"));
-							return;
-						}
-
-						//校验签发时间
-						if (!Permissions.IsUseIds4)
-						{
-							var value = httpContext.User.Claims
-								.SingleOrDefault(s => s.Type == JwtRegisteredClaimNames.Iat)?.Value;
-							if (value != null)
-							{
-								var user = await _userServices.QueryById(_user.ID, true);
-								if (user.CriticalModifyTime > value.ObjToDate())
-								{
-									_user.MessageModel = new ApiResponse(StatusCode.CODE401, "很抱歉,授权已失效,请重新授权")
-										.MessageModel;
-									context.Fail(new AuthorizationFailureReason(this, _user.MessageModel.msg));
-									return;
-								}
-							}
-						}
 
 						context.Succeed(requirement);
 						return;
