@@ -57,8 +57,7 @@ RoutePrefix.Name = AppSettings.app(new string[] { "AppSettings", "SvcName" }).Ob
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-builder.Services.AddMemoryCacheSetup();
-builder.Services.AddRedisCacheSetup();
+builder.Services.AddCacheSetup();
 builder.Services.AddSqlsugarSetup();
 builder.Services.AddDbSetup();
 

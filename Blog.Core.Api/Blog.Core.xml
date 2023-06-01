@@ -1299,6 +1299,41 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="T:Blog.Core.Api.Controllers.Systems.CacheManageController">
+            <summary>
+            缓存管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.Get">
+            <summary>
+            获取全部缓存
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.Get(System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.Post(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            新增
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.Delete">
+            <summary>
+            删除全部缓存
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.Delete(System.String)">
+            <summary>
+            删除缓存
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Api.Controllers.Systems.DataBaseController">
             <summary>
             数据库管理

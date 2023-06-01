@@ -8,6 +8,7 @@ namespace Blog.Core.Extensions
     /// <summary>
     /// Redis缓存接口
     /// </summary>
+    [Obsolete("普通缓存考虑直接使用ICaching,如果要使用Redis队列等还是使用此类")]
     public interface IRedisBasketRepository
     {
 

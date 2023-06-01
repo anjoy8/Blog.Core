@@ -1,6 +1,8 @@
-﻿using Blog.Core.Common;
+﻿using System;
+using Blog.Core.Common;
 using Castle.DynamicProxy;
 using System.Linq;
+using Blog.Core.Common.Caches;
 
 namespace Blog.Core.AOP
 {
@@ -28,7 +30,7 @@ namespace Blog.Core.AOP
                 //获取自定义缓存键
                 var cacheKey = CustomCacheKey(invocation);
                 //根据key获取相应的缓存值
-                var cacheValue = _cache.Get(cacheKey);
+                var cacheValue = _cache.Get<object>(cacheKey);
                 if (cacheValue != null)
                 {
                     //将当前获取到的缓存值，赋值给当前执行方法
@@ -40,7 +42,7 @@ namespace Blog.Core.AOP
                 //存入缓存
                 if (!string.IsNullOrWhiteSpace(cacheKey))
                 {
-                    _cache.Set(cacheKey, invocation.ReturnValue, qCachingAttribute.AbsoluteExpiration);
+                    _cache.Set(cacheKey, invocation.ReturnValue, TimeSpan.FromMinutes(qCachingAttribute.AbsoluteExpiration));
                 }
             }
             else

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Core.Extensions
 {
+    [Obsolete("普通缓存考虑直接使用ICaching,如果要使用Redis队列等还是使用此类")]
     public class RedisBasketRepository : IRedisBasketRepository
     {
         private readonly ILogger<RedisBasketRepository> _logger;
