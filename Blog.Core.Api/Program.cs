@@ -95,7 +95,6 @@ builder.Services.AddScoped<UseServiceDIAttribute>();
 builder.Services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
     .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
 
-builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddHttpPollySetup();
 builder.Services.AddControllers(o =>
