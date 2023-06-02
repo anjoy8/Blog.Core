@@ -178,25 +178,27 @@
 
                 //修改权限小锁样式，由于这个单页面没去获取token，采取直接修改样式的方法
                 $(document).ready(function () {
-                    document.querySelector('.auth-wrapper svg use').href.baseVal = '#locked'
-                    let divList = document.querySelectorAll('.opblock-tag')
-                    for (let div of divList) {
-                        //debugger
-                        div.addEventListener('click', function () {
-                            setTimeout(() => {
-                                //修改锁状态 locked 为已认证token  unlocked为未认证
-                                let list = document.querySelectorAll(' .unlocked svg use')
-                                for (let item of list) {
-                                    item.href.baseVal = '#locked'
-                                }
-                                //修改锁颜色  locked 黑色  unlocked灰色
-                                let btnlist = document.querySelectorAll('.authorization__btn')
-                                for (let item of btnlist) {
-                                    item.classList = 'authorization__btn locked'
-                                }
-                            }, 0)
-                        }) 
-                    }
+                    setTimeout(() => {
+                        document.querySelector('.auth-wrapper svg use').href.baseVal = '#locked'
+                        let divList = document.querySelectorAll('.opblock-tag')
+                        for (let div of divList) {
+                            //debugger
+                            div.addEventListener('click', function () {
+                                setTimeout(() => {
+                                    //修改锁状态 locked 为已认证token  unlocked为未认证
+                                    let list = document.querySelectorAll(' .unlocked svg use')
+                                    for (let item of list) {
+                                        item.href.baseVal = '#locked'
+                                    }
+                                    //修改锁颜色  locked 黑色  unlocked灰色
+                                    let btnlist = document.querySelectorAll('.authorization__btn')
+                                    for (let item of btnlist) {
+                                        item.classList = 'authorization__btn locked'
+                                    }
+                                }, 0)
+                            }) 
+                        }
+                    }, 500)
                 });
             }, 1000)
             // 文档logo
