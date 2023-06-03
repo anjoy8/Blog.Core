@@ -19,19 +19,25 @@
 	<PackageReference Include="Magicodes.IE.Excel" Version="2.6.4" />
     <PackageReference Include="InitQ" Version="1.0.0.12" />
     <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Mapster" Version="7.3.0" />
+    <PackageReference Include="Mapster.Core" Version="1.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="MiniProfiler.Shared" Version="4.2.22" />
     <PackageReference Include="PinYinConverterCore" Version="1.0.2" />
     <PackageReference Include="RestSharp" Version="108.0.1" />
     <PackageReference Include="RSAExtensions" Version="1.1.0" />
-    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
+    <PackageReference Include="Serilog.Expressions" Version="3.4.1" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.6.48" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.1" />
 
-    <PackageReference Include="Serilog" Version="2.11.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
-    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.1-dev-00771" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="WebApiClient.Extensions.DependencyInjection" Version="2.0.3" />
     <PackageReference Include="WebApiClient.JIT" Version="1.1.4" />
 
@@ -45,6 +51,7 @@
 
   <ItemGroup>
     <Folder Include="Core\" />
+    <Folder Include="Const\" />
   </ItemGroup>
 
 </Project>

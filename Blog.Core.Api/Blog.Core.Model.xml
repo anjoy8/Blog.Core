@@ -1957,6 +1957,11 @@
             找不到指定资源
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Systems.DataBase.DataBaseReadType">
+            <summary>
+            数据库读取类型
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.TableModel`1">
             <summary>
             表格数据，支持分页

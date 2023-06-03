@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Blog.Core.Common;
+﻿using Blog.Core.Common;
 using Blog.Core.Common.LogHelper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System;
+using System.Threading.Tasks;
 
 namespace Blog.Core.Extensions.Middlewares
 {
@@ -19,7 +19,6 @@ namespace Blog.Core.Extensions.Middlewares
         /// </summary>
         private readonly RequestDelegate _next;
         private readonly IWebHostEnvironment _environment;
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(typeof(IpLogMiddleware));
 
         /// <summary>
         /// 

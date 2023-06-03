@@ -90,7 +90,7 @@ namespace Blog.Core.AuthHelper.OverWrite
 
                 tokenModelJwt = new TokenModelJwt
                 {
-                    Uid = (jwtToken.Id).ObjToInt(),
+                    Uid = (jwtToken.Id).ObjToLong(),
                     Role = role != null ? role.ObjToString() : "",
                 };
             }

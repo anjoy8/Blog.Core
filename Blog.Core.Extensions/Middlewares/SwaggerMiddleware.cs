@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Blog.Core.Common;
-using log4net;
+﻿using Blog.Core.Common;
 using Microsoft.AspNetCore.Builder;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System;
+using System.IO;
+using System.Linq;
+using Serilog;
 using static Blog.Core.Extensions.CustomApiVersion;
 
 namespace Blog.Core.Extensions.Middlewares
@@ -14,7 +14,6 @@ namespace Blog.Core.Extensions.Middlewares
     /// </summary>
     public static class SwaggerMiddleware
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(SwaggerMiddleware));
         public static void UseSwaggerMiddle(this IApplicationBuilder app, Func<Stream> streamHtml)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
@@ -24,10 +23,7 @@ namespace Blog.Core.Extensions.Middlewares
             {
                 //根据版本名称倒序 遍历展示
                 var apiName = AppSettings.app(new string[] { "Startup", "ApiName" });
-                typeof(ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(version =>
-                {
-                    c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{apiName} {version}");
-                });
+                typeof(ApiVersions).GetEnumNames().OrderByDescending(e => e).ToList().ForEach(version => { c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{apiName} {version}"); });
 
                 c.SwaggerEndpoint($"https://petstore.swagger.io/v2/swagger.json", $"{apiName} pet");
 
@@ -38,12 +34,13 @@ namespace Blog.Core.Extensions.Middlewares
                     Log.Error(msg);
                     throw new Exception(msg);
                 }
+
                 c.IndexStream = streamHtml;
                 c.DocExpansion(DocExpansion.None); //->修改界面打开时自动折叠
 
                 if (Permissions.IsUseIds4)
                 {
-                    c.OAuthClientId("blogadminjs"); 
+                    c.OAuthClientId("blogadminjs");
                 }
 
 

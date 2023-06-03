@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Core.Common.HttpPolly
+namespace Blog.Core.Common.Https.HttpPolly
 {
     public class HttpPollyHelper : IHttpPollyHelper
     {
@@ -35,7 +35,7 @@ namespace Blog.Core.Common.HttpPolly
 
                 var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
                 var response = await client.PostAsync(url, stringContent);
-                
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     string result = await response.Content.ReadAsStringAsync();
@@ -72,7 +72,7 @@ namespace Blog.Core.Common.HttpPolly
 
                 var stringContent = new StringContent(request, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync(url, stringContent);
-                
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     string result = await response.Content.ReadAsStringAsync();
@@ -110,7 +110,7 @@ namespace Blog.Core.Common.HttpPolly
 
                 var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
                 var response = await client.PostAsync(url, stringContent);
-                
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     return await response.Content.ReadAsStringAsync();
@@ -146,7 +146,7 @@ namespace Blog.Core.Common.HttpPolly
 
                 var stringContent = new StringContent(request, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync(url, stringContent);
-                
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     return await response.Content.ReadAsStringAsync();
@@ -182,7 +182,7 @@ namespace Blog.Core.Common.HttpPolly
                 }
 
                 var response = await client.GetAsync(url);
-                
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     string result = await response.Content.ReadAsStringAsync();
@@ -219,7 +219,7 @@ namespace Blog.Core.Common.HttpPolly
                 }
 
                 var response = await client.GetAsync(url);
-                
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     return await response.Content.ReadAsStringAsync(); ;
@@ -256,7 +256,7 @@ namespace Blog.Core.Common.HttpPolly
 
                 var stringContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
                 var response = await client.PutAsync(url, stringContent);
-                
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     string result = await response.Content.ReadAsStringAsync();
@@ -294,7 +294,7 @@ namespace Blog.Core.Common.HttpPolly
 
                 var stringContent = new StringContent(request, Encoding.UTF8, "application/json");
                 var response = await client.PutAsync(url, stringContent);
-                
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     string result = await response.Content.ReadAsStringAsync();
@@ -331,7 +331,7 @@ namespace Blog.Core.Common.HttpPolly
                 }
 
                 var response = await client.DeleteAsync(url);
-                
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     string result = await response.Content.ReadAsStringAsync();
