@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using Blog.Core.Common.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
@@ -28,7 +29,7 @@ namespace Blog.Core.Extensions.Middlewares
                 }
 
                 // 无权限，跳转swagger登录页
-                context.Response.Redirect("/swg-login.html");
+                context.RedirectSwaggerLogin();
             }
             else
             {
@@ -40,7 +41,7 @@ namespace Blog.Core.Extensions.Middlewares
         {
             // 使用session模式
             // 可以使用其他的
-            return context.Session.GetString("swagger-code") == "success";
+            return context.IsSuccessSwagger();
         }
 
         /// <summary>
