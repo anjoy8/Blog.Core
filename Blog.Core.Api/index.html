@@ -1,8 +1,6 @@
 ﻿
 <!--1、版本号要与nuget包一致；2、id不能为空-->
-<script async id="mini-profiler" src="/mini-profiler-resources/includes.min.js?v=4.2.1+b27bea37e9" data-version="4.2.1+b27bea37e9" data-path="/mini-profiler-resources/" data-current-id="144b1192-acd3-4fe2-bbc5-6f1e1c6d53df" data-ids="87a1341b-995d-4d1d-aaba-8f2bfcfc9ca9,144b1192-acd3-4fe2-bbc5-6f1e1c6d53df" data-position="Left" data-scheme="Light" data-authorized="true" data-max-traces="15" data-toggle-shortcut="Alt+P" data-trivial-milliseconds="2.0" data-ignored-duplicate-execute-types="Open,OpenAsync,Close,CloseAsync">
-
-</script>
+<script async="async" id="mini-profiler" src="/mini-profiler-resources/includes.min.js?v=4.2.22+4563a9e1ab" data-version="4.2.22+4563a9e1ab" data-path="/mini-profiler-resources/" data-current-id="f6b88311-015a-44ed-bde0-cdab4c2d0d9b" data-ids="ac204d24-e2df-486e-a135-8167336643b7,f6b88311-015a-44ed-bde0-cdab4c2d0d9b" data-position="Left" " data-scheme="Light" data-authorized="true" data-max-traces="15" data-toggle-shortcut="Alt+P" data-trivial-milliseconds="2.0" data-ignored-duplicate-execute-types="Open,OpenAsync,Close,CloseAsync"></script>
 
 <!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>
@@ -10,14 +8,28 @@
 <head>
     <meta charset="UTF-8">
     <!--极速模式-->
-    <meta name="renderer" content="webkit" /> 
+    <meta name="renderer" content="webkit" />
     <meta name="force-rendering" content="webkit" />
     <title>%(DocumentTitle)</title>
+    <link href="./swagger-ui.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./swagger-ui.css">
     <link rel="icon" type="image/png" href="./logo/favicon-32x32.png" sizes="32x32" />
     <script src="js/jquery-3.3.1.min.js"></script>
     <style>
+        .swagger-ui .opblock-summary-control:focus {
+            outline: none
+        }
+        .swagger-ui .topbar .download-url-wrapper {
+            display: flex;
+            flex: 3;
+            margin-bottom: 0px;
+            justify-content: flex-end;
+        }
+
+        .swagger-ui .auth-container input[type=password], .swagger-ui .auth-container input[type=text] {
+            min-width: 565px;
+        }
 
         html {
             box-sizing: border-box;
@@ -37,21 +49,40 @@
 
         .qqgroup {
             position: absolute;
-            top: 67px;
-            right: 10px;
+            right: 0px;
+            top: 0px;
         }
 
         .info {
             float: left;
+            position: relative;
+            width: 100%;
         }
 
         .download-contents {
             display: none;
         }
+        /* 滚动槽 */
+        ::-webkit-scrollbar {
+            width: 9px;
+            height: 9px;
+        }
+
+        ::-webkit-scrollbar-track {
+            border-radius: 3px;
+            background: rgba(0,0,0,0.06);
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.08);
+        }
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+            border-radius: 3px;
+            background: rgba(0,0,0,0.12);
+            -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
     </style>
     %(HeadContent)
 </head>
-<body>
+<body style=" user-select: text;" >
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position:absolute;width:0;height:0">
         <defs>
             <symbol viewBox="0 0 20 20" id="unlocked">
@@ -95,9 +126,15 @@
     <script src="./swagger-ui-standalone-preset.js"></script>
     <script>
         var int = null;
+   
         window.onload = function () {
             var configObject = JSON.parse('%(ConfigObject)');
             var oauthConfigObject = JSON.parse('%(OAuthConfigObject)');
+
+            //获取token在此直接赋值，能直接应用swagger的样式
+            //configObject.onComplete = function () {
+            //    ui.preauthorizeApiKey("oauth2", "");
+            //}; 
 
             // Apply mandatory parameters
             configObject.dom_id = "#swagger-ui";
@@ -114,13 +151,62 @@
             // Apply OAuth config
             ui.initOAuth(oauthConfigObject);
 
+            //清空元素内容，这里清空了选择版本的英文
+            $(".select-label span").empty();
+
+            myOnload();
+
+            //修改版本的翻译为中文
+            function myOnload() {
+                $(document).ready(function () {
+                    $(".select-label span").each(function () {
+                        var myvalue = '选择一个接口版本';
+                        $(this).html(myvalue);
+                    });
+                });
+            }
+            setTimeout(() => {
+
+                //二维码
+                $('.info').append("<div class='qqgroup'><img src='https://img.neters.club/doc/wechatgongzhonghao.png' alt='QQ二维码' style='width: 150px;margin-bottom: 15px;'><div style=\"color: #4990e2;\"><a href=\"../allservices\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"link\">· 查看所有依赖注册的服务</a><br><a href=\"../ui\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"link\">· 查看前端配套页面</a></div></div><div style='clear: both;'></div>");
+
+                //修改 token授权按钮为中文
+                $(".auth-wrapper span").empty();
+                $(document).ready(function () {
+                    $(".auth-wrapper span").each(function () {
+                        var myvalue = '授权认证(JWT已自动授权)';
+                        $(this).html(myvalue);
+                    });
+                });
+
+                //修改权限小锁样式，由于这个单页面没去获取token，采取直接修改样式的方法
+                $(document).ready(function () {
+                    setTimeout(() => {
+                        document.querySelector('.auth-wrapper svg use').href.baseVal = '#locked'
+                        let divList = document.querySelectorAll('.opblock-tag')
+                        for (let div of divList) {
+                            //debugger
+                            div.addEventListener('click', function () {
+                                setTimeout(() => {
+                                    //修改锁状态 locked 为已认证token  unlocked为未认证
+                                    let list = document.querySelectorAll(' .unlocked svg use')
+                                    for (let item of list) {
+                                        item.href.baseVal = '#locked'
+                                    }
+                                    //修改锁颜色  locked 黑色  unlocked灰色
+                                    let btnlist = document.querySelectorAll('.authorization__btn')
+                                    for (let item of btnlist) {
+                                        item.classList = 'authorization__btn locked'
+                                    }
+                                }, 0)
+                            }) 
+                        }
+                    }, 500)
+                });
+            }, 1000)
+            // 文档logo
             $(".link img").attr("src", "./logo/favicon-32x32.png");
-
-            $('#swagger-ui').after("<div class='qqgroup'><img src='https://img.neters.club/doc/wechatgongzhonghao.png' alt='QQ二维码' style='width: 150px;'><div style=\"color: #4990e2;\"><a href=\"../allservices\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"link\">1、查看所有依赖注册的服务</a><br><a href=\"../ui\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"link\">2、查看前端配套页面</a></div></div><div style='clear: both;'></div>");
-
         }
-
-
     </script>
 </body>
 </html>

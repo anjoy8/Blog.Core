@@ -177,7 +177,7 @@
             登录管理【无权限】
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.LoginController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.AuthHelper.PermissionRequirement,Blog.Core.IServices.IRoleModulePermissionServices)">
+        <member name="M:Blog.Core.Controllers.LoginController.#ctor(Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.AuthHelper.PermissionRequirement,Blog.Core.IServices.IRoleModulePermissionServices,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.LoginController})">
             <summary>
             构造函数注入
             </summary>
