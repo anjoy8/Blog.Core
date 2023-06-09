@@ -17,6 +17,9 @@
     <link rel="icon" type="image/png" href="./logo/favicon-32x32.png" sizes="32x32" />
     <script src="js/jquery-3.3.1.min.js"></script>
     <style>
+        .swagger-ui .opblock-summary-control:focus {
+            outline: none
+        }
         .swagger-ui .topbar .download-url-wrapper {
             display: flex;
             flex: 3;
@@ -79,7 +82,7 @@
     </style>
     %(HeadContent)
 </head>
-<body>
+<body style=" user-select: text;" >
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position:absolute;width:0;height:0">
         <defs>
             <symbol viewBox="0 0 20 20" id="unlocked">
