@@ -66,6 +66,7 @@ public class DynamicLambdaTest
         await TestConditions("bId=2");
         await TestConditions("bId in (1,2,3,4,5)");
         await TestConditions("bId in (1,2,3,4,5)|| bUpdateTime>=\"2019-01-01 01:01:01\"");
+        await TestConditions("btitle like \" 测试数据\"");
         await TestConditions("btitle like \"测试数据\" && bId>0");
         await TestConditions("btitle like \"测试!@#$%^&*()_+|}{\":<>?LP\"数据\" && bId>0");
         await TestConditions("btitle like \"测试!@+)(*()_&%^&^$^%$IUYWIQOJVLXKZM>?Z<>?<L:\"SQLitePCL{|\"CM<:\"KJLEGRTOWEJT\"#$%^&*()_+|}{\":<>?LP\"数据\" && bId>0");
