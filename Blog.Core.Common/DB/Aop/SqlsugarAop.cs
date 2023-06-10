@@ -26,7 +26,7 @@ public static class SqlSugarAop
                 using (LogContextExtension.Create.SqlAopPushProperty(sqlSugarScopeProvider))
                 {
                     Log.Information("------------------ \r\n ConnId:[{ConnId}]【SQL语句】: \r\n {Sql}",
-                        config.ConfigId, UtilMethods.GetSqlString(config.DbType, sql, p));
+                        config.ConfigId, UtilMethods.GetNativeSql( sql, p));
                 }
             }
         }

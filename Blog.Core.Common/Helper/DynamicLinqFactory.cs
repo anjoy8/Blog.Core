@@ -348,6 +348,7 @@ namespace Blog.Core.Common.Helper
                         }
                         else
                         {
+                            if (i == firstIndex) continue;
                             if (i == str.Length - 1 || str[i + 1].IsNullOrEmpty())
                             {
                                 lastIndex = i;
