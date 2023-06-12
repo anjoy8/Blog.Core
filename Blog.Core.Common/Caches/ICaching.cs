@@ -25,9 +25,12 @@ public interface ICaching
 
 	List<string> GetAllCacheKeys();
 	Task<List<string>> GetAllCacheKeysAsync();
-	
+
 	T Get<T>(string cacheKey);
 	Task<T> GetAsync<T>(string cacheKey);
+
+	object Get(Type type, string cacheKey);
+	Task<object> GetAsync(Type type, string cacheKey);
 
 	string GetString(string cacheKey);
 	Task<string> GetStringAsync(string cacheKey);

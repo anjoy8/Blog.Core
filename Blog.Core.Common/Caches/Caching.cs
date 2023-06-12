@@ -142,13 +142,13 @@ public class Caching : ICaching
 		var res = await _cache.GetStringAsync(CacheConst.KeyAll);
 		return string.IsNullOrWhiteSpace(res) ? null : JsonConvert.DeserializeObject<List<string>>(res);
 	}
-	
+
 	public T Get<T>(string cacheKey)
 	{
 		var res = _cache.Get(cacheKey);
 		return res == null ? default : JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(res));
 	}
-	
+
 	/// <summary>
 	/// 获取缓存
 	/// </summary>
@@ -159,6 +159,18 @@ public class Caching : ICaching
 	{
 		var res = await _cache.GetAsync(cacheKey);
 		return res == null ? default : JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(res));
+	}
+
+	public object Get(Type type, string cacheKey)
+	{
+		var res = _cache.Get(cacheKey);
+		return res == null ? default : JsonConvert.DeserializeObject(Encoding.UTF8.GetString(res), type);
+	}
+
+	public async Task<object> GetAsync(Type type, string cacheKey)
+	{
+		var res = await _cache.GetAsync(cacheKey);
+		return res == null ? default : JsonConvert.DeserializeObject(Encoding.UTF8.GetString(res), type);
 	}
 
 	public string GetString(string cacheKey)
@@ -175,7 +187,7 @@ public class Caching : ICaching
 	{
 		return await _cache.GetStringAsync(cacheKey);
 	}
-	
+
 	public void Remove(string key)
 	{
 		_cache.Remove(key);
@@ -214,7 +226,10 @@ public class Caching : ICaching
 
 	public void Set<T>(string cacheKey, T value, TimeSpan? expire = null)
 	{
-		_cache.Set(cacheKey, GetBytes(value), expire == null ? new DistributedCacheEntryOptions() {AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(6)} : new DistributedCacheEntryOptions() {AbsoluteExpirationRelativeToNow = expire});
+		_cache.Set(cacheKey, GetBytes(value),
+			expire == null
+				? new DistributedCacheEntryOptions() {AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(6)}
+				: new DistributedCacheEntryOptions() {AbsoluteExpirationRelativeToNow = expire});
 
 		AddCacheKey(cacheKey);
 	}
@@ -227,7 +242,8 @@ public class Caching : ICaching
 	/// <returns></returns>
 	public async Task SetAsync<T>(string cacheKey, T value)
 	{
-		await _cache.SetAsync(cacheKey, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), new DistributedCacheEntryOptions() {AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(6)});
+		await _cache.SetAsync(cacheKey, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)),
+			new DistributedCacheEntryOptions() {AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(6)});
 
 		await AddCacheKeyAsync(cacheKey);
 	}
@@ -241,7 +257,8 @@ public class Caching : ICaching
 	/// <returns></returns>
 	public async Task SetAsync<T>(string cacheKey, T value, TimeSpan expire)
 	{
-		await _cache.SetAsync(cacheKey, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)), new DistributedCacheEntryOptions() {AbsoluteExpirationRelativeToNow = expire});
+		await _cache.SetAsync(cacheKey, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)),
+			new DistributedCacheEntryOptions() {AbsoluteExpirationRelativeToNow = expire});
 
 		await AddCacheKeyAsync(cacheKey);
 	}
@@ -251,6 +268,7 @@ public class Caching : ICaching
 		_cache.Set(cacheKey, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)));
 		AddCacheKey(cacheKey);
 	}
+
 	public async Task SetPermanentAsync<T>(string cacheKey, T value)
 	{
 		await _cache.SetAsync(cacheKey, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value)));
@@ -293,7 +311,7 @@ public class Caching : ICaching
 
 		await AddCacheKeyAsync(cacheKey);
 	}
-	
+
 
 	/// <summary>
 	/// 缓存最大角色数据范围
