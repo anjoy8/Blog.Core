@@ -132,6 +132,7 @@ Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 var app = builder.Build();
 app.ConfigureApplication();
 app.UseApplicationSetup();
+app.UseResponseBodyRead();
 
 if (app.Environment.IsDevelopment())
 {
