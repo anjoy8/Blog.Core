@@ -61,8 +61,8 @@ namespace Blog.Core.AOP
 					var type = invocation.Method.ReturnType;
 					if (typeof(Task).IsAssignableFrom(type))
 					{
-						var resultProperty = type.GetProperty("Result");
-						response = resultProperty?.GetValue(invocation.ReturnValue);
+						dynamic result = invocation.ReturnValue;
+						response = result.Result;
 					}
 					else
 					{

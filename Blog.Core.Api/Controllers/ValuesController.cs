@@ -164,7 +164,7 @@ namespace Blog.Core.Controllers
 
             // 测试模拟异常，全局异常过滤器拦截
             var i = 0;
-            var d = 3 / i;
+           // var d = 3 / i;
 
 
             // 测试 AOP 缓存
