@@ -144,6 +144,7 @@ else
     //app.UseHsts();
 }
 
+app.UseExceptionHandlerMiddle();
 app.UseIpLimitMiddle();
 app.UseRequestResponseLogMiddle();
 app.UseRecordAccessLogsMiddle();
