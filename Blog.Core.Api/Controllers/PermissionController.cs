@@ -7,7 +7,6 @@ using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Blog.Core.Repository.UnitOfWorks;
-using Blog.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -633,13 +632,9 @@ namespace Blog.Core.Controllers
         /// <summary>
         /// 系统接口菜单同步接口
         /// </summary>
-        /// <param name="action"></param>
-        /// <param name="controllerName">接口module的控制器名称</param>
-        /// <param name="pid">菜单permission的父id</param>
-        /// <param name="isAction">是否执行迁移到数据</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<MessageModel<List<Permission>>> MigratePermission(string action = "", string controllerName = "", long pid = 0, bool isAction = false)
+        public async Task<MessageModel<List<Permission>>> MigratePermission(string action = "", string token = "", string gatewayPrefix = "", string swaggerDomain = "", string controllerName = "", long pid = 0, bool isAction = false)
         {
             var data = new MessageModel<List<Permission>>();
             if (controllerName.IsNullOrEmpty())
@@ -648,18 +643,23 @@ namespace Blog.Core.Controllers
                 return data;
             }
 
-            controllerName = controllerName.ToLower();
+            controllerName = controllerName.TrimEnd('/').ToLower();
+
+            gatewayPrefix = gatewayPrefix.Trim();
+            swaggerDomain = swaggerDomain.Trim();
+            controllerName = controllerName.Trim();
 
             using var client = _httpClientFactory.CreateClient();
-            var jsonFileDomain = AppSettings.GetValue("Startup:Domain");
-
-            if (jsonFileDomain.IsNullOrEmpty())
+            var Configuration = swaggerDomain.IsNotEmptyOrNull() ? swaggerDomain : AppSettings.GetValue("SystemCfg:Domain");
+            var url = $"{Configuration}/swagger/V2/swagger.json";
+            if (Configuration.IsNullOrEmpty())
             {
                 data.msg = "Swagger.json在线文件域名不能为空";
                 return data;
             }
-
-            var url = $"{jsonFileDomain}/swagger/V2/swagger.json";
+            if (token.IsNullOrEmpty()) token = Request.Headers.Authorization;
+            token = token.Trim();
+            client.DefaultRequestHeaders.Add("Authorization", $"{token}");
 
             var response = await client.GetAsync(url);
             var body = await response.Content.ReadAsStringAsync();
@@ -671,9 +671,10 @@ namespace Blog.Core.Controllers
             List<Permission> permissions = new List<Permission>();
             foreach (JProperty jProperty in pathsJObj.Properties())
             {
-                var apiPath = jProperty.Name.ToLower();
+                var apiPath = gatewayPrefix + jProperty.Name.ToLower();
                 if (action.IsNotEmptyOrNull())
                 {
+                    action = action.Trim();
                     if (!apiPath.Contains(action.ToLower()))
                     {
                         continue;
@@ -697,12 +698,12 @@ namespace Blog.Core.Controllers
                     httpmethod = "delete";
                 }
 
-                var summary = jProperty.Value.SelectToken($"{httpmethod}.summary").ObjToString();
+                var summary = jProperty.Value?.SelectToken($"{httpmethod}.summary")?.ObjToString() ?? "";
 
                 var subIx = summary.IndexOf("(Auth");
-                if (subIx > 0)
+                if (subIx >= 0)
                 {
-                    summary = summary.Substring(0, subIx - 1);
+                    summary = summary.Substring(0, subIx);
                 }
 
                 permissions.Add(new Permission()
@@ -715,7 +716,6 @@ namespace Blog.Core.Controllers
                     CreateTime = DateTime.Now,
                     IsDeleted = false,
                     Pid = pid,
-                    MName = apiPath ?? "",
                     Module = new Modules()
                     {
                         LinkUrl = apiPath ?? "",
@@ -748,6 +748,7 @@ namespace Blog.Core.Controllers
 
                     }
                 }
+                data.msg = "同步完成";
             }
 
             data.response = permissions;
@@ -756,7 +757,6 @@ namespace Blog.Core.Controllers
 
             return data;
         }
-
     }
 
     public class AssignView
