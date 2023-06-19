@@ -17,7 +17,8 @@ public static class HttpResponseExceptions
 		if (response.Body is FluentHttpResponseStream responseBody)
 		{
 			response.Body.Position = 0;
-			using StreamReader stream = new StreamReader(responseBody);
+			//不关闭底层流
+			using StreamReader stream = new StreamReader(responseBody, leaveOpen: true);
 			string body = stream.ReadToEnd();
 			response.Body.Position = 0;
 			return body;
