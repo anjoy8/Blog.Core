@@ -30,7 +30,7 @@ namespace Blog.Core.Controllers
     //[Authorize(Policy = "SystemOrAdmin")]
     //[Authorize(PermissionNames.Permission)]
     [Authorize]
-    public class ValuesController : ControllerBase
+    public class ValuesController : BaseApiController
     {
         private IMapper _mapper;
         private readonly IAdvertisementServices _advertisementServices;
@@ -159,12 +159,12 @@ namespace Blog.Core.Controllers
              *  `bsubmitter`=@bsubmitter,`IsDeleted`=@IsDeleted  WHERE `bID`=@bID
              */
             var updateSql = await _blogArticleServices.Update(new
-                { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", IsDeleted = false, bID = 5 });
+            { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", IsDeleted = false, bID = 5 });
 
 
             // 测试模拟异常，全局异常过滤器拦截
             var i = 0;
-           // var d = 3 / i;
+            // var d = 3 / i;
 
 
             // 测试 AOP 缓存
@@ -186,6 +186,22 @@ namespace Blog.Core.Controllers
             _advertisementServices.ReturnExp();
 
             return data;
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<MessageModel<List<BlogArticle>>> Test_Aop_Cache()
+        {
+            // 测试 AOP 缓存
+            var blogArticles = await _blogArticleServices.GetBlogs();
+
+            if (blogArticles.Any())
+            {
+                return Success(blogArticles);
+            }
+
+            return Failed<List<BlogArticle>>();
         }
 
         /// <summary>
