@@ -180,7 +180,6 @@ if (builder.Configuration.GetValue<bool>("AppSettings:UseLoadTest"))
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiniProfilerMiddleware();
-//app.UseExceptionHandlerMidd();
 
 app.UseEndpoints(endpoints =>
 {
