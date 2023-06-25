@@ -8,6 +8,7 @@ using Blog.Core.Common.LogHelper;
 using Blog.Core.Common.Seed;
 using Blog.Core.Extensions;
 using Blog.Core.Extensions.Middlewares;
+using Blog.Core.Extensions.ServiceExtensions;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
@@ -49,9 +50,7 @@ namespace Blog.Core
             // 确保从认证中心返回的ClaimType不被更改，不使用Map映射
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            services.AddMemoryCacheSetup();
-            services.AddRedisCacheSetup();
-
+            services.AddCacheSetup();
             services.AddSqlsugarSetup();
             services.AddDbSetup();
             services.AddAutoMapperSetup();

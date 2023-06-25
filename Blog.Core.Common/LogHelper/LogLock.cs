@@ -195,26 +195,25 @@ namespace Blog.Core.Common.LogHelper
             {
                 //DEBUG | INFO | WARN | ERROR | FATAL
                 case "AOPLog":
-                    //TODO 是否需要输出?
-                    //Log.Information(logContent);
+                    Log.Information(logContent);
                     break;
                 case "AOPLogEx":
                     Log.Error(logContent);
                     break;
                 case "RequestIpInfoLog":
                     //TODO 是否需要Debug输出？
-                    //Log.Debug(logContent);
+                    Log.Information(logContent);
                     break;
                 case "RecordAccessLogs":
                     //TODO 是否需要Debug输出？
-                    //Log.Debug(logContent);
+                    Log.Information(logContent);
                     break;
                 case "SqlLog":
                     Log.Information(logContent);
                     break;
                 case "RequestResponseLog":
                     //TODO 是否需要Debug输出？
-                    //Log.Debug(logContent);
+                    Log.Information(logContent);
                     break;
                 default:
                     break;

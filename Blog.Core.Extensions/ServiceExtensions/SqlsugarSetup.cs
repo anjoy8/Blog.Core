@@ -10,6 +10,7 @@ using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Blog.Core.Common.Caches;
 
 namespace Blog.Core.Extensions
 {
@@ -57,6 +58,7 @@ namespace Blog.Core.Extensions
 					// 自定义特性
 					ConfigureExternalServices = new ConfigureExternalServices()
 					{
+						DataInfoCacheService = new SqlSugarCacheService(),
 						EntityService = (property, column) =>
 						{
 							if (column.IsPrimarykey && property.PropertyType == typeof(int))
@@ -83,19 +85,11 @@ namespace Blog.Core.Extensions
 			{
 				throw new ApplicationException("未配置Log库连接");
 			}
-
-
+			
 			// SqlSugarScope是线程安全，可使用单例注入
 			// 参考：https://www.donet5.com/Home/Doc?typeId=1181
 			services.AddSingleton<ISqlSugarClient>(o =>
 			{
-				var memoryCache = o.GetRequiredService<IMemoryCache>();
-
-				foreach (var config in BaseDBConfig.AllConfigs)
-				{
-					config.ConfigureExternalServices.DataInfoCacheService = new SqlSugarMemoryCacheService(memoryCache);
-				}
-
 				return new SqlSugarScope(BaseDBConfig.AllConfigs, db =>
 				{
 					BaseDBConfig.ValidConfig.ForEach(config =>

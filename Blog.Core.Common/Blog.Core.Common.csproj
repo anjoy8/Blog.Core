@@ -51,7 +51,6 @@
 
   <ItemGroup>
     <Folder Include="Core\" />
-    <Folder Include="Const\" />
   </ItemGroup>
 
 </Project>

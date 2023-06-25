@@ -39,13 +39,7 @@ namespace Blog.Core.Extensions
 
             // AOP 开关，如果想要打开指定的功能，只需要在 appsettigns.json 对应对应 true 就行。
             var cacheType = new List<Type>();
-            if (AppSettings.app(new string[] { "AppSettings", "RedisCachingAOP", "Enabled" }).ObjToBool())
-            {
-                builder.RegisterType<BlogRedisCacheAOP>();
-                cacheType.Add(typeof(BlogRedisCacheAOP));
-            }
-
-            if (AppSettings.app(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool())
+            if (AppSettings.app(new string[] { "AppSettings", "CachingAOP", "Enabled" }).ObjToBool())
             {
                 builder.RegisterType<BlogCacheAOP>();
                 cacheType.Add(typeof(BlogCacheAOP));
