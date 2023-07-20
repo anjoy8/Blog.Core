@@ -60,7 +60,7 @@ namespace Blog.Core.Tasks
 
             foreach (var item in activeUsers)
             {
-                var user = (await _accessTrendLogServices.Query(d => d.User != "" && d.User == item.user)).FirstOrDefault();
+                var user = (await _accessTrendLogServices.Query(d => d.UserInfo != "" && d.UserInfo == item.user)).FirstOrDefault();
                 if (user != null)
                 {
                     user.Count += item.count;
@@ -73,13 +73,13 @@ namespace Blog.Core.Tasks
                     {
                         Count = item.count,
                         UpdateTime = logUpdate,
-                        User = item.user
+                        UserInfo = item.user
                     });
                 }
             }
 
             // 重新拉取
-            var actUsers = await _accessTrendLogServices.Query(d => d.User != "", d => d.Count, false);
+            var actUsers = await _accessTrendLogServices.Query(d => d.UserInfo != "", d => d.Count, false);
             actUsers = actUsers.Take(15).ToList();
 
             List<ActiveUserVM> activeUserVMs = new();
@@ -87,7 +87,7 @@ namespace Blog.Core.Tasks
             {
                 activeUserVMs.Add(new ActiveUserVM()
                 {
-                    user = item.User,
+                    user = item.UserInfo,
                     count = item.Count
                 });
             }

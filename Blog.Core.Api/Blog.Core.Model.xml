@@ -200,7 +200,7 @@
             用户访问趋势日志
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.AccessTrendLog.User">
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.UserInfo">
             <summary>
             用户
             </summary>
