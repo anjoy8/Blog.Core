@@ -20,24 +20,22 @@ public static class DynamicBuildException
     private static CustomAttributeBuilder CreateIndex(SugarIndexAttribute indexAttribute)
     {
         Type type = typeof(SugarIndexAttribute);
-        return new CustomAttributeBuilder(type.GetConstructor(new[]
-            {
-                typeof(string), typeof(string), typeof(OrderByType), typeof(bool)
-            })!,
-            new object[]
-            {
-                indexAttribute.IndexName, indexAttribute.IndexFields.First().Key, indexAttribute.IndexFields.First().Value, indexAttribute.IsUnique
-            },
-            new PropertyInfo[]
-            {
-                type.GetProperty("IndexName"),
-                type.GetProperty("IndexFields"),
-                type.GetProperty("IsUnique"),
-            },
-            new object[]
-            {
-                indexAttribute.IndexName, indexAttribute.IndexFields, indexAttribute.IsUnique
-            });
+        var constructorTypes = new List<Type>() {typeof(string)};
+        for (int i = 0; i < indexAttribute.IndexFields.Count; i++)
+        {
+            constructorTypes.AddRange(new[] {typeof(string), typeof(OrderByType)});
+        }
+
+        constructorTypes.Add(typeof(bool));
+
+        var values = new List<object>() {indexAttribute.IndexName};
+        foreach (var indexField in indexAttribute.IndexFields)
+        {
+            values.AddRange(new object[] {indexField.Key, indexField.Value});
+        }
+
+        values.Add(indexAttribute.IsUnique);
+        return new CustomAttributeBuilder(type.GetConstructor(constructorTypes.ToArray())!, values.ToArray());
     }
 
     public static DynamicProperyBuilder CreateIndex(this DynamicProperyBuilder builder, SugarIndexAttribute indexAttribute)

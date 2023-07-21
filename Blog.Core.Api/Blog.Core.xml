@@ -1391,6 +1391,29 @@
             </summary>
             <param name="input"></param>
         </member>
+        <member name="T:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController">
+            <summary>
+            缓存管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController.TestCreateTable">
+            <summary>
+            测试建表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController.TestQuery">
+            <summary>
+            测试查询
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController.TestInsert(System.String,System.String)">
+            <summary>
+            测试写入
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByDbController">
             <summary>
             多租户-多库方案 测试
