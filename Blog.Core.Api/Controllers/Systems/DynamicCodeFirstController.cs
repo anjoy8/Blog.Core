@@ -11,7 +11,7 @@ using SqlSugar;
 namespace Blog.Core.Api.Controllers.Systems;
 
 /// <summary>
-/// 缓存管理
+/// 动态建表 CURD
 /// </summary>
 [Route("api/Systems/[controller]/[action]")]
 [ApiController]
