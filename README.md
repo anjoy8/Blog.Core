@@ -89,7 +89,9 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 封装`Blog.Core.Webapi.Template`项目模板，一键重建自己的项目 ✨；
 - [x] 搭配多个前端案例供参考和借鉴：Blog.Vue、Blog.Admin、Nuxt.tbug、Blog.Mvp.Blazor ✨；
 - [x] 统一集成 IdentityServer4 认证 ✨;
-- [x] 统一实现多租户;  
+- [x] 统一实现多租户;
+- [x] 实现分表案例，支持分表的增删改查哈分页查询，具体查看SplitDemoController.cs;
+- [x] 支持signalR对指定用户通讯;  
 
 
 组件模块：
