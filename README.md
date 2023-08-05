@@ -126,7 +126,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 可配合 Jenkins 实现CI / CD；
 - [x] 可配合 Consul 实现服务发现；
 - [x] 可配合 Nacos 实现服务发现；
-- [x] 可配合 Ocelot 实现网关处理；
+- [x] 可配合 apisix/Ocelot 实现网关处理；
 - [x] 可配合 Nginx  实现负载均衡；
 - [x] 可配合 Ids4   实现认证中心；
 
