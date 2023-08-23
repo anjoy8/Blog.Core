@@ -11,7 +11,7 @@ namespace Blog.Core.Common.DB.Aop;
 
 public static class SqlSugarAop
 {
-    public static void OnLogExecuting(ISqlSugarClient sqlSugarScopeProvider, string sql, SugarParameter[] p, ConnectionConfig config)
+    public static void OnLogExecuting(ISqlSugarClient sqlSugarScopeProvider, string user, string table, string operate, string sql, SugarParameter[] p, ConnectionConfig config)
     {
         try
         {
@@ -25,8 +25,8 @@ public static class SqlSugarAop
             {
                 using (LogContextExtension.Create.SqlAopPushProperty(sqlSugarScopeProvider))
                 {
-                    Log.Information("------------------ \r\n ConnId:[{ConnId}]【SQL语句】: \r\n {Sql}",
-                        config.ConfigId, UtilMethods.GetNativeSql( sql, p));
+                    Log.Information("------------------ \r\n User:[{User}]  Table:[{Table}]  Operate:[{Operate}] ConnId:[{ConnId}]【SQL语句】: \r\n {Sql}",
+                        user, table, operate, config.ConfigId, UtilMethods.GetNativeSql(sql, p));
                 }
             }
         }

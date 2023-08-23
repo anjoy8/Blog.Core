@@ -79,6 +79,15 @@ namespace Blog.Core.Extensions
                 {
                     ConsoleHelper.WriteSuccessLine($"Transaction AOP: True");
                 }
+                // 审计AOP
+                if (!AppSettings.app(new string[] { "AppSettings", "UserAuditAOP", "Enabled" }).ObjToBool())
+                {
+                    Console.WriteLine($"UserAudit AOP: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"UserAudit AOP: True");
+                }
 
                 // 数据库Sql执行AOP
                 if (!AppSettings.app(new string[] { "AppSettings", "SqlAOP", "OutToLogFile", "Enabled" }).ObjToBool())
@@ -251,6 +260,7 @@ namespace Blog.Core.Extensions
                     new string[] { "缓存AOP", AppSettings.app("AppSettings", "CachingAOP", "Enabled") },
                     new string[] { "服务日志AOP", AppSettings.app("AppSettings", "LogAOP", "Enabled") },
                     new string[] { "事务AOP", AppSettings.app("AppSettings", "TranAOP", "Enabled") },
+                    new string[] { "服务审计AOP", AppSettings.app("AppSettings", "UserAuditAOP", "Enabled") },
                     new string[] { "Sql执行AOP", AppSettings.app("AppSettings", "SqlAOP", "Enabled") },
                     new string[] { "Sql执行AOP控制台输出", AppSettings.app("AppSettings", "SqlAOP", "LogToConsole", "Enabled") },
                 };

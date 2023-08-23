@@ -1393,8 +1393,20 @@
         </member>
         <member name="T:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController">
             <summary>
-            缓存管理
+            动态建表 CURD
             </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController.GetDynamicType">
+            <summary>
+            动态type
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController.GetDynamicType2">
+            <summary>
+            动态type 继承BaseEntity
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController.TestCreateTable">
             <summary>

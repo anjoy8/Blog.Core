@@ -48,7 +48,7 @@ namespace Blog.Core.Common.HttpContextUser
 
         public bool IsAuthenticated()
         {
-            return _accessor.HttpContext.User.Identity.IsAuthenticated;
+            return _accessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
         }
 
 

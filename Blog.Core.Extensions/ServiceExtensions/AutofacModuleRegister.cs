@@ -57,6 +57,12 @@ namespace Blog.Core.Extensions
                 cacheType.Add(typeof(BlogLogAOP));
             }
 
+            if (AppSettings.app(new string[] { "AppSettings", "UserAuditAOP", "Enabled" }).ObjToBool())
+            {
+                builder.RegisterType<BlogUserAuditAOP>();
+                cacheType.Add(typeof(BlogUserAuditAOP));
+            }
+
             builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency(); //注册仓储
             builder.RegisterGeneric(typeof(BaseServices<>)).As(typeof(IBaseServices<>)).InstancePerDependency();     //注册服务
 
