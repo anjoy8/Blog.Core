@@ -177,11 +177,7 @@ namespace Blog.Core.Common.Seed
                     {
                         var data = JsonConvert.DeserializeObject<List<Permission>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Permission"), Encoding.UTF8), setting);
 
-                        foreach (var item in data)
-                        {
-                            Console.WriteLine($"{item.Name}:{item.Id}");
-                            myContext.GetEntityDB<Permission>().Insert(item);
-                        }
+                        myContext.GetEntityDB<Permission>().InsertRange(data);
                         Console.WriteLine("Table:Permission created success!");
                     }
                     else
@@ -218,11 +214,7 @@ namespace Blog.Core.Common.Seed
                     {
                         var data = JsonConvert.DeserializeObject<List<RoleModulePermission>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "RoleModulePermission"), Encoding.UTF8), setting);
 
-                        foreach (var item in data)
-                        {
-                            Console.WriteLine($"{item.Id}");
-                            myContext.GetEntityDB<RoleModulePermission>().Insert(item);
-                        }
+                        myContext.GetEntityDB<RoleModulePermission>().InsertRange(data);
                         Console.WriteLine("Table:RoleModulePermission created success!");
                     }
                     else
