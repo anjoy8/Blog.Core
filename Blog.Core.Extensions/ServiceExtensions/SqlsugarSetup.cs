@@ -103,8 +103,7 @@ namespace Blog.Core.Extensions
                         // 打印SQL语句
                         dbProvider.Aop.OnLogExecuting = (s, parameters) =>
                         {
-                            var user = InternalApp.RootServices.GetService<IUser>();
-                            SqlSugarAop.OnLogExecuting(dbProvider, user?.Name.ObjToString(), ExtractTableName(s), Enum.GetName(typeof(SugarActionType), dbProvider.SugarActionType), s, parameters, config);
+                            SqlSugarAop.OnLogExecuting(dbProvider, App.User?.Name.ObjToString(), ExtractTableName(s), Enum.GetName(typeof(SugarActionType), dbProvider.SugarActionType), s, parameters, config);
                         };
 
                         // 数据审计

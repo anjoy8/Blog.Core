@@ -39,6 +39,7 @@ public class App
     /// <summary>有效程序集类型</summary>
     public static readonly IEnumerable<Type> EffectiveTypes;
 
+    /// <summary>优先使用App.GetService()手动获取服务</summary>
     public static IServiceProvider RootServices => IsRun || IsBuild ? InternalApp.RootServices : null;
 
     /// <summary>获取Web主机环境，如，是否是开发环境，生产环境等</summary>
@@ -55,14 +56,16 @@ public class App
     /// </summary>
     public static HttpContext HttpContext => RootServices?.GetService<IHttpContextAccessor>()?.HttpContext;
 
-    public static IUser User => HttpContext == null ? null : RootServices?.GetService<IUser>();
+    public static IUser User => GetService<IUser>();
 
     #region Service
 
     /// <summary>解析服务提供器</summary>
     /// <param name="serviceType"></param>
+    /// <param name="mustBuild"></param>
+    /// <param name="throwException"></param>
     /// <returns></returns>
-    public static IServiceProvider GetServiceProvider(Type serviceType, bool mustBuild = false)
+    public static IServiceProvider GetServiceProvider(Type serviceType, bool mustBuild = false, bool throwException = true)
     {
         if (App.HostEnvironment == null || App.RootServices != null &&
             InternalApp.InternalServices
@@ -71,24 +74,30 @@ public class App
                     (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType)))
                 .Any((u => u.Lifetime == ServiceLifetime.Singleton)))
             return App.RootServices;
-        HttpContext httpContext = App.HttpContext;
-        if (httpContext?.RequestServices != null)
-            return httpContext.RequestServices;
+
+        //获取请求生存周期的服务
+        if (HttpContext?.RequestServices != null)
+            return HttpContext.RequestServices;
+
         if (App.RootServices != null)
         {
-            IServiceScope scope = App.RootServices.CreateScope();
+            IServiceScope scope = RootServices.CreateScope();
             return scope.ServiceProvider;
         }
 
         if (mustBuild)
         {
-            throw new ApplicationException("当前不可用，必须要等到 WebApplication Build后");
+            if (throwException)
+            {
+                throw new ApplicationException("当前不可用，必须要等到 WebApplication Build后");
+            }
+
+            return default;
         }
 
         ServiceProvider serviceProvider = InternalApp.InternalServices.BuildServiceProvider();
         return serviceProvider;
     }
-
 
     public static TService GetService<TService>(bool mustBuild = true) where TService : class =>
         App.GetService(typeof(TService), null, mustBuild) as TService;
@@ -99,7 +108,7 @@ public class App
     /// <param name="mustBuild"></param>
     /// <returns></returns>
     public static TService GetService<TService>(IServiceProvider serviceProvider, bool mustBuild = true)
-        where TService : class => App.GetService(typeof(TService), serviceProvider, mustBuild) as TService;
+        where TService : class => (serviceProvider ?? App.GetServiceProvider(typeof(TService), mustBuild, false))?.GetService<TService>();
 
     /// <summary>获取请求生存周期的服务</summary>
     /// <param name="type"></param>
@@ -107,7 +116,7 @@ public class App
     /// <param name="mustBuild"></param>
     /// <returns></returns>
     public static object GetService(Type type, IServiceProvider serviceProvider = null, bool mustBuild = true) =>
-        (serviceProvider ?? App.GetServiceProvider(type, mustBuild)).GetService(type);
+        (serviceProvider ?? App.GetServiceProvider(type, mustBuild, false))?.GetService(type);
 
     #endregion
 
