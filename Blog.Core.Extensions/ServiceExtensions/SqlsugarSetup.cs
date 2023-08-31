@@ -116,6 +116,7 @@ namespace Blog.Core.Extensions
                     });
                 });
             });
+            services.AddTransient<SqlSugarScope>(s => s.GetService<ISqlSugarClient>() as SqlSugarScope);
         }
 
         private static string GetWholeSql(SugarParameter[] paramArr, string sql)
