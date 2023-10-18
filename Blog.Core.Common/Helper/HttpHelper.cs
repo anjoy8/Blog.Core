@@ -10,21 +10,23 @@ namespace Blog.Core.Common.Helper
     /// </summary>
     public class HttpHelper
     {
+        public static readonly HttpClient Httpclient = new HttpClient();
+
         public static async Task<string> GetAsync(string serviceAddress)
         {
             try
             {
                 string result = string.Empty;
                 Uri getUrl = new Uri(serviceAddress);
-                using var httpClient = new HttpClient();
-                httpClient.Timeout = new TimeSpan(0, 0, 60);
-                result = await httpClient.GetAsync(serviceAddress).Result.Content.ReadAsStringAsync();
+                Httpclient.Timeout = new TimeSpan(0, 0, 60);
+                result = await Httpclient.GetAsync(serviceAddress).Result.Content.ReadAsStringAsync();
                 return result;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+
             return null;
         }
 
@@ -38,19 +40,19 @@ namespace Blog.Core.Common.Helper
                 using (HttpContent httpContent = new StringContent(requestJson))
                 {
                     httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    using var httpClient = new HttpClient();
-                    httpClient.Timeout = new TimeSpan(0, 0, 60);
-                    result = await httpClient.PostAsync(serviceAddress, httpContent).Result.Content.ReadAsStringAsync();
+
+                    Httpclient.Timeout = new TimeSpan(0, 0, 60);
+                    result = await Httpclient.PostAsync(serviceAddress, httpContent).Result.Content.ReadAsStringAsync();
                 }
+
                 return result;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+
             return null;
         }
     }
-
-
 }
