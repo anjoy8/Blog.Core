@@ -36,19 +36,19 @@ namespace Blog.Core.Controllers
         {
             var data = new MessageModel<string>() { success = true, msg = "" };
             data.response += @"file path is:C:\my-file\}";
-            var isMuti = AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool();
+            var isMuti = BaseDBConfig.IsMulti;
             if (Env.IsDevelopment())
             {
                 data.response += $"Controller层生成：{FrameSeed.CreateControllers(_sqlSugarClient)} || ";
 
-                BaseDBConfig.MutiConnectionString.allDbs.ToList().ForEach(m =>
+                BaseDBConfig.ValidConfig.ForEach(m =>
                 {
-                    _sqlSugarClient.ChangeDatabase(m.ConnId.ToLower());
-                    data.response += $"库{m.ConnId}-Model层生成：{FrameSeed.CreateModels(_sqlSugarClient, m.ConnId, isMuti)} || ";
-                    data.response += $"库{m.ConnId}-IRepositorys层生成：{FrameSeed.CreateIRepositorys(_sqlSugarClient, m.ConnId, isMuti)} || ";
-                    data.response += $"库{m.ConnId}-IServices层生成：{FrameSeed.CreateIServices(_sqlSugarClient, m.ConnId, isMuti)} || ";
-                    data.response += $"库{m.ConnId}-Repository层生成：{FrameSeed.CreateRepository(_sqlSugarClient, m.ConnId, isMuti)} || ";
-                    data.response += $"库{m.ConnId}-Services层生成：{FrameSeed.CreateServices(_sqlSugarClient, m.ConnId, isMuti)} || ";
+                    _sqlSugarClient.ChangeDatabase(m.ConfigId.ToLower());
+                    data.response += $"库{m.ConfigId}-Model层生成：{FrameSeed.CreateModels(_sqlSugarClient, m.ConfigId, isMuti)} || ";
+                    data.response += $"库{m.ConfigId}-IRepositorys层生成：{FrameSeed.CreateIRepositorys(_sqlSugarClient, m.ConfigId, isMuti)} || ";
+                    data.response += $"库{m.ConfigId}-IServices层生成：{FrameSeed.CreateIServices(_sqlSugarClient, m.ConfigId, isMuti)} || ";
+                    data.response += $"库{m.ConfigId}-Repository层生成：{FrameSeed.CreateRepository(_sqlSugarClient, m.ConfigId, isMuti)} || ";
+                    data.response += $"库{m.ConfigId}-Services层生成：{FrameSeed.CreateServices(_sqlSugarClient, m.ConfigId, isMuti)} || ";
                 });
 
                 // 切回主库
@@ -74,7 +74,7 @@ namespace Blog.Core.Controllers
         {
             ConnID = ConnID == null ? MainDb.CurrentDbConnId.ToLower() : ConnID;
 
-            var isMuti = AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool();
+            var isMuti = BaseDBConfig.IsMulti;
             var data = new MessageModel<string>() { success = true, msg = "" };
             if (Env.IsDevelopment())
             {
@@ -102,7 +102,7 @@ namespace Blog.Core.Controllers
         {
             ConnID = ConnID == null ? MainDb.CurrentDbConnId.ToLower() : ConnID;
 
-            var isMuti = AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool();
+            var isMuti = BaseDBConfig.IsMulti;
             var data = new MessageModel<string>() { success = true, msg = "" };
             if (Env.IsDevelopment())
             {
@@ -112,7 +112,7 @@ namespace Blog.Core.Controllers
             {
                 data.success = false;
                 data.msg = "当前不处于开发模式，代码生成不可用！";
-            } 
+            }
             return data;
         }
         /// <summary>
@@ -126,7 +126,7 @@ namespace Blog.Core.Controllers
         {
             ConnID = ConnID == null ? MainDb.CurrentDbConnId.ToLower() : ConnID;
 
-            var isMuti = AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool();
+            var isMuti = BaseDBConfig.IsMulti;
             var data = new MessageModel<string>() { success = true, msg = "" };
             if (Env.IsDevelopment())
             {
@@ -151,7 +151,7 @@ namespace Blog.Core.Controllers
         {
             ConnID = ConnID == null ? MainDb.CurrentDbConnId.ToLower() : ConnID;
 
-            var isMuti = AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool();
+            var isMuti = BaseDBConfig.IsMulti;
             var data = new MessageModel<string>() { success = true, msg = "" };
             if (Env.IsDevelopment())
             {
