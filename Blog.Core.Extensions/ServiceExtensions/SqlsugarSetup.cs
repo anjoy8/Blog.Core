@@ -78,14 +78,14 @@ namespace Blog.Core.Extensions
                 }
                 else
                 {
-                    if (string.Equals(SqlSugarConst.LogConfigId, MainDb.CurrentDbConnId,
+                    if (string.Equals(config.ConfigId, MainDb.CurrentDbConnId,
                             StringComparison.CurrentCultureIgnoreCase))
                     {
                         BaseDBConfig.MainConfig = config;
                     }
 
                     //复用连接
-                    if (m.ConnId.ToLower().StartsWith(SqlSugarConst.LogConfigId.ToLower()))
+                    if (m.ConnId.ToLower().StartsWith(MainDb.CurrentDbConnId.ToLower()))
                         BaseDBConfig.ReuseConfigs.Add(config);
 
                     BaseDBConfig.ValidConfig.Add(config);
