@@ -12,7 +12,7 @@ namespace Blog.Core.Model.Models
         /// 用户
         /// </summary>
         [SugarColumn(Length = 128, IsNullable = true)]
-        public string User { get; set; }
+        public string UserInfo { get; set; }
 
         /// <summary>
         /// 次数

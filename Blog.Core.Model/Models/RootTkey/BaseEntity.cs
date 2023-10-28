@@ -4,6 +4,8 @@ using System;
 
 namespace Blog.Core.Model.Models.RootTkey;
 
+[SugarIndex("index_{table}_Enabled", nameof(Enabled), OrderByType.Asc)]
+[SugarIndex("index_{table}_IsDeleted", nameof(IsDeleted), OrderByType.Asc)]
 public class BaseEntity : RootEntityTkey<long>, IDeleteFilter
 {
     #region 数据状态管理

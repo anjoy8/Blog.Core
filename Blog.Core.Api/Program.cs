@@ -57,8 +57,7 @@ RoutePrefix.Name = AppSettings.app(new string[] { "AppSettings", "SvcName" }).Ob
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-builder.Services.AddMemoryCacheSetup();
-builder.Services.AddRedisCacheSetup();
+builder.Services.AddCacheSetup();
 builder.Services.AddSqlsugarSetup();
 builder.Services.AddDbSetup();
 
@@ -96,7 +95,6 @@ builder.Services.AddScoped<UseServiceDIAttribute>();
 builder.Services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
     .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
 
-builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddHttpPollySetup();
 builder.Services.AddControllers(o =>
@@ -134,6 +132,7 @@ Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 var app = builder.Build();
 app.ConfigureApplication();
 app.UseApplicationSetup();
+app.UseResponseBodyRead();
 
 if (app.Environment.IsDevelopment())
 {
@@ -145,6 +144,7 @@ else
     //app.UseHsts();
 }
 
+app.UseExceptionHandlerMiddle();
 app.UseIpLimitMiddle();
 app.UseRequestResponseLogMiddle();
 app.UseRecordAccessLogsMiddle();
@@ -180,7 +180,6 @@ if (builder.Configuration.GetValue<bool>("AppSettings:UseLoadTest"))
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiniProfilerMiddleware();
-//app.UseExceptionHandlerMidd();
 
 app.UseEndpoints(endpoints =>
 {

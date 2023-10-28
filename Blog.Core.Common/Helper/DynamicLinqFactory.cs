@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Mapster;
 
 namespace Blog.Core.Common.Helper
 {
@@ -40,10 +41,9 @@ namespace Blog.Core.Common.Helper
 
 
             // 第一个判断条件，固定一个判断条件作为最左边
-            Expression mainExpressin = ExpressionStudio(null, strArr.FirstOrDefault(x => x.LinkSymbol == LinkSymbol.Empty), parameter);
-
+            Expression mainExpressin = ExpressionStudio(null, strArr[0], parameter);
             // 将需要放置在最左边的判断条件从列表中去除，因为已经合成到表达式最左边了
-            strArr.Remove(strArr.FirstOrDefault(x => x.LinkSymbol == LinkSymbol.Empty));
+            strArr.RemoveAt(0);
 
             foreach (var x in strArr)
             {
@@ -57,32 +57,50 @@ namespace Blog.Core.Common.Helper
         /// 组合条件判断表达式
         /// </summary>
         /// <param name="left">左边的表达式</param>
-        /// <param name="DynamicLinq"></param>
+        /// <param name="dynamicLinq"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static Expression ExpressionStudio(Expression left, DynamicLinqHelper DynamicLinq, ParameterExpression key)
+        public static Expression ExpressionStudio(Expression left, DynamicLinqHelper dynamicLinq, ParameterExpression key)
         {
             Expression mainExpression = key;
 
-            var properties = DynamicLinq.Left.Split('.');
-
-            int index = 0;
-            foreach (var t in properties)
+            if (!dynamicLinq.Left.IsNullOrEmpty())
             {
-                if (mainExpression.Type.HasImplementedRawGeneric(typeof(IEnumerable<>)))
-                {
-                    return ExpressionStudioEnumerable(left, mainExpression, DynamicLinq.Clone(), properties.Skip(index).ToArray());
-                }
+                var properties = dynamicLinq.Left.Split('.');
 
-                mainExpression = mainExpression.Property(t);
-                index++;
+                int index = 0;
+                foreach (var t in properties)
+                {
+                    if (mainExpression.Type.HasImplementedRawGeneric(typeof(IEnumerable<>)))
+                    {
+                        return ExpressionStudioEnumerable(left, mainExpression, dynamicLinq.Adapt<DynamicLinqHelper>(),
+                            properties.Skip(index).ToArray());
+                    }
+
+                    mainExpression = mainExpression.Property(t);
+                    index++;
+                }
+            }
+
+            Expression right = null;
+            if (dynamicLinq.IsMerge && dynamicLinq.Child.Any())
+            {
+                right = ExpressionStudio(null, dynamicLinq.Child[0], key);
+                for (var i = 1; i < dynamicLinq.Child.Count; i++)
+                {
+                    right = ChangeLinkSymbol(dynamicLinq.Child[i].LinkSymbol, right, ExpressionStudio(null, dynamicLinq.Child[i], key));
+                }
+            }
+            else
+            {
+                right = ChangeOperationSymbol(dynamicLinq.OperationSymbol, mainExpression, dynamicLinq.Right);
             }
 
             left = left == null
                 // 如果左边表达式为空，则当前的表达式就为最左边
-                ? ChangeOperationSymbol(DynamicLinq.OperationSymbol, mainExpression, DynamicLinq.Right)
+                ? right
                 // 如果不为空，则将当前的表达式连接到左边
-                : ChangeLinkSymbol(DynamicLinq.LinkSymbol, left, ChangeOperationSymbol(DynamicLinq.OperationSymbol, mainExpression, DynamicLinq.Right));
+                : ChangeLinkSymbol(dynamicLinq.LinkSymbol, left, right);
             return left;
         }
 
@@ -102,7 +120,7 @@ namespace Blog.Core.Common.Helper
 
             var lambda = Expression.Lambda(mainExpression, parameter);
 
-            mainExpression = Expression.Call(typeof(Enumerable), "Any", new[] { realType }, property, lambda);
+            mainExpression = Expression.Call(typeof(Enumerable), "Any", new[] {realType}, property, lambda);
 
             left = left == null
                 ? mainExpression
@@ -112,154 +130,111 @@ namespace Blog.Core.Common.Helper
         }
 
 
-        /// <summary>
-        /// 将字符串装换成动态帮助类（内含递归）
-        /// </summary>
-        public static List<DynamicLinqHelper> SpiltStrings(string propertyStr)
-        {
-            // 定义返回用List
-            var outList = new List<DynamicLinqHelper>();
-
-            // 当最后已经没有连接运算符的时候，进入该条件
-            if (!propertyStr.Contains("&") & !propertyStr.Contains("|"))
-            {
-                // 当前的条件是不具备连接符号的
-                var lastStr = propertyStr.Trim().Split(' ');
-                outList.Add(new DynamicLinqHelper
-                {
-                    LinkSymbol = LinkSymbol.Empty,
-                    Left = lastStr[0],
-                    Right = lastStr[2],
-                    OperationSymbol = ChangeOperationSymbol(lastStr[1])
-                });
-                return outList;
-            }
-
-            // 判断当前 & | 哪个符号在最后一个判断逻辑内
-            var key = propertyStr.LastIndexOf('&') > propertyStr.LastIndexOf('|') ? '&' : '|';
-
-            var nowStrArr = propertyStr.Substring(propertyStr.LastIndexOf(key)).Trim().Split(' ');
-
-            outList.Add(new DynamicLinqHelper
-            {
-                LinkSymbol = ChangeLinkSymbol(nowStrArr[0]),
-                Left = nowStrArr[1],
-                OperationSymbol = ChangeOperationSymbol(nowStrArr[2]),
-                Right = nowStrArr[3]
-            });
-            // 将剩余部分继续切割
-            propertyStr = propertyStr.Substring(0, propertyStr.LastIndexOf(key)).Trim();
-            // 递归 由后彺前
-            outList.AddRange(SpiltStrings(propertyStr));
-
-            return outList;
-        }
-
         public static List<DynamicLinqHelper> SplitOperationSymbol(string str)
         {
             var outList = new List<DynamicLinqHelper>();
             var tokens = Regex.Matches(FormatString(str), _pattern, RegexOptions.Compiled)
-                .Cast<Match>()
                 .Select(m => m.Groups[1].Value.Trim())
                 .ToList();
-
-            int lastIndex = tokens.Count - 1;
-            int lastOperatingSymbolIndex = -1;
-            for (int i = tokens.Count - 1; i >= 0; i--)
-            {
-                var token = tokens[i].ToLower();
-
-                if (OperatingSystems.ContainsKey(token))
-                {
-                    //比较运算符
-                    lastOperatingSymbolIndex = i;
-                }
-                else if (LinkSymbols.ContainsKey(token))
-                {
-                    var left = "";
-                    for (int j = i + 1; j < lastOperatingSymbolIndex; j++)
-                    {
-                        left += tokens[j];
-                    }
-
-                    var right = "";
-                    for (int j = lastOperatingSymbolIndex + 1; j <= lastIndex; j++)
-                    {
-                        right += tokens[j];
-                    }
-
-                    outList.Add(GetDynamicLinqHelper(LinkSymbols[token],
-                        OperatingSystems[tokens[lastOperatingSymbolIndex]],
-                        left,
-                        right));
-                    lastIndex = i - 1;
-                    lastOperatingSymbolIndex = -1;
-                }
-                else if (i == 0 && lastOperatingSymbolIndex != -1)
-                {
-                    var left = "";
-                    for (int j = i; j < lastOperatingSymbolIndex; j++)
-                    {
-                        left += tokens[j];
-                    }
-
-                    var right = "";
-                    for (int j = lastOperatingSymbolIndex + 1; j <= lastIndex; j++)
-                    {
-                        right += tokens[j];
-                    }
-
-
-                    outList.Add(GetDynamicLinqHelper(LinkSymbol.Empty,
-                        OperatingSystems[tokens[lastOperatingSymbolIndex]],
-                        left,
-                        right));
-                }
-            }
-
-            outList.Reverse();
+            SplitOperationSymbol(tokens, outList);
             return outList;
         }
 
-        public static DynamicLinqHelper GetDynamicLinqHelper(LinkSymbol linkSymbol, OperationSymbol operationSymbol, string left, string right)
+        private static void SplitOperationSymbol(List<string> tokens, List<DynamicLinqHelper> outList, int start = 0, int end = 0)
         {
-            var dynamic = new DynamicLinqHelper
+            var dys = new Stack<DynamicLinqHelper>();
+            var dynamicLinqHelper = new DynamicLinqHelper();
+            if (end == 0)
             {
-                LinkSymbol = linkSymbol,
-                OperationSymbol = operationSymbol,
-                Left = left,
-                Right = right
-            };
-
-            if (dynamic.Right.StartsWith("\"") && dynamic.Right.EndsWith("\""))
-            {
-                dynamic.Right = dynamic.Right.Remove(0, 1)
-                    .Remove(dynamic.Right.Length - 2, 1)
-                    .Replace(@"\""", @"""");
+                end = tokens.Count - 1;
             }
 
-            return dynamic;
-        }
-
-
-        /// <summary>
-        /// 将字符串符号转成运算枚举符号
-        /// </summary>
-        public static LinkSymbol ChangeLinkSymbol(string str)
-        {
-            // 这里判断链接符号
-            // 当链接符号为Empty，则说明当前对象为表达式的最左边
-            // 如果一个表达式出现两次链接符号为空，则说明输入的字符串格式有问题
-            switch (str)
+            for (int i = start; i <= end; i++)
             {
-                case "|":
-                    return LinkSymbol.OrElse;
-                case "&":
-                    return LinkSymbol.AndAlso;
-                default:
-                    return LinkSymbol.Empty;
+                var token = tokens[i];
+
+                if (LinkSymbols.TryGetValue(token, out var symbol))
+                {
+                    if (dys.Count > 0)
+                    {
+                        var linqHelper = dys.Peek();
+                        linqHelper.Child.Add(dynamicLinqHelper);
+                    }
+                    else
+                    {
+                        outList.Add(dynamicLinqHelper);
+                    }
+
+                    dynamicLinqHelper = new DynamicLinqHelper()
+                    {
+                        LinkSymbol = symbol,
+                    };
+                    continue;
+                }
+
+                if (OperatingSystems.TryGetValue(token.ToLower(), out var system))
+                {
+                    dynamicLinqHelper!.OperationSymbol = system;
+                    continue;
+                }
+
+
+                if (dynamicLinqHelper!.OperationSymbol != OperationSymbol.In)
+                {
+                    if (string.Equals(token.Trim(), "("))
+                    {
+                        dynamicLinqHelper!.IsMerge = true;
+                        dynamicLinqHelper.Child = new List<DynamicLinqHelper>();
+                        dys.Push(dynamicLinqHelper);
+                        dynamicLinqHelper = new DynamicLinqHelper();
+                        continue;
+                    }
+
+                    if (string.Equals(token.Trim(), ")"))
+                    {
+                        if (dys.Count > 1)
+                        {
+                            var dya = dys.Pop();
+                            dya.Child.Add(dynamicLinqHelper);
+
+                            dynamicLinqHelper = dya;
+                            continue;
+                        }
+                        else
+                        {
+                            var dya = dys.Pop();
+                            dya.Child.Add(dynamicLinqHelper);
+                            outList.Add(dya);
+                            dynamicLinqHelper = null;
+                            continue;
+                        }
+                    }
+                }
+
+
+                if (dynamicLinqHelper!.OperationSymbol is null)
+                {
+                    dynamicLinqHelper.Left += token;
+                }
+                else
+                {
+                    dynamicLinqHelper.Right += FormatValue(token);
+                }
+
+                if (i == end)
+                {
+                    outList.Add(dynamicLinqHelper);
+                    dynamicLinqHelper = null;
+                }
             }
         }
+
+        public static string FormatValue(string str)
+        {
+            return str.TrimStart('"').TrimEnd('"');
+            // return str.TrimStart('"').TrimEnd('"').Replace(@"\""", @"""");
+        }
+
 
         /// <summary>
         /// 将运算枚举符号转成具体使用方法
@@ -288,7 +263,7 @@ namespace Blog.Core.Common.Helper
                 {
                     foreach (var name in attr.Name.Split(';'))
                     {
-                        _operatingSystems.Add(name.ToLower(), (OperationSymbol)item.GetValue(null));
+                        _operatingSystems.Add(name.ToLower(), (OperationSymbol) item.GetValue(null));
                     }
                 }
             }
@@ -307,7 +282,7 @@ namespace Blog.Core.Common.Helper
                 {
                     foreach (var name in attr.Name.Split(';'))
                     {
-                        _linkSymbols.Add(name, (LinkSymbol)item.GetValue(null));
+                        _linkSymbols.Add(name, (LinkSymbol) item.GetValue(null));
                     }
                 }
             }
@@ -318,22 +293,18 @@ namespace Blog.Core.Common.Helper
 
         public static string FormatString(string str)
         {
-            StringBuilder sb = new StringBuilder();
-            int firstIndex = -1;
-            int lastIndex = -1;
-            for (int i = 0; i < str.Length; i++)
+            var sb = new StringBuilder();
+            var firstIndex = -1;
+            var lastIndex = -1;
+            for (var i = 0; i < str.Length; i++)
             {
                 var character = str[i];
 
                 if (firstIndex == -1)
                 {
                     if (character.IsNullOrEmpty() && i < str.Length - 2)
-                    {
                         if ('"'.Equals(str[i + 1]))
-                        {
                             firstIndex = i + 1;
-                        }
-                    }
                 }
                 else
                 {
@@ -341,7 +312,9 @@ namespace Blog.Core.Common.Helper
                     {
                         var andIndex = str.IndexOf("\" &", firstIndex);
                         var orIndex = str.IndexOf("\" |", firstIndex);
-                        var andOrIndex = andIndex > 0 ? andIndex : orIndex;
+                        var andOrIndex = Math.Min(andIndex, orIndex);
+                        andOrIndex = andOrIndex == -1 ? Math.Max(andOrIndex, orIndex) : andOrIndex;
+
                         if (andOrIndex != -1)
                         {
                             lastIndex = andOrIndex;
@@ -349,10 +322,7 @@ namespace Blog.Core.Common.Helper
                         else
                         {
                             if (i == firstIndex) continue;
-                            if (i == str.Length - 1 || str[i + 1].IsNullOrEmpty())
-                            {
-                                lastIndex = i;
-                            }
+                            if (i == str.Length - 1 || str[i + 1].IsNullOrEmpty()) lastIndex = i;
                         }
                     }
 
@@ -368,10 +338,7 @@ namespace Blog.Core.Common.Helper
                     }
                 }
 
-                if (firstIndex != -1)
-                {
-                    continue;
-                }
+                if (firstIndex != -1) continue;
 
                 sb.Append(character);
             }
@@ -388,8 +355,8 @@ namespace Blog.Core.Common.Helper
                 "||", "&&", "==", "!=", "<=", ">=",
                 "in",
                 "like", "contains", "%=",
-                "startslike", "startscontains", "%>",
-                "endlike", "endcontains", "%<",
+                "startslike", "StartsLike", "startscontains", "StartsContains", "%>",
+                "endlike", "EndLike", "endcontains", "EndContains", "%<",
             }.Select(Regex.Escape)),
             @"""(?:\\.|[^""])*""", // string
             @"\d+(?:\.\d+)?",      // number with optional decimal part
@@ -397,47 +364,11 @@ namespace Blog.Core.Common.Helper
             @"\S",                 // other 1-char tokens (or eat up one character in case of an error)
         }) + @")\s*";
 
-        /// <summary>
-        /// 将字符串符号转成运算枚举符号
-        /// </summary>
-        public static OperationSymbol ChangeOperationSymbol(string str)
-        {
-            switch (str.ToLower())
-            {
-                case "<":
-                    return OperationSymbol.LessThan;
-                case "<=":
-                    return OperationSymbol.LessThanOrEqual;
-                case ">":
-                    return OperationSymbol.GreaterThan;
-                case ">=":
-                    return OperationSymbol.GreaterThanOrEqual;
-                case "==":
-                case "=":
-                    return OperationSymbol.Equal;
-                case "!=":
-                    return OperationSymbol.NotEqual;
-                case "contains":
-                case "like":
-                case "%=":
-                    return OperationSymbol.Contains;
-                case "startslike":
-                case "startscontains":
-                case "%>":
-                    return OperationSymbol.StartsContains;
-                case "endlike":
-                case "endcontains":
-                case "%<":
-                    return OperationSymbol.EndContains;
-            }
-
-            throw new Exception("OperationSymbol IS NULL");
-        }
 
         /// <summary>
         /// 将运算枚举符号转成具体使用方法
         /// </summary>
-        public static Expression ChangeOperationSymbol(OperationSymbol symbol, Expression key, object right)
+        public static Expression ChangeOperationSymbol(OperationSymbol? symbol, Expression key, object right)
         {
             // 将右边数据类型强行转换成左边一样的类型
             // 两者如果Type不匹配则无法接下去的运算操作，抛出异常
@@ -468,30 +399,26 @@ namespace Blog.Core.Common.Helper
                 {
                     if (key.Type == typeof(string))
                         return key.Contains(Expression.Constant(newTypeRight)); //对string 特殊处理  由于string
-                    else
-                        return key.GreaterThan(Expression.Constant((newTypeRight)));
+                    return key.GreaterThan(Expression.Constant((newTypeRight)));
                 }
                 case OperationSymbol.GreaterThanOrEqual:
                 {
                     if (key.Type == typeof(string))
                         return key.Contains(Expression.Constant(newTypeRight, typeof(string)));
-                    else
-                        return key.GreaterThanOrEqual(Expression.Constant(newTypeRight));
+                    return key.GreaterThanOrEqual(Expression.Constant(newTypeRight));
                 }
 
                 case OperationSymbol.LessThan:
                 {
                     if (key.Type == typeof(string))
                         return key.Contains(Expression.Constant(newTypeRight, typeof(string)));
-                    else
-                        return key.LessThan(Expression.Constant((newTypeRight)));
+                    return key.LessThan(Expression.Constant((newTypeRight)));
                 }
                 case OperationSymbol.LessThanOrEqual:
                 {
                     if (key.Type == typeof(string))
                         return key.Contains(Expression.Constant(newTypeRight, typeof(string)));
-                    else
-                        return key.LessThanOrEqual(Expression.Constant((newTypeRight)));
+                    return key.LessThanOrEqual(Expression.Constant((newTypeRight)));
                 }
                 case OperationSymbol.NotEqual:
                     return key.NotEqual(Expression.Constant(newTypeRight));
@@ -502,15 +429,10 @@ namespace Blog.Core.Common.Helper
                 case OperationSymbol.EndContains:
                     return key.EndContains(Expression.Constant(newTypeRight));
                 case OperationSymbol.In:
-                    var contains = typeof(Enumerable).GetMethods(BindingFlags.Static | BindingFlags.Public)
-                        .Single(x => x.Name == "Contains" && x.GetParameters().Length == 2)
-                        .MakeGenericMethod(key.Type);
                     return Expression.Constant(newTypeRight).Contains(key);
-
-                //return Expression.Call(contains, , key);
+                default:
+                    throw new ArgumentException("OperationSymbol IS NULL");
             }
-
-            throw new NotImplementedException("OperationSymbol IS NULL");
         }
     }
 
@@ -526,21 +448,20 @@ namespace Blog.Core.Common.Helper
         public string Right { get; set; }
 
         [Display(Name = "运算符")]
-        public OperationSymbol OperationSymbol { get; set; }
+        public OperationSymbol? OperationSymbol { get; set; }
 
         [Display(Name = "连接符")]
         public LinkSymbol LinkSymbol { get; set; }
 
-        public DynamicLinqHelper Clone()
-        {
-            return new DynamicLinqHelper()
-            {
-                Left = this.Left,
-                Right = this.Right,
-                OperationSymbol = this.OperationSymbol,
-                LinkSymbol = this.LinkSymbol,
-            };
-        }
+        /// <summary>
+        /// 是否是合并 用于括号
+        /// </summary>
+        public bool IsMerge { get; set; } = false;
+
+        /// <summary>
+        /// 再有括号时候使用
+        /// </summary>
+        public List<DynamicLinqHelper> Child { get; set; }
     }
 
     /// <summary>
@@ -638,8 +559,9 @@ namespace Blog.Core.Common.Helper
             var parameter = Expression.Parameter(type, "p");
             var propertyAccess = Expression.MakeMemberAccess(parameter, property);
             var orderByExpression = Expression.Lambda(propertyAccess, parameter);
-            var resultExpression = Expression.Call(typeof(Queryable), command, new Type[] { type, property.PropertyType }, source.Expression, Expression.Quote(orderByExpression));
-            return (IOrderedQueryable<TSource>)source.Provider.CreateQuery<TSource>(resultExpression);
+            var resultExpression = Expression.Call(typeof(Queryable), command, new Type[] {type, property.PropertyType}, source.Expression,
+                Expression.Quote(orderByExpression));
+            return (IOrderedQueryable<TSource>) source.Provider.CreateQuery<TSource>(resultExpression);
         }
 
         /// <summary>
@@ -666,7 +588,7 @@ namespace Blog.Core.Common.Helper
                 // 调用的方法
                 "Skip",
                 // 元素类别
-                new Type[] { source.ElementType },
+                new Type[] {source.ElementType},
                 // 调用的表达树
                 source.Expression,
                 // 参数
@@ -684,7 +606,7 @@ namespace Blog.Core.Common.Helper
                 // 调用的方法
                 "Take",
                 // 元素类别
-                new Type[] { source.ElementType },
+                new Type[] {source.ElementType},
                 // 调用的表达树
                 source.Expression,
                 // 参数
@@ -716,7 +638,8 @@ namespace Blog.Core.Common.Helper
             foreach (var property in target.GetType().GetProperties())
             {
                 // 这里可以判断一下当前属性值是否为空的 source.GetType().GetProperty(property.Name).GetValue(source, null)
-                target.GetType().InvokeMember(property.Name, BindingFlags.SetProperty, null, target, new object[] { source.GetType().GetProperty(property.Name).GetValue(source, null) });
+                target.GetType().InvokeMember(property.Name, BindingFlags.SetProperty, null, target,
+                    new object[] {source.GetType().GetProperty(property.Name).GetValue(source, null)});
             }
         }
 

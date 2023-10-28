@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Blog.Core.Common;
+using Blog.Core.Common.Caches;
 using Blog.Core.Common.Helper;
 using Nacos.V2;
 using Newtonsoft.Json.Linq;

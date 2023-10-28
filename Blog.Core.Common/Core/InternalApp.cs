@@ -7,21 +7,24 @@ using Microsoft.Extensions.Configuration;
 
 namespace Blog.Core.Common.Core;
 
+/// <summary>
+/// 内部只用于初始化使用
+/// </summary>
 public static class InternalApp
 {
-    public static IServiceCollection InternalServices;
+    internal static IServiceCollection InternalServices;
 
     /// <summary>根服务</summary>
-    public static IServiceProvider RootServices;
+    internal static IServiceProvider RootServices;
 
     /// <summary>获取Web主机环境</summary>
-    public static IWebHostEnvironment WebHostEnvironment;
+    internal static IWebHostEnvironment WebHostEnvironment;
 
     /// <summary>获取泛型主机环境</summary>
-    public static IHostEnvironment HostEnvironment;
+    internal static IHostEnvironment HostEnvironment;
 
     /// <summary>配置对象</summary>
-    public static IConfiguration Configuration;
+    internal static IConfiguration Configuration;
 
     public static void ConfigureApplication(this WebApplicationBuilder wab)
     {

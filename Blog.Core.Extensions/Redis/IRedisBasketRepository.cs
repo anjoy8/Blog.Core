@@ -1,6 +1,7 @@
 ﻿using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Blog.Core.Extensions
@@ -8,6 +9,7 @@ namespace Blog.Core.Extensions
     /// <summary>
     /// Redis缓存接口
     /// </summary>
+    [Description("普通缓存考虑直接使用ICaching,如果要使用Redis队列等还是使用此类")]
     public interface IRedisBasketRepository
     {
 

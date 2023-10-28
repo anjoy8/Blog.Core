@@ -57,13 +57,13 @@ namespace Blog.Core.Model.Models
         ///<summary>
         ///错误信息
         ///</summary>
-        [SugarColumn(ColumnDescription = "错误信息", IsNullable = false, IsPrimaryKey = false, IsIdentity = false, Length = 5000)]
+        [SugarColumn(ColumnDescription = "错误信息", IsNullable = false, IsPrimaryKey = false, IsIdentity = false, Length = 2000)]
         public string Message { get; set; }
 
         ///<summary>
         ///异常
         ///</summary>
-        [SugarColumn(ColumnDescription = "异常", IsNullable = true, IsPrimaryKey = false, IsIdentity = false, Length = 5000)]
+        [SugarColumn(ColumnDescription = "异常", IsNullable = true, IsPrimaryKey = false, IsIdentity = false, Length = 2000)]
         public string Exception { get; set; }
 
     }

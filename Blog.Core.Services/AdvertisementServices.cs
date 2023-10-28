@@ -13,7 +13,7 @@ namespace Blog.Core.Services
             int a = 1;
             int b = 0;
 
-            int c = a / b;
+          //  int c = a / b;
         }
 
         //public IAdvertisementRepository dal = new AdvertisementRepository();

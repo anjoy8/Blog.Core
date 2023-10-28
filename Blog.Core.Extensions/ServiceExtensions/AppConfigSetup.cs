@@ -40,25 +40,14 @@ namespace Blog.Core.Extensions
                 {
                     Console.WriteLine($"Current authorization scheme: " + (Permissions.IsUseIds4 ? "Ids4" : "JWT"));
                 }
-
-                // Redis缓存AOP
-                if (!AppSettings.app(new string[] { "AppSettings", "RedisCachingAOP", "Enabled" }).ObjToBool())
+                // 缓存AOP
+                if (!AppSettings.app(new string[] { "AppSettings", "CachingAOP", "Enabled" }).ObjToBool())
                 {
-                    Console.WriteLine($"Redis Caching AOP: False");
+                    Console.WriteLine($"Caching AOP: False");
                 }
                 else
                 {
-                    ConsoleHelper.WriteSuccessLine($"Redis Caching AOP: True");
-                }
-
-                // 内存缓存AOP
-                if (!AppSettings.app(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool())
-                {
-                    Console.WriteLine($"Memory Caching AOP: False");
-                }
-                else
-                {
-                    ConsoleHelper.WriteSuccessLine($"Memory Caching AOP: True");
+                    ConsoleHelper.WriteSuccessLine($"Caching AOP: True");
                 }
 
                 // 服务日志AOP
@@ -89,6 +78,15 @@ namespace Blog.Core.Extensions
                 else
                 {
                     ConsoleHelper.WriteSuccessLine($"Transaction AOP: True");
+                }
+                // 审计AOP
+                if (!AppSettings.app(new string[] { "AppSettings", "UserAuditAOP", "Enabled" }).ObjToBool())
+                {
+                    Console.WriteLine($"UserAudit AOP: False");
+                }
+                else
+                {
+                    ConsoleHelper.WriteSuccessLine($"UserAudit AOP: True");
                 }
 
                 // 数据库Sql执行AOP
@@ -259,10 +257,10 @@ namespace Blog.Core.Extensions
 
                 List<string[]> aopInfos = new()
                 {
-                    new string[] { "Redis缓存AOP", AppSettings.app("AppSettings", "RedisCachingAOP", "Enabled") },
-                    new string[] { "内存缓存AOP", AppSettings.app("AppSettings", "MemoryCachingAOP", "Enabled") },
+                    new string[] { "缓存AOP", AppSettings.app("AppSettings", "CachingAOP", "Enabled") },
                     new string[] { "服务日志AOP", AppSettings.app("AppSettings", "LogAOP", "Enabled") },
                     new string[] { "事务AOP", AppSettings.app("AppSettings", "TranAOP", "Enabled") },
+                    new string[] { "服务审计AOP", AppSettings.app("AppSettings", "UserAuditAOP", "Enabled") },
                     new string[] { "Sql执行AOP", AppSettings.app("AppSettings", "SqlAOP", "Enabled") },
                     new string[] { "Sql执行AOP控制台输出", AppSettings.app("AppSettings", "SqlAOP", "LogToConsole", "Enabled") },
                 };

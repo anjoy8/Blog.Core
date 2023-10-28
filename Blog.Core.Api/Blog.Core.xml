@@ -456,14 +456,10 @@
             <param name="permissions"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.MigratePermission(System.String,System.String,System.Int64,System.Boolean)">
+        <member name="M:Blog.Core.Controllers.PermissionController.MigratePermission(System.String,System.String,System.String,System.String,System.String,System.Int64,System.Boolean)">
             <summary>
             系统接口菜单同步接口
             </summary>
-            <param name="action"></param>
-            <param name="controllerName">接口module的控制器名称</param>
-            <param name="pid">菜单permission的父id</param>
-            <param name="isAction">是否执行迁移到数据</param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.RoleController">
@@ -1255,6 +1251,27 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Blog.Core.Api.Controllers.SignalRTestController">
+            <summary>
+            SignalR测试
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SignalRTestController.SendMessageToUser(System.String,System.String)">
+            <summary>
+            向指定用户发送消息
+            </summary>
+            <param name="user"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SignalRTestController.SendMessageToRole(System.String,System.String)">
+            <summary>
+            向指定角色发送消息
+            </summary>
+            <param name="role"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Api.Controllers.SplitDemoController">
             <summary>
             分表demo
@@ -1299,6 +1316,41 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="T:Blog.Core.Api.Controllers.Systems.CacheManageController">
+            <summary>
+            缓存管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.Get">
+            <summary>
+            获取全部缓存
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.Get(System.String)">
+            <summary>
+            获取缓存
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.Post(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            新增
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.Delete">
+            <summary>
+            删除全部缓存
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.Delete(System.String)">
+            <summary>
+            删除缓存
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Api.Controllers.Systems.DataBaseController">
             <summary>
             数据库管理
@@ -1338,6 +1390,41 @@
             编辑列备注
             </summary>
             <param name="input"></param>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController">
+            <summary>
+            动态建表 CURD
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController.GetDynamicType">
+            <summary>
+            动态type
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController.GetDynamicType2">
+            <summary>
+            动态type 继承BaseEntity
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController.TestCreateTable">
+            <summary>
+            测试建表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController.TestQuery">
+            <summary>
+            测试查询
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.DynamicCodeFirstController.TestInsert(System.String,System.String)">
+            <summary>
+            测试写入
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:Blog.Core.Api.Controllers.Tenant.TenantByDbController">
             <summary>
