@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Blog.Core.Common.DB;
 
 namespace Blog.Core.Extensions
 {
@@ -189,18 +190,8 @@ namespace Blog.Core.Extensions
                     ConsoleHelper.WriteSuccessLine($"EventBus: True");
                 }
 
-                // 多库
-                if (!AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
-                {
-                    Console.WriteLine($"Is multi-DataBase: False");
-                }
-                else
-                {
-                    ConsoleHelper.WriteSuccessLine($"Is multi-DataBase: True");
-                }
-
                 // 读写分离
-                if (!AppSettings.app(new string[] { "CQRSEnabled" }).ObjToBool())
+                if (!BaseDBConfig.MainConfig.SlaveConnectionConfigs.AnyNoException())
                 {
                     Console.WriteLine($"Is CQRS: False");
                 }
@@ -235,8 +226,7 @@ namespace Blog.Core.Extensions
                     new string[] { "RabbitMQ消息列队", AppSettings.app("RabbitMQ", "Enabled") },
                     new string[] { "事件总线(必须开启消息列队)", AppSettings.app("EventBus", "Enabled") },
                     new string[] { "redis消息队列", AppSettings.app("Startup", "RedisMq", "Enabled") },
-                    new string[] { "是否多库", AppSettings.app("MutiDBEnabled") },
-                    new string[] { "读写分离", AppSettings.app("CQRSEnabled") },
+                    new string[] { "读写分离", BaseDBConfig.MainConfig.SlaveConnectionConfigs.AnyNoException()? "True" : "False" },
                 };
 
                 new ConsoleTable()

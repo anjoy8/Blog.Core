@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Blog.Core
@@ -287,6 +288,13 @@ namespace Blog.Core
         public static string ToJson(this object value)
         {
             return JsonConvert.SerializeObject(value);
+        }
+
+        public static bool AnyNoException<T>(this ICollection<T> source)
+        {
+            if (source == null) return false;
+
+            return source.Any() && source.All(s => s != null);
         }
     }
 }

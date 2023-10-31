@@ -219,7 +219,7 @@ namespace Blog.Core.Controllers
         {
             List<ApiDate> apiDates = new List<ApiDate>();
 
-            if (AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+            if (_applicationUserServices.IsEnable())
             {
                 var users = await _applicationUserServices.Query(d => d.tdIsDelete == false);
 
