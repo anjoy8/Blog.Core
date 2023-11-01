@@ -58,7 +58,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 
 #### 商业授权付费版下🎁🎁🎁
 
-- [x] 包含下边框架模块中的所有功能；
+- [x] 包含开源版 `框架模块/组件模块` 中的所有功能；
 - [x] 全部表结构主键底层架构改成`string`类型（默认雪花，支持guid），更方便迁移；
 - [x] 完善部门数据权限，可以基于策略配置查看数据范围；
 - [x] 优化权限处理器，解决多实例分布式下，权限不同步问题（必须配置Redis）；
@@ -73,7 +73,8 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 
 #### 框架模块：  
 - [x] 采用`仓储+服务+接口`的形式封装框架；
-- [x] 异步 async/await 开发；
+- [x] 自定义项目模板 `CreateYourProject.bat` ，可以一键生成自己的项目；🎶  
+- [x] 异步 async/await 开发；  
 - [x] 接入国产数据库ORM组件 —— SqlSugar，封装数据库操作，支持级联操作；
 - [x] 支持自由切换多种数据库，MySql/SqlServer/Sqlite/Oracle/Postgresql/达梦/人大金仓；
 - [x] 实现项目启动，自动生成种子数据 ✨； 
@@ -81,14 +82,16 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 五种日志记录，审计/异常/请求响应/服务操作/Sql记录等,并自动持久化到数据库表🎶； 
 - [x] 支持项目事务处理（若要分布式，用cap即可）✨；
 - [x] 设计4种 AOP 切面编程，功能涵盖：日志、缓存、审计、事务 ✨；
-- [x] Log4net 多种日志自动生成到数据库中，目前支持MySql/SqlServer/Sqlite/Oracle/Postgresql🎉；
+- [x] 全局统一封装 Serilog 生成多种日志，并自动生成到数据库中，目前支持MySql/SqlServer/Sqlite/Oracle/Postgresql🎉；
 - [x] 设计并支持按钮级别的RBAC权限控制，同时支持一键同步接口和菜单 🎶；
 - [x] 支持 T4 代码模板，自动生成每层代码；
 - [x] 或使用 DbFirst 一键创建自己项目的四层文件（支持多库）；
 - [x] 封装`Blog.Core.Webapi.Template`项目模板，一键重建自己的项目 ✨；
 - [x] 搭配多个前端案例供参考和借鉴：Blog.Vue、Blog.Admin、Nuxt.tbug、Blog.Mvp.Blazor ✨；
 - [x] 统一集成 IdentityServer4 认证 ✨;
-- [x] 统一实现多租户;  
+- [x] 统一实现多租户;
+- [x] 实现分表案例，支持分表的增删改查哈分页查询，具体查看SplitDemoController.cs;
+- [x] 支持signalR对指定用户通讯;  
 
 
 组件模块：
@@ -99,7 +102,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 使用 AutoFac 做依赖注入容器，并提供批量服务注入 ✨；
 - [x] 支持 CORS 跨域；
 - [x] 封装 JWT 自定义策略授权；
-- [x] 使用 Log4Net 日志框架，集成原生 ILogger 接口做日志记录；
+- [x] 使用 Serilog 日志框架，集成原生 ILogger 接口做日志记录；
 - [x] 使用 SignalR 双工通讯 ✨；
 - [x] 添加 IpRateLimiting 做 API 限流处理;
 - [x] 使用 Quartz.net 做任务调度（目前单机多任务，集群调度暂不支持）;
@@ -114,7 +117,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 新增 Kafka 消息队列，并配合实现EventBus ✨;
 - [x] 新增 微信公众号管理，并集成到Blog.Admin后台 ✨;
 - [x] 新增 - 数据部门权限;
-- [x] 新增 - Log4net集成日志数据持久化到数据库;  
+- [x] 新增 - Serilog 集成日志数据持久化到数据库;  
 - [x] 新增 - 多租户模式（单表，多表，多库三种模式）;  
 
 
@@ -123,7 +126,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 可配合 Jenkins 实现CI / CD；
 - [x] 可配合 Consul 实现服务发现；
 - [x] 可配合 Nacos 实现服务发现；
-- [x] 可配合 Ocelot 实现网关处理；
+- [x] 可配合 apisix/Ocelot 实现网关处理；
 - [x] 可配合 Nginx  实现负载均衡；
 - [x] 可配合 Ids4   实现认证中心；
 

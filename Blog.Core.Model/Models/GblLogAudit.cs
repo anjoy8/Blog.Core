@@ -12,8 +12,8 @@ namespace Blog.Core.Model.Models
         ///<summary>
         ///ID
         ///</summary>
-        [SugarColumn(ColumnDescription = "ID", IsNullable = false, IsPrimaryKey = true, IsIdentity = true)]
-        public int Id { get; set; }
+        [SugarColumn(ColumnDescription = "ID", IsNullable = false, IsPrimaryKey = true, IsIdentity = false)]
+        public long Id { get; set; }
 
         ///<summary>
         ///HttpContext.TraceIdentifier 事件链路ID（获取或设置一个唯一标识符，用于在跟踪日志中表示此请求。）
@@ -57,13 +57,13 @@ namespace Blog.Core.Model.Models
         ///<summary>
         ///错误信息
         ///</summary>
-        [SugarColumn(ColumnDescription = "错误信息", IsNullable = false, IsPrimaryKey = false, IsIdentity = false, Length = 5000)]
+        [SugarColumn(ColumnDescription = "错误信息", IsNullable = false, IsPrimaryKey = false, IsIdentity = false, Length = 2000)]
         public string Message { get; set; }
 
         ///<summary>
         ///异常
         ///</summary>
-        [SugarColumn(ColumnDescription = "异常", IsNullable = true, IsPrimaryKey = false, IsIdentity = false, Length = 5000)]
+        [SugarColumn(ColumnDescription = "异常", IsNullable = true, IsPrimaryKey = false, IsIdentity = false, Length = 2000)]
         public string Exception { get; set; }
 
     }

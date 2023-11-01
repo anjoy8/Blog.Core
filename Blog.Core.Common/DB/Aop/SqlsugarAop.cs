@@ -1,19 +1,48 @@
-﻿using Blog.Core.Model.Models.RootTkey;
+using Blog.Core.Model.Models.RootTkey;
 using Blog.Core.Model.Tenants;
 using SqlSugar;
+using StackExchange.Profiling;
 using System;
+using Serilog;
+using Blog.Core.Common.LogHelper;
+using Blog.Core.Model;
 
 namespace Blog.Core.Common.DB.Aop;
 
 public static class SqlSugarAop
 {
+    public static void OnLogExecuting(ISqlSugarClient sqlSugarScopeProvider, string user, string table, string operate, string sql, SugarParameter[] p, ConnectionConfig config)
+    {
+        try
+        {
+            MiniProfiler.Current.CustomTiming($"ConnId:[{config.ConfigId}] SQL：", GetParas(p) + "【SQL语句】：" + sql);
+
+            if (!AppSettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool()) return;
+
+            if (AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToConsole", "Enabled" }).ObjToBool() ||
+                AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToFile", "Enabled" }).ObjToBool() ||
+                AppSettings.app(new string[] { "AppSettings", "SqlAOP", "LogToDB", "Enabled" }).ObjToBool())
+            {
+                using (LogContextExtension.Create.SqlAopPushProperty(sqlSugarScopeProvider))
+                {
+                    Log.Information("------------------ \r\n User:[{User}]  Table:[{Table}]  Operate:[{Operate}] ConnId:[{ConnId}]【SQL语句】: \r\n {Sql}",
+                        user, table, operate, config.ConfigId, UtilMethods.GetNativeSql(sql, p));
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error("Error occured OnLogExcuting:" + e);
+        }
+    }
+
     public static void DataExecuting(object oldValue, DataFilterModel entityInfo)
     {
-        if (entityInfo.EntityValue is BaseEntity root)
+        if (entityInfo.EntityValue is RootEntityTkey<long> rootEntity)
         {
-            if (root.Id == 0)
+            if (rootEntity.Id == 0)
             {
-                root.Id = SnowFlakeSingle.Instance.NextId();
+                rootEntity.Id = SnowFlakeSingle.Instance.NextId();
             }
         }
 
@@ -59,6 +88,49 @@ public static class SqlSugarAop
 
                         break;
                 }
+            }
+        }
+        else
+        {
+            //兼容以前的表 
+            //这里要小心 在AOP里用反射 数据量多性能就会有问题
+            //要么都统一使用基类
+            //要么考虑老的表没必要兼容老的表
+            //
+
+            var getType = entityInfo.EntityValue.GetType();
+
+            switch (entityInfo.OperationType)
+            {
+                case DataFilterType.InsertByObject:
+                    var dyCreateBy = getType.GetProperty("CreateBy");
+                    var dyCreateId = getType.GetProperty("CreateId");
+                    var dyCreateTime = getType.GetProperty("CreateTime");
+
+                    if (App.User?.ID > 0 && dyCreateBy != null && dyCreateBy.GetValue(entityInfo.EntityValue) == null)
+                        dyCreateBy.SetValue(entityInfo.EntityValue, App.User.Name);
+
+                    if (App.User?.ID > 0 && dyCreateId != null && dyCreateId.GetValue(entityInfo.EntityValue) == null)
+                        dyCreateId.SetValue(entityInfo.EntityValue, App.User.ID);
+
+                    if (dyCreateTime != null && dyCreateTime.GetValue(entityInfo.EntityValue) != null && (DateTime)dyCreateTime.GetValue(entityInfo.EntityValue) == DateTime.MinValue)
+                        dyCreateTime.SetValue(entityInfo.EntityValue, DateTime.Now);
+
+                    break;
+                case DataFilterType.UpdateByObject:
+                    var dyModifyBy = getType.GetProperty("ModifyBy");
+                    var dyModifyId = getType.GetProperty("ModifyId");
+                    var dyModifyTime = getType.GetProperty("ModifyTime");
+
+                    if (App.User?.ID > 0 && dyModifyBy != null)
+                        dyModifyBy.SetValue(entityInfo.EntityValue, App.User.Name);
+
+                    if (App.User?.ID > 0 && dyModifyId != null)
+                        dyModifyId.SetValue(entityInfo.EntityValue, App.User.ID);
+
+                    if (dyModifyTime != null)
+                        dyModifyTime.SetValue(entityInfo.EntityValue, DateTime.Now);
+                    break;
             }
         }
     }

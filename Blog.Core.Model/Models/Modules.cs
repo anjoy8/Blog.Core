@@ -6,7 +6,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 接口API地址信息表
     /// </summary>
-    public class Modules : ModulesRoot<int>
+    public class Modules : ModulesRoot<long>
     {
         public Modules()
         {
@@ -78,7 +78,7 @@ namespace Blog.Core.Model.Models
         /// 创建ID
         /// </summary>
         [SugarColumn(IsNullable = true)]
-        public int? CreateId { get; set; }
+        public long? CreateId { get; set; }
         /// <summary>
         /// 创建者
         /// </summary>
@@ -93,7 +93,7 @@ namespace Blog.Core.Model.Models
         /// 修改ID
         /// </summary>
         [SugarColumn(IsNullable = true)]
-        public int? ModifyId { get; set; }
+        public long? ModifyId { get; set; }
         /// <summary>
         /// 修改者
         /// </summary>

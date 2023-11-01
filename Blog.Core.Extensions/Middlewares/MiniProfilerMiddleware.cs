@@ -1,7 +1,7 @@
-﻿using System;
-using Blog.Core.Common;
-using log4net;
+﻿using Blog.Core.Common;
 using Microsoft.AspNetCore.Builder;
+using System;
+using Serilog;
 
 namespace Blog.Core.Extensions.Middlewares
 {
@@ -10,7 +10,6 @@ namespace Blog.Core.Extensions.Middlewares
     /// </summary>
     public static class MiniProfilerMiddleware
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MiniProfilerMiddleware));
         public static void UseMiniProfilerMiddleware(this IApplicationBuilder app)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));

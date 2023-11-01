@@ -4,14 +4,10 @@ using System;
 
 namespace Blog.Core.Model.Models.RootTkey;
 
-public class BaseEntity : IDeleteFilter
+[SugarIndex("index_{table}_Enabled", nameof(Enabled), OrderByType.Asc)]
+[SugarIndex("index_{table}_IsDeleted", nameof(IsDeleted), OrderByType.Asc)]
+public class BaseEntity : RootEntityTkey<long>, IDeleteFilter
 {
-    /// <summary>
-    /// 雪花Id
-    /// </summary>
-    [SugarColumn(IsNullable = false, IsPrimaryKey = true, IsIdentity = false)]
-    public long Id { get; set; }
-
     #region 数据状态管理
 
     /// <summary>

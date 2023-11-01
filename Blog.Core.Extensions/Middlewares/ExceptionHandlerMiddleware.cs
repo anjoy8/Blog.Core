@@ -10,8 +10,6 @@ namespace Blog.Core.Extensions.Middlewares
     public class ExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
-        private static readonly log4net.ILog Log =
-        log4net.LogManager.GetLogger(typeof(ExceptionHandlerMiddleware));
 
         public ExceptionHandlerMiddleware(RequestDelegate next)
         {
@@ -34,21 +32,27 @@ namespace Blog.Core.Extensions.Middlewares
         {
             if (e == null) return;
 
-            Log.Error(e.GetBaseException().ToString());
-
             await WriteExceptionAsync(context, e).ConfigureAwait(false);
         }
 
         private static async Task WriteExceptionAsync(HttpContext context, Exception e)
         {
-            if (e is UnauthorizedAccessException)
-                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            else if (e is Exception)
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            var message = e.Message;
+            switch (e)
+            {
+                case UnauthorizedAccessException:
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    break;
+                default:
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    break;
+            }
 
             context.Response.ContentType = "application/json";
 
-            await context.Response.WriteAsync(JsonConvert.SerializeObject((new ApiResponse(StatusCode.CODE500, e.Message)).MessageModel)).ConfigureAwait(false);
+            await context.Response
+                .WriteAsync(JsonConvert.SerializeObject(new ApiResponse(StatusCode.CODE500, message).MessageModel))
+                .ConfigureAwait(false);
         }
     }
 }

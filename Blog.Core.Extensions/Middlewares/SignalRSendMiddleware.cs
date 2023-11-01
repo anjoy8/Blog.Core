@@ -36,6 +36,7 @@ namespace Blog.Core.Extensions.Middlewares
         {
             if (AppSettings.app("Middleware", "SignalR", "Enabled").ObjToBool())
             {
+                //TODO 主动发送错误消息
                 await _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()); 
             }
             await _next(context);

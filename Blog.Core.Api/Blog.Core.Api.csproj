@@ -7,6 +7,7 @@
     <!--<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>-->
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+    
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,21 +25,25 @@
   <ItemGroup>
     <Compile Remove="Extensions\**" />
     <Compile Remove="Hubs\**" />
+    <Compile Remove="Logs\**" />
     <Compile Remove="Log\**" />
     <Compile Remove="Middlewares\**" />
     <Compile Remove="wwwroot\ui\**" />
     <Content Remove="Extensions\**" />
     <Content Remove="Hubs\**" />
+    <Content Remove="Logs\**" />
     <Content Remove="Log\**" />
     <Content Remove="Middlewares\**" />
     <Content Remove="wwwroot\ui\**" />
     <EmbeddedResource Remove="Extensions\**" />
     <EmbeddedResource Remove="Hubs\**" />
+    <EmbeddedResource Remove="Logs\**" />
     <EmbeddedResource Remove="Log\**" />
     <EmbeddedResource Remove="Middlewares\**" />
     <EmbeddedResource Remove="wwwroot\ui\**" />
     <None Remove="Extensions\**" />
     <None Remove="Hubs\**" />
+    <None Remove="Logs\**" />
     <None Remove="Log\**" />
     <None Remove="Middlewares\**" />
     <None Remove="wwwroot\ui\**" />
@@ -46,6 +51,11 @@
 
   <ItemGroup>
     <None Remove="index.html" />
+    <None Remove="WangWu.db" />
+    <None Remove="WMBlog.db" />
+    <None Remove="WMBlogLog.db" />
+    <None Remove="WMBlogLog.db-journal" />
+    <None Remove="ZhaoLiu.db" />
   </ItemGroup>
 
   <ItemGroup>

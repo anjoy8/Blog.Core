@@ -1,7 +1,7 @@
 ﻿using Blog.Core.Common;
-using log4net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.Collections.Generic;
@@ -17,10 +17,6 @@ namespace Blog.Core.Extensions
     /// </summary>
     public static class SwaggerSetup
     {
-
-        private static readonly ILog log =
-        LogManager.GetLogger(typeof(SwaggerSetup));
-
         public static void AddSwaggerSetup(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
@@ -59,7 +55,7 @@ namespace Blog.Core.Extensions
                 }
                 catch (Exception ex)
                 {
-                    log.Error("Blog.Core.xml和Blog.Core.Model.xml 丢失，请检查并拷贝。\n" + ex.Message);
+                    Log.Error("Blog.Core.xml和Blog.Core.Model.xml 丢失，请检查并拷贝。\n" + ex.Message);
                 }
 
                 // 开启加权小锁
@@ -82,11 +78,12 @@ namespace Blog.Core.Extensions
                             Implicit = new OpenApiOAuthFlow
                             {
                                 AuthorizationUrl = new Uri($"{AppSettings.app(new string[] { "Startup", "IdentityServer4", "AuthorizationUrl" })}/connect/authorize"),
-                                Scopes = new Dictionary<string, string> {
+                                Scopes = new Dictionary<string, string>
                                 {
-                                    "blog.core.api","ApiResource id"
+                                    {
+                                        "blog.core.api", "ApiResource id"
+                                    }
                                 }
-                            }
                             }
                         }
                     });
@@ -97,14 +94,11 @@ namespace Blog.Core.Extensions
                     c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                     {
                         Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
-                        Name = "Authorization",//jwt默认的参数名称
-                        In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
+                        Name = "Authorization",        //jwt默认的参数名称
+                        In = ParameterLocation.Header, //jwt默认存放Authorization信息的位置(请求头中)
                         Type = SecuritySchemeType.ApiKey
                     });
                 }
-
-
-
             });
             services.AddSwaggerGenNewtonsoftSupport();
         }
@@ -124,11 +118,11 @@ namespace Blog.Core.Extensions
             /// V1 版本
             /// </summary>
             V1 = 1,
+
             /// <summary>
             /// V2 版本
             /// </summary>
             V2 = 2,
         }
     }
-
 }

@@ -3,13 +3,16 @@ using System.Reflection;
 using System.Text;
 using Autofac;
 using Blog.Core.Common;
+using Blog.Core.Common.Helper;
 using Blog.Core.Common.LogHelper;
 using Blog.Core.Common.Seed;
 using Blog.Core.Extensions;
 using Blog.Core.Extensions.Middlewares;
+using Blog.Core.Extensions.ServiceExtensions;
 using Blog.Core.Filter;
 using Blog.Core.Hubs;
 using Blog.Core.IServices;
+using Blog.Core.Model;
 using Blog.Core.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -39,7 +42,6 @@ namespace Blog.Core
         {
             // 以下code可能与文章中不一样,对代码做了封装,具体查看右侧 Extensions 文件夹.
             services.AddSingleton(new AppSettings(Configuration));
-            services.AddSingleton(new LogLock(Env.ContentRootPath));
             services.AddUiFilesZipSetup(Env);
 
             Permissions.IsUseIds4 = AppSettings.app(new string[] { "Startup", "IdentityServer4", "Enabled" }).ObjToBool();
@@ -48,9 +50,7 @@ namespace Blog.Core
             // 确保从认证中心返回的ClaimType不被更改，不使用Map映射
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            services.AddMemoryCacheSetup();
-            services.AddRedisCacheSetup();
-
+            services.AddCacheSetup();
             services.AddSqlsugarSetup();
             services.AddDbSetup();
             services.AddAutoMapperSetup();
@@ -123,6 +123,8 @@ namespace Blog.Core
                 options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
                 //添加Enum转string
                 options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                //将long类型转为string
+                options.SerializerSettings.Converters.Add(new NumberConverter(NumberConverterShip.Int64));
             });
 
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());

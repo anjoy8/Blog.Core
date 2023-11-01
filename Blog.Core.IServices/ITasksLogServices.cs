@@ -12,8 +12,8 @@ namespace Blog.Core.IServices
 	/// </summary>	
     public interface ITasksLogServices :IBaseServices<TasksLog>
 	{
-		public Task<PageModel<TasksLog>> GetTaskLogs(int jobId, int page, int intPageSize,DateTime? runTime,DateTime? endTime);
-        public Task<object> GetTaskOverview(int jobId, DateTime? runTime, DateTime? endTime, string type);
+		public Task<PageModel<TasksLog>> GetTaskLogs(long jobId, int page, int intPageSize,DateTime? runTime,DateTime? endTime);
+        public Task<object> GetTaskOverview(long jobId, DateTime? runTime, DateTime? endTime, string type);
     }
 }
                     

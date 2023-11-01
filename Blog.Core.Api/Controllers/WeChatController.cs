@@ -1,18 +1,13 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using Blog.Core.IServices;
+﻿using Blog.Core.IServices;
 using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Blog.Core.Controllers
 {
     /// <summary>
     /// 微信公众号管理 
-    /// 作者:胡丁文
-    /// 时间:2020-3-29 21:24:12
     /// </summary>   
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -144,6 +139,18 @@ namespace Blog.Core.Controllers
         {
             string pushUserIP = $"{Request.HttpContext.Connection.RemoteIpAddress}:{Request.HttpContext.Connection.RemotePort}";
            return await _weChatConfigServices.PushCardMsg(msg, pushUserIP);
+        }
+        /// <summary>
+        /// 推送卡片消息接口
+        /// </summary>
+        /// <param name="msg">卡片消息对象</param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<MessageModel<WeChatResponseUserInfo>> PushCardMsgGet([FromQuery] WeChatCardMsgDataDto msg)
+        {
+            string pushUserIP = $"{Request.HttpContext.Connection.RemoteIpAddress}:{Request.HttpContext.Connection.RemotePort}";
+            return await _weChatConfigServices.PushCardMsg(msg, pushUserIP);
         }
         /// <summary>
         /// 推送文本消息

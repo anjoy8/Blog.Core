@@ -59,7 +59,6 @@ namespace Blog.Core.Tests
             services.AddAutoMapper(typeof(Startup));
 
             services.AddSingleton(new AppSettings(basePath));
-            services.AddSingleton(new LogLock(basePath));
             services.AddScoped<DBSeed>();
             services.AddScoped<MyContext>();
 

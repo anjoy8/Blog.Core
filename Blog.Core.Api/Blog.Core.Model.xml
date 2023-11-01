@@ -200,7 +200,7 @@
             用户访问趋势日志
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.AccessTrendLog.User">
+        <member name="P:Blog.Core.Model.Models.AccessTrendLog.UserInfo">
             <summary>
             用户
             </summary>
@@ -830,11 +830,6 @@
         <member name="P:Blog.Core.Model.Models.RoleModulePermission.ModifyTime">
             <summary>
             修改时间
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Id">
-            <summary>
-            雪花Id
             </summary>
         </member>
         <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Enabled">
@@ -1795,11 +1790,6 @@
             修改时间
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.RootEntity.Id">
-            <summary>
-            ID
-            </summary>
-        </member>
         <member name="T:Blog.Core.Model.DepartmentRoot`1">
             <summary>
             部门表
@@ -1965,6 +1955,11 @@
         <member name="F:Blog.Core.Model.ResponseEnum.ServerError">
             <summary>
             找不到指定资源
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Systems.DataBase.DataBaseReadType">
+            <summary>
+            数据库读取类型
             </summary>
         </member>
         <member name="T:Blog.Core.Model.TableModel`1">

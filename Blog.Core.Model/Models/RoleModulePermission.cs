@@ -6,7 +6,7 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 按钮跟权限关联表
     /// </summary>
-    public class RoleModulePermission : RoleModulePermissionRoot<int>
+    public class RoleModulePermission : RoleModulePermissionRoot<long>
     {
         public RoleModulePermission()
         {
@@ -26,7 +26,7 @@ namespace Blog.Core.Model.Models
         /// 创建ID
         /// </summary>
         [SugarColumn(IsNullable = true)]
-        public int? CreateId { get; set; }
+        public long? CreateId { get; set; }
         /// <summary>
         /// 创建者
         /// </summary>
@@ -41,7 +41,7 @@ namespace Blog.Core.Model.Models
         /// 修改ID
         /// </summary>
         [SugarColumn(IsNullable = true)]
-        public int? ModifyId { get; set; }
+        public long? ModifyId { get; set; }
         /// <summary>
         /// 修改者
         /// </summary>

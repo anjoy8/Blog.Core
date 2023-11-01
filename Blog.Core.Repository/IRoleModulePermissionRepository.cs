@@ -19,6 +19,6 @@ namespace Blog.Core.IRepository
         /// <param name="permissionId">菜单主键</param>
         /// <param name="moduleId">接口主键</param>
         /// <returns></returns>
-        Task UpdateModuleId(int permissionId, int moduleId);
+        Task UpdateModuleId(long permissionId, long moduleId);
     }
 }

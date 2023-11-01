@@ -5,6 +5,7 @@ using Blog.Core.Model;
 using Blog.Core.Model.Models;
 using Blog.Core.Model.Tenants;
 using Blog.Core.Repository.UnitOfWorks;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -26,21 +27,14 @@ namespace Blog.Core.Repository.Base
             {
                 ISqlSugarClient db = _dbBase;
 
-                /* 如果要开启多库支持，
-                * 1、在appsettings.json 中开启MutiDBEnabled节点为true，必填
-                * 2、设置一个主连接的数据库ID，节点MainDB，对应的连接字符串的Enabled也必须true，必填
-                */
-                if (AppSettings.app(new[] { "MutiDBEnabled" }).ObjToBool())
+                //修改使用 model备注字段作为切换数据库条件，使用sqlsugar TenantAttribute存放数据库ConnId
+                //参考 https://www.donet5.com/Home/Doc?typeId=2246
+                var tenantAttr = typeof(TEntity).GetCustomAttribute<TenantAttribute>();
+                if (tenantAttr != null)
                 {
-                    //修改使用 model备注字段作为切换数据库条件，使用sqlsugar TenantAttribute存放数据库ConnId
-                    //参考 https://www.donet5.com/Home/Doc?typeId=2246
-                    var tenantAttr = typeof(TEntity).GetCustomAttribute<TenantAttribute>();
-                    if (tenantAttr != null)
-                    {
-                        //统一处理 configId 小写
-                        db = _dbBase.GetConnectionScope(tenantAttr.configId.ToString().ToLower());
-                        return db;
-                    }
+                    //统一处理 configId 小写
+                    db = _dbBase.GetConnectionScope(tenantAttr.configId.ToString().ToLower());
+                    return db;
                 }
 
                 //多租户
@@ -113,7 +107,7 @@ namespace Blog.Core.Repository.Base
         /// </summary>
         /// <param name="entity">博文实体类</param>
         /// <returns></returns>
-        public async Task<int> Add(TEntity entity)
+        public async Task<long> Add(TEntity entity)
         {
             //var i = await Task.Run(() => _db.Insertable(entity).ExecuteReturnBigIdentity());
             ////返回的i是long类型,这里你可以根据你的业务需要进行处理
@@ -124,9 +118,8 @@ namespace Blog.Core.Repository.Base
             //这里你可以返回TEntity，这样的话就可以获取id值，无论主键是什么类型
             //var return3 = await insert.ExecuteReturnEntityAsync();
 
-            return await insert.ExecuteReturnIdentityAsync();
+            return await insert.ExecuteReturnSnowflakeIdAsync();
         }
-
 
         /// <summary>
         /// 写入实体数据
@@ -134,16 +127,16 @@ namespace Blog.Core.Repository.Base
         /// <param name="entity">实体类</param>
         /// <param name="insertColumns">指定只插入列</param>
         /// <returns>返回自增量列</returns>
-        public async Task<int> Add(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null)
+        public async Task<long> Add(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null)
         {
             var insert = _db.Insertable(entity);
             if (insertColumns == null)
             {
-                return await insert.ExecuteReturnIdentityAsync();
+                return await insert.ExecuteReturnSnowflakeIdAsync();
             }
             else
             {
-                return await insert.InsertColumns(insertColumns).ExecuteReturnIdentityAsync();
+                return await insert.InsertColumns(insertColumns).ExecuteReturnSnowflakeIdAsync();
             }
         }
 
@@ -152,9 +145,9 @@ namespace Blog.Core.Repository.Base
         /// </summary>
         /// <param name="listEntity">实体集合</param>
         /// <returns>影响行数</returns>
-        public async Task<int> Add(List<TEntity> listEntity)
+        public async Task<List<long>> Add(List<TEntity> listEntity)
         {
-            return await _db.Insertable(listEntity.ToArray()).ExecuteCommandAsync();
+            return await _db.Insertable(listEntity.ToArray()).ExecuteReturnSnowflakeIdListAsync();
         }
 
         /// <summary>
@@ -168,6 +161,15 @@ namespace Blog.Core.Repository.Base
             //var i = await Task.Run(() => _db.Updateable(entity).ExecuteCommand());
             //return i > 0;
             //这种方式会以主键为条件
+            return await _db.Updateable(entity).ExecuteCommandHasChangeAsync();
+        }
+        /// <summary>
+        /// 更新实体数据
+        /// </summary>
+        /// <param name="entity">博文实体类</param>
+        /// <returns></returns>
+        public async Task<bool> Update(List<TEntity> entity)
+        {
             return await _db.Updateable(entity).ExecuteCommandHasChangeAsync();
         }
 
@@ -557,5 +559,81 @@ namespace Blog.Core.Repository.Base
         //        groupName = s.groupName,
         //        jobName = s.jobName
         //    }, exp, s => new { s.uID, s.uRealName, s.groupName, s.jobName }, model.currentPage, model.pageSize, model.orderField + " " + model.orderType);
+
+        #region Split分表基础接口 （基础CRUD）
+
+        /// <summary>
+        /// 分页查询[使用版本，其他分页未测试]
+        /// </summary>
+        /// <param name="whereExpression">条件表达式</param>
+        /// <param name="pageIndex">页码（下标0）</param>
+        /// <param name="pageSize">页大小</param>
+        /// <param name="orderByFields">排序字段，如name asc,age desc</param>
+        /// <returns></returns>
+        public async Task<PageModel<TEntity>> QueryPageSplit(Expression<Func<TEntity, bool>> whereExpression, DateTime beginTime, DateTime endTime, int pageIndex = 1, int pageSize = 20, string orderByFields = null)
+        {
+            RefAsync<int> totalCount = 0;
+            var list = await _db.Queryable<TEntity>().SplitTable(beginTime, endTime)
+                .OrderByIF(!string.IsNullOrEmpty(orderByFields), orderByFields)
+                .WhereIF(whereExpression != null, whereExpression)
+                .ToPageListAsync(pageIndex, pageSize, totalCount);
+            var data = new PageModel<TEntity>(pageIndex, totalCount, pageSize, list);
+            return data;
+        }
+
+        /// <summary>
+        /// 写入实体数据
+        /// </summary>
+        /// <param name="entity">数据实体</param>
+        /// <returns></returns>
+        public async Task<List<long>> AddSplit(TEntity entity)
+        {
+            var insert = _db.Insertable(entity).SplitTable();
+            //插入并返回雪花ID并且自动赋值ID　
+            return await insert.ExecuteReturnSnowflakeIdListAsync();
+        }
+
+        /// <summary>
+        /// 更新实体数据
+        /// </summary>
+        /// <param name="entity">数据实体</param>
+        /// <returns></returns>
+        public async Task<bool> UpdateSplit(TEntity entity, DateTime dateTime)
+        {
+            //直接根据实体集合更新 （全自动 找表更新）
+            //return await _db.Updateable(entity).SplitTable().ExecuteCommandAsync();//,SplitTable不能少
+
+            //精准找单个表
+            var tableName = _db.SplitHelper<TEntity>().GetTableName(dateTime); //根据时间获取表名
+            return await _db.Updateable(entity).AS(tableName).ExecuteCommandHasChangeAsync();
+        }
+
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteSplit(TEntity entity, DateTime dateTime)
+        {
+            ////直接根据实体集合删除 （全自动 找表插入）,返回受影响数
+            //return await _db.Deleteable(entity).SplitTable().ExecuteCommandAsync();//,SplitTable不能少
+
+            //精准找单个表
+            var tableName = _db.SplitHelper<TEntity>().GetTableName(dateTime); //根据时间获取表名
+            return await _db.Deleteable<TEntity>().AS(tableName).Where(entity).ExecuteCommandHasChangeAsync();
+        }
+
+        /// <summary>
+        /// 根据ID查找数据
+        /// </summary>
+        /// <param name="objId"></param>
+        /// <returns></returns>
+        public async Task<TEntity> QueryByIdSplit(object objId)
+        {
+            return await _db.Queryable<TEntity>().In(objId).SplitTable(tabs => tabs).SingleAsync();
+        }
+
+        #endregion
     }
 }

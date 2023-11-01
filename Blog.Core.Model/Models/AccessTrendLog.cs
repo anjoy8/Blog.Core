@@ -6,13 +6,13 @@ namespace Blog.Core.Model.Models
     /// <summary>
     /// 用户访问趋势日志
     /// </summary>
-    public class AccessTrendLog : RootEntityTkey<int>
+    public class AccessTrendLog : RootEntityTkey<long>
     {
         /// <summary>
         /// 用户
         /// </summary>
         [SugarColumn(Length = 128, IsNullable = true)]
-        public string User { get; set; }
+        public string UserInfo { get; set; }
 
         /// <summary>
         /// 次数
