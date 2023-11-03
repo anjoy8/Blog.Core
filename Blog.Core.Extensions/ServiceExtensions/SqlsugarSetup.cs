@@ -83,10 +83,12 @@ namespace Blog.Core.Extensions
                     {
                         BaseDBConfig.MainConfig = config;
                     }
-
-                    //复用连接
-                    if (m.ConnId.ToLower().StartsWith(MainDb.CurrentDbConnId.ToLower()))
+                    else if (m.ConnId.ToLower().StartsWith(MainDb.CurrentDbConnId.ToLower()))
+                    {
+                        //复用连接
                         BaseDBConfig.ReuseConfigs.Add(config);
+                    }
+
 
                     BaseDBConfig.ValidConfig.Add(config);
                 }
