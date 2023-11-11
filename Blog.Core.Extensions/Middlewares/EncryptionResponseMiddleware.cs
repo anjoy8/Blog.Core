@@ -78,12 +78,16 @@ namespace Blog.Core.Extensions
                         string resJson = JsonConvert.SerializeObject(new { response, msg, status, s, success });
 
                         context.Response.Clear();
-                        await using var streamlriter = new StreamWriter(originalBodyStream, leaveOpen: true);
-                        await streamlriter.WriteAsync(resJson);
+                        responseCxt.ContentType = "application/json";
 
-                        //var encryptedData = Encoding.UTF8.GetBytes(resJson);
-                        //responseCxt.ContentLength = encryptedData.Length;
-                        //await originalBodyStream.WriteAsync(encryptedData, 0, encryptedData.Length);
+                        //await using var streamlriter = new StreamWriter(originalBodyStream, leaveOpen: true);
+                        //await streamlriter.WriteAsync(resJson);
+
+                        var encryptedData = Encoding.UTF8.GetBytes(resJson);
+                        responseCxt.ContentLength = encryptedData.Length;
+                        await originalBodyStream.WriteAsync(encryptedData, 0, encryptedData.Length);
+
+                        responseCxt.Body = originalBodyStream;
                     }
                 }
                 else
