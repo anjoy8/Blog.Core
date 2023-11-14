@@ -144,6 +144,9 @@ else
     //app.UseHsts();
 }
 
+app.UseEncryptionRequest();
+app.UseEncryptionResponse();
+
 app.UseExceptionHandlerMiddle();
 app.UseIpLimitMiddle();
 app.UseRequestResponseLogMiddle();
