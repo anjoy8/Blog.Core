@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Ocelot.ServiceDiscovery.Providers;
+﻿using Ocelot.ServiceDiscovery.Providers;
 using Ocelot.Values;
 using Nacos.V2;
 using Microsoft.Extensions.Options;
@@ -51,6 +47,11 @@ namespace Ocelot.Provider.Nacos
             }
 
             return await Task.FromResult(services);
+        }
+
+        public Task<List<Service>> GetAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

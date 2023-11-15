@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -130,6 +131,8 @@ Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 // 3、配置中间件
 var app = builder.Build();
+IdentityModelEventSource.ShowPII = true;
+
 app.ConfigureApplication();
 app.UseApplicationSetup();
 app.UseResponseBodyRead();

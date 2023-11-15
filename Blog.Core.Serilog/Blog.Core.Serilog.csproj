@@ -3,7 +3,7 @@
 	<Import Project="..\build\common.targets" />
 
 	<ItemGroup>
-		<PackageReference Include="Mapster" Version="7.3.0" />
+		<PackageReference Include="Mapster" Version="7.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>
