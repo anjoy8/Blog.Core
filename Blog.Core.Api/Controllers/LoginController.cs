@@ -70,7 +70,7 @@ namespace Blog.Core.Controllers
             var user = await _sysUserInfoServices.GetUserRoleNameStr(name, MD5Helper.MD5Encrypt32(pass));
             if (user != null)
             {
-                TokenModelJwt tokenModel = new TokenModelJwt { Uid = 1, Role = user };
+                TokenModelJwt tokenModel = new TokenModelJwt {Uid = 1, Role = user};
 
                 jwtStr = JwtHelper.IssueJwt(tokenModel);
                 suc = true;
@@ -121,7 +121,7 @@ namespace Blog.Core.Controllers
 
             var result = new
             {
-                data = new { success = suc, token = jwtStr }
+                data = new {success = suc, token = jwtStr}
             };
 
             return new MessageModel<string>()
@@ -164,7 +164,7 @@ namespace Blog.Core.Controllers
                     new Claim(ClaimTypes.Name, name),
                     new Claim(JwtRegisteredClaimNames.Jti, user.FirstOrDefault().Id.ToString()),
                     new Claim("TenantId", user.FirstOrDefault().TenantId.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString()),
                     new Claim(ClaimTypes.Expiration,
                         DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString())
                 };
@@ -236,7 +236,7 @@ namespace Blog.Core.Controllers
                     {
                         new Claim(ClaimTypes.Name, user.LoginName),
                         new Claim(JwtRegisteredClaimNames.Jti, tokenModel.Uid.ObjToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()),
+                        new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString()),
                         new Claim(ClaimTypes.Expiration,
                             DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString())
                     };
@@ -305,7 +305,7 @@ namespace Blog.Core.Controllers
         {
             if (loginRequest is null)
             {
-                return new { result = false };
+                return new {result = false};
             }
 
             try
@@ -315,7 +315,7 @@ namespace Blog.Core.Controllers
                 {
                     HttpContext.SuccessSwagger();
                     HttpContext.SuccessSwaggerJwt(result.response.token);
-                    return new { result = true };
+                    return new {result = true};
                 }
             }
             catch (Exception ex)
@@ -323,7 +323,7 @@ namespace Blog.Core.Controllers
                 _logger.LogWarning(ex, "Swagger登录异常");
             }
 
-            return new { result = false };
+            return new {result = false};
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace Blog.Core.Controllers
         [Route("wxLogin")]
         public dynamic WxLogin(string g = "", string token = "")
         {
-            return new { g, token };
+            return new {g, token};
         }
     }
 
