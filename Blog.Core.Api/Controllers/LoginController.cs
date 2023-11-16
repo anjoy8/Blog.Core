@@ -164,7 +164,7 @@ namespace Blog.Core.Controllers
                     new Claim(ClaimTypes.Name, name),
                     new Claim(JwtRegisteredClaimNames.Jti, user.FirstOrDefault().Id.ToString()),
                     new Claim("TenantId", user.FirstOrDefault().TenantId.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.DateToTimeStamp()),
                     new Claim(ClaimTypes.Expiration,
                         DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString())
                 };
@@ -236,7 +236,7 @@ namespace Blog.Core.Controllers
                     {
                         new Claim(ClaimTypes.Name, user.LoginName),
                         new Claim(JwtRegisteredClaimNames.Jti, tokenModel.Uid.ObjToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString()),
+                        new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.DateToTimeStamp()),
                         new Claim(ClaimTypes.Expiration,
                             DateTime.Now.AddSeconds(_requirement.Expiration.TotalSeconds).ToString())
                     };
