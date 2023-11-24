@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Blog.Core.Common.Swagger;
-using Serilog;
 
 
 namespace Blog.Core.Controllers
@@ -38,6 +37,7 @@ namespace Blog.Core.Controllers
         /// <param name="roleServices"></param>
         /// <param name="requirement"></param>
         /// <param name="roleModulePermissionServices"></param>
+        /// <param name="logger"></param>
         public LoginController(ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices,
             IRoleServices roleServices, PermissionRequirement requirement,
             IRoleModulePermissionServices roleModulePermissionServices, ILogger<LoginController> logger)

@@ -8,6 +8,7 @@ using Blog.Core.Model.ViewModels;
 using Blog.Core.SwaggerHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using StackExchange.Profiling;
 using static Blog.Core.Extensions.CustomApiVersion;
 
@@ -99,6 +100,7 @@ namespace Blog.Core.Controllers
         public async Task<MessageModel<BlogViewModels>> DetailNuxtNoPer(long id)
         {
             _logger.LogInformation("xxxxxxxxxxxxxxxxxxx");
+            Log.Information("yyyyyyyyyyyyyyyyy");
             return Success(await _blogArticleServices.GetBlogDetails(id));
         }
 

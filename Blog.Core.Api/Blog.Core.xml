@@ -186,6 +186,7 @@
             <param name="roleServices"></param>
             <param name="requirement"></param>
             <param name="roleModulePermissionServices"></param>
+            <param name="logger"></param>
         </member>
         <member name="M:Blog.Core.Controllers.LoginController.GetJwtStr(System.String,System.String)">
             <summary>
