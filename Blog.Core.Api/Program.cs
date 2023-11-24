@@ -1,4 +1,5 @@
-﻿// 以下为asp.net 6.0的写法，如果用5.0，请看Program.five.cs文件
+﻿// 以下为asp.net 6.0的写法，如果用5.0，请看Program.five.cs文件，
+// 或者参考github上的.net6.0分支相关代码
 
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -69,7 +70,6 @@ builder.Services.AddCorsSetup();
 builder.Services.AddMiniProfilerSetup();
 builder.Services.AddSwaggerSetup();
 builder.Services.AddJobSetup();
-//builder.Services.AddJobSetup_HostedService();
 builder.Services.AddHttpContextSetup();
 builder.Services.AddAppTableConfigSetup(builder.Environment);
 builder.Services.AddHttpApi();

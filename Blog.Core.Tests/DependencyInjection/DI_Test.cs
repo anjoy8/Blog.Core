@@ -1,12 +1,10 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
-using AutoMapper;
 using Blog.Core.AuthHelper;
 using Blog.Core.Common;
 using Blog.Core.Common.AppConfig;
 using Blog.Core.Common.DB;
-using Blog.Core.Common.LogHelper;
 using Blog.Core.Common.Seed;
 using Blog.Core.Extensions;
 using Blog.Core.IRepository.Base;
@@ -17,9 +15,6 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
@@ -56,7 +51,7 @@ namespace Blog.Core.Tests
             var basePath = AppContext.BaseDirectory;
 
             IServiceCollection services = new ServiceCollection();
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapperSetup();
 
             services.AddSingleton(new AppSettings(basePath));
             services.AddScoped<DBSeed>();
@@ -116,9 +111,9 @@ namespace Blog.Core.Tests
 
             // 属性注入
             var controllerBaseType = typeof(ControllerBase);
-            builder.RegisterAssemblyTypes(typeof(Startup).Assembly)
-                .Where(t => controllerBaseType.IsAssignableFrom(t) && t != controllerBaseType)
-                .PropertiesAutowired();
+            //builder.RegisterAssemblyTypes(typeof(Program).Assembly)
+            //    .Where(t => controllerBaseType.IsAssignableFrom(t) && t != controllerBaseType)
+            //    .PropertiesAutowired();
 
             var servicesDllFile = Path.Combine(basePath, "Blog.Core.Services.dll");
             var assemblysServices = Assembly.LoadFrom(servicesDllFile);
