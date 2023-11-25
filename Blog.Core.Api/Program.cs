@@ -70,15 +70,14 @@ builder.Services.AddCorsSetup();
 builder.Services.AddMiniProfilerSetup();
 builder.Services.AddSwaggerSetup();
 builder.Services.AddJobSetup();
+
 builder.Services.AddHttpContextSetup();
 builder.Services.AddAppTableConfigSetup(builder.Environment);
 builder.Services.AddHttpApi();
 builder.Services.AddRedisInitMqSetup();
-builder.Services.AddRabbitMQSetup();
-builder.Services.AddKafkaSetup(builder.Configuration);
-builder.Services.AddEventBusSetup();
 builder.Services.AddNacosSetup(builder.Configuration);
 builder.Services.AddInitializationHostServiceSetup();
+
 builder.Services.AddAuthorizationSetup();
 if (Permissions.IsUseIds4 || Permissions.IsUseAuthing)
 {
@@ -114,15 +113,11 @@ builder.Services.AddControllers(o =>
         options.SerializerSettings.Converters.Add(new StringEnumConverter());
         //将long类型转为string
         options.SerializerSettings.Converters.Add(new NumberConverter(NumberConverterShip.Int64));
-    })
-    //.AddFluentValidation(config =>
-    //{
-    //    //程序集方式添加验证
-    //    config.RegisterValidatorsFromAssemblyContaining(typeof(UserRegisterVoValidator));
-    //    //是否与MvcValidation共存
-    //    config.DisableDataAnnotationsValidation = true;
-    //})
-    ;
+    });
+
+builder.Services.AddRabbitMQSetup();
+builder.Services.AddKafkaSetup(builder.Configuration);
+builder.Services.AddEventBusSetup();
 
 builder.Services.AddEndpointsApiExplorer();
 
