@@ -3,7 +3,6 @@ using Blog.Core.Common;
 using Blog.Core.Common.HttpContextUser;
 using Blog.Core.Common.Https.HttpPolly;
 using Blog.Core.Common.Option;
-using Blog.Core.Common.WebApiClients.HttpApis;
 using Blog.Core.EventBus;
 using Blog.Core.EventBus.EventHandling;
 using Blog.Core.Extensions;
@@ -38,8 +37,6 @@ namespace Blog.Core.Controllers
         private readonly IRoleModulePermissionServices _roleModulePermissionServices;
         private readonly IUser _user;
         private readonly IPasswordLibServices _passwordLibServices;
-        private readonly IBlogApi _blogApi;
-        private readonly IDoubanApi _doubanApi;
         readonly IBlogArticleServices _blogArticleServices;
         private readonly IHttpPollyHelper _httpPollyHelper;
         private readonly SeqOptions _seqOptions;
@@ -54,17 +51,14 @@ namespace Blog.Core.Controllers
         /// <param name="roleModulePermissionServices"></param>
         /// <param name="user"></param>
         /// <param name="passwordLibServices"></param>
-        /// <param name="blogApi"></param>
-        /// <param name="doubanApi"></param>
         /// <param name="httpPollyHelper"></param>
+        /// <param name="seqOptions"></param>
         public ValuesController(IBlogArticleServices blogArticleServices
             , IMapper mapper
             , IAdvertisementServices advertisementServices
             , Love love
             , IRoleModulePermissionServices roleModulePermissionServices
             , IUser user, IPasswordLibServices passwordLibServices
-            , IBlogApi blogApi
-            , IDoubanApi doubanApi
             , IHttpPollyHelper httpPollyHelper
             , IOptions<SeqOptions> seqOptions)
         {
@@ -77,9 +71,6 @@ namespace Blog.Core.Controllers
             _user = user;
             // 测试多库
             _passwordLibServices = passwordLibServices;
-            // 测试http请求
-            _blogApi = blogApi;
-            _doubanApi = doubanApi;
             // 测试AOP加载顺序，配合 return
             _blogArticleServices = blogArticleServices;
             // 测试redis消息队列
@@ -162,11 +153,6 @@ namespace Blog.Core.Controllers
             { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", IsDeleted = false, bID = 5 });
 
 
-            // 测试模拟异常，全局异常过滤器拦截
-            var i = 0;
-            // var d = 3 / i;
-
-
             // 测试 AOP 缓存
             var blogArticles = await _blogArticleServices.GetBlogs();
 
@@ -240,7 +226,6 @@ namespace Blog.Core.Controllers
         // GET api/values/5
         [HttpGet("{id}")]
         [AllowAnonymous]
-        //[TypeFilter(typeof(DeleteSubscriptionCache),Arguments =new object[] { "1"})]
         [TypeFilter(typeof(UseServiceDIAttribute), Arguments = new object[] { "laozhang" })]
         public ActionResult<string> Get(int id)
         {
@@ -349,20 +334,6 @@ namespace Blog.Core.Controllers
                 blogs,
                 pwds
             };
-        }
-
-        /// <summary>
-        /// 测试http请求 WebApiClient Get
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("WebApiClientGetAsync")]
-        [AllowAnonymous]
-        public async Task<object> WebApiClientGetAsync()
-        {
-            int id = 1;
-            string isbn = "9787544270878";
-            var doubanVideoDetail = await _doubanApi.VideoDetailAsync(isbn);
-            return await _blogApi.DetailNuxtNoPerAsync(id);
         }
 
         /// <summary>

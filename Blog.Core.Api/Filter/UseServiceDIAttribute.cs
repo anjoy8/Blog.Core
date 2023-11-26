@@ -1,6 +1,5 @@
 ﻿using Blog.Core.IServices;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
 
 namespace Blog.Core.Filter
 {
@@ -11,7 +10,7 @@ namespace Blog.Core.Filter
         private readonly IBlogArticleServices _blogArticleServices;
         private readonly string _name;
 
-        public UseServiceDIAttribute(ILogger<UseServiceDIAttribute> logger, IBlogArticleServices blogArticleServices,string Name="")
+        public UseServiceDIAttribute(ILogger<UseServiceDIAttribute> logger, IBlogArticleServices blogArticleServices, string Name = "")
         {
             _logger = logger;
             _blogArticleServices = blogArticleServices;
@@ -21,14 +20,16 @@ namespace Blog.Core.Filter
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            //var dd =await _blogArticleServices.Query();
+            var dd = _blogArticleServices.Query().Result;
+            _logger.LogInformation("测试自定义服务特性");
+            Console.WriteLine(_name);
             base.OnActionExecuted(context);
             DeleteSubscriptionFiles();
         }
 
         private void DeleteSubscriptionFiles()
         {
-           
+
         }
     }
 }

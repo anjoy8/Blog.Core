@@ -62,6 +62,7 @@ JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services.AddCacheSetup();
 builder.Services.AddSqlsugarSetup();
 builder.Services.AddDbSetup();
+builder.Services.AddInitializationHostServiceSetup();
 
 builder.Host.AddSerilogSetup();
 
@@ -73,10 +74,12 @@ builder.Services.AddJobSetup();
 
 builder.Services.AddHttpContextSetup();
 builder.Services.AddAppTableConfigSetup(builder.Environment);
-builder.Services.AddHttpApi();
-builder.Services.AddRedisInitMqSetup();
+builder.Services.AddHttpPollySetup();
 builder.Services.AddNacosSetup(builder.Configuration);
-builder.Services.AddInitializationHostServiceSetup();
+builder.Services.AddRedisInitMqSetup();
+
+builder.Services.AddIpPolicyRateLimitSetup(builder.Configuration);
+builder.Services.AddSignalR().AddNewtonsoftJsonProtocol();
 
 builder.Services.AddAuthorizationSetup();
 if (Permissions.IsUseIds4 || Permissions.IsUseAuthing)
@@ -89,14 +92,11 @@ else
     builder.Services.AddAuthentication_JWTSetup();
 }
 
-builder.Services.AddIpPolicyRateLimitSetup(builder.Configuration);
-builder.Services.AddSignalR().AddNewtonsoftJsonProtocol();
 builder.Services.AddScoped<UseServiceDIAttribute>();
 builder.Services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
     .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
 
 builder.Services.AddSession();
-builder.Services.AddHttpPollySetup();
 builder.Services.AddControllers(o =>
     {
         o.Filters.Add(typeof(GlobalExceptionsFilter));
