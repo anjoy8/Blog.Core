@@ -14,8 +14,11 @@ using Blog.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace Blog.Core.Controllers
 {
@@ -39,6 +42,7 @@ namespace Blog.Core.Controllers
         private readonly IPasswordLibServices _passwordLibServices;
         readonly IBlogArticleServices _blogArticleServices;
         private readonly IHttpPollyHelper _httpPollyHelper;
+        private readonly IRabbitMQPersistentConnection _persistentConnection;
         private readonly SeqOptions _seqOptions;
 
         /// <summary>
@@ -52,6 +56,7 @@ namespace Blog.Core.Controllers
         /// <param name="user"></param>
         /// <param name="passwordLibServices"></param>
         /// <param name="httpPollyHelper"></param>
+        /// <param name="persistentConnection"></param>
         /// <param name="seqOptions"></param>
         public ValuesController(IBlogArticleServices blogArticleServices
             , IMapper mapper
@@ -60,6 +65,7 @@ namespace Blog.Core.Controllers
             , IRoleModulePermissionServices roleModulePermissionServices
             , IUser user, IPasswordLibServices passwordLibServices
             , IHttpPollyHelper httpPollyHelper
+            , IRabbitMQPersistentConnection persistentConnection
             , IOptions<SeqOptions> seqOptions)
         {
             // 测试 Authorize 和 mapper
@@ -77,7 +83,67 @@ namespace Blog.Core.Controllers
             _blogArticleServices = blogArticleServices;
             // httpPolly
             _httpPollyHelper = httpPollyHelper;
+            _persistentConnection = persistentConnection;
             _seqOptions = seqOptions.Value;
+        }
+
+        /// <summary>
+        /// 测试Rabbit消息队列发送
+        /// </summary>
+        [HttpGet]
+        [AllowAnonymous]
+        public void TestRabbitMqPublish()
+        {
+            if (!_persistentConnection.IsConnected)
+            {
+                _persistentConnection.TryConnect();
+            }
+            using var channel = _persistentConnection.CreateModel();
+            var message = " < i am a sender! > ";
+            var body = Encoding.UTF8.GetBytes(message);
+            var properties = channel.CreateBasicProperties();
+            channel.BasicPublish(
+                exchange: "blogcore",
+                routingKey: "eventName",
+                mandatory: true,
+                basicProperties: properties,
+                body: body);
+        }
+
+        /// <summary>
+        /// 测试Rabbit消息队列订阅
+        /// </summary>
+        [HttpGet]
+        [AllowAnonymous]
+        public void TestRabbitMqSubscribe()
+        {
+            if (!_persistentConnection.IsConnected)
+            {
+                _persistentConnection.TryConnect();
+            }
+
+            string QueueName = "testq";
+            using var channel = _persistentConnection.CreateModel();
+            var consumer = new AsyncEventingBasicConsumer(channel);
+
+            consumer.Received += new AsyncEventHandler<BasicDeliverEventArgs>(
+                async (a, b) =>
+                {
+                    var Headers = b.BasicProperties.Headers;
+                    var msgBody = b.Body.ToArray();
+                    bool Dealresult = await Dealer(b.Exchange, b.RoutingKey, msgBody, Headers);
+                    if (Dealresult) channel.BasicAck(b.DeliveryTag, false);
+                    else channel.BasicNack(b.DeliveryTag, false, true);
+                }
+                );
+            channel.BasicConsume(QueueName, false, consumer);
+        }
+
+        private async Task<bool> Dealer(string exchange, string routingKey, byte[] msgBody, IDictionary<string, object> headers)
+        {
+            await Task.CompletedTask;
+            Console.WriteLine("我是消费者，这里消费了一条信息是：" + Encoding.UTF8.GetString(msgBody));
+            return true;
         }
 
         [HttpGet]

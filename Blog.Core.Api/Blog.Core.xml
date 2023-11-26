@@ -758,7 +758,7 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.Https.HttpPolly.IHttpPollyHelper,Microsoft.Extensions.Options.IOptions{Blog.Core.Common.Option.SeqOptions})">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.Https.HttpPolly.IHttpPollyHelper,Blog.Core.EventBus.IRabbitMQPersistentConnection,Microsoft.Extensions.Options.IOptions{Blog.Core.Common.Option.SeqOptions})">
             <summary>
             ValuesController
             </summary>
@@ -770,7 +770,18 @@
             <param name="user"></param>
             <param name="passwordLibServices"></param>
             <param name="httpPollyHelper"></param>
+            <param name="persistentConnection"></param>
             <param name="seqOptions"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.TestRabbitMqPublish">
+            <summary>
+            测试Rabbit消息队列发送
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.TestRabbitMqSubscribe">
+            <summary>
+            测试Rabbit消息队列订阅
+            </summary>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.TestSqlsugarWithCache">
             <summary>
