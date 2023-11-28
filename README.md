@@ -56,7 +56,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 
 ### 功能与进度
 
-#### 商业授权付费版下🎁🎁🎁
+#### 企业使用高级版本
 
 - [x] 包含开源版 `框架模块/组件模块` 中的所有功能；
 - [x] 全部表结构主键底层架构改成`string`类型（默认雪花，支持guid），更方便迁移；
@@ -239,10 +239,7 @@ Contributions of any kind are welcome!
 ## 售后服务与支持  
 
 鼓励作者，简单打赏~~         
-打赏的时候，备注自己的微信号，加个微信，交个朋友，两天内没回应，QQ私聊我（3143422472）；      
-目前精力有限，主要针对企业级用户答疑，或者购买授权版的个人用户。    
-
-[赞赏列表](http://apk.neters.club/.doc/Contribution/)  
+如果你喜欢，就给作者加个鸡腿吧  
 
  
 <img src="http://apk.neters.club/laozhangisphigood.jpg" alt="赞赏码" width="300" >
