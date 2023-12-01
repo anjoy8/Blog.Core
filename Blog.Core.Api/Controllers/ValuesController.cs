@@ -92,22 +92,14 @@ namespace Blog.Core.Controllers
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        public void TestRabbitMqPublish()
+        public IActionResult TestRabbitMqPublish()
         {
             if (!_persistentConnection.IsConnected)
             {
                 _persistentConnection.TryConnect();
             }
-            using var channel = _persistentConnection.CreateModel();
-            var message = " < i am a sender! > ";
-            var body = Encoding.UTF8.GetBytes(message);
-            var properties = channel.CreateBasicProperties();
-            channel.BasicPublish(
-                exchange: "blogcore",
-                routingKey: "eventName",
-                mandatory: true,
-                basicProperties: properties,
-                body: body);
+            _persistentConnection.PublishMessage("Hello, RabbitMQ!", exchangeName: "blogcore", routingKey: "myRoutingKey");
+            return Ok();
         }
 
         /// <summary>
@@ -115,28 +107,15 @@ namespace Blog.Core.Controllers
         /// </summary>
         [HttpGet]
         [AllowAnonymous]
-        public void TestRabbitMqSubscribe()
+        public IActionResult TestRabbitMqSubscribe()
         {
             if (!_persistentConnection.IsConnected)
             {
                 _persistentConnection.TryConnect();
             }
 
-            string QueueName = "testq";
-            using var channel = _persistentConnection.CreateModel();
-            var consumer = new AsyncEventingBasicConsumer(channel);
-
-            consumer.Received += new AsyncEventHandler<BasicDeliverEventArgs>(
-                async (a, b) =>
-                {
-                    var Headers = b.BasicProperties.Headers;
-                    var msgBody = b.Body.ToArray();
-                    bool Dealresult = await Dealer(b.Exchange, b.RoutingKey, msgBody, Headers);
-                    if (Dealresult) channel.BasicAck(b.DeliveryTag, false);
-                    else channel.BasicNack(b.DeliveryTag, false, true);
-                }
-                );
-            channel.BasicConsume(QueueName, false, consumer);
+            _persistentConnection.StartConsuming("myQueue");
+            return Ok();
         }
 
         private async Task<bool> Dealer(string exchange, string routingKey, byte[] msgBody, IDictionary<string, object> headers)

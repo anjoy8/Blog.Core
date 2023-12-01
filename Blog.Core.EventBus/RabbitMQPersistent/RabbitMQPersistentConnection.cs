@@ -7,6 +7,7 @@ using RabbitMQ.Client.Exceptions;
 using System;
 using System.IO;
 using System.Net.Sockets;
+using System.Text;
 
 namespace Blog.Core.EventBus
 {
@@ -161,6 +162,50 @@ namespace Blog.Core.EventBus
             _logger.LogWarning("A RabbitMQ connection is on shutdown. Trying to re-connect...");
 
             TryConnect();
+        }
+
+        /// <summary>
+        /// 发布消息
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="exchangeName"></param>
+        /// <param name="routingKey"></param>
+        public void PublishMessage(string message, string exchangeName, string routingKey)
+        {
+            using var channel = CreateModel();
+            channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Direct, true);
+            var body = Encoding.UTF8.GetBytes(message);
+            channel.BasicPublish(exchange: exchangeName, routingKey: routingKey, basicProperties: null, body: body);
+        }
+
+        /// <summary>
+        /// 订阅消息
+        /// </summary>
+        /// <param name="queueName"></param>
+        public void StartConsuming(string queueName)
+        {
+            using var channel = CreateModel();
+            channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+
+            var consumer = new AsyncEventingBasicConsumer(channel);
+            consumer.Received += new AsyncEventHandler<BasicDeliverEventArgs>(
+                async (a, b) =>
+                {
+                    var Headers = b.BasicProperties.Headers;
+                    var msgBody = b.Body.ToArray();
+                    var message = Encoding.UTF8.GetString(msgBody);
+                    await Task.CompletedTask;
+                    Console.WriteLine("Received message: {0}", message);
+
+                    //bool Dealresult = await Dealer(b.Exchange, b.RoutingKey, msgBody, Headers);
+                    //if (Dealresult) channel.BasicAck(b.DeliveryTag, false);
+                    //else channel.BasicNack(b.DeliveryTag, false, true);
+                }
+                );
+
+            channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
+
+            Console.WriteLine("Consuming messages...");
         }
     }
 }
