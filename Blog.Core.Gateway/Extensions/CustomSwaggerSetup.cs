@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Blog.Core.Common;
+using Blog.Core.Extensions.Middlewares;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using static Blog.Core.Extensions.CustomApiVersion;
 namespace Blog.Core.Gateway.Extensions
 {
     public static class CustomSwaggerSetup
@@ -44,23 +49,30 @@ namespace Blog.Core.Gateway.Extensions
             });
         }
 
-        public static void UseCustomSwaggerMildd(this IApplicationBuilder app)
+        public static void UseCustomSwaggerMildd(this IApplicationBuilder app, Func<Stream> streamHtml)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
             var apis = new List<string> { "blog-svc" };
-            app.UseMvc().UseSwagger();
-            app.UseSwaggerUI(options =>
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                options.SwaggerEndpoint($"/swagger/v1/swagger.json", $"Blog.Core.Gateway-v1");
-
+                c.SwaggerEndpoint($"/swagger/v1/swagger.json", "gateway");
                 apis.ForEach(m =>
                 {
-                    options.SwaggerEndpoint($"/swagger/apiswg/{m}/swagger.json", m);
-                    options.IndexStream = () => app.GetType().GetTypeInfo().Assembly.GetManifestResourceStream("Blog.Core.ApiGateway.index.html");
+                    c.SwaggerEndpoint($"/swagger/apiswg/{m}/swagger.json", m);
                 });
 
-                options.RoutePrefix = "";
+
+                if (streamHtml.Invoke() == null)
+                {
+                    var msg = "index.html的属性，必须设置为嵌入的资源";
+                    throw new Exception(msg);
+                }
+
+                c.IndexStream = streamHtml;
+
+                c.RoutePrefix = "";
             });
         }
 
