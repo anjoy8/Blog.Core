@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Security.Claims;
 
 namespace Blog.Core.Controllers
 {
@@ -349,8 +350,14 @@ namespace Blog.Core.Controllers
                                      where item.Type == "sub"
                                      select item.Value).FirstOrDefault().ObjToLong();
                 roleIds = (from item in _httpContext.HttpContext.User.Claims
-                           where item.Type == "role"
+                           where item.Type == ClaimTypes.Role
                            select item.Value.ObjToLong()).ToList();
+                if (!roleIds.Any())
+                {
+                    roleIds = (from item in _httpContext.HttpContext.User.Claims
+                               where item.Type == "role"
+                               select item.Value.ObjToLong()).ToList(); 
+                }
             }
             else
             {
@@ -440,8 +447,14 @@ namespace Blog.Core.Controllers
                                      where item.Type == "sub"
                                      select item.Value).FirstOrDefault().ObjToLong();
                 roleIds = (from item in _httpContext.HttpContext.User.Claims
-                           where item.Type == "role"
+                           where item.Type == ClaimTypes.Role
                            select item.Value.ObjToLong()).ToList();
+                if (!roleIds.Any())
+                {
+                    roleIds = (from item in _httpContext.HttpContext.User.Claims
+                               where item.Type == "role"
+                               select item.Value.ObjToLong()).ToList();
+                }
             }
             else
             {

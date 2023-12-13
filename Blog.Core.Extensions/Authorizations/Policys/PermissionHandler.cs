@@ -208,19 +208,13 @@ namespace Blog.Core.AuthHelper
 
                         // 获取当前用户的角色信息
                         var currentUserRoles = new List<string>();
-                        // ids4和jwt切换
-                        // ids4
-                        if (Permissions.IsUseIds4)
+                        currentUserRoles = (from item in httpContext.User.Claims
+                                            where item.Type == ClaimTypes.Role
+                                            select item.Value).ToList();
+                        if (!currentUserRoles.Any())
                         {
                             currentUserRoles = (from item in httpContext.User.Claims
                                                 where item.Type == "role"
-                                                select item.Value).ToList();
-                        }
-                        else
-                        {
-                            // jwt
-                            currentUserRoles = (from item in httpContext.User.Claims
-                                                where item.Type == requirement.ClaimType
                                                 select item.Value).ToList();
                         }
 
