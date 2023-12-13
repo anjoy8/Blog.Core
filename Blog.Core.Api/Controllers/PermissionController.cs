@@ -347,8 +347,14 @@ namespace Blog.Core.Controllers
             {
                 // ids4
                 uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
-                                     where item.Type == "sub"
+                                     where item.Type == ClaimTypes.NameIdentifier
                                      select item.Value).FirstOrDefault().ObjToLong();
+                if (!(uidInHttpcontext1 > 0))
+                {
+                    uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
+                                         where item.Type == "sub"
+                                         select item.Value).FirstOrDefault().ObjToLong();
+                }
                 roleIds = (from item in _httpContext.HttpContext.User.Claims
                            where item.Type == ClaimTypes.Role
                            select item.Value.ObjToLong()).ToList();
@@ -444,8 +450,14 @@ namespace Blog.Core.Controllers
             {
                 // ids4
                 uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
-                                     where item.Type == "sub"
+                                     where item.Type == ClaimTypes.NameIdentifier
                                      select item.Value).FirstOrDefault().ObjToLong();
+                if (!(uidInHttpcontext1 > 0))
+                {
+                    uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
+                                         where item.Type == "sub"
+                                         select item.Value).FirstOrDefault().ObjToLong();
+                }
                 roleIds = (from item in _httpContext.HttpContext.User.Claims
                            where item.Type == ClaimTypes.Role
                            select item.Value.ObjToLong()).ToList();
