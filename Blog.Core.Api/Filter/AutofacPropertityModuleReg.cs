@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Blog.Core.Extensions
+namespace Blog.Core.Filter
 {
     public class AutofacPropertityModuleReg : Autofac.Module
     {
