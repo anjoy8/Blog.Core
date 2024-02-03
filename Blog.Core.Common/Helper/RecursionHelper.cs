@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blog.Core.Model.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -76,6 +77,42 @@ namespace Blog.Core.Common.Helper
                 }
 
                 LoopToAppendChildren(all, subItem, pid);
+            }
+        }
+        /// <summary>
+        /// 菜单列表
+        /// </summary>
+        /// <param name="all"></param>
+        /// <param name="curItem"></param>
+        /// <param name="pid"></param>
+        /// <param name="allApi"></param>
+        public static void LoopToAppendChildren(List<Permission> all, Permission curItem, long pid, List<Modules> allApi)
+        {
+            var subItems = all.Where(ee => ee.Pid == curItem.Id).ToList();
+            curItem.MName = allApi.FirstOrDefault(d => d.Id == curItem.Mid)?.LinkUrl;
+            if (subItems.Count > 0)
+            {
+
+                foreach (var subItem in subItems)
+                {
+                    subItem.MName = allApi.FirstOrDefault(d => d.Id == subItem.Mid)?.LinkUrl;
+                }
+
+                curItem.children = subItems;
+            }
+            else
+            {
+                curItem.children = new List<Permission>();
+            }
+
+            foreach (var subItem in subItems)
+            {
+                if (subItem.Id == pid && pid > 0)
+                {
+                    //subItem.disabled = true;//禁用当前节点
+                }
+
+                LoopToAppendChildren(all, subItem, pid, allApi);
             }
         }
 

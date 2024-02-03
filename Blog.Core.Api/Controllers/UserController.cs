@@ -9,6 +9,7 @@ using Blog.Core.Model.ViewModels;
 using Blog.Core.Repository.UnitOfWorks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Blog.Core.Controllers
 {
@@ -28,6 +29,7 @@ namespace Blog.Core.Controllers
         private readonly IUser _user;
         private readonly IMapper _mapper;
         private readonly ILogger<UserController> _logger;
+        public IHttpContextAccessor _httpContext;
 
         /// <summary>
         /// 构造函数
@@ -39,12 +41,14 @@ namespace Blog.Core.Controllers
         /// <param name="departmentServices"></param>
         /// <param name="user"></param>
         /// <param name="mapper"></param>
-        /// <param name="logger"></param>
+        /// <param name="logger"></param
+        /// <param name="httpContext"></param>
         public UserController(IUnitOfWorkManage unitOfWorkManage, ISysUserInfoServices sysUserInfoServices,
             IUserRoleServices userRoleServices,
             IRoleServices roleServices,
             IDepartmentServices departmentServices,
-            IUser user, IMapper mapper, ILogger<UserController> logger)
+            IUser user, IMapper mapper, ILogger<UserController> logger
+            ,IHttpContextAccessor httpContext)
         {
             _unitOfWorkManage = unitOfWorkManage;
             _sysUserInfoServices = sysUserInfoServices;
@@ -54,6 +58,8 @@ namespace Blog.Core.Controllers
             _user = user;
             _mapper = mapper;
             _logger = logger;
+            _httpContext = httpContext;
+
         }
 
         /// <summary>
@@ -64,7 +70,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<SysUserInfoDto>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<SysUserInfo>>> Get(int page = 1, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -100,7 +106,7 @@ namespace Blog.Core.Controllers
             #endregion
 
 
-            return Success(data.ConvertTo<SysUserInfoDto>(_mapper));
+            return Success(data.ConvertTo<SysUserInfo>(_mapper));
         }
 
         private (string, List<long>) GetFullDepartmentName(List<Department> departments, long departmentId)
@@ -137,9 +143,9 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<MessageModel<SysUserInfoDto>> GetInfoByToken(string token)
+        public async Task<MessageModel<SysUserInfo>> GetInfoByToken(string token)
         {
-            var data = new MessageModel<SysUserInfoDto>();
+            var data = new MessageModel<SysUserInfo>();
             if (!string.IsNullOrEmpty(token))
             {
                 var tokenModel = JwtHelper.SerializeJwt(token);
@@ -148,7 +154,7 @@ namespace Blog.Core.Controllers
                     var userinfo = await _sysUserInfoServices.QueryById(tokenModel.Uid);
                     if (userinfo != null)
                     {
-                        data.response = _mapper.Map<SysUserInfoDto>(userinfo);
+                        data.response = userinfo;
                         data.success = true;
                         data.msg = "获取成功";
                     }
@@ -165,14 +171,14 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // POST: api/User
         [HttpPost]
-        public async Task<MessageModel<string>> Post([FromBody] SysUserInfoDto sysUserInfo)
+        public async Task<MessageModel<string>> Post([FromBody] SysUserInfo sysUserInfo)
         {
             var data = new MessageModel<string>();
 
-            sysUserInfo.uLoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.uLoginPWD);
-            sysUserInfo.uRemark = _user.Name;
+            sysUserInfo.LoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.LoginPWD);
+            sysUserInfo.Remark = _user.Name;
 
-            var id = await _sysUserInfoServices.Add(_mapper.Map<SysUserInfo>(sysUserInfo));
+            var id = await _sysUserInfoServices.Add(sysUserInfo);
             data.success = id > 0;
             if (data.success)
             {
@@ -190,12 +196,12 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // PUT: api/User/5
         [HttpPut]
-        public async Task<MessageModel<string>> Put([FromBody] SysUserInfoDto sysUserInfo)
+        public async Task<MessageModel<string>> Put([FromBody] SysUserInfo sysUserInfo)
         {
             // 这里使用事务处理
             var data = new MessageModel<string>();
 
-            var oldUser = await _sysUserInfoServices.QueryById(sysUserInfo.uID);
+            var oldUser = await _sysUserInfoServices.QueryById(sysUserInfo.Id);
             if (oldUser is not { Id: > 0 })
             {
                 return Failed<string>("用户不存在或已被删除");
@@ -203,7 +209,7 @@ namespace Blog.Core.Controllers
 
             try
             {
-                if (sysUserInfo.uLoginPWD != oldUser.LoginPWD)
+                if (sysUserInfo.LoginPWD != oldUser.LoginPWD)
                 {
                     oldUser.CriticalModifyTime = DateTime.Now;
                 }
@@ -281,6 +287,109 @@ namespace Blog.Core.Controllers
             }
 
             return data;
+        }
+
+
+        /// <summary>
+        /// 重置密码
+        /// </summary>
+        /// <param name="sysUserInfo"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Authorize(Permissions.Name)]
+        public async Task<MessageModel<string>> ResetPass([FromBody] SysUserInfo sysUserInfo)
+        {
+            //重置密码
+
+            var oldUser = await _sysUserInfoServices.QueryById(sysUserInfo.Id);
+            if (oldUser == null || oldUser.IsDeleted)
+            {
+                return Failed<string>("用户不存在或已被删除");
+            }
+            oldUser.LoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.LoginPWD);
+            await _sysUserInfoServices.Update(oldUser);
+            return Success<string>("重置成功");
+        }
+
+        /// <summary>
+        /// 更新头像
+        /// </summary>
+        /// <param name="sysUserInfo"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Authorize]
+        public async Task<MessageModel<string>> RefreshMyLogo([FromBody] SysUserInfo sysUserInfo)
+        {
+            //重置密码 登录既可修改
+            var uid = _user.ID;
+            var oldUser = await _sysUserInfoServices.QueryById(uid);
+            if (oldUser == null || oldUser.IsDeleted)
+            {
+                return Failed<string>("用户不存在或已被删除");
+            }
+            oldUser.logo = sysUserInfo.logo;
+            await _sysUserInfoServices.Update(oldUser);
+            return Success<string>("更新成功");
+        }
+
+        /// <summary>
+        /// 重置我的密码
+        /// </summary>
+        /// <param name="sysUserInfo"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Authorize]
+        public async Task<MessageModel<string>> ResetMyPass([FromBody] SysUserInfo sysUserInfo)
+        {
+            //重置密码 登录既可修改
+
+            var uid = _user.ID;
+            var oldUser = await _sysUserInfoServices.QueryById(uid);
+            if (oldUser == null || oldUser.IsDeleted)
+            {
+                return Failed<string>("用户不存在或已被删除");
+            }
+            oldUser.LoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.LoginPWD);
+            await _sysUserInfoServices.Update(oldUser);
+            return Success<string>("重置成功");
+        }
+        /// <summary>
+        /// 更新我的资料
+        /// </summary>
+        /// <param name="sysUserInfo"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Authorize]
+        public async Task<MessageModel<string>> PutMyInfo([FromBody] SysUserInfo sysUserInfo)
+        {
+
+            var uid = _user.ID;
+
+            var data = new MessageModel<string>();
+
+            //登录账号判断
+            var hasUser = await _sysUserInfoServices.Query(t => t.LoginName == sysUserInfo.LoginName && t.IsDeleted == false && t.Id != uid);
+            if (hasUser.Count > 0)
+            {
+                return Failed<string>($"登录名:{sysUserInfo.LoginName}已存在,请重新填写!");
+            }
+
+            var oldUser = await _sysUserInfoServices.QueryById(uid);
+            if (oldUser == null || oldUser.IsDeleted)
+            {
+                return Failed<string>("用户不存在或已被删除");
+            }
+
+            oldUser.RealName = sysUserInfo.RealName;
+            oldUser.LoginName = sysUserInfo.LoginName;
+            oldUser.Sex = sysUserInfo.Sex;
+            oldUser.Age = sysUserInfo.Age;
+            oldUser.Birth = sysUserInfo.Birth;
+            oldUser.Address = sysUserInfo.Address;
+            oldUser.Remark = sysUserInfo.Remark;
+            await _sysUserInfoServices.Update(oldUser);
+
+            return Success<string>("更新成功");
         }
     }
 }

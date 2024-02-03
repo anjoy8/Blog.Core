@@ -386,6 +386,86 @@
             Nullable:True
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Models.DicData">
+            <summary>
+            字典数据表(多数据)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicData.pCode">
+            <summary>
+            父级字典code
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicData.code">
+            <summary>
+            字典code
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicData.name">
+            <summary>
+            字典名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicData.content">
+            <summary>
+            字典内容
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicData.content2">
+            <summary>
+            字典内容2
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicData.content3">
+            <summary>
+            字典内容3
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicData.description">
+            <summary>
+            字典描述
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicData.codeOrder">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Models.DicType">
+            <summary>
+            字典类型表(单数据)
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicType.code">
+            <summary>
+            字典code
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicType.name">
+            <summary>
+            字典名称
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicType.content">
+            <summary>
+            字典内容
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicType.content2">
+            <summary>
+            字典内容2
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicType.content3">
+            <summary>
+            字典内容3
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.DicType.description">
+            <summary>
+            字典描述
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.Models.GblLogAudit">
             <summary>
             用户团队表
@@ -1922,22 +2002,27 @@
             时间:2020-4-3 20:31:26
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.PageIndex">
+        <member name="P:Blog.Core.Model.PaginationModel.page">
             <summary>
             当前页
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.PageSize">
+        <member name="P:Blog.Core.Model.PaginationModel.size">
             <summary>
             每页大小
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.OrderByFileds">
+        <member name="P:Blog.Core.Model.PaginationModel.key">
+            <summary>
+            搜索关键词
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.PaginationModel.orderByFileds">
             <summary>
             排序字段(例如:id desc,time asc)
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.PaginationModel.Conditions">
+        <member name="P:Blog.Core.Model.PaginationModel.conditions">
             <summary>
             查询条件( 例如:id = 1 and name = 小明)
             </summary>

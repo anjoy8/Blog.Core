@@ -338,8 +338,8 @@ namespace Blog.Core.Services.BASE
 
         public async Task<PageModel<TEntity>> QueryPage(PaginationModel pagination)
         {
-            var express = DynamicLinqFactory.CreateLambda<TEntity>(pagination.Conditions);
-            return await QueryPage(express, pagination.PageIndex, pagination.PageSize, pagination.OrderByFileds);
+            var express = DynamicLinqFactory.CreateLambda<TEntity>(pagination.conditions);
+            return await QueryPage(express, pagination.page, pagination.size, pagination.orderByFileds);
         }
 
         #region 分表

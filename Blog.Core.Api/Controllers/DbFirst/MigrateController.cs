@@ -276,9 +276,9 @@ namespace Blog.Core.Controllers
         {
             foreach (var item in permissionsTree)
             {
-                item.Children = all.Where(d => d.Pid == item.Id).ToList();
+                item.children = all.Where(d => d.Pid == item.Id).ToList();
                 item.Module = apis.FirstOrDefault(d => d.Id == item.Mid);
-                InitPermissionTree(item.Children, all, apis);
+                InitPermissionTree(item.children, all, apis);
             }
         }
 
@@ -342,7 +342,7 @@ namespace Blog.Core.Controllers
                 }
                 pms.Add(pm);
 
-                await SavePermissionTreeAsync(item.Children, pms, permissionId);
+                await SavePermissionTreeAsync(item.children, pms, permissionId);
             }
         }
 
