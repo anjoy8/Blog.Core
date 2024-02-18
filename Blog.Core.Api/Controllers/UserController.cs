@@ -70,7 +70,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<SysUserInfo>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<SysUserInfo>>> Get_V3(int page = 1, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -108,6 +108,53 @@ namespace Blog.Core.Controllers
 
             return Success(data.ConvertTo<SysUserInfo>(_mapper));
         }
+        /// <summary>
+        /// 获取全部用户
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        // GET: api/User
+        [HttpGet]
+        public async Task<MessageModel<PageModel<SysUserInfoDto>>> Get(int page = 1, string key = "")
+        {
+            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+            {
+                key = "";
+            }
+
+            int intPageSize = 50;
+
+
+            var data = await _sysUserInfoServices.QueryPage(a => a.IsDeleted != true && a.Status >= 0 && ((a.LoginName != null && a.LoginName.Contains(key)) || (a.RealName != null && a.RealName.Contains(key))), page, intPageSize, " Id desc ");
+
+
+            #region MyRegion
+
+            // 这里可以封装到多表查询，此处简单处理
+            var allUserRoles = await _userRoleServices.Query(d => d.IsDeleted == false);
+            var allRoles = await _roleServices.Query(d => d.IsDeleted == false);
+            var allDepartments = await _departmentServices.Query(d => d.IsDeleted == false);
+
+            var sysUserInfos = data.data;
+            foreach (var item in sysUserInfos)
+            {
+                var currentUserRoles = allUserRoles.Where(d => d.UserId == item.Id).Select(d => d.RoleId).ToList();
+                item.RIDs = currentUserRoles;
+                item.RoleNames = allRoles.Where(d => currentUserRoles.Contains(d.Id)).Select(d => d.Name).ToList();
+                var departmentNameAndIds = GetFullDepartmentName(allDepartments, item.DepartmentId);
+                item.DepartmentName = departmentNameAndIds.Item1;
+                item.Dids = departmentNameAndIds.Item2;
+            }
+
+            data.data = sysUserInfos;
+
+            #endregion
+
+
+            return Success(data.ConvertTo<SysUserInfoDto>(_mapper));
+        }
+
 
         private (string, List<long>) GetFullDepartmentName(List<Department> departments, long departmentId)
         {
@@ -143,7 +190,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<MessageModel<SysUserInfo>> GetInfoByToken(string token)
+        public async Task<MessageModel<SysUserInfo>> GetInfoByToken_V3(string token)
         {
             var data = new MessageModel<SysUserInfo>();
             if (!string.IsNullOrEmpty(token))
@@ -163,6 +210,35 @@ namespace Blog.Core.Controllers
 
             return data;
         }
+        // GET: api/User/5
+        /// <summary>
+        /// 获取用户详情根据token
+        /// 【无权限】
+        /// </summary>
+        /// <param name="token">令牌</param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<MessageModel<SysUserInfoDto>> GetInfoByToken(string token)
+        {
+            var data = new MessageModel<SysUserInfoDto>();
+            if (!string.IsNullOrEmpty(token))
+            {
+                var tokenModel = JwtHelper.SerializeJwt(token);
+                if (tokenModel != null && tokenModel.Uid > 0)
+                {
+                    var userinfo = await _sysUserInfoServices.QueryById(tokenModel.Uid);
+                    if (userinfo != null)
+                    {
+                        data.response = _mapper.Map<SysUserInfoDto>(userinfo);
+                        data.success = true;
+                        data.msg = "获取成功";
+                    }
+                }
+            }
+
+            return data;
+        }
 
         /// <summary>
         /// 添加一个用户
@@ -171,7 +247,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // POST: api/User
         [HttpPost]
-        public async Task<MessageModel<string>> Post([FromBody] SysUserInfo sysUserInfo)
+        public async Task<MessageModel<string>> Post_V3([FromBody] SysUserInfo sysUserInfo)
         {
             var data = new MessageModel<string>();
 
@@ -179,6 +255,30 @@ namespace Blog.Core.Controllers
             sysUserInfo.Remark = _user.Name;
 
             var id = await _sysUserInfoServices.Add(sysUserInfo);
+            data.success = id > 0;
+            if (data.success)
+            {
+                data.response = id.ObjToString();
+                data.msg = "添加成功";
+            }
+
+            return data;
+        }
+        /// <summary>
+        /// 添加一个用户
+        /// </summary>
+        /// <param name="sysUserInfo"></param>
+        /// <returns></returns>
+        // POST: api/User
+        [HttpPost]
+        public async Task<MessageModel<string>> Post([FromBody] SysUserInfoDto sysUserInfo)
+        {
+            var data = new MessageModel<string>();
+
+            sysUserInfo.uLoginPWD = MD5Helper.MD5Encrypt32(sysUserInfo.uLoginPWD);
+            sysUserInfo.uRemark = _user.Name;
+
+            var id = await _sysUserInfoServices.Add(_mapper.Map<SysUserInfo>(sysUserInfo));
             data.success = id > 0;
             if (data.success)
             {
@@ -196,7 +296,7 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // PUT: api/User/5
         [HttpPut]
-        public async Task<MessageModel<string>> Put([FromBody] SysUserInfo sysUserInfo)
+        public async Task<MessageModel<string>> Put_V3([FromBody] SysUserInfo sysUserInfo)
         {
             // 这里使用事务处理
             var data = new MessageModel<string>();
@@ -210,6 +310,80 @@ namespace Blog.Core.Controllers
             try
             {
                 if (sysUserInfo.LoginPWD != oldUser.LoginPWD)
+                {
+                    oldUser.CriticalModifyTime = DateTime.Now;
+                }
+
+                _mapper.Map(sysUserInfo, oldUser);
+
+                _unitOfWorkManage.BeginTran();
+                // 无论 Update Or Add , 先删除当前用户的全部 U_R 关系
+                var usreroles = (await _userRoleServices.Query(d => d.UserId == oldUser.Id));
+                if (usreroles.Any())
+                {
+                    var ids = usreroles.Select(d => d.Id.ToString()).ToArray();
+                    var isAllDeleted = await _userRoleServices.DeleteByIds(ids);
+                    if (!isAllDeleted)
+                    {
+                        return Failed("服务器更新异常");
+                    }
+                }
+
+                // 然后再执行添加操作
+                if (sysUserInfo.RIDs.Count > 0)
+                {
+                    var userRolsAdd = new List<UserRole>();
+                    sysUserInfo.RIDs.ForEach(rid => { userRolsAdd.Add(new UserRole(oldUser.Id, rid)); });
+
+                    var oldRole = usreroles.Select(s => s.RoleId).OrderBy(i => i).ToArray();
+                    var newRole = userRolsAdd.Select(s => s.RoleId).OrderBy(i => i).ToArray();
+                    if (!oldRole.SequenceEqual(newRole))
+                    {
+                        oldUser.CriticalModifyTime = DateTime.Now;
+                    }
+
+                    await _userRoleServices.Add(userRolsAdd);
+                }
+
+                data.success = await _sysUserInfoServices.Update(oldUser);
+
+                _unitOfWorkManage.CommitTran();
+
+                if (data.success)
+                {
+                    data.msg = "更新成功";
+                    data.response = oldUser.Id.ObjToString();
+                }
+            }
+            catch (Exception e)
+            {
+                _unitOfWorkManage.RollbackTran();
+                _logger.LogError(e, e.Message);
+            }
+
+            return data;
+        }
+        /// <summary>
+        /// 更新用户与角色
+        /// </summary>
+        /// <param name="sysUserInfo"></param>
+        /// <returns></returns>
+        // PUT: api/User/5
+        [HttpPut]
+        public async Task<MessageModel<string>> Put([FromBody] SysUserInfoDto sysUserInfo)
+        {
+            // 这里使用事务处理
+            var data = new MessageModel<string>();
+
+            var oldUser = await _sysUserInfoServices.QueryById(sysUserInfo.uID);
+            if (oldUser is not { Id: > 0 })
+            {
+                return Failed<string>("用户不存在或已被删除");
+            }
+
+            try
+            {
+                if (sysUserInfo.uLoginPWD != oldUser.LoginPWD)
                 {
                     oldUser.CriticalModifyTime = DateTime.Now;
                 }

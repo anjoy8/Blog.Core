@@ -668,12 +668,28 @@
             </summary>
         </member>
         <!-- Badly formed XML comment ignored for member "M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.Repository.UnitOfWorks.IUnitOfWorkManage,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.IServices.IDepartmentServices,Blog.Core.Common.HttpContextUser.IUser,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController},Microsoft.AspNetCore.Http.IHttpContextAccessor)" -->
+        <member name="M:Blog.Core.Controllers.UserController.Get_V3(System.Int32,System.String)">
+            <summary>
+            获取全部用户
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Controllers.UserController.Get(System.Int32,System.String)">
             <summary>
             获取全部用户
             </summary>
             <param name="page"></param>
             <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.GetInfoByToken_V3(System.String)">
+            <summary>
+            获取用户详情根据token
+            【无权限】
+            </summary>
+            <param name="token">令牌</param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.UserController.GetInfoByToken(System.String)">
@@ -684,14 +700,28 @@
             <param name="token">令牌</param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.Models.SysUserInfo)">
+        <member name="M:Blog.Core.Controllers.UserController.Post_V3(Blog.Core.Model.Models.SysUserInfo)">
             <summary>
             添加一个用户
             </summary>
             <param name="sysUserInfo"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.Put(Blog.Core.Model.Models.SysUserInfo)">
+        <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.ViewModels.SysUserInfoDto)">
+            <summary>
+            添加一个用户
+            </summary>
+            <param name="sysUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.Put_V3(Blog.Core.Model.Models.SysUserInfo)">
+            <summary>
+            更新用户与角色
+            </summary>
+            <param name="sysUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.Put(Blog.Core.Model.ViewModels.SysUserInfoDto)">
             <summary>
             更新用户与角色
             </summary>
