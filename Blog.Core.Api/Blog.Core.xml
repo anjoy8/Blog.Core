@@ -385,7 +385,7 @@
             <param name="pageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Controllers.PermissionController.GetTreeTable(System.Int64,System.String)">
+        <member name="M:Blog.Core.Controllers.PermissionController.GetTreeTable">
             <summary>
             查询树形 Table
             </summary>
@@ -468,11 +468,12 @@
             角色管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.RoleController.Get(System.Int32,System.String)">
+        <member name="M:Blog.Core.Controllers.RoleController.Get(System.Int32,System.Int32,System.String)">
             <summary>
             获取全部角色
             </summary>
             <param name="page"></param>
+            <param name="size"></param>
             <param name="key"></param>
             <returns></returns>
         </member>
@@ -666,18 +667,14 @@
             用户管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.Repository.UnitOfWorks.IUnitOfWorkManage,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.IServices.IDepartmentServices,Blog.Core.Common.HttpContextUser.IUser,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController})">
+        <!-- Badly formed XML comment ignored for member "M:Blog.Core.Controllers.UserController.#ctor(Blog.Core.Repository.UnitOfWorks.IUnitOfWorkManage,Blog.Core.IServices.ISysUserInfoServices,Blog.Core.IServices.IUserRoleServices,Blog.Core.IServices.IRoleServices,Blog.Core.IServices.IDepartmentServices,Blog.Core.Common.HttpContextUser.IUser,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{Blog.Core.Controllers.UserController},Microsoft.AspNetCore.Http.IHttpContextAccessor)" -->
+        <member name="M:Blog.Core.Controllers.UserController.Get_V3(System.Int32,System.String)">
             <summary>
-            构造函数
+            获取全部用户
             </summary>
-            <param name="unitOfWorkManage"></param>
-            <param name="sysUserInfoServices"></param>
-            <param name="userRoleServices"></param>
-            <param name="roleServices"></param>
-            <param name="departmentServices"></param>
-            <param name="user"></param>
-            <param name="mapper"></param>
-            <param name="logger"></param>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.UserController.Get(System.Int32,System.String)">
             <summary>
@@ -685,6 +682,14 @@
             </summary>
             <param name="page"></param>
             <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.GetInfoByToken_V3(System.String)">
+            <summary>
+            获取用户详情根据token
+            【无权限】
+            </summary>
+            <param name="token">令牌</param>
             <returns></returns>
         </member>
         <member name="M:Blog.Core.Controllers.UserController.GetInfoByToken(System.String)">
@@ -695,9 +700,23 @@
             <param name="token">令牌</param>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.UserController.Post_V3(Blog.Core.Model.Models.SysUserInfo)">
+            <summary>
+            添加一个用户
+            </summary>
+            <param name="sysUserInfo"></param>
+            <returns></returns>
+        </member>
         <member name="M:Blog.Core.Controllers.UserController.Post(Blog.Core.Model.ViewModels.SysUserInfoDto)">
             <summary>
             添加一个用户
+            </summary>
+            <param name="sysUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.Put_V3(Blog.Core.Model.Models.SysUserInfo)">
+            <summary>
+            更新用户与角色
             </summary>
             <param name="sysUserInfo"></param>
             <returns></returns>
@@ -714,6 +733,34 @@
             删除用户
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.ResetPass(Blog.Core.Model.Models.SysUserInfo)">
+            <summary>
+            重置密码
+            </summary>
+            <param name="sysUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.RefreshMyLogo(Blog.Core.Model.Models.SysUserInfo)">
+            <summary>
+            更新头像
+            </summary>
+            <param name="sysUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.ResetMyPass(Blog.Core.Model.Models.SysUserInfo)">
+            <summary>
+            重置我的密码
+            </summary>
+            <param name="sysUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Controllers.UserController.PutMyInfo(Blog.Core.Model.Models.SysUserInfo)">
+            <summary>
+            更新我的资料
+            </summary>
+            <param name="sysUserInfo"></param>
             <returns></returns>
         </member>
         <member name="T:Blog.Core.Controllers.UserRoleController">
@@ -1520,29 +1567,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Blog.Core.SwaggerHelper.CustomRouteAttribute">
-            <summary>
-            自定义路由 /api/{version}/[controler]/[action]
-            </summary>
-        </member>
-        <member name="P:Blog.Core.SwaggerHelper.CustomRouteAttribute.GroupName">
-            <summary>
-            分组名称,是来实现接口 IApiDescriptionGroupNameProvider
-            </summary>
-        </member>
-        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(System.String)">
-            <summary>
-            自定义路由构造函数，继承基类路由
-            </summary>
-            <param name="actionName"></param>
-        </member>
-        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(Blog.Core.Extensions.CustomApiVersion.ApiVersions,System.String)">
-            <summary>
-            自定义版本+路由构造函数，继承基类路由
-            </summary>
-            <param name="actionName"></param>
-            <param name="version"></param>
-        </member>
         <member name="T:Blog.Core.Filter.GlobalRouteAuthorizeConvention">
             <summary>
             Summary:全局路由权限公约
@@ -1583,6 +1607,123 @@
             <summary>
             全局路由前缀公约
             </summary>
+        </member>
+        <member name="T:Blog.Core.SwaggerHelper.CustomRouteAttribute">
+            <summary>
+            自定义路由 /api/{version}/[controler]/[action]
+            </summary>
+        </member>
+        <member name="P:Blog.Core.SwaggerHelper.CustomRouteAttribute.GroupName">
+            <summary>
+            分组名称,是来实现接口 IApiDescriptionGroupNameProvider
+            </summary>
+        </member>
+        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(System.String)">
+            <summary>
+            自定义路由构造函数，继承基类路由
+            </summary>
+            <param name="actionName"></param>
+        </member>
+        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(Blog.Core.Extensions.CustomApiVersion.ApiVersions,System.String)">
+            <summary>
+            自定义版本+路由构造函数，继承基类路由
+            </summary>
+            <param name="actionName"></param>
+            <param name="version"></param>
+        </member>
+        <member name="T:MyDotnet.Controllers.System.DicController">
+            <summary>
+            字典管理
+            </summary>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.GetDic(System.String)">
+            <summary>
+            获取字典类型
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.GetDicData(System.String)">
+            <summary>
+            获取字典类型列表
+            </summary>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.Get(System.Int32,System.Int32,System.String)">
+            <summary>
+            获取列表
+            </summary>
+            <param name="page"></param>
+            <param name="size"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.Post(Blog.Core.Model.Models.DicType)">
+            <summary>
+            添加
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.Put(Blog.Core.Model.Models.DicType)">
+            <summary>
+            更新
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.Delete(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.Deletes(System.Object[])">
+            <summary>
+            批量删除
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.DicDataGet(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            获取列表
+            </summary>
+            <param name="page"></param>
+            <param name="size"></param>
+            <param name="key"></param>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.DicDataPost(Blog.Core.Model.Models.DicData)">
+            <summary>
+            添加
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.DicDataPut(Blog.Core.Model.Models.DicData)">
+            <summary>
+            更新
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.DicDataDelete(System.Int64)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyDotnet.Controllers.System.DicController.DicDataDeletes(System.Object[])">
+            <summary>
+            批量删除
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

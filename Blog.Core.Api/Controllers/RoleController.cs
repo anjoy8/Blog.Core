@@ -29,20 +29,19 @@ namespace Blog.Core.Controllers
         /// 获取全部角色
         /// </summary>
         /// <param name="page"></param>
+        /// <param name="size"></param>
         /// <param name="key"></param>
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<Role>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<Role>>> Get(int page = 1, int size = 10, string key = "")
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
                 key = "";
             }
-
-            int intPageSize = 50;
-
-            var data = await _roleServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, intPageSize, " Id desc ");
+             
+            var data = await _roleServices.QueryPage(a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key)), page, size, " Id desc ");
 
             //return new MessageModel<PageModel<Role>>()
             //{

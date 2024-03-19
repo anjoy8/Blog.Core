@@ -114,7 +114,7 @@ namespace Blog.Core.Model.Models
         public bool hasChildren { get; set; } = true;
 
         [SugarColumn(IsIgnore = true)]
-        public List<Permission> Children { get; set; } = new List<Permission>();
+        public List<Permission> children { get; set; } = new List<Permission>();
 
         [SugarColumn(IsIgnore = true)]
         public Modules Module { get; set; }

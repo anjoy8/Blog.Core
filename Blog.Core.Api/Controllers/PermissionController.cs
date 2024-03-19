@@ -147,54 +147,30 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<MessageModel<List<Permission>>> GetTreeTable(long f = 0, string key = "")
+        public async Task<MessageModel<List<Permission>>> GetTreeTable()
         {
             List<Permission> permissions = new List<Permission>();
             var apiList = await _moduleServices.Query(d => d.IsDeleted == false);
+
+
             var permissionsList = await _permissionServices.Query(d => d.IsDeleted == false);
-            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+
+
+
+            Permission rootRoot = new Permission
             {
-                key = "";
-            }
+                Id = 0,
+                Pid = 0,
+                Name = "根节点"
+            };
 
-            if (key != "")
-            {
-                permissions = permissionsList.Where(a => a.Name.Contains(key)).OrderBy(a => a.OrderSort).ToList();
-            }
-            else
-            {
-                permissions = permissionsList.Where(a => a.Pid == f).OrderBy(a => a.OrderSort).ToList();
-            }
-
-            foreach (var item in permissions)
-            {
-                List<long> pidarr = new() { };
-                var parent = permissionsList.FirstOrDefault(d => d.Id == item.Pid);
-
-                while (parent != null)
-                {
-                    pidarr.Add(parent.Id);
-                    parent = permissionsList.FirstOrDefault(d => d.Id == parent.Pid);
-                }
-
-                //item.PidArr = pidarr.OrderBy(d => d).Distinct().ToList();
-
-                pidarr.Reverse();
-                pidarr.Insert(0, 0);
-                item.PidArr = pidarr;
-
-                item.MName = apiList.FirstOrDefault(d => d.Id == item.Mid)?.LinkUrl;
-                item.hasChildren = permissionsList.Where(d => d.Pid == item.Id).Any();
-            }
+            permissionsList = permissionsList.OrderBy(d => d.OrderSort).ToList();
 
 
-            //return new MessageModel<List<Permission>>()
-            //{
-            //    msg = "获取成功",
-            //    success = true,
-            //    response = permissions
-            //};
-            return Success(permissions, "获取成功");
+            RecursionHelper.LoopToAppendChildren(permissionsList, rootRoot, 0, apiList);
+
+
+            return Success(rootRoot.children, "获取成功");
         }
 
         /// <summary>
