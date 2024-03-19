@@ -28,7 +28,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 ---------------------
 
 **已被近100家公司所使用(🐱‍🚀)：[点击查看列表](https://github.com/anjoy8/Blog.Core/issues/75)**   欢迎盖楼，留下公司真实名字的，可得定制化指导服务。  
-同时商业授权付费版也悄悄准备上线，欢迎联系老张（QQ：3143422472）。
+同时如果企业有付费咨询，欢迎联系老张（QQ：3143422472）。
   
 
 
@@ -129,6 +129,16 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 可配合 apisix/Ocelot 实现网关处理；
 - [x] 可配合 Nginx  实现负载均衡；
 - [x] 可配合 Ids4   实现认证中心；
+
+### 核心业务模块
+#### 框架采用泛型仓储模式，以下几层为核心层，不可删除    
+`Blog.Core.Api`、`Blog.Core.Common`、`Blog.Core.IServices`、`Blog.Core.Model`、`Blog.Core.Repository`、`Blog.Core.Services`、`Blog.Core.Tasks`、`Blog.Core.Serilog`    
+其他代码分层是支撑层，如果自己业务涉及不到，可以删除。
+
+#### API接口层主要是基于RBAC的基于按钮级别的角色授权逻辑，以下几个Controller，不可删除    
+`BaseApiController.cs`(接口基类)、`DepartmentController`(部门)、`ImgController`(图片)、`LoginController`(登录)、`ModuleController`(接口)、`PermissionController`(菜单)、`RoleController`(角色)、`TasksQzController`(任务调度)、`UserController`(用户)、`UserRoleController`(用户角色关系)     
+其他代码部分是扩展业务，如果自己业务涉及不到，可以删除。
+
 
 
 ### 自定义全部日志记录图
