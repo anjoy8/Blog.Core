@@ -31,6 +31,10 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 同时如果企业有付费咨询，欢迎联系老张（QQ：3143422472）。
   
 
+### 核心项目组成员（排名不分先后）
+
+[hudingwen](https://github.com/hudingwen)、[LemonNoCry](https://github.com/LemonNoCry)、、[Jamnine何拾玖](https://github.com/Jamnine)、
+
 
 #### ❤ 真实用户反馈 ❤
 ```
