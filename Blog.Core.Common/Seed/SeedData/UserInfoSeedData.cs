@@ -72,7 +72,8 @@ public class UserInfoSeedData : IEntitySeedData<SysUserInfo>
         var sysUserInfos = data.Where(s => !names.Contains(s.LoginName)).ToList();
         if (sysUserInfos.Any())
         {
-            await db.Insertable<SysUserInfo>(sysUserInfos).ExecuteReturnIdentityAsync();
+            //await db.Insertable<SysUserInfo>(sysUserInfos).ExecuteReturnIdentityAsync();//postgresql这句会报错
+            await db.Insertable<SysUserInfo>(sysUserInfos).ExecuteCommandAsync();
         }
 
         await Task.CompletedTask;
