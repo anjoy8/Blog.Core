@@ -10,18 +10,22 @@
         /// <summary>
         /// 当前页
         /// </summary>
-        public int PageIndex { get; set; } = 1;
+        public int page { get; set; } = 1;
         /// <summary>
         /// 每页大小
         /// </summary>
-        public int PageSize { get; set; } = 10;
+        public int size { get; set; } = 10;
+        /// <summary>
+        /// 搜索关键词
+        /// </summary>
+        public string key { get; set; }
         /// <summary>
         /// 排序字段(例如:id desc,time asc)
         /// </summary>
-        public string OrderByFileds { get; set; }
+        public string orderByFileds { get; set; }
         /// <summary>
         /// 查询条件( 例如:id = 1 and name = 小明)
         /// </summary>
-        public string Conditions { get; set; }
+        public string conditions { get; set; }
     }
 }

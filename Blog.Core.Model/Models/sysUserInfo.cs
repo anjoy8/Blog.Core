@@ -116,8 +116,11 @@ namespace Blog.Core.Model.Models
 		// 地址
 		[SugarColumn(Length = 200, IsNullable = true)]
 		public string Address { get; set; }
+        // 头像
+        [SugarColumn(IsNullable = true)]
+        public string logo { get; set; }
 
-		[SugarColumn(DefaultValue = "1")]
+        [SugarColumn(DefaultValue = "1")]
 		public bool Enable { get; set; } = true;
 
 		[SugarColumn(IsNullable = true)]
