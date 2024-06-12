@@ -34,7 +34,7 @@ namespace Blog.Core.Tasks
         /// 直接写就没有锁库 上下文ContextID一样
         /// </summary>
         /// <param name="context"></param>
-        public async Task Execute(IJobExecutionContext context)
+        public async Task Execute2(IJobExecutionContext context)
         {
             try
             {
@@ -81,11 +81,9 @@ namespace Blog.Core.Tasks
         /// 但是调用其他类方法 上下文ContextID就不一样
         /// </summary>
         /// <param name="context"></param>
-        public async Task Execute2(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
-            await _guestbookServices.TestTranPropagationTran3();
-
-            //var executeLog = await ExecuteJob(context, async () => await Run(context));
+            var executeLog = await ExecuteJob(context, async () => await Run(context));
         }
 
         public async Task Run(IJobExecutionContext context)
@@ -95,6 +93,8 @@ namespace Blog.Core.Tasks
             // 也可以通过数据库配置，获取传递过来的参数
             JobDataMap data = context.JobDetail.JobDataMap;
             //int jobId = data.GetInt("JobParam");
+
+            await _guestbookServices.TestTranPropagationTran2();
         }
     }
 }
