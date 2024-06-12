@@ -1520,29 +1520,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Blog.Core.SwaggerHelper.CustomRouteAttribute">
-            <summary>
-            自定义路由 /api/{version}/[controler]/[action]
-            </summary>
-        </member>
-        <member name="P:Blog.Core.SwaggerHelper.CustomRouteAttribute.GroupName">
-            <summary>
-            分组名称,是来实现接口 IApiDescriptionGroupNameProvider
-            </summary>
-        </member>
-        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(System.String)">
-            <summary>
-            自定义路由构造函数，继承基类路由
-            </summary>
-            <param name="actionName"></param>
-        </member>
-        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(Blog.Core.Extensions.CustomApiVersion.ApiVersions,System.String)">
-            <summary>
-            自定义版本+路由构造函数，继承基类路由
-            </summary>
-            <param name="actionName"></param>
-            <param name="version"></param>
-        </member>
         <member name="T:Blog.Core.Filter.GlobalRouteAuthorizeConvention">
             <summary>
             Summary:全局路由权限公约
@@ -1583,6 +1560,29 @@
             <summary>
             全局路由前缀公约
             </summary>
+        </member>
+        <member name="T:Blog.Core.SwaggerHelper.CustomRouteAttribute">
+            <summary>
+            自定义路由 /api/{version}/[controler]/[action]
+            </summary>
+        </member>
+        <member name="P:Blog.Core.SwaggerHelper.CustomRouteAttribute.GroupName">
+            <summary>
+            分组名称,是来实现接口 IApiDescriptionGroupNameProvider
+            </summary>
+        </member>
+        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(System.String)">
+            <summary>
+            自定义路由构造函数，继承基类路由
+            </summary>
+            <param name="actionName"></param>
+        </member>
+        <member name="M:Blog.Core.SwaggerHelper.CustomRouteAttribute.#ctor(Blog.Core.Extensions.CustomApiVersion.ApiVersions,System.String)">
+            <summary>
+            自定义版本+路由构造函数，继承基类路由
+            </summary>
+            <param name="actionName"></param>
+            <param name="version"></param>
         </member>
     </members>
 </doc>

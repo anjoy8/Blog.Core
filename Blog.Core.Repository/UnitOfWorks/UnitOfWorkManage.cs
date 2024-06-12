@@ -51,21 +51,25 @@ namespace Blog.Core.Repository.UnitOfWorks
 
         public void BeginTran()
         {
+            Console.WriteLine("Begin Transaction Before:" + GetDbClient().ContextID);
             lock (this)
             {
                 _tranCount++;
                 GetDbClient().BeginTran();
             }
+            Console.WriteLine("Begin Transaction After:" + GetDbClient().ContextID);
         }
 
         public void BeginTran(MethodInfo method)
         {
+            Console.WriteLine("Begin Transaction Before:" + GetDbClient().ContextID);
             lock (this)
             {
                 GetDbClient().BeginTran();
                 TranStack.Push(method.GetFullName());
                 _tranCount = TranStack.Count;
             }
+            Console.WriteLine("Begin Transaction After:" + GetDbClient().ContextID);
         }
 
         public void CommitTran()

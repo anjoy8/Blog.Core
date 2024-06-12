@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using Blog.Core.Common.DB;
 using Blog.Core.Repository.UnitOfWorks;
+using SqlSugar;
 
 namespace Blog.Core.Services
 {
@@ -15,14 +16,17 @@ namespace Blog.Core.Services
     {
         private readonly IUnitOfWorkManage _unitOfWorkManage;
         private readonly IBaseRepository<PasswordLib> _passwordLibRepository;
-
         private readonly IPasswordLibServices _passwordLibServices;
+        private readonly ISqlSugarClient _db;
+        private SqlSugarScope db => _db as SqlSugarScope;
 
-        public GuestbookServices(IUnitOfWorkManage unitOfWorkManage, IBaseRepository<Guestbook> dal, IBaseRepository<PasswordLib> passwordLibRepository, IPasswordLibServices passwordLibServices)
+        public GuestbookServices(IUnitOfWorkManage unitOfWorkManage, IBaseRepository<Guestbook> dal,
+            IBaseRepository<PasswordLib> passwordLibRepository, IPasswordLibServices passwordLibServices, ISqlSugarClient db)
         {
             _unitOfWorkManage = unitOfWorkManage;
             _passwordLibRepository = passwordLibRepository;
             _passwordLibServices = passwordLibServices;
+            _db = db;
         }
 
         public async Task<MessageModel<string>> TestTranInRepository()
@@ -193,8 +197,9 @@ namespace Blog.Core.Services
         public async Task<bool> TestTranPropagationTran()
         {
             var guestbooks = await base.Query();
+            guestbooks = await base.Query();
             Console.WriteLine($"first time : the count of guestbooks is :{guestbooks.Count}");
-
+            Console.WriteLine(base.Db.ContextID);
             var insertGuestbook = await base.Add(new Guestbook()
             {
                 username = "bbb",
@@ -206,6 +211,69 @@ namespace Blog.Core.Services
             await _passwordLibServices.TestTranPropagationTran2();
 
             return true;
+        }
+
+        [UseTran(Propagation = Propagation.Required)]
+        public async Task TestTranPropagationTran2()
+        {
+            await Db.Insertable(new Guestbook()
+            {
+                username = "bbb",
+                blogId = 1,
+                createdate = DateTime.Now,
+                isshow = true
+            }).ExecuteReturnSnowflakeIdAsync();
+
+
+            await Db.Insertable(new PasswordLib()
+            {
+                PLID = SnowFlakeSingle.Instance.NextId(),
+                IsDeleted = false,
+                plAccountName = "aaa",
+                plCreateTime = DateTime.Now
+            }).ExecuteReturnSnowflakeIdAsync();
+
+            await _passwordLibServices.TestTranPropagationTran2();
+
+            Console.WriteLine("完成");
+        }
+
+        public async Task TestTranPropagationTran3()
+        {
+            try
+            {
+                Console.WriteLine("Begin Transaction Before:" + db.ContextID);
+                db.BeginTran();
+                Console.WriteLine("Begin Transaction After:" + db.ContextID);
+
+                await db.Insertable(new Guestbook()
+                {
+                    username = "bbb",
+                    blogId = 1,
+                    createdate = DateTime.Now,
+                    isshow = true
+                }).ExecuteReturnSnowflakeIdAsync();
+
+
+                await db.Insertable(new PasswordLib()
+                {
+                    PLID = SnowFlakeSingle.Instance.NextId(),
+                    IsDeleted = false,
+                    plAccountName = "aaa",
+                    plCreateTime = DateTime.Now
+                }).ExecuteReturnSnowflakeIdAsync();
+
+                await _passwordLibServices.TestTranPropagationTran3();
+
+                db.CommitTran();
+                Console.WriteLine("完成");
+            }
+            catch (Exception e)
+            {
+                db.RollbackTran();
+                throw;
+            }
+
         }
     }
 }
