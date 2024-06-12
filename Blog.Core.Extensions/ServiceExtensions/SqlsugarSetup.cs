@@ -69,7 +69,7 @@ namespace Blog.Core.Extensions
                 }
                 else
                 {
-                    if (string.Equals(config.ConfigId, MainDb.CurrentDbConnId,
+                    if (string.Equals(config.ConfigId.ToString(), MainDb.CurrentDbConnId,
                             StringComparison.CurrentCultureIgnoreCase))
                     {
                         BaseDBConfig.MainConfig = config;
@@ -122,6 +122,7 @@ namespace Blog.Core.Extensions
                     SqlSugarReuse.AutoChangeAvailableConnect(db);
                 });
             });
+            services.AddTransient<SqlSugarScope>(s => s.GetService<ISqlSugarClient>() as SqlSugarScope);
         }
 
         private static string GetWholeSql(SugarParameter[] paramArr, string sql)

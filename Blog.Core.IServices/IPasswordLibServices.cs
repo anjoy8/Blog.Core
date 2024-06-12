@@ -9,5 +9,6 @@ namespace Blog.Core.IServices
         Task<bool> TestTranPropagation2();
         Task<bool> TestTranPropagationNoTranError();
         Task<bool> TestTranPropagationTran2();
+        Task<bool> TestTranPropagationTran3();
     }
 }
