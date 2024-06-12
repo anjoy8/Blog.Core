@@ -97,6 +97,7 @@ builder.Services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = tru
     .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
 
 builder.Services.AddSession();
+builder.Services.AddDataProtectionSetup();
 builder.Services.AddControllers(o =>
     {
         o.Filters.Add(typeof(GlobalExceptionsFilter));
