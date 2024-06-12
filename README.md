@@ -6,6 +6,10 @@
 
 [![sdk](https://img.shields.io/badge/sdk-6.0.1-d.svg)](#)  [![Build status](https://github.com/anjoy8/blog.core/workflows/.NET%20Core/badge.svg)](https://github.com/anjoy8/Blog.Core/actions)  [![Build Status](https://dev.azure.com/laozhangisphi/anjoy8/_apis/build/status/anjoy8.Blog.Core?branchName=master)](https://dev.azure.com/laozhangisphi/anjoy8/_build?definitionId=1)  [![codecov](https://codecov.io/gh/anjoy8/Blog.Core/branch/master/graph/badge.svg)](https://codecov.io/gh/anjoy8/Blog.Core)  [![License MIT](https://img.shields.io/badge/license-Apache-blue.svg?style=flat-square)](https://github.com/anjoy8/Blog.Core/blob/master/LICENSE) [![star this repo](http://githubbadges.com/star.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges)  [![fork this repo](http://githubbadges.com/fork.svg?user=anjoy8&repo=blog.core&style=flat)](https://github.com/boennemann/badges/fork)  [![博客园](https://img.shields.io/badge/博客园-老张的哲学-brightgreen.svg)](https://www.cnblogs.com/laozhang-is-phi/)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=anjoy8/blog.core&type=Date)](https://star-history.com/#anjoy8/blog.core&Date)
+
 
 &nbsp;
 &nbsp;
@@ -28,8 +32,12 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 ---------------------
 
 **已被近100家公司所使用(🐱‍🚀)：[点击查看列表](https://github.com/anjoy8/Blog.Core/issues/75)**   欢迎盖楼，留下公司真实名字的，可得定制化指导服务。  
-同时商业授权付费版也悄悄准备上线，欢迎联系老张（QQ：3143422472）。
+同时如果企业有付费咨询，欢迎联系老张（QQ：3143422472）。
   
+
+### 核心项目组成员（排名不分先后）
+
+[hudingwen](https://github.com/hudingwen)、[LemonNoCry](https://github.com/LemonNoCry)、、[Jamnine何拾玖](https://github.com/Jamnine)、
 
 
 #### ❤ 真实用户反馈 ❤
@@ -56,7 +64,7 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 
 ### 功能与进度
 
-#### 商业授权付费版下🎁🎁🎁
+#### 企业使用高级版本
 
 - [x] 包含开源版 `框架模块/组件模块` 中的所有功能；
 - [x] 全部表结构主键底层架构改成`string`类型（默认雪花，支持guid），更方便迁移；
@@ -129,6 +137,16 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 可配合 apisix/Ocelot 实现网关处理；
 - [x] 可配合 Nginx  实现负载均衡；
 - [x] 可配合 Ids4   实现认证中心；
+
+### 核心业务模块
+#### 框架采用泛型仓储模式，以下几层为核心层，不可删除    
+`Blog.Core.Api`、`Blog.Core.Common`、`Blog.Core.IServices`、`Blog.Core.Model`、`Blog.Core.Repository`、`Blog.Core.Services`、`Blog.Core.Tasks`、`Blog.Core.Serilog`    
+其他代码分层是支撑层，如果自己业务涉及不到，可以删除。
+
+#### API接口层主要是基于RBAC的基于按钮级别的角色授权逻辑，以下几个Controller，不可删除    
+`BaseApiController.cs`(接口基类)、`DepartmentController`(部门)、`ImgController`(图片)、`LoginController`(登录)、`ModuleController`(接口)、`PermissionController`(菜单)、`RoleController`(角色)、`TasksQzController`(任务调度)、`UserController`(用户)、`UserRoleController`(用户角色关系)     
+其他代码部分是扩展业务，如果自己业务涉及不到，可以删除。
+
 
 
 ### 自定义全部日志记录图
@@ -239,10 +257,7 @@ Contributions of any kind are welcome!
 ## 售后服务与支持  
 
 鼓励作者，简单打赏~~         
-打赏的时候，备注自己的微信号，加个微信，交个朋友，两天内没回应，QQ私聊我（3143422472）；      
-目前精力有限，主要针对企业级用户答疑，或者购买授权版的个人用户。    
-
-[赞赏列表](http://apk.neters.club/.doc/Contribution/)  
+如果你喜欢，就给作者加个鸡腿吧  
 
  
 <img src="http://apk.neters.club/laozhangisphigood.jpg" alt="赞赏码" width="300" >

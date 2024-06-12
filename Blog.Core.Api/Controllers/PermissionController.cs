@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Security.Claims;
 
 namespace Blog.Core.Controllers
 {
@@ -346,11 +347,23 @@ namespace Blog.Core.Controllers
             {
                 // ids4
                 uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
-                                     where item.Type == "sub"
+                                     where item.Type == ClaimTypes.NameIdentifier
                                      select item.Value).FirstOrDefault().ObjToLong();
+                if (!(uidInHttpcontext1 > 0))
+                {
+                    uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
+                                         where item.Type == "sub"
+                                         select item.Value).FirstOrDefault().ObjToLong();
+                }
                 roleIds = (from item in _httpContext.HttpContext.User.Claims
-                           where item.Type == "role"
+                           where item.Type == ClaimTypes.Role
                            select item.Value.ObjToLong()).ToList();
+                if (!roleIds.Any())
+                {
+                    roleIds = (from item in _httpContext.HttpContext.User.Claims
+                               where item.Type == "role"
+                               select item.Value.ObjToLong()).ToList(); 
+                }
             }
             else
             {
@@ -437,11 +450,23 @@ namespace Blog.Core.Controllers
             {
                 // ids4
                 uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
-                                     where item.Type == "sub"
+                                     where item.Type == ClaimTypes.NameIdentifier
                                      select item.Value).FirstOrDefault().ObjToLong();
+                if (!(uidInHttpcontext1 > 0))
+                {
+                    uidInHttpcontext1 = (from item in _httpContext.HttpContext.User.Claims
+                                         where item.Type == "sub"
+                                         select item.Value).FirstOrDefault().ObjToLong();
+                }
                 roleIds = (from item in _httpContext.HttpContext.User.Claims
-                           where item.Type == "role"
+                           where item.Type == ClaimTypes.Role
                            select item.Value.ObjToLong()).ToList();
+                if (!roleIds.Any())
+                {
+                    roleIds = (from item in _httpContext.HttpContext.User.Claims
+                               where item.Type == "role"
+                               select item.Value.ObjToLong()).ToList();
+                }
             }
             else
             {

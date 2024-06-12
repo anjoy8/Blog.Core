@@ -15,9 +15,8 @@ namespace Blog.Core.Common.Helper
     {
         #region Nacos NamingService
 
-        private static readonly HttpClient httpclient = new HttpClient();
-
-        private static string GetServiceUrl(Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl)
+        private static string GetServiceUrl(Nacos.V2.INacosNamingService serv, string ServiceName, string Group,
+            string apiurl)
         {
             try
             {
@@ -45,7 +44,8 @@ namespace Blog.Core.Common.Helper
             return "";
         }
 
-        public static async Task<string> Cof_NaoceGet(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, Dictionary<string, string> Parameters = null)
+        public static async Task<string> Cof_NaoceGet(this Nacos.V2.INacosNamingService serv, string ServiceName,
+            string Group, string apiurl, Dictionary<string, string> Parameters = null)
         {
             try
             {
@@ -62,8 +62,9 @@ namespace Blog.Core.Common.Helper
                     url = $"{url}?{sb.ToString().Trim('&')}";
                 }
 
-                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var result = await httpclient.GetAsync(url);
+                HttpHelper.Httpclient.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+                var result = await  HttpHelper.Httpclient.GetAsync(url);
                 return await result.Content.ReadAsStringAsync();
             }
             catch (Exception e)
@@ -74,7 +75,8 @@ namespace Blog.Core.Common.Helper
             return "";
         }
 
-        public static async Task<string> Cof_NaocePostForm(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, Dictionary<string, string> Parameters)
+        public static async Task<string> Cof_NaocePostForm(this Nacos.V2.INacosNamingService serv, string ServiceName,
+            string Group, string apiurl, Dictionary<string, string> Parameters)
         {
             try
             {
@@ -82,8 +84,8 @@ namespace Blog.Core.Common.Helper
                 if (string.IsNullOrEmpty(url)) return "";
 
                 var content = (Parameters != null && Parameters.Any()) ? new FormUrlEncodedContent(Parameters) : null;
-                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var result = await httpclient.PostAsync(url, content);
+                HttpHelper.Httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var result = await  HttpHelper.Httpclient.PostAsync(url, content);
                 return await result.Content.ReadAsStringAsync(); //.GetAwaiter().GetResult();
             }
             catch (Exception e)
@@ -94,14 +96,16 @@ namespace Blog.Core.Common.Helper
             return "";
         }
 
-        public static async Task<string> Cof_NaocePostJson(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, string jSonData)
+        public static async Task<string> Cof_NaocePostJson(this Nacos.V2.INacosNamingService serv, string ServiceName,
+            string Group, string apiurl, string jSonData)
         {
             try
             {
                 var url = GetServiceUrl(serv, ServiceName, Group, apiurl);
                 if (string.IsNullOrEmpty(url)) return "";
-                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var result = await httpclient.PostAsync(url, new StringContent(jSonData, Encoding.UTF8, "application/json"));
+                HttpHelper.Httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var result =
+                    await  HttpHelper.Httpclient.PostAsync(url, new StringContent(jSonData, Encoding.UTF8, "application/json"));
                 return await result.Content.ReadAsStringAsync(); //.GetAwaiter().GetResult();
 
                 //httpClient.BaseAddress = new Uri("https://www.testapi.com");
@@ -116,7 +120,8 @@ namespace Blog.Core.Common.Helper
             return "";
         }
 
-        public static async Task<string> Cof_NaocePostFile(this Nacos.V2.INacosNamingService serv, string ServiceName, string Group, string apiurl, Dictionary<string, byte[]> Parameters)
+        public static async Task<string> Cof_NaocePostFile(this Nacos.V2.INacosNamingService serv, string ServiceName,
+            string Group, string apiurl, Dictionary<string, byte[]> Parameters)
         {
             try
             {
@@ -129,8 +134,8 @@ namespace Blog.Core.Common.Helper
                     content.Add(new ByteArrayContent(pitem.Value), "files", pitem.Key);
                 }
 
-                httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var result = await httpclient.PostAsync(url, content);
+                HttpHelper.Httpclient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var result = await  HttpHelper.Httpclient.PostAsync(url, content);
                 return await result.Content.ReadAsStringAsync(); //.GetAwaiter().GetResult();
             }
             catch (Exception e)
@@ -144,5 +149,4 @@ namespace Blog.Core.Common.Helper
 
         #endregion
     }
-
 }

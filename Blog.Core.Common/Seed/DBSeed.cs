@@ -6,14 +6,9 @@ using Blog.Core.Model.Tenants;
 using Magicodes.ExporterAndImporter.Excel;
 using Newtonsoft.Json;
 using SqlSugar;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using Blog.Core.Common.Const;
 
 namespace Blog.Core.Common.Seed
@@ -41,39 +36,32 @@ namespace Blog.Core.Common.Seed
                 SeedDataFolder = Path.Combine(WebRootPath, SeedDataFolder);
 
                 Console.WriteLine("************ Blog.Core DataBase Set *****************");
-                Console.WriteLine($"Is multi-DataBase: {AppSettings.app(new string[] { "MutiDBEnabled" })}");
-                Console.WriteLine($"Is CQRS: {AppSettings.app(new string[] { "CQRSEnabled" })}");
-                Console.WriteLine();
                 Console.WriteLine($"Master DB ConId: {myContext.Db.CurrentConnectionConfig.ConfigId}");
                 Console.WriteLine($"Master DB Type: {myContext.Db.CurrentConnectionConfig.DbType}");
                 Console.WriteLine($"Master DB ConnectString: {myContext.Db.CurrentConnectionConfig.ConnectionString}");
                 Console.WriteLine();
-                if (AppSettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                if (BaseDBConfig.MainConfig.SlaveConnectionConfigs.AnyNoException())
                 {
-                    var slaveIndex = 0;
-                    BaseDBConfig.MutiConnectionString.allDbs.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
+                    var index = 0;
+                    BaseDBConfig.MainConfig.SlaveConnectionConfigs.ForEach(m =>
                     {
-                        slaveIndex++;
-                        Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
-                        Console.WriteLine($"Slave{slaveIndex} DB Type: {m.DbType}");
-                        Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Connection}");
+                        index++;
+                        Console.WriteLine($"Slave{index} DB HitRate: {m.HitRate}");
+                        Console.WriteLine($"Slave{index} DB ConnectString: {m.ConnectionString}");
                         Console.WriteLine($"--------------------------------------");
                     });
                 }
-                else if (AppSettings.app(new string[] { "CQRSEnabled" }).ObjToBool())
+                else if (BaseDBConfig.ReuseConfigs.AnyNoException())
                 {
-                    var slaveIndex = 0;
-                    BaseDBConfig.MutiConnectionString.slaveDbs.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
+                    var index = 0;
+                    BaseDBConfig.ReuseConfigs.ForEach(m =>
                     {
-                        slaveIndex++;
-                        Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
-                        Console.WriteLine($"Slave{slaveIndex} DB Type: {m.DbType}");
-                        Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Connection}");
+                        index++;
+                        Console.WriteLine($"Reuse{index} DB ID: {m.ConfigId}");
+                        Console.WriteLine($"Reuse{index} DB Type: {m.DbType}");
+                        Console.WriteLine($"Reuse{index} DB ConnectString: {m.ConnectionString}");
                         Console.WriteLine($"--------------------------------------");
                     });
-                }
-                else
-                {
                 }
 
                 Console.WriteLine();
@@ -97,7 +85,8 @@ namespace Blog.Core.Common.Seed
                 Console.WriteLine("Create Tables...");
 
                 var path = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
-                var referencedAssemblies = System.IO.Directory.GetFiles(path, "Blog.Core.Model.dll").Select(Assembly.LoadFrom).ToArray();
+                var referencedAssemblies = System.IO.Directory.GetFiles(path, "Blog.Core.Model.dll")
+                    .Select(Assembly.LoadFrom).ToArray();
                 var modelTypes = referencedAssemblies
                     .SelectMany(a => a.DefinedTypes)
                     .Select(type => type.AsType())
@@ -117,7 +106,7 @@ namespace Blog.Core.Common.Seed
                 ConsoleHelper.WriteSuccessLine($"Tables created successfully!");
                 Console.WriteLine();
 
-                if (AppSettings.app(new string[] { "AppSettings", "SeedDBDataEnabled" }).ObjToBool())
+                if (AppSettings.app(new string[] {"AppSettings", "SeedDBDataEnabled"}).ObjToBool())
                 {
                     JsonSerializerSettings setting = new JsonSerializerSettings();
                     JsonConvert.DefaultSettings = new Func<JsonSerializerSettings>(() =>
@@ -143,7 +132,9 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<BlogArticle>().AnyAsync())
                     {
-                        myContext.GetEntityDB<BlogArticle>().InsertRange(JsonHelper.ParseFormByJson<List<BlogArticle>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "BlogArticle"), Encoding.UTF8)));
+                        myContext.GetEntityDB<BlogArticle>().InsertRange(
+                            JsonHelper.ParseFormByJson<List<BlogArticle>>(
+                                FileHelper.ReadFile(string.Format(SeedDataFolder, "BlogArticle"), Encoding.UTF8)));
                         Console.WriteLine("Table:BlogArticle created success!");
                     }
                     else
@@ -158,7 +149,8 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<Modules>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<Modules>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Modules"), Encoding.UTF8), setting);
+                        var data = JsonConvert.DeserializeObject<List<Modules>>(
+                            FileHelper.ReadFile(string.Format(SeedDataFolder, "Modules"), Encoding.UTF8), setting);
 
                         myContext.GetEntityDB<Modules>().InsertRange(data);
                         Console.WriteLine("Table:Modules created success!");
@@ -175,7 +167,8 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<Permission>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<Permission>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Permission"), Encoding.UTF8), setting);
+                        var data = JsonConvert.DeserializeObject<List<Permission>>(
+                            FileHelper.ReadFile(string.Format(SeedDataFolder, "Permission"), Encoding.UTF8), setting);
 
                         myContext.GetEntityDB<Permission>().InsertRange(data);
                         Console.WriteLine("Table:Permission created success!");
@@ -192,7 +185,8 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<Role>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<Role>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Role"), Encoding.UTF8), setting);
+                        var data = JsonConvert.DeserializeObject<List<Role>>(
+                            FileHelper.ReadFile(string.Format(SeedDataFolder, "Role"), Encoding.UTF8), setting);
                         //using var stream = new FileStream(Path.Combine(WebRootPath, "BlogCore.Data.excel", "Role.xlsx"), FileMode.Open);
                         //var result = await importer.Import<Role>(stream);
                         //var data = result.Data.ToList();
@@ -212,7 +206,9 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<RoleModulePermission>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<RoleModulePermission>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "RoleModulePermission"), Encoding.UTF8), setting);
+                        var data = JsonConvert.DeserializeObject<List<RoleModulePermission>>(
+                            FileHelper.ReadFile(string.Format(SeedDataFolder, "RoleModulePermission"), Encoding.UTF8),
+                            setting);
 
                         myContext.GetEntityDB<RoleModulePermission>().InsertRange(data);
                         Console.WriteLine("Table:RoleModulePermission created success!");
@@ -229,7 +225,8 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<Topic>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<Topic>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Topic"), Encoding.UTF8), setting);
+                        var data = JsonConvert.DeserializeObject<List<Topic>>(
+                            FileHelper.ReadFile(string.Format(SeedDataFolder, "Topic"), Encoding.UTF8), setting);
 
                         myContext.GetEntityDB<Topic>().InsertRange(data);
                         Console.WriteLine("Table:Topic created success!");
@@ -246,7 +243,8 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<TopicDetail>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<TopicDetail>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "TopicDetail"), Encoding.UTF8), setting);
+                        var data = JsonConvert.DeserializeObject<List<TopicDetail>>(
+                            FileHelper.ReadFile(string.Format(SeedDataFolder, "TopicDetail"), Encoding.UTF8), setting);
 
                         myContext.GetEntityDB<TopicDetail>().InsertRange(data);
                         Console.WriteLine("Table:TopicDetail created success!");
@@ -263,7 +261,8 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<UserRole>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<UserRole>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "UserRole"), Encoding.UTF8), setting);
+                        var data = JsonConvert.DeserializeObject<List<UserRole>>(
+                            FileHelper.ReadFile(string.Format(SeedDataFolder, "UserRole"), Encoding.UTF8), setting);
 
                         myContext.GetEntityDB<UserRole>().InsertRange(data);
                         Console.WriteLine("Table:UserRole created success!");
@@ -280,7 +279,8 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<SysUserInfo>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<SysUserInfo>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "sysUserInfo"), Encoding.UTF8), setting);
+                        var data = JsonConvert.DeserializeObject<List<SysUserInfo>>(
+                            FileHelper.ReadFile(string.Format(SeedDataFolder, "sysUserInfo"), Encoding.UTF8), setting);
 
                         myContext.GetEntityDB<SysUserInfo>().InsertRange(data);
                         Console.WriteLine("Table:sysUserInfo created success!");
@@ -297,7 +297,8 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<TasksQz>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<TasksQz>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "TasksQz"), Encoding.UTF8), setting);
+                        var data = JsonConvert.DeserializeObject<List<TasksQz>>(
+                            FileHelper.ReadFile(string.Format(SeedDataFolder, "TasksQz"), Encoding.UTF8), setting);
 
                         myContext.GetEntityDB<TasksQz>().InsertRange(data);
                         Console.WriteLine("Table:TasksQz created success!");
@@ -326,7 +327,8 @@ namespace Blog.Core.Common.Seed
 
                     if (!await myContext.Db.Queryable<Department>().AnyAsync())
                     {
-                        var data = JsonConvert.DeserializeObject<List<Department>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Department"), Encoding.UTF8), setting);
+                        var data = JsonConvert.DeserializeObject<List<Department>>(
+                            FileHelper.ReadFile(string.Format(SeedDataFolder, "Department"), Encoding.UTF8), setting);
 
                         myContext.GetEntityDB<Department>().InsertRange(data);
                         Console.WriteLine("Table:Department created success!");
@@ -367,7 +369,8 @@ namespace Blog.Core.Common.Seed
                 .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass)
                 .Where(u =>
                 {
-                    var esd = u.GetInterfaces().FirstOrDefault(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>)));
+                    var esd = u.GetInterfaces()
+                        .FirstOrDefault(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>)));
                     if (esd is null)
                     {
                         return false;
@@ -441,11 +444,13 @@ namespace Blog.Core.Common.Seed
             logDb.DbMaintenance.CreateDatabase();
             ConsoleHelper.WriteSuccessLine($"Log Database created successfully!");
             var path = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
-            var referencedAssemblies = System.IO.Directory.GetFiles(path, "Blog.Core.Model.dll").Select(Assembly.LoadFrom).ToArray();
+            var referencedAssemblies = System.IO.Directory.GetFiles(path, "Blog.Core.Model.dll")
+                .Select(Assembly.LoadFrom).ToArray();
             var modelTypes = referencedAssemblies
                 .SelectMany(a => a.DefinedTypes)
                 .Select(type => type.AsType())
-                .Where(x => x.IsClass && x.Namespace != null && x.Namespace.StartsWith("Blog.Core.Model.Logs")).ToList();
+                .Where(x => x.IsClass && x.Namespace != null && x.Namespace.StartsWith("Blog.Core.Model.Logs"))
+                .ToList();
             Stopwatch sw = Stopwatch.StartNew();
 
             var tables = logDb.DbMaintenance.GetTableInfoList();
@@ -482,7 +487,8 @@ namespace Blog.Core.Common.Seed
         /// <returns></returns>
         public static async Task TenantSeedAsync(MyContext myContext)
         {
-            var tenants = await myContext.Db.Queryable<SysTenant>().Where(s => s.TenantType == TenantTypeEnum.Db).ToListAsync();
+            var tenants = await myContext.Db.Queryable<SysTenant>().Where(s => s.TenantType == TenantTypeEnum.Db)
+                .ToListAsync();
             if (tenants.Any())
             {
                 Console.WriteLine($@"Init Multi Tenant Db");
@@ -493,7 +499,8 @@ namespace Blog.Core.Common.Seed
                 }
             }
 
-            tenants = await myContext.Db.Queryable<SysTenant>().Where(s => s.TenantType == TenantTypeEnum.Tables).ToListAsync();
+            tenants = await myContext.Db.Queryable<SysTenant>().Where(s => s.TenantType == TenantTypeEnum.Tables)
+                .ToListAsync();
             if (tenants.Any())
             {
                 await InitTenantSeedAsync(myContext, tenants);
@@ -526,7 +533,8 @@ namespace Blog.Core.Common.Seed
                 await TenantSeedDataAsync(myContext.Db, TenantTypeEnum.Tables);
             }
 
-            ConsoleHelper.WriteSuccessLine($"Init Multi Tenant Tables : {myContext.Db.CurrentConnectionConfig.ConfigId} created successfully!");
+            ConsoleHelper.WriteSuccessLine(
+                $"Init Multi Tenant Tables : {myContext.Db.CurrentConnectionConfig.ConfigId} created successfully!");
         }
 
         #endregion
@@ -580,7 +588,8 @@ namespace Blog.Core.Common.Seed
                 .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass)
                 .Where(u =>
                 {
-                    var esd = u.GetInterfaces().FirstOrDefault(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>)));
+                    var esd = u.GetInterfaces()
+                        .FirstOrDefault(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>)));
                     if (esd is null)
                     {
                         return false;

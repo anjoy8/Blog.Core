@@ -1,14 +1,10 @@
 ﻿using Blog.Core.AuthHelper;
 using Blog.Core.Common;
+using Blog.Core.Common.Caches;
 using Blog.Core.Extensions;
 using Blog.Core.Gateway.Extensions;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Nacos.V2.DependencyInjection;
+using System.Reflection;
 
 namespace Blog.Core.AdminMvc
 {
@@ -34,15 +30,8 @@ namespace Blog.Core.AdminMvc
         {
             services.AddSingleton(new AppSettings(Configuration));
 
-            services.AddAuthentication_JWTSetup();
-
             services.AddAuthentication()
                .AddScheme<AuthenticationSchemeOptions, CustomAuthenticationHandler>(Permissions.GWName, _ => { });
-
-
-            services.AddNacosV2Config(Configuration, null, "nacosConfig");
-            services.AddNacosV2Naming(Configuration, null, "nacos");
-            services.AddHostedService<ApiGateway.Helper.OcelotConfigurationTask>();
 
 
             services.AddCustomSwaggerSetup();
@@ -52,6 +41,10 @@ namespace Blog.Core.AdminMvc
             services.AddHttpContextSetup();
 
             services.AddCorsSetup();
+
+            services.AddMemoryCache();
+            services.AddDistributedMemoryCache();
+            services.AddSingleton<ICaching, Caching>();
 
             services.AddCustomOcelotSetup();
         }
@@ -69,7 +62,7 @@ namespace Blog.Core.AdminMvc
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCustomSwaggerMildd();
+            app.UseCustomSwaggerMildd(() => Assembly.GetExecutingAssembly().GetManifestResourceStream("Blog.Core.Gateway.index.html"));
 
             app.UseCors(AppSettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
 
@@ -79,7 +72,7 @@ namespace Blog.Core.AdminMvc
             });
 
             app.UseMiddleware<CustomJwtTokenAuthMiddleware>();
-           
+
             app.UseCustomOcelotMildd().Wait();
         }
     }

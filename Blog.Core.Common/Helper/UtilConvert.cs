@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Blog.Core
@@ -106,7 +107,8 @@ namespace Blog.Core
         /// <returns></returns>
         public static bool IsNotEmptyOrNull(this object thisValue)
         {
-            return ObjToString(thisValue) != "" && ObjToString(thisValue) != "undefined" && ObjToString(thisValue) != "null";
+            return ObjToString(thisValue) != "" && ObjToString(thisValue) != "undefined" &&
+                   ObjToString(thisValue) != "null";
         }
 
         /// <summary>
@@ -121,7 +123,8 @@ namespace Blog.Core
             return errorValue;
         }
 
-        public static bool IsNullOrEmpty(this object thisValue) => thisValue == null || thisValue == DBNull.Value || string.IsNullOrWhiteSpace(thisValue.ToString());
+        public static bool IsNullOrEmpty(this object thisValue) => thisValue == null || thisValue == DBNull.Value ||
+                                                                   string.IsNullOrWhiteSpace(thisValue.ToString());
 
         /// <summary>
         /// 
@@ -167,6 +170,16 @@ namespace Blog.Core
             if (thisValue != null && thisValue != DBNull.Value && DateTime.TryParse(thisValue.ToString(), out reval))
             {
                 reval = Convert.ToDateTime(thisValue);
+            }
+            else
+            {
+                //时间戳转为时间
+                var seconds = ObjToLong(thisValue);
+                if (seconds > 0)
+                {
+                    var startTime = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+                    reval = startTime.AddSeconds(Convert.ToDouble(thisValue));
+                }
             }
 
             return reval;
@@ -234,7 +247,7 @@ namespace Blog.Core
             {
                 Type innerType = type.GetGenericArguments()[0];
                 object innerValue = ChangeType(value, innerType);
-                return Activator.CreateInstance(type, new object[] { innerValue });
+                return Activator.CreateInstance(type, new object[] {innerValue});
             }
 
             if (value is string && type == typeof(Guid)) return new Guid(value as string);
@@ -277,7 +290,7 @@ namespace Blog.Core
                             .Remove(split.Length - 2, 1);
                     }
 
-                    addMethod.Invoke(lis, new object[] { ChangeType(str, type) });
+                    addMethod.Invoke(lis, new object[] {ChangeType(str, type)});
                 }
             }
 
@@ -287,6 +300,13 @@ namespace Blog.Core
         public static string ToJson(this object value)
         {
             return JsonConvert.SerializeObject(value);
+        }
+
+        public static bool AnyNoException<T>(this ICollection<T> source)
+        {
+            if (source == null) return false;
+
+            return source.Any() && source.All(s => s != null);
         }
     }
 }

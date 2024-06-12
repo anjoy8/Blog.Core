@@ -186,6 +186,7 @@
             <param name="roleServices"></param>
             <param name="requirement"></param>
             <param name="roleModulePermissionServices"></param>
+            <param name="logger"></param>
         </member>
         <member name="M:Blog.Core.Controllers.LoginController.GetJwtStr(System.String,System.String)">
             <summary>
@@ -757,7 +758,7 @@
             Values控制器
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.WebApiClients.HttpApis.IBlogApi,Blog.Core.Common.WebApiClients.HttpApis.IDoubanApi,Blog.Core.Common.Https.HttpPolly.IHttpPollyHelper,Microsoft.Extensions.Options.IOptions{Blog.Core.Common.Option.SeqOptions})">
+        <member name="M:Blog.Core.Controllers.ValuesController.#ctor(Blog.Core.IServices.IBlogArticleServices,AutoMapper.IMapper,Blog.Core.IServices.IAdvertisementServices,Blog.Core.Model.Love,Blog.Core.IServices.IRoleModulePermissionServices,Blog.Core.Common.HttpContextUser.IUser,Blog.Core.IServices.IPasswordLibServices,Blog.Core.Common.Https.HttpPolly.IHttpPollyHelper,Blog.Core.EventBus.IRabbitMQPersistentConnection,Microsoft.Extensions.Options.IOptions{Blog.Core.Common.Option.SeqOptions})">
             <summary>
             ValuesController
             </summary>
@@ -768,9 +769,19 @@
             <param name="roleModulePermissionServices"></param>
             <param name="user"></param>
             <param name="passwordLibServices"></param>
-            <param name="blogApi"></param>
-            <param name="doubanApi"></param>
             <param name="httpPollyHelper"></param>
+            <param name="persistentConnection"></param>
+            <param name="seqOptions"></param>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.TestRabbitMqPublish">
+            <summary>
+            测试Rabbit消息队列发送
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.TestRabbitMqSubscribe">
+            <summary>
+            测试Rabbit消息队列订阅
+            </summary>
         </member>
         <member name="M:Blog.Core.Controllers.ValuesController.TestSqlsugarWithCache">
             <summary>
@@ -850,12 +861,6 @@
         <member name="M:Blog.Core.Controllers.ValuesController.TestMutiDBAPI">
             <summary>
             测试多库连接
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Controllers.ValuesController.WebApiClientGetAsync">
-            <summary>
-            测试http请求 WebApiClient Get
             </summary>
             <returns></returns>
         </member>

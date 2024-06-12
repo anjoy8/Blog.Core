@@ -1,4 +1,5 @@
-﻿// 以下为asp.net 6.0的写法，如果用5.0，请看Program.five.cs文件
+﻿// 以下为asp.net 6.0的写法，如果用5.0，请看Program.five.cs文件，
+// 或者参考github上的.net6.0分支相关代码
 
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -60,6 +62,7 @@ JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services.AddCacheSetup();
 builder.Services.AddSqlsugarSetup();
 builder.Services.AddDbSetup();
+builder.Services.AddInitializationHostServiceSetup();
 
 builder.Host.AddSerilogSetup();
 
@@ -68,16 +71,16 @@ builder.Services.AddCorsSetup();
 builder.Services.AddMiniProfilerSetup();
 builder.Services.AddSwaggerSetup();
 builder.Services.AddJobSetup();
-//builder.Services.AddJobSetup_HostedService();
+
 builder.Services.AddHttpContextSetup();
 builder.Services.AddAppTableConfigSetup(builder.Environment);
-builder.Services.AddHttpApi();
-builder.Services.AddRedisInitMqSetup();
-builder.Services.AddRabbitMQSetup();
-builder.Services.AddKafkaSetup(builder.Configuration);
-builder.Services.AddEventBusSetup();
+builder.Services.AddHttpPollySetup();
 builder.Services.AddNacosSetup(builder.Configuration);
-builder.Services.AddInitializationHostServiceSetup();
+builder.Services.AddRedisInitMqSetup();
+
+builder.Services.AddIpPolicyRateLimitSetup(builder.Configuration);
+builder.Services.AddSignalR().AddNewtonsoftJsonProtocol();
+
 builder.Services.AddAuthorizationSetup();
 if (Permissions.IsUseIds4 || Permissions.IsUseAuthing)
 {
@@ -89,14 +92,11 @@ else
     builder.Services.AddAuthentication_JWTSetup();
 }
 
-builder.Services.AddIpPolicyRateLimitSetup(builder.Configuration);
-builder.Services.AddSignalR().AddNewtonsoftJsonProtocol();
 builder.Services.AddScoped<UseServiceDIAttribute>();
 builder.Services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
     .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
 
 builder.Services.AddSession();
-builder.Services.AddHttpPollySetup();
 builder.Services.AddControllers(o =>
     {
         o.Filters.Add(typeof(GlobalExceptionsFilter));
@@ -113,15 +113,11 @@ builder.Services.AddControllers(o =>
         options.SerializerSettings.Converters.Add(new StringEnumConverter());
         //将long类型转为string
         options.SerializerSettings.Converters.Add(new NumberConverter(NumberConverterShip.Int64));
-    })
-    //.AddFluentValidation(config =>
-    //{
-    //    //程序集方式添加验证
-    //    config.RegisterValidatorsFromAssemblyContaining(typeof(UserRegisterVoValidator));
-    //    //是否与MvcValidation共存
-    //    config.DisableDataAnnotationsValidation = true;
-    //})
-    ;
+    });
+
+builder.Services.AddRabbitMQSetup();
+builder.Services.AddKafkaSetup(builder.Configuration);
+builder.Services.AddEventBusSetup();
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -130,6 +126,8 @@ Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 // 3、配置中间件
 var app = builder.Build();
+IdentityModelEventSource.ShowPII = true;
+
 app.ConfigureApplication();
 app.UseApplicationSetup();
 app.UseResponseBodyRead();
@@ -143,6 +141,9 @@ else
     app.UseExceptionHandler("/Error");
     //app.UseHsts();
 }
+
+app.UseEncryptionRequest();
+app.UseEncryptionResponse();
 
 app.UseExceptionHandlerMiddle();
 app.UseIpLimitMiddle();
@@ -181,14 +182,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiniProfilerMiddleware();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-
-    endpoints.MapHub<ChatHub>("/api2/chatHub");
-});
+app.MapControllers();
+app.MapHub<ChatHub>("/api2/chatHub");
 
 // 4、运行
 app.Run();

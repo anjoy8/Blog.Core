@@ -61,7 +61,7 @@ namespace Blog.Core.Model.Models
 		/// 部门
 		/// </summary>
 		[SugarColumn(IsNullable = true)]
-		public int DepartmentId { get; set; } = -1;
+		public long DepartmentId { get; set; } = -1;
 
 		/// <summary>
 		/// 备注

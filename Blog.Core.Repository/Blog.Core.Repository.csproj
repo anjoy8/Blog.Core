@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-	</PropertyGroup>
+	<Import Project="..\build\common.targets" />
 
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Bson" Version="2.19.0" />
-    <PackageReference Include="MongoDB.Driver.Core" Version="2.19.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
+    <PackageReference Include="MongoDB.Bson" Version="2.22.0" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.22.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
   </ItemGroup>
   
   
@@ -21,7 +19,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
+		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.3.8" />
 	</ItemGroup>
 
 	<ItemGroup>

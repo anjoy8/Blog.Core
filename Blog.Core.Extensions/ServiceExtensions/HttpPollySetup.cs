@@ -4,8 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
 using Polly.Timeout;
-using System;
-using System.Net.Http;
 
 namespace Blog.Core.Extensions
 {

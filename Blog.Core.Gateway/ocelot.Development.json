@@ -49,11 +49,6 @@
 
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:9000",
-    "ServiceDiscoveryProvider": {
-      "Host": "localhost",
-      "Port": 8500,
-      "Type": "Consul"
-    }
+    "BaseUrl": "http://localhost:9000"
   }
 }

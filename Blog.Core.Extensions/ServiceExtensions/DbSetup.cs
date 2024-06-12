@@ -1,6 +1,5 @@
 ﻿using Blog.Core.Common.Seed;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Blog.Core.Extensions
 {

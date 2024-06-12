@@ -30,6 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		Blog.Core.Publish.Docker.sh = Blog.Core.Publish.Docker.sh
 		Blog.Core.Publish.Linux.sh = Blog.Core.Publish.Linux.sh
 		codecov.yml = codecov.yml
+		build\common.targets = build\common.targets
 		CreateYourProject.bat = CreateYourProject.bat
 		DockerBuild.bat = DockerBuild.bat
 		Dockerfile = Dockerfile

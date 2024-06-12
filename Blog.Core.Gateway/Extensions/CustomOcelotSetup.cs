@@ -16,11 +16,12 @@ namespace Blog.Core.Gateway.Extensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            var basePath = AppContext.BaseDirectory;
-
             services.AddAuthentication_JWTSetup();
-            services.AddOcelot().AddDelegatingHandler<CustomResultHandler>().AddNacosDiscovery().AddPolly();
-                //.AddConsul().AddPolly();
+            services.AddOcelot()
+                .AddDelegatingHandler<CustomResultHandler>()
+                //.AddNacosDiscovery()
+                //.AddConsul()
+                .AddPolly();
         }
 
         public static async Task<IApplicationBuilder> UseCustomOcelotMildd(this IApplicationBuilder app)

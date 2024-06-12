@@ -96,11 +96,11 @@ namespace Blog.Core.Extensions.Middlewares
 
 			// 去除 Html
 			var reg = "<[^>]+>";
-			var isHtml = Regex.IsMatch(responseBody, reg);
 
 			if (!string.IsNullOrEmpty(responseBody))
 			{
-				Parallel.For(0, 1, e =>
+				var isHtml = Regex.IsMatch(responseBody, reg);
+                Parallel.For(0, 1, e =>
 				{
 					//LogLock.OutSql2Log("RequestResponseLog", new string[] { "Response Data:", ResponseBody });
 					LogLock.OutLogAOP("RequestResponseLog", response.HttpContext.TraceIdentifier,

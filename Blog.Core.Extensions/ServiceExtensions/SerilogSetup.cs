@@ -6,8 +6,6 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Debugging;
 using Serilog.Events;
-using System;
-using System.IO;
 using Blog.Core.Common.Option;
 
 namespace Blog.Core.Extensions.ServiceExtensions;
