@@ -2,6 +2,7 @@
 using Quartz;
 using System;
 using System.Threading.Tasks;
+using Blog.Core.Common.Utlilty;
 using Blog.Core.Model.Models;
 using Blog.Core.Repository.UnitOfWorks;
 using SqlSugar;
@@ -49,7 +50,7 @@ namespace Blog.Core.Tasks
                 }).ExecuteReturnSnowflakeIdAsync();
                 await db.Insertable(new PasswordLib()
                 {
-                    PLID = SnowFlakeSingle.Instance.NextId(),
+                    PLID = IdGeneratorUtility.NextId(),
                     IsDeleted = false,
                     plAccountName = "aaa",
                     plCreateTime = DateTime.Now
@@ -59,7 +60,7 @@ namespace Blog.Core.Tasks
                 Console.WriteLine(db.ContextID);
                 await db.Insertable(new PasswordLib()
                 {
-                    PLID = SnowFlakeSingle.Instance.NextId(),
+                    PLID = IdGeneratorUtility.NextId(),
                     IsDeleted = false,
                     plAccountName = "aaa",
                     plCreateTime = DateTime.Now

@@ -894,6 +894,12 @@
             通过此处的key格式为 xx:xx:x
             </summary>
         </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.GetSnowflakeId">
+            <summary>
+            获取雪花Id
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.WeChatCompanyController">
             <summary>
             WeChatCompanyController

@@ -31,12 +31,16 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="9.0.3" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="StackExchange.Redis" Version="2.7.4" />
+    <PackageReference Include="SnowflakeId.AutoRegister" Version="1.0.1" />
+    <PackageReference Include="SnowflakeId.AutoRegister.SqlServer" Version="1.0.0" />
+    <PackageReference Include="SnowflakeId.AutoRegister.StackExchangeRedis" Version="1.0.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.1-dev-00771" />
 
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
 
   </ItemGroup>
 

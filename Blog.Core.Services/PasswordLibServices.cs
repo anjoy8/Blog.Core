@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Blog.Core.Common;
 using Blog.Core.Common.DB;
+using Blog.Core.Common.Utlilty;
 using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;
@@ -31,7 +32,7 @@ namespace Blog.Core.Services
         {
             await _dal.Add(new PasswordLib()
             {
-                PLID = SnowFlakeSingle.Instance.NextId(),
+                PLID = IdGeneratorUtility.NextId(),
                 IsDeleted = false,
                 plAccountName = "aaa",
                 plCreateTime = DateTime.Now
@@ -58,7 +59,7 @@ namespace Blog.Core.Services
         {
             await db.Insertable(new PasswordLib()
             {
-                PLID = SnowFlakeSingle.Instance.NextId(),
+                PLID = IdGeneratorUtility.NextId(),
                 IsDeleted = false,
                 plAccountName = "aaa",
                 plCreateTime = DateTime.Now
@@ -76,7 +77,7 @@ namespace Blog.Core.Services
             Console.WriteLine("");
             await db.Insertable(new PasswordLib()
             {
-                PLID = SnowFlakeSingle.Instance.NextId(),
+                PLID = IdGeneratorUtility.NextId(),
                 IsDeleted = false,
                 plAccountName = "aaa",
                 plCreateTime = DateTime.Now

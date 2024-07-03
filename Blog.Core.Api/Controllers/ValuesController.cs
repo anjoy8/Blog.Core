@@ -19,6 +19,7 @@ using RabbitMQ.Client.Events;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Text;
+using Blog.Core.Common.Utlilty;
 
 namespace Blog.Core.Controllers
 {
@@ -471,6 +472,17 @@ namespace Blog.Core.Controllers
         public string TestOption()
         {
             return _seqOptions.ToJson();
+        }
+
+        /// <summary>
+        /// 获取雪花Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public long GetSnowflakeId()
+        {
+            return IdGeneratorUtility.NextId();
         }
     }
 

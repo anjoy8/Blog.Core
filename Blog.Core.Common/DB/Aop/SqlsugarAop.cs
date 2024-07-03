@@ -5,13 +5,15 @@ using StackExchange.Profiling;
 using System;
 using Serilog;
 using Blog.Core.Common.LogHelper;
+using Blog.Core.Common.Utlilty;
 using Blog.Core.Model;
 
 namespace Blog.Core.Common.DB.Aop;
 
 public static class SqlSugarAop
 {
-    public static void OnLogExecuting(ISqlSugarClient sqlSugarScopeProvider, string user, string table, string operate, string sql, SugarParameter[] p, ConnectionConfig config)
+    public static void OnLogExecuting(ISqlSugarClient sqlSugarScopeProvider, string user, string table, string operate, string sql,
+        SugarParameter[] p, ConnectionConfig config)
     {
         try
         {
@@ -25,7 +27,8 @@ public static class SqlSugarAop
             {
                 using (LogContextExtension.Create.SqlAopPushProperty(sqlSugarScopeProvider))
                 {
-                    Log.Information("------------------ \r\n User:[{User}]  Table:[{Table}]  Operate:[{Operate}] ConnId:[{ConnId}]【SQL语句】: \r\n {Sql}",
+                    Log.Information(
+                        "------------------ \r\n User:[{User}]  Table:[{Table}]  Operate:[{Operate}] ConnId:[{ConnId}]【SQL语句】: \r\n {Sql}",
                         user, table, operate, config.ConfigId, UtilMethods.GetNativeSql(sql, p));
                 }
             }
@@ -42,7 +45,7 @@ public static class SqlSugarAop
         {
             if (rootEntity.Id == 0)
             {
-                rootEntity.Id = SnowFlakeSingle.Instance.NextId();
+                rootEntity.Id = IdGeneratorUtility.NextId();
             }
         }
 
@@ -113,7 +116,8 @@ public static class SqlSugarAop
                     if (App.User?.ID > 0 && dyCreateId != null && dyCreateId.GetValue(entityInfo.EntityValue) == null)
                         dyCreateId.SetValue(entityInfo.EntityValue, App.User.ID);
 
-                    if (dyCreateTime != null && dyCreateTime.GetValue(entityInfo.EntityValue) != null && (DateTime)dyCreateTime.GetValue(entityInfo.EntityValue) == DateTime.MinValue)
+                    if (dyCreateTime != null && dyCreateTime.GetValue(entityInfo.EntityValue) != null &&
+                        (DateTime)dyCreateTime.GetValue(entityInfo.EntityValue) == DateTime.MinValue)
                         dyCreateTime.SetValue(entityInfo.EntityValue, DateTime.Now);
 
                     break;

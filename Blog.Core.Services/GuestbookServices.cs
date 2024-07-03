@@ -7,6 +7,7 @@ using Blog.Core.Services.BASE;
 using System;
 using System.Threading.Tasks;
 using Blog.Core.Common.DB;
+using Blog.Core.Common.Utlilty;
 using Blog.Core.Repository.UnitOfWorks;
 using SqlSugar;
 
@@ -227,7 +228,7 @@ namespace Blog.Core.Services
 
             await Db.Insertable(new PasswordLib()
             {
-                PLID = SnowFlakeSingle.Instance.NextId(),
+                PLID = IdGeneratorUtility.NextId(),
                 IsDeleted = false,
                 plAccountName = "aaa",
                 plCreateTime = DateTime.Now
@@ -257,7 +258,7 @@ namespace Blog.Core.Services
 
                 await db.Insertable(new PasswordLib()
                 {
-                    PLID = SnowFlakeSingle.Instance.NextId(),
+                    PLID = IdGeneratorUtility.NextId(),
                     IsDeleted = false,
                     plAccountName = "aaa",
                     plCreateTime = DateTime.Now

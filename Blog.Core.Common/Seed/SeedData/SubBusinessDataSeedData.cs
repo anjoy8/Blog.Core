@@ -2,6 +2,7 @@
 using SqlSugar;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Blog.Core.Common.Utlilty;
 
 namespace Blog.Core.Common.Seed.SeedData;
 
@@ -29,13 +30,13 @@ public class SubBusinessDataSeedData : IEntitySeedData<SubLibraryBusinessTable>
                 {
                     new()
                     {
-                        Id = SnowFlakeSingle.Instance.NextId(),
+                        Id = IdGeneratorUtility.NextId(),
                         Name = "王五业务数据1",
                         Amount = 100,
                     },
                     new()
                     {
-                        Id = SnowFlakeSingle.Instance.NextId(),
+                        Id = IdGeneratorUtility.NextId(),
                         Name = "王五业务数据2",
                         Amount = 1000,
                     },
@@ -50,13 +51,13 @@ public class SubBusinessDataSeedData : IEntitySeedData<SubLibraryBusinessTable>
                 {
                     new()
                     {
-                        Id = SnowFlakeSingle.Instance.NextId(),
+                        Id = IdGeneratorUtility.NextId(),
                         Name = "赵六业务数据1",
                         Amount = 50,
                     },
                     new()
                     {
-                        Id = SnowFlakeSingle.Instance.NextId(),
+                        Id = IdGeneratorUtility.NextId(),
                         Name = "赵六业务数据2",
                         Amount = 60,
                     },

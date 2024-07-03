@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 using Blog.Core.Common.Caches;
 using System.Text.RegularExpressions;
+using Blog.Core.Common.Utlilty;
 
 namespace Blog.Core.Extensions
 {
@@ -20,6 +21,8 @@ namespace Blog.Core.Extensions
         public static void AddSqlsugarSetup(this IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
+
+            StaticConfig.CustomSnowFlakeFunc = IdGeneratorUtility.NextId;
 
             // 默认添加主数据库连接
             if (!AppSettings.app("MainDB").IsNullOrEmpty())
