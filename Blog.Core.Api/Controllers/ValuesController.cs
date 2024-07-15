@@ -19,7 +19,7 @@ using RabbitMQ.Client.Events;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Text;
-using Blog.Core.Common.Utlilty;
+using Blog.Core.Common.Utility;
 
 namespace Blog.Core.Controllers
 {

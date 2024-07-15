@@ -2,7 +2,7 @@
 using Quartz;
 using System;
 using System.Threading.Tasks;
-using Blog.Core.Common.Utlilty;
+using Blog.Core.Common.Utility;
 using Blog.Core.Model.Models;
 using Blog.Core.Repository.UnitOfWorks;
 using SqlSugar;

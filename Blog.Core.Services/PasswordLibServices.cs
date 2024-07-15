@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Blog.Core.Common;
 using Blog.Core.Common.DB;
-using Blog.Core.Common.Utlilty;
+using Blog.Core.Common.Utility;
 using Blog.Core.IRepository.Base;
 using Blog.Core.IServices;
 using Blog.Core.Model.Models;

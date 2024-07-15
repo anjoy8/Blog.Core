@@ -5,7 +5,7 @@ using StackExchange.Profiling;
 using System;
 using Serilog;
 using Blog.Core.Common.LogHelper;
-using Blog.Core.Common.Utlilty;
+using Blog.Core.Common.Utility;
 using Blog.Core.Model;
 
 namespace Blog.Core.Common.DB.Aop;

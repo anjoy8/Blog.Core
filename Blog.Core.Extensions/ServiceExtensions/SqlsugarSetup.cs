@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 using Blog.Core.Common.Caches;
 using System.Text.RegularExpressions;
-using Blog.Core.Common.Utlilty;
+using Blog.Core.Common.Utility;
 
 namespace Blog.Core.Extensions
 {

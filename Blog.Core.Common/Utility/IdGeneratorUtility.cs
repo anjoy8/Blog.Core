@@ -7,7 +7,7 @@ using SnowflakeId.AutoRegister.Interfaces;
 using SqlSugar;
 using Yitter.IdGenerator;
 
-namespace Blog.Core.Common.Utlilty;
+namespace Blog.Core.Common.Utility;
 
 public class IdGeneratorUtility
 {
