@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Blog.Core.Common.Caches;
+using Blog.Core.Common.Caches.Interface;
 
 namespace Blog.Core.Common.Helper
 {

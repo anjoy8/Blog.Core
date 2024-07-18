@@ -1332,6 +1332,11 @@
             缓存管理
             </summary>
         </member>
+        <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.#ctor(Blog.Core.Common.Caches.Interface.ICaching)">
+            <summary>
+            缓存管理
+            </summary>
+        </member>
         <member name="M:Blog.Core.Api.Controllers.Systems.CacheManageController.Get">
             <summary>
             获取全部缓存

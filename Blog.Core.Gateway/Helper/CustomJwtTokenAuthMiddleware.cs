@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication;
 using Blog.Core.Common;
 using Blog.Core.Common.Caches;
+using Blog.Core.Common.Caches.Interface;
 using Blog.Core.Common.Helper;
 
 namespace Blog.Core.AuthHelper

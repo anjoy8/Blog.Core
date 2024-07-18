@@ -67,22 +67,21 @@ public class App
     /// <returns></returns>
     public static IServiceProvider GetServiceProvider(Type serviceType, bool mustBuild = false, bool throwException = true)
     {
-        if (App.HostEnvironment == null || App.RootServices != null &&
-            InternalApp.InternalServices
-                .Where((u =>
-                    u.ServiceType ==
-                    (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType)))
-                .Any((u => u.Lifetime == ServiceLifetime.Singleton)))
-            return App.RootServices;
-
         //获取请求生存周期的服务
         if (HttpContext?.RequestServices != null)
             return HttpContext.RequestServices;
 
         if (App.RootServices != null)
         {
-            IServiceScope scope = RootServices.CreateScope();
-            return scope.ServiceProvider;
+            return RootServices;
+        }
+
+        //单例
+        if (InternalApp.InternalServices
+           .Where(u => u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
+           .Any(u => u.Lifetime == ServiceLifetime.Singleton))
+        {
+            return RootServices ?? InternalApp.InternalServices.BuildServiceProvider();
         }
 
         if (mustBuild)
@@ -151,8 +150,8 @@ public class App
         where TOptions : class, IConfigurableOptions
     {
         TOptions instance = App.Configuration
-            .GetSection(ConfigurableOptions.GetConfigurationPath(typeof(TOptions)))
-            .Get<TOptions>();
+           .GetSection(ConfigurableOptions.GetConfigurationPath(typeof(TOptions)))
+           .Get<TOptions>();
         return instance;
     }
 

@@ -5,6 +5,7 @@ using Blog.Core.Extensions;
 using Blog.Core.Gateway.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using System.Reflection;
+using Blog.Core.Common.Caches.Interface;
 
 namespace Blog.Core.AdminMvc
 {

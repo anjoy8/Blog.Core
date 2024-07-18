@@ -4,6 +4,7 @@ using Castle.DynamicProxy;
 using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Common.Caches;
+using Blog.Core.Common.Caches.Interface;
 
 namespace Blog.Core.AOP
 {

@@ -65,7 +65,7 @@ namespace Blog.Core.Services
                 plCreateTime = DateTime.Now
             }).ExecuteReturnSnowflakeIdAsync();
 
-            throw new Exception("123");
+            //throw new Exception("测试嵌套事务异常回滚");
             return true;
         }
 
@@ -83,7 +83,7 @@ namespace Blog.Core.Services
                 plCreateTime = DateTime.Now
             }).ExecuteReturnSnowflakeIdAsync();
 
-            throw new Exception("123");
+            //throw new Exception("测试嵌套事务异常回滚");
             return true;
         }
     }

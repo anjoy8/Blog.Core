@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Blog.Core.Common.Caches.Interface;
 using SqlSugar;
 
 namespace Blog.Core.Common.Caches;

@@ -16,6 +16,10 @@ public static class DataProtectionSetup
         if (redisOption.Enable)
         {
             builder.PersistKeysToStackExchangeRedis(App.GetService<IConnectionMultiplexer>());
+            return;
         }
+
+        //默认写到 webroot/temp/
+        builder.PersistKeysToFileSystem(new DirectoryInfo(App.WebHostEnvironment.WebRootPath + "/Temp/Sessions/"));
     }
 }
