@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using Blog.Core.Common.Const;
+using Microsoft.Data.SqlClient;
 
 namespace Blog.Core.Common.Seed
 {
@@ -72,6 +73,7 @@ namespace Blog.Core.Common.Seed
                 if (MyContext.DbType != SqlSugar.DbType.Oracle && MyContext.DbType != SqlSugar.DbType.Dm)
                 {
                     myContext.Db.DbMaintenance.CreateDatabase();
+                    SqlConnection.ClearAllPools();
                     ConsoleHelper.WriteSuccessLine($"Database created successfully!");
                 }
                 else
@@ -86,13 +88,13 @@ namespace Blog.Core.Common.Seed
 
                 var path = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
                 var referencedAssemblies = System.IO.Directory.GetFiles(path, "Blog.Core.Model.dll")
-                    .Select(Assembly.LoadFrom).ToArray();
+                   .Select(Assembly.LoadFrom).ToArray();
                 var modelTypes = referencedAssemblies
-                    .SelectMany(a => a.DefinedTypes)
-                    .Select(type => type.AsType())
-                    .Where(x => x.IsClass && x.Namespace is "Blog.Core.Model.Models")
-                    .Where(s => !s.IsDefined(typeof(MultiTenantAttribute), false))
-                    .ToList();
+                   .SelectMany(a => a.DefinedTypes)
+                   .Select(type => type.AsType())
+                   .Where(x => x.IsClass && x.Namespace is "Blog.Core.Model.Models")
+                   .Where(s => !s.IsDefined(typeof(MultiTenantAttribute), false))
+                   .ToList();
                 modelTypes.ForEach(t =>
                 {
                     // 这里只支持添加表，不支持删除
@@ -106,7 +108,7 @@ namespace Blog.Core.Common.Seed
                 ConsoleHelper.WriteSuccessLine($"Tables created successfully!");
                 Console.WriteLine();
 
-                if (AppSettings.app(new string[] {"AppSettings", "SeedDBDataEnabled"}).ObjToBool())
+                if (AppSettings.app(new string[] { "AppSettings", "SeedDBDataEnabled" }).ObjToBool())
                 {
                     JsonSerializerSettings setting = new JsonSerializerSettings();
                     JsonConvert.DefaultSettings = new Func<JsonSerializerSettings>(() =>
@@ -366,11 +368,11 @@ namespace Blog.Core.Common.Seed
         {
             // 获取所有种子配置-初始化数据
             var seedDataTypes = AssemblysExtensions.GetAllAssemblies().SelectMany(s => s.DefinedTypes)
-                .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass)
-                .Where(u =>
+               .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass)
+               .Where(u =>
                 {
                     var esd = u.GetInterfaces()
-                        .FirstOrDefault(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>)));
+                       .FirstOrDefault(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>)));
                     if (esd is null)
                     {
                         return false;
@@ -445,12 +447,12 @@ namespace Blog.Core.Common.Seed
             ConsoleHelper.WriteSuccessLine($"Log Database created successfully!");
             var path = AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory;
             var referencedAssemblies = System.IO.Directory.GetFiles(path, "Blog.Core.Model.dll")
-                .Select(Assembly.LoadFrom).ToArray();
+               .Select(Assembly.LoadFrom).ToArray();
             var modelTypes = referencedAssemblies
-                .SelectMany(a => a.DefinedTypes)
-                .Select(type => type.AsType())
-                .Where(x => x.IsClass && x.Namespace != null && x.Namespace.StartsWith("Blog.Core.Model.Logs"))
-                .ToList();
+               .SelectMany(a => a.DefinedTypes)
+               .Select(type => type.AsType())
+               .Where(x => x.IsClass && x.Namespace != null && x.Namespace.StartsWith("Blog.Core.Model.Logs"))
+               .ToList();
             Stopwatch sw = Stopwatch.StartNew();
 
             var tables = logDb.DbMaintenance.GetTableInfoList();
@@ -488,7 +490,7 @@ namespace Blog.Core.Common.Seed
         public static async Task TenantSeedAsync(MyContext myContext)
         {
             var tenants = await myContext.Db.Queryable<SysTenant>().Where(s => s.TenantType == TenantTypeEnum.Db)
-                .ToListAsync();
+               .ToListAsync();
             if (tenants.Any())
             {
                 Console.WriteLine($@"Init Multi Tenant Db");
@@ -500,7 +502,7 @@ namespace Blog.Core.Common.Seed
             }
 
             tenants = await myContext.Db.Queryable<SysTenant>().Where(s => s.TenantType == TenantTypeEnum.Tables)
-                .ToListAsync();
+               .ToListAsync();
             if (tenants.Any())
             {
                 await InitTenantSeedAsync(myContext, tenants);
@@ -522,8 +524,8 @@ namespace Blog.Core.Common.Seed
                 foreach (var entityType in entityTypes)
                 {
                     myContext.Db.CodeFirst
-                        .As(entityType, entityType.GetTenantTableName(myContext.Db, sysTenant))
-                        .InitTables(entityType);
+                       .As(entityType, entityType.GetTenantTableName(myContext.Db, sysTenant))
+                       .InitTables(entityType);
 
                     Console.WriteLine($@"Init Tables:{entityType.GetTenantTableName(myContext.Db, sysTenant)}");
                 }
@@ -585,11 +587,11 @@ namespace Blog.Core.Common.Seed
         {
             // 获取所有种子配置-初始化数据
             var seedDataTypes = AssemblysExtensions.GetAllAssemblies().SelectMany(s => s.DefinedTypes)
-                .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass)
-                .Where(u =>
+               .Where(u => !u.IsInterface && !u.IsAbstract && u.IsClass)
+               .Where(u =>
                 {
                     var esd = u.GetInterfaces()
-                        .FirstOrDefault(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>)));
+                       .FirstOrDefault(i => i.HasImplementedRawGeneric(typeof(IEntitySeedData<>)));
                     if (esd is null)
                     {
                         return false;
