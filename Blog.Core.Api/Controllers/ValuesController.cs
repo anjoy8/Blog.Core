@@ -19,6 +19,7 @@ using RabbitMQ.Client.Events;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Text;
+using Blog.Core.Common.Caches.Interface;
 using Blog.Core.Common.Utility;
 
 namespace Blog.Core.Controllers
@@ -45,29 +46,11 @@ namespace Blog.Core.Controllers
         private readonly IHttpPollyHelper _httpPollyHelper;
         private readonly IRabbitMQPersistentConnection _persistentConnection;
         private readonly SeqOptions _seqOptions;
+        private readonly ICaching _cache;
 
-        /// <summary>
-        /// ValuesController
-        /// </summary>
-        /// <param name="blogArticleServices"></param>
-        /// <param name="mapper"></param>
-        /// <param name="advertisementServices"></param>
-        /// <param name="love"></param>
-        /// <param name="roleModulePermissionServices"></param>
-        /// <param name="user"></param>
-        /// <param name="passwordLibServices"></param>
-        /// <param name="httpPollyHelper"></param>
-        /// <param name="persistentConnection"></param>
-        /// <param name="seqOptions"></param>
-        public ValuesController(IBlogArticleServices blogArticleServices
-            , IMapper mapper
-            , IAdvertisementServices advertisementServices
-            , Love love
-            , IRoleModulePermissionServices roleModulePermissionServices
-            , IUser user, IPasswordLibServices passwordLibServices
-            , IHttpPollyHelper httpPollyHelper
-            , IRabbitMQPersistentConnection persistentConnection
-            , IOptions<SeqOptions> seqOptions)
+        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love,
+            IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices,
+            IHttpPollyHelper httpPollyHelper, IRabbitMQPersistentConnection persistentConnection, IOptions<SeqOptions> seqOptions, ICaching caching)
         {
             // 测试 Authorize 和 mapper
             _mapper = mapper;
@@ -85,6 +68,7 @@ namespace Blog.Core.Controllers
             // httpPolly
             _httpPollyHelper = httpPollyHelper;
             _persistentConnection = persistentConnection;
+            _cache = caching;
             _seqOptions = seqOptions.Value;
         }
 
@@ -99,6 +83,7 @@ namespace Blog.Core.Controllers
             {
                 _persistentConnection.TryConnect();
             }
+
             _persistentConnection.PublishMessage("Hello, RabbitMQ!", exchangeName: "blogcore", routingKey: "myRoutingKey");
             return Ok();
         }
@@ -177,18 +162,18 @@ namespace Blog.Core.Controllers
              *  测试按照指定列查询
              */
             var queryByColums = await _blogArticleServices
-                .Query<BlogViewModels>(it => new BlogViewModels() { btitle = it.btitle });
+               .Query<BlogViewModels>(it => new BlogViewModels() { btitle = it.btitle });
 
             /*
-            *  测试按照指定列查询带多条件和排序方法
-            */
+             *  测试按照指定列查询带多条件和排序方法
+             */
             Expression<Func<BlogArticle, bool>> registerInfoWhere = a => a.btitle == "xxx" && a.bRemark == "XXX";
             var queryByColumsByMultiTerms = await _blogArticleServices
-                .Query<BlogArticle>(it => new BlogArticle() { btitle = it.btitle }, registerInfoWhere, "bID Desc");
+               .Query<BlogArticle>(it => new BlogArticle() { btitle = it.btitle }, registerInfoWhere, "bID Desc");
 
             /*
              *  测试 sql 更新
-             * 
+             *
              * 【SQL参数】：@bID:5
              *  @bsubmitter:laozhang619
              *  @IsDeleted:False
@@ -196,7 +181,7 @@ namespace Blog.Core.Controllers
              *  `bsubmitter`=@bsubmitter,`IsDeleted`=@IsDeleted  WHERE `bID`=@bID
              */
             var updateSql = await _blogArticleServices.Update(new
-            { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", IsDeleted = false, bID = 5 });
+                { bsubmitter = $"laozhang{DateTime.Now.Millisecond}", IsDeleted = false, bID = 5 });
 
 
             // 测试 AOP 缓存
@@ -483,6 +468,31 @@ namespace Blog.Core.Controllers
         public long GetSnowflakeId()
         {
             return IdGeneratorUtility.NextId();
+        }
+
+        /// <summary>
+        /// 测试缓存
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<MessageModel<string>> TestCacheAsync()
+        {
+            await _cache.SetAsync("test", "test", new TimeSpan(0, 10, 0));
+
+            var result = await _cache.GetAsync<string>("test");
+            if (!"test".Equals(result))
+            {
+                return Failed("缓存失败,值不一样");
+            }
+
+            var count = _cache.GetAllCacheKeys().Count;
+            if (count <= 0)
+            {
+                return Failed("缓存失败,数量不对");
+            }
+
+            return Success<string>("");
         }
     }
 
