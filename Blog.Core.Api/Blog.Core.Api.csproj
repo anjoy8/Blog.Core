@@ -47,6 +47,10 @@
     <None Remove="Log\**" />
     <None Remove="Middlewares\**" />
     <None Remove="wwwroot\ui\**" />
+    <None Remove="wwwroot\Temp\**" />
+    <Compile Remove="wwwroot\Temp\**" />
+    <EmbeddedResource Remove="wwwroot\Temp\**" />
+    <Content Remove="wwwroot\Temp\**" />
   </ItemGroup>
 
   <ItemGroup>

@@ -359,3 +359,4 @@ Blog.Core.Api/Logs
 *.db
 /Blog.Core.Api/WMBlog.db-journal
 .docs/.vuepress/dist/
+Blog.Core.Api/wwwroot/Temp/Sessions
