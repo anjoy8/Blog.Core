@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\build\common.targets" />
 
   <ItemGroup>
     <None Update="Blog.Core.FrameWork.Entity\Blog.Core.FrameWork.tt">

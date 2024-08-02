@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	
-  <Import Project="..\build\common.targets" />
   <PropertyGroup>
     <Copyright>softlgl</Copyright>
     <Owners>softlgl</Owners>
