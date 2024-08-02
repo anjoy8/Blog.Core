@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Concurrent;
 using System.Text;
-using System.Threading.Tasks;
 using Blog.Core.Common.Caches.Interface;
-using Blog.Core.Common.Const;
+using Blog.Core.Common.Extensions;
 using Blog.Core.Common.Option;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using StackExchange.Redis;
@@ -14,12 +13,14 @@ using StackExchange.Redis;
 namespace Blog.Core.Common.Caches;
 
 public class Caching(
+    ILogger<Caching> logger,
     IDistributedCache cache,
     IOptions<RedisOptions> redisOptions)
     : ICaching
 {
+    private static readonly ConcurrentDictionary<string, bool> _loggedWarnings = new();
     private readonly RedisOptions _redisOptions = redisOptions.Value;
-
+    private const string WarningMessage = "注入的缓存服务不是MemoryCacheManager,请检查注册配置,无法获取所有KEY";
     public IDistributedCache Cache => cache;
 
     public void DelByPattern(string key)
@@ -74,8 +75,18 @@ public class Caching(
             return keys.Select(u => u.ToString()).ToList();
         }
 
-        var manage = App.GetService<MemoryCacheManager>(false);
-        return manage.GetAllKeys().ToList();
+        var memoryCache = App.GetService<IMemoryCache>();
+        if (memoryCache is not MemoryCacheManager memoryCacheManager)
+        {
+            if (_loggedWarnings.TryAdd(WarningMessage, true))
+            {
+                logger.LogWarning(WarningMessage);
+            }
+
+            return [];
+        }
+
+        return memoryCacheManager.GetAllKeys().WhereIf(!key.IsNullOrEmpty(), s => s.StartsWith(key!)).ToList();
     }
 
     public T Get<T>(string cacheKey)

@@ -1,5 +1,6 @@
 ﻿using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,15 +14,9 @@ namespace Blog.Core.Extensions
         public static void AddIpPolicyRateLimitSetup(this IServiceCollection services, IConfiguration Configuration)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            
-            // CacheSetup unified register
-            // services.AddMemoryCache();
+
             //load general configuration from appsettings.json
             services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
-            // inject counter and rules stores
-            // services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
-            // services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
-            // services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 
             // inject counter and rules distributed cache stores
             services.AddSingleton<IIpPolicyStore, DistributedCacheIpPolicyStore>();

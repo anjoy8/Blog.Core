@@ -48,7 +48,7 @@ public static class CacheSetup
             services.AddSingleton<MemoryCacheManager>();
             services.AddSingleton<IMemoryCache>(provider => provider.GetService<MemoryCacheManager>());
             services.AddOptions();
-            services.TryAdd(ServiceDescriptor.Singleton<IDistributedCache, CommonMemoryDistributedCache>());
+            services.AddSingleton<IDistributedCache, CommonMemoryDistributedCache>();
         }
 
         services.AddSingleton<ICaching, Caching>();
