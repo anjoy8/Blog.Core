@@ -13,6 +13,11 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
+
+# 复制 Directory.Build.props 文件
+COPY ["Directory.Build.props", "."]
+
+# 复制所有项目文件
 COPY ["Blog.Core.Api/Blog.Core.Api.csproj", "Blog.Core.Api/"]
 COPY ["Blog.Core.Extensions/Blog.Core.Extensions.csproj", "Blog.Core.Extensions/"]
 COPY ["Blog.Core.EventBus/Blog.Core.EventBus.csproj", "Blog.Core.EventBus/"]
@@ -25,8 +30,14 @@ COPY ["Blog.Core.IServices/Blog.Core.IServices.csproj", "Blog.Core.IServices/"]
 COPY ["Blog.Core.Repository/Blog.Core.Repository.csproj", "Blog.Core.Repository/"]
 COPY ["Blog.Core.Tasks/Blog.Core.Tasks.csproj", "Blog.Core.Tasks/"]
 COPY ["build", "build/"]
+
+# 恢复依赖项
 RUN dotnet restore "Blog.Core.Api/Blog.Core.Api.csproj"
+
+# 复制其余的源代码
 COPY . .
+
+# 构建项目
 WORKDIR "/src/Blog.Core.Api"
 RUN dotnet build "Blog.Core.Api.csproj" -c Release -o /app/build
 
