@@ -77,7 +77,7 @@ namespace Blog.Core.Tasks
                 }
             }
 
-            Console.Out.WriteLine(jobHistory);
+            //Console.Out.WriteLine(jobHistory);
             return jobHistory;
         }
     }
