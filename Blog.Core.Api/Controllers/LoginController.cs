@@ -65,7 +65,7 @@ namespace Blog.Core.Controllers
         {
             string jwtStr = string.Empty;
             bool suc = false;
-            //这里就是用户登陆以后，通过数据库去调取数据，分配权限的操作
+            //这里就是用户登录以后，通过数据库去调取数据，分配权限的操作
 
             var user = await _sysUserInfoServices.GetUserRoleNameStr(name, MD5Helper.MD5Encrypt32(pass));
             if (user != null)
@@ -101,7 +101,7 @@ namespace Blog.Core.Controllers
         {
             string jwtStr = string.Empty;
             bool suc = false;
-            //这里就是用户登陆以后，通过数据库去调取数据，分配权限的操作
+            //这里就是用户登录以后，通过数据库去调取数据，分配权限的操作
             //这里直接写死了
             if (name == "admins" && pass == "admins")
             {

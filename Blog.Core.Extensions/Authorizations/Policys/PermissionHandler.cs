@@ -149,14 +149,14 @@ namespace Blog.Core.AuthHelper
 
                             if (user.IsDeleted)
                             {
-                                _user.MessageModel = new ApiResponse(StatusCode.CODE401, "用户已被删除,禁止登陆!").MessageModel;
+                                _user.MessageModel = new ApiResponse(StatusCode.CODE401, "用户已被删除,禁止登录!").MessageModel;
                                 context.Fail(new AuthorizationFailureReason(this, _user.MessageModel.msg));
                                 return;
                             }
 
                             if (!user.Enable)
                             {
-                                _user.MessageModel = new ApiResponse(StatusCode.CODE401, "用户已被禁用!禁止登陆!").MessageModel;
+                                _user.MessageModel = new ApiResponse(StatusCode.CODE401, "用户已被禁用!禁止登录!").MessageModel;
                                 context.Fail(new AuthorizationFailureReason(this, _user.MessageModel.msg));
                                 return;
                             }
