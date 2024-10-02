@@ -57,6 +57,11 @@ namespace Blog.Core.Model.Models
         [SugarColumn(Length = 100, IsNullable = true)]
         public string Icon { get; set; }
         /// <summary>
+        /// 菜单图标新
+        /// </summary>
+        [SugarColumn(Length = 100, IsNullable = true)]
+        public string IconNew { get; set; }
+        /// <summary>
         /// 菜单描述    
         /// </summary>
         [SugarColumn(Length = 100, IsNullable = true)]

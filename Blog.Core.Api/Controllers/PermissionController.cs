@@ -398,6 +398,7 @@ namespace Blog.Core.Controllers
                                                    IsButton = child.IsButton.ObjToBool(),
                                                    meta = new NavigationBarMeta
                                                    {
+                                                       icon = child.IconNew,
                                                        requireAuth = true,
                                                        title = child.Name,
                                                        NoTabPage = child.IsHide.ObjToBool(),
