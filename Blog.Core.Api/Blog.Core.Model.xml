@@ -676,6 +676,11 @@
             菜单图标
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.Permission.IconNew">
+            <summary>
+            菜单图标新
+            </summary>
+        </member>
         <member name="P:Blog.Core.Model.Models.Permission.Description">
             <summary>
             菜单描述    

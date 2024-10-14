@@ -255,7 +255,7 @@
             接口管理
             </summary>
         </member>
-        <member name="M:Blog.Core.Controllers.ModuleController.Get(System.Int32,System.String)">
+        <member name="M:Blog.Core.Controllers.ModuleController.Get(System.Int32,System.String,System.Int32)">
             <summary>
             获取全部接口api
             </summary>

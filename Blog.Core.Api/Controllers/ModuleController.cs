@@ -34,13 +34,12 @@ namespace Blog.Core.Controllers
         /// <returns></returns>
         // GET: api/User
         [HttpGet]
-        public async Task<MessageModel<PageModel<Modules>>> Get(int page = 1, string key = "")
+        public async Task<MessageModel<PageModel<Modules>>> Get(int page = 1, string key = "", int pageSize = 50)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
                 key = "";
             }
-            int intPageSize = 50;
 
             Expression<Func<Modules, bool>> whereExpression = a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key));
 
@@ -53,7 +52,7 @@ namespace Blog.Core.Controllers
             }
             else
             {
-                data = await _moduleServices.QueryPage(whereExpression, page, intPageSize, " Id desc ");
+                data = await _moduleServices.QueryPage(whereExpression, page, pageSize, " Id desc ");
             }
 
 

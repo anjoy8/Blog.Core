@@ -402,7 +402,7 @@
     "OrderSort": 0,
     "Icon": null,
     "Description": "查询 接口",
-    "Func": "getModules",
+    "Func": "handleQuery",
     "Enabled": 1,
     "CreateId": 18,
     "CreateBy": "提bug账号",
