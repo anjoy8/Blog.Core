@@ -41,7 +41,7 @@ namespace Blog.Core.Controllers
                 key = "";
             }
 
-            Expression<Func<Modules, bool>> whereExpression = a => a.IsDeleted != true && (a.Name != null && a.Name.Contains(key));
+            Expression<Func<Modules, bool>> whereExpression = a => a.IsDeleted != true && ((a.Name != null && a.Name.Contains(key) || (a.LinkUrl != null && a.LinkUrl.Contains(key))));
 
             PageModel<Modules> data = new PageModel<Modules>();
 
