@@ -8,6 +8,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Serilog;
 using StackExchange.Redis;
 
 namespace Blog.Core.Extensions.ServiceExtensions;
@@ -21,6 +22,7 @@ public static class CacheSetup
     public static void AddCacheSetup(this IServiceCollection services)
     {
         var cacheOptions = App.GetOptions<RedisOptions>();
+        Console.WriteLine("RedisOptions:{0}", cacheOptions.ToJson());
         if (cacheOptions.Enable)
         {
             // 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
@@ -35,7 +37,8 @@ public static class CacheSetup
             //使用Redis
             services.AddStackExchangeRedisCache(options =>
             {
-                options.ConnectionMultiplexerFactory = () => Task.FromResult(App.GetService<IConnectionMultiplexer>(false));
+                options.ConnectionMultiplexerFactory =
+                    () => Task.FromResult(App.GetService<IConnectionMultiplexer>(false));
                 if (!cacheOptions.InstanceName.IsNullOrEmpty()) options.InstanceName = cacheOptions.InstanceName;
             });
 
