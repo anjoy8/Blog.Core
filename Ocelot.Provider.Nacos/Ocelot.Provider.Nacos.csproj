@@ -12,8 +12,8 @@
   <ItemGroup>
     <PackageReference Include="nacos-sdk-csharp" Version="1.3.5" />
     <PackageReference Include="Ocelot" Version="20.0.0" />   
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
     <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
   </ItemGroup>
 </Project>

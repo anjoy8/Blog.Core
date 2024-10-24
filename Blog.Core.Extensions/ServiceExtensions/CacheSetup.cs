@@ -22,7 +22,6 @@ public static class CacheSetup
     public static void AddCacheSetup(this IServiceCollection services)
     {
         var cacheOptions = App.GetOptions<RedisOptions>();
-        Console.WriteLine("RedisOptions:{0}", cacheOptions.ToJson());
         if (cacheOptions.Enable)
         {
             // 配置启动Redis服务，虽然可能影响项目启动速度，但是不能在运行的时候报错，所以是合理的
