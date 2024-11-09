@@ -9,11 +9,16 @@ public static class MemoryCacheExtensions
 {
     #region Microsoft.Extensions.Caching.Memory_6_OR_OLDER
 
+    /// <summary>
+    /// 6.x <br/>
+    /// 6.0.2 调整了字段名，使用 StringKeyEntriesCollection
+    /// </summary>
     private static readonly Lazy<Func<MemoryCache, object>> GetEntries6 = new(() =>
         (Func<MemoryCache, object>)Delegate.CreateDelegate(typeof(Func<MemoryCache, object>),
-            typeof(MemoryCache).GetProperty("EntriesCollection", BindingFlags.NonPublic | BindingFlags.Instance)
-              ?.GetGetMethod(true) ?? throw new InvalidOperationException("Cannot find property 'EntriesCollection' on MemoryCache."),
-            throwOnBindFailure: true));
+            typeof(MemoryCache).GetProperty("EntriesCollection", BindingFlags.NonPublic | BindingFlags.Instance)?.GetGetMethod(true)
+            ?? typeof(MemoryCache).GetProperty("StringKeyEntriesCollection", BindingFlags.NonPublic | BindingFlags.Instance)?.GetGetMethod(true)
+            ?? throw new InvalidOperationException("Cannot find property 'EntriesCollection' or 'StringKeyEntriesCollection' on MemoryCache."),
+            true));
 
     #endregion
 
