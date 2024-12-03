@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Blog.Core.Common.Caches.Interface;
+using Blog.Core.Common.Option;
 using SqlSugar;
 
 namespace Blog.Core.Common.Caches;
@@ -15,54 +16,95 @@ namespace Blog.Core.Common.Caches;
 /// </summary>
 public class SqlSugarCacheService : ICacheService
 {
-	private readonly Lazy<ICaching> _caching = new(() => App.GetService<ICaching>(false));
-	private ICaching Caching => _caching.Value;
+    private readonly Lazy<ICaching> _caching = new(() => App.GetService<ICaching>(false));
+    private ICaching Caching => _caching.Value;
+    private readonly AppSettingsOption _options = App.GetOptions<AppSettingsOption>();
 
-	public void Add<V>(string key, V value)
-	{
-		Caching.Set(key, value);
-	}
+    public void Add<V>(string key, V value)
+    {
+        if (!_options.CacheDbEnabled)
+        {
+            return;
+        }
 
-	public void Add<V>(string key, V value, int cacheDurationInSeconds)
-	{
-		Caching.Set(key, value, TimeSpan.FromSeconds(cacheDurationInSeconds));
-	}
+        Caching.Set(key, value);
+    }
 
-	public bool ContainsKey<V>(string key)
-	{
-		return Caching.Exists(key);
-	}
+    public void Add<V>(string key, V value, int cacheDurationInSeconds)
+    {
+        if (!_options.CacheDbEnabled)
+        {
+            return;
+        }
 
-	public V Get<V>(string key)
-	{
-		return Caching.Get<V>(key);
-	}
+        Caching.Set(key, value, TimeSpan.FromSeconds(cacheDurationInSeconds));
+    }
 
-	public IEnumerable<string> GetAllKey<V>()
-	{
-		return Caching.GetAllCacheKeys();
-	}
+    public bool ContainsKey<V>(string key)
+    {
+        if (!_options.CacheDbEnabled)
+        {
+            return default;
+        }
 
-	public V GetOrCreate<V>(string cacheKey, Func<V> create, int cacheDurationInSeconds = int.MaxValue)
-	{
-		if (!ContainsKey<V>(cacheKey))
-		{
-			var value = create();
-			Caching.Set(cacheKey, value, TimeSpan.FromSeconds(cacheDurationInSeconds));
-			return value;
-		}
+        return Caching.Exists(key);
+    }
 
-		return Caching.Get<V>(cacheKey);
-	}
+    public V Get<V>(string key)
+    {
+        if (!_options.CacheDbEnabled)
+        {
+            return default;
+        }
 
-	public void Remove<V>(string key)
-	{
-		Caching.Remove(key);
-	}
+        return Caching.Get<V>(key);
+    }
 
-	public bool RemoveAll()
-	{
-		Caching.RemoveAll();
-		return true;
-	}
+    public IEnumerable<string> GetAllKey<V>()
+    {
+        if (!_options.CacheDbEnabled)
+        {
+            return default;
+        }
+
+        return Caching.GetAllCacheKeys();
+    }
+
+    public V GetOrCreate<V>(string cacheKey, Func<V> create, int cacheDurationInSeconds = int.MaxValue)
+    {
+        if (!_options.CacheDbEnabled)
+        {
+            return create();
+        }
+
+        if (!ContainsKey<V>(cacheKey))
+        {
+            var value = create();
+            Caching.Set(cacheKey, value, TimeSpan.FromSeconds(cacheDurationInSeconds));
+            return value;
+        }
+
+        return Caching.Get<V>(cacheKey);
+    }
+
+    public void Remove<V>(string key)
+    {
+        if (!_options.CacheDbEnabled)
+        {
+            return;
+        }
+
+        Caching.Remove(key);
+    }
+
+    public bool RemoveAll()
+    {
+        if (!_options.CacheDbEnabled)
+        {
+            return true;
+        }
+
+        Caching.RemoveAll();
+        return true;
+    }
 }
