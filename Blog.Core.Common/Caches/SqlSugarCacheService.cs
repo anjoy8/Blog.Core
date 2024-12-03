@@ -6,7 +6,12 @@ using SqlSugar;
 namespace Blog.Core.Common.Caches;
 
 /// <summary>
-/// 实现SqlSugar的ICacheService接口
+/// 实现SqlSugar的ICacheService接口<br/>
+/// <br/>
+/// 建议自己实现业务缓存,注入ICaching直接用即可<br/>
+/// <br/>
+/// 不建议使用SqlSugar缓存,性能有很大问题,会导致redis堆积<br/>
+/// 核心问题在于SqlSugar，每次query（注意：不管你有没有启用,所有表的查询）都会查缓存, insert\update\delete,又会频繁GetAllKey，导致性能特别低<br/>
 /// </summary>
 public class SqlSugarCacheService : ICacheService
 {
