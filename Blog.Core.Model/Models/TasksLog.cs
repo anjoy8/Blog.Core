@@ -1,11 +1,9 @@
-﻿using SqlSugar;
-using System;
-
-namespace Blog.Core.Model.Models
+﻿namespace Blog.Core.Model.Models
 {
     /// <summary>
     /// 任务日志表
     /// </summary>
+    [MigrateVersion("1.0.0")]
     public class TasksLog : RootEntityTkey<long>
     {
         /// <summary>

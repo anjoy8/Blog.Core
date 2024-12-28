@@ -1,5 +1,4 @@
-﻿using Blog.Core.Model.Tenants;
-using SqlSugar;
+﻿using Blog.Core.Model.Base.Tenants;
 
 namespace Blog.Core.Model.Models;
 
@@ -14,6 +13,7 @@ namespace Blog.Core.Model.Models;
 /// 注意:<br/>
 /// 使用租户Id方案,无需配置分库的连接
 /// </summary>
+[MigrateVersion("1.0.0")]
 public class SysTenant : RootEntityTkey<long>
 {
     /// <summary>

@@ -1,7 +1,4 @@
-﻿using SqlSugar;
-using System;
-
-namespace Blog.Core.Model
+﻿namespace Blog.Core.Model.Base.RootTkey
 {
     /// <summary>
     /// 接口API地址信息表 

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Blog.Core.Model.ViewModels
+﻿namespace Blog.Core.Model.ViewModels
 {
     /// <summary>
     /// 菜单展示model

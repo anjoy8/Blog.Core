@@ -1,6 +1,4 @@
-﻿using SqlSugar;
-
-namespace Blog.Core.Model.Tenants;
+﻿namespace Blog.Core.Model.Base.Tenants;
 
 /// <summary>
 /// 租户模型接口

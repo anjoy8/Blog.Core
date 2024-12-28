@@ -1,11 +1,9 @@
-﻿using SqlSugar;
-using System;
-
-namespace Blog.Core.Model.Models
+﻿namespace Blog.Core.Model.Models
 {
     /// <summary>
     /// 接口API地址信息表
     /// </summary>
+    [MigrateVersion("1.0.0")]
     public class Modules : ModulesRoot<long>
     {
         public Modules()

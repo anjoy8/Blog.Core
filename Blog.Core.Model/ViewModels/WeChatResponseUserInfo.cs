@@ -1,9 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Blog.Core.Model.ViewModels
+﻿namespace Blog.Core.Model.ViewModels
 {
     /// <summary>
     /// 返回给调用者的Dto

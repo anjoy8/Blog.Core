@@ -1,5 +1,4 @@
-﻿using System;
-using Blog.Core.Model.Models;
+﻿using Blog.Core.Model.Models;
 
 namespace Blog.Core.Model.ViewModels
 {

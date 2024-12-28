@@ -1,7 +1,7 @@
 using Blog.Core.Common.DB.Extension;
 using Blog.Core.Controllers;
 using Blog.Core.Model;
-using Blog.Core.Model.Models.RootTkey;
+using Blog.Core.Model.Base.RootTkey;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetTaste;

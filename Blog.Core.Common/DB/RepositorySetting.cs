@@ -1,10 +1,10 @@
-﻿using Blog.Core.Model.Models.RootTkey;
-using Blog.Core.Model.Models.RootTkey.Interface;
-using Blog.Core.Model.Tenants;
-using SqlSugar;
+﻿using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Blog.Core.Model.Base.RootTkey;
+using Blog.Core.Model.Base.RootTkey.Interface;
+using Blog.Core.Model.Base.Tenants;
 
 namespace Blog.Core.Common.DB;
 

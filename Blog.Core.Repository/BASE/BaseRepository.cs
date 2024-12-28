@@ -3,7 +3,6 @@ using Blog.Core.Common.DB;
 using Blog.Core.IRepository.Base;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
-using Blog.Core.Model.Tenants;
 using Blog.Core.Repository.UnitOfWorks;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using SqlSugar;
@@ -13,6 +12,7 @@ using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Blog.Core.Model.Base.Tenants;
 
 namespace Blog.Core.Repository.Base
 {

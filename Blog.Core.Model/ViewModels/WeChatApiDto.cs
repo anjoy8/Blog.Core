@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Blog.Core.Model.ViewModels
+﻿namespace Blog.Core.Model.ViewModels
 {
     /// <summary>
     /// 微信接口消息DTO

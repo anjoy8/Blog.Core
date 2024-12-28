@@ -1,7 +1,4 @@
-﻿using SqlSugar;
-using System;
-
-namespace Blog.Core.Model
+﻿namespace Blog.Core.Model.Base.RootTkey
 {
     /// <summary>
     /// 按钮跟权限关联表

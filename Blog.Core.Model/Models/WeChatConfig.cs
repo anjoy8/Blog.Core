@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using SqlSugar;
+﻿using System.Linq;
 
 namespace Blog.Core.Model.Models
 {
@@ -9,6 +6,7 @@ namespace Blog.Core.Model.Models
     ///
     ///</summary>
     [SugarTable("WeChatConfig")]
+    [MigrateVersion("1.0.0")]
     public class WeChatConfig
     {
 

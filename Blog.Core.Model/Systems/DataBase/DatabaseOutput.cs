@@ -1,6 +1,4 @@
-﻿using SqlSugar;
-
-namespace Blog.Core.Model.Systems.DataBase;
+﻿namespace Blog.Core.Model.Systems.DataBase;
 
 public class DatabaseOutput
 {

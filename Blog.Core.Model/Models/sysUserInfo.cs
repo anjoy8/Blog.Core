@@ -1,14 +1,11 @@
-﻿using SqlSugar;
-using System;
-using System.Collections.Generic;
-
-namespace Blog.Core.Model.Models
+﻿namespace Blog.Core.Model.Models
 {
 	/// <summary>
 	/// 用户信息表
 	/// </summary>
 	//[SugarTable("SysUserInfo")]
 	[SugarTable("SysUserInfo", "用户表")] //('数据库表名'，'数据库表备注')
+	[MigrateVersion("1.0.0")]
 	public class SysUserInfo : SysUserInfoRoot<long>
 	{
 		public SysUserInfo()

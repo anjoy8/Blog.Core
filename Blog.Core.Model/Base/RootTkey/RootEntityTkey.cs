@@ -1,7 +1,4 @@
-﻿using SqlSugar;
-using System;
-
-namespace Blog.Core.Model
+﻿namespace Blog.Core.Model.Base.RootTkey
 {
     public class RootEntityTkey<Tkey> where Tkey : IEquatable<Tkey>
     {

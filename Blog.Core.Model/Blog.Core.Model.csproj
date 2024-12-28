@@ -19,7 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\RootTkey\Interface\" />
+	  <ProjectReference Include="..\Blog.Core.Migrate\Blog.Core.Migrate.csproj" />
 	</ItemGroup>
 
 </Project>

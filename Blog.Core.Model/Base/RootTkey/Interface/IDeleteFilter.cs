@@ -1,4 +1,4 @@
-﻿namespace Blog.Core.Model.Models.RootTkey.Interface;
+﻿namespace Blog.Core.Model.Base.RootTkey.Interface;
 
 /// <summary>
 /// 软删除 过滤器

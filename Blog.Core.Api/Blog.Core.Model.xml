@@ -4,195 +4,63 @@
         <name>Blog.Core.Model</name>
     </assembly>
     <members>
-        <member name="F:Blog.Core.Model.AuthorityScopeEnum.NONE">
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Enabled">
             <summary>
-            无任何权限
+            状态 <br/>
+            中立字段，某些表可使用某些表不使用
             </summary>
         </member>
-        <member name="F:Blog.Core.Model.AuthorityScopeEnum.Custom">
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.IsDeleted">
             <summary>
-            自定义权限
+            中立字段，某些表可使用某些表不使用   <br/>
+            逻辑上的删除，非物理删除  <br/>
+            例如：单据删除并非直接删除
             </summary>
         </member>
-        <member name="F:Blog.Core.Model.AuthorityScopeEnum.MyDepart">
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.IsInternal">
             <summary>
-            本部门
+            中立字段 <br/>
+            是否内置数据
             </summary>
         </member>
-        <member name="F:Blog.Core.Model.AuthorityScopeEnum.MyDepartAndDown">
-            <summary>
-            本部门及以下
-            </summary>
-        </member>
-        <member name="F:Blog.Core.Model.AuthorityScopeEnum.OnlySelf">
-            <summary>
-            仅自己
-            </summary>
-        </member>
-        <member name="F:Blog.Core.Model.AuthorityScopeEnum.ALL">
-            <summary>
-            所有
-            </summary>
-        </member>
-        <member name="T:Blog.Core.Model.IDS4DbModels.ApplicationRole">
-            <summary>
-            以下model 来自ids4项目，多库模式，为了调取ids4数据
-            角色表
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.OrderSort">
-             <summary>
-            排序
-             </summary>
-        </member>
-        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.Enabled">
-            <summary>
-            是否激活
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.CreateId">
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.CreateId">
             <summary>
             创建ID
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.CreateBy">
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.CreateBy">
             <summary>
             创建者
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.CreateTime">
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.CreateTime">
             <summary>
             创建时间
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.ModifyId">
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.ModifyId">
             <summary>
             修改ID
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.ModifyBy">
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.ModifyBy">
             <summary>
-            修改者
+            更新者
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.ModifyTime">
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.ModifyTime">
             <summary>
-            修改时间
+            修改日期
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.IDS4DbModels.ApplicationUser">
+        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Version">
             <summary>
-            以下model 来自ids4项目，多库模式，为了调取ids4数据
-            用户表
+            数据版本
             </summary>
         </member>
-        <member name="T:Blog.Core.Model.Love">
+        <member name="T:Blog.Core.Model.Models.RootTkey.Interface.IDeleteFilter">
             <summary>
-            这是爱
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Love.Id">
-            <summary>
-            id
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Love.Name">
-            <summary>
-            姓名
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Love.Age">
-            <summary>
-            年龄
-            </summary>
-        </member>
-        <member name="T:Blog.Core.Model.MessageModel`1">
-            <summary>
-            通用返回信息类
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.MessageModel`1.status">
-            <summary>
-            状态码
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.MessageModel`1.success">
-            <summary>
-            操作是否成功
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.MessageModel`1.msg">
-            <summary>
-            返回信息
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.MessageModel`1.msgDev">
-            <summary>
-            开发者信息
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.MessageModel`1.response">
-            <summary>
-            返回数据集合
-            </summary>
-        </member>
-        <member name="M:Blog.Core.Model.MessageModel`1.Success(System.String)">
-            <summary>
-            返回成功
-            </summary>
-            <param name="msg">消息</param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Model.MessageModel`1.Success(System.String,`0)">
-            <summary>
-            返回成功
-            </summary>
-            <param name="msg">消息</param>
-            <param name="response">数据</param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Model.MessageModel`1.Fail(System.String)">
-            <summary>
-            返回失败
-            </summary>
-            <param name="msg">消息</param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Model.MessageModel`1.Fail(System.String,`0)">
-            <summary>
-            返回失败
-            </summary>
-            <param name="msg">消息</param>
-            <param name="response">数据</param>
-            <returns></returns>
-        </member>
-        <member name="M:Blog.Core.Model.MessageModel`1.Message(System.Boolean,System.String,`0)">
-            <summary>
-            返回消息
-            </summary>
-            <param name="success">失败/成功</param>
-            <param name="msg">消息</param>
-            <param name="response">数据</param>
-            <returns></returns>
-        </member>
-        <member name="P:Blog.Core.Model.MessageModel.status">
-            <summary>
-            状态码
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.MessageModel.success">
-            <summary>
-            操作是否成功
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.MessageModel.msg">
-            <summary>
-            返回信息
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.MessageModel.response">
-            <summary>
-            返回数据集合
+            软删除 过滤器
             </summary>
         </member>
         <member name="T:Blog.Core.Model.Models.AccessTrendLog">
@@ -837,65 +705,6 @@
             修改时间
             </summary>
         </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Enabled">
-            <summary>
-            状态 <br/>
-            中立字段，某些表可使用某些表不使用
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.IsDeleted">
-            <summary>
-            中立字段，某些表可使用某些表不使用   <br/>
-            逻辑上的删除，非物理删除  <br/>
-            例如：单据删除并非直接删除
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.IsInternal">
-            <summary>
-            中立字段 <br/>
-            是否内置数据
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.CreateId">
-            <summary>
-            创建ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.CreateBy">
-            <summary>
-            创建者
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.CreateTime">
-            <summary>
-            创建时间
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.ModifyId">
-            <summary>
-            修改ID
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.ModifyBy">
-            <summary>
-            更新者
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.ModifyTime">
-            <summary>
-            修改日期
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Models.RootTkey.BaseEntity.Version">
-            <summary>
-            数据版本
-            </summary>
-        </member>
-        <member name="T:Blog.Core.Model.Models.RootTkey.Interface.IDeleteFilter">
-            <summary>
-            软删除 过滤器
-            </summary>
-        </member>
         <member name="T:Blog.Core.Model.Models.SysTenant">
             <summary>
             系统租户表 <br/>
@@ -1239,6 +1048,11 @@
             金额
             </summary>
         </member>
+        <member name="P:Blog.Core.Model.Models.MultiBusinessTable.Remark">
+            <summary>
+            备注(测试增加字段,多表迁移)
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.Models.SubLibraryBusinessTable">
             <summary>
             多租户-多库方案 业务表 <br/>
@@ -1253,6 +1067,11 @@
         <member name="P:Blog.Core.Model.Models.SubLibraryBusinessTable.Amount">
             <summary>
             金额
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Models.SubLibraryBusinessTable.Remark">
+            <summary>
+            备注(测试增加字段,多库迁移)
             </summary>
         </member>
         <member name="T:Blog.Core.Model.Models.Topic">
@@ -1890,6 +1709,234 @@
             角色ID
             </summary>
         </member>
+        <member name="T:Blog.Core.Model.Tenants.ITenantEntity">
+            <summary>
+            租户模型接口
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Tenants.ITenantEntity.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Tenants.MultiTenantAttribute">
+            <summary>
+            标识 多租户 的业务表 <br/>
+            默认设置是多库       <br/>
+            公共表无需区分 直接使用主库 各自业务在各自库中 <br/>
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Tenants.TenantTypeEnum">
+            <summary>
+            租户隔离方案
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Id">
+            <summary>
+            Id隔离
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Db">
+            <summary>
+            库隔离
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Tables">
+            <summary>
+            表隔离
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.NONE">
+            <summary>
+            无任何权限
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.Custom">
+            <summary>
+            自定义权限
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.MyDepart">
+            <summary>
+            本部门
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.MyDepartAndDown">
+            <summary>
+            本部门及以下
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.OnlySelf">
+            <summary>
+            仅自己
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Model.AuthorityScopeEnum.ALL">
+            <summary>
+            所有
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.IDS4DbModels.ApplicationRole">
+            <summary>
+            以下model 来自ids4项目，多库模式，为了调取ids4数据
+            角色表
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.OrderSort">
+             <summary>
+            排序
+             </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.Enabled">
+            <summary>
+            是否激活
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.CreateId">
+            <summary>
+            创建ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.CreateBy">
+            <summary>
+            创建者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.ModifyId">
+            <summary>
+            修改ID
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.ModifyBy">
+            <summary>
+            修改者
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.IDS4DbModels.ApplicationRole.ModifyTime">
+            <summary>
+            修改时间
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.IDS4DbModels.ApplicationUser">
+            <summary>
+            以下model 来自ids4项目，多库模式，为了调取ids4数据
+            用户表
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.Love">
+            <summary>
+            这是爱
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Love.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Love.Name">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.Love.Age">
+            <summary>
+            年龄
+            </summary>
+        </member>
+        <member name="T:Blog.Core.Model.MessageModel`1">
+            <summary>
+            通用返回信息类
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel`1.status">
+            <summary>
+            状态码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel`1.success">
+            <summary>
+            操作是否成功
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel`1.msg">
+            <summary>
+            返回信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel`1.msgDev">
+            <summary>
+            开发者信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel`1.response">
+            <summary>
+            返回数据集合
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Model.MessageModel`1.Success(System.String)">
+            <summary>
+            返回成功
+            </summary>
+            <param name="msg">消息</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.MessageModel`1.Success(System.String,`0)">
+            <summary>
+            返回成功
+            </summary>
+            <param name="msg">消息</param>
+            <param name="response">数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.MessageModel`1.Fail(System.String)">
+            <summary>
+            返回失败
+            </summary>
+            <param name="msg">消息</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.MessageModel`1.Fail(System.String,`0)">
+            <summary>
+            返回失败
+            </summary>
+            <param name="msg">消息</param>
+            <param name="response">数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:Blog.Core.Model.MessageModel`1.Message(System.Boolean,System.String,`0)">
+            <summary>
+            返回消息
+            </summary>
+            <param name="success">失败/成功</param>
+            <param name="msg">消息</param>
+            <param name="response">数据</param>
+            <returns></returns>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel.status">
+            <summary>
+            状态码
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel.success">
+            <summary>
+            操作是否成功
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel.msg">
+            <summary>
+            返回信息
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Model.MessageModel.response">
+            <summary>
+            返回数据集合
+            </summary>
+        </member>
         <member name="T:Blog.Core.Model.PageModel`1">
             <summary>
             通用分页信息类
@@ -1990,43 +2037,6 @@
         <member name="P:Blog.Core.Model.TableModel`1.Data">
             <summary>
             返回数据集
-            </summary>
-        </member>
-        <member name="T:Blog.Core.Model.Tenants.ITenantEntity">
-            <summary>
-            租户模型接口
-            </summary>
-        </member>
-        <member name="P:Blog.Core.Model.Tenants.ITenantEntity.TenantId">
-            <summary>
-            租户Id
-            </summary>
-        </member>
-        <member name="T:Blog.Core.Model.Tenants.MultiTenantAttribute">
-            <summary>
-            标识 多租户 的业务表 <br/>
-            默认设置是多库       <br/>
-            公共表无需区分 直接使用主库 各自业务在各自库中 <br/>
-            </summary>
-        </member>
-        <member name="T:Blog.Core.Model.Tenants.TenantTypeEnum">
-            <summary>
-            租户隔离方案
-            </summary>
-        </member>
-        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Id">
-            <summary>
-            Id隔离
-            </summary>
-        </member>
-        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Db">
-            <summary>
-            库隔离
-            </summary>
-        </member>
-        <member name="F:Blog.Core.Model.Tenants.TenantTypeEnum.Tables">
-            <summary>
-            表隔离
             </summary>
         </member>
         <member name="T:Blog.Core.Model.ViewModels.AdvertisementViewModels">

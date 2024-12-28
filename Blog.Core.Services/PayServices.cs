@@ -15,6 +15,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Blog.Core.Model.Base.RootTkey;
 
 namespace Blog.Core.Services
 {

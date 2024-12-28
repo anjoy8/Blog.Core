@@ -1,8 +1,4 @@
-﻿using SqlSugar;
-using System;
-using System.Collections.Generic;
-
-namespace Blog.Core.Model
+﻿namespace Blog.Core.Model.Base.RootTkey
 {
     /// <summary>
     /// 用户信息表

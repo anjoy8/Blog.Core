@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Blog.Core.Model.Tenants;
+namespace Blog.Core.Model.Base.Tenants;
 
 /// <summary>
 /// 租户隔离方案

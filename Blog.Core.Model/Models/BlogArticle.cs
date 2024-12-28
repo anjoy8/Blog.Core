@@ -1,12 +1,9 @@
-﻿using SqlSugar;
-using System;
-using System.Collections.Generic;
-
-namespace Blog.Core.Model.Models
+﻿namespace Blog.Core.Model.Models
 {
     /// <summary>
     /// 博客文章
     /// </summary>
+    [MigrateVersion("1.0.0")]
     public class BlogArticle
     {
         /// <summary>

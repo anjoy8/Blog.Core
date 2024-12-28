@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using SqlSugar;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -11,6 +7,7 @@ namespace Blog.Core.Model.Models
 {
     [SplitTable(SplitType.Day)]//按天分表 （自带分表支持 年、季、月、周、日）
     [SugarTable("SplitDemo_{year}{month}{day}")]//3个变量必须要有，这么设计为了兼容开始按年，后面改成按月、按日
+    [MigrateVersion("1.0.0")]
     public class SplitDemo
     {
         [SugarColumn(IsPrimaryKey = true)]

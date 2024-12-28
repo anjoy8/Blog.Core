@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Blog.Core.Common.DB;
+using Blog.Core.Model.Base.Tenants;
 using Blog.Core.Model.Models;
-using Blog.Core.Model.Tenants;
 using SqlSugar;
 
 namespace Blog.Core.Common.Seed.SeedData;

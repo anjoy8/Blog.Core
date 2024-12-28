@@ -1,4 +1,4 @@
-﻿namespace Blog.Core.Model
+﻿namespace Blog.Core.Model.CustomEnums
 {
     public enum AuthorityScopeEnum
     {

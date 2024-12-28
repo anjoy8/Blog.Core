@@ -1,11 +1,9 @@
-﻿using SqlSugar;
-using System;
-
-namespace Blog.Core.Model.Models
+﻿namespace Blog.Core.Model.Models
 {
     /// <summary>
     /// 用户跟角色关联表
     /// </summary>
+    [MigrateVersion("1.0.0")]
     public class UserRole : UserRoleRoot<long>
     {
         public UserRole() { }

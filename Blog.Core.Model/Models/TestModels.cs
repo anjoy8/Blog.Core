@@ -1,6 +1,6 @@
 ﻿namespace Blog.Core.Model.Models
 {
-
+    [MigrateVersion("1.0.0")]
     public class TestMuchTableResult
     {
         public string moduleName { get; set; }

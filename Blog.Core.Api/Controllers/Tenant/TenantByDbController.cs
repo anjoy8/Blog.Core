@@ -3,6 +3,7 @@ using Blog.Core.Controllers;
 using Blog.Core.IServices.BASE;
 using Blog.Core.Model;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.Models.Tenant;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

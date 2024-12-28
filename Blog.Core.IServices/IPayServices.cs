@@ -3,6 +3,7 @@ using Blog.Core.IServices.BASE;
 using Blog.Core.Model;
 using Blog.Core.Model.ViewModels;
 using System.Threading.Tasks;
+using Blog.Core.Model.Base.RootTkey;
 
 namespace Blog.Core.IServices
 {

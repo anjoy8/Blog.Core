@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Blog.Core.Model
+﻿namespace Blog.Core.Model.Base.RootTkey
 {
     /// <summary>
     /// Tibug 博文

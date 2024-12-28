@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Blog.Core.Model
+﻿namespace Blog.Core.Model
 {
     /// <summary>
     /// 表格数据，支持分页

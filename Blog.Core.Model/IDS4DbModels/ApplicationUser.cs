@@ -1,7 +1,4 @@
-﻿using SqlSugar;
-using System;
-
-namespace Blog.Core.Model.IDS4DbModels
+﻿namespace Blog.Core.Model.IDS4DbModels
 {
     /// <summary>
     /// 以下model 来自ids4项目，多库模式，为了调取ids4数据

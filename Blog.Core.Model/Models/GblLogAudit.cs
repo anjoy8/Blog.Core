@@ -1,12 +1,10 @@
-﻿using SqlSugar;
-using System;
-
-namespace Blog.Core.Model.Models
+﻿namespace Blog.Core.Model.Models
 {
     /// <summary>
     /// 用户团队表
     /// </summary>
     [SugarTable("GblLogAudit", TableDescription = "日志审计")]
+    [MigrateVersion("1.0.0")]
     public class GblLogAudit
     {
         ///<summary>

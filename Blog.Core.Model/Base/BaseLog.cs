@@ -1,7 +1,4 @@
-﻿using SqlSugar;
-using System;
-
-namespace Blog.Core.Model.Base;
+﻿namespace Blog.Core.Model.Base;
 
 public abstract class BaseLog : RootEntityTkey<long>
 {

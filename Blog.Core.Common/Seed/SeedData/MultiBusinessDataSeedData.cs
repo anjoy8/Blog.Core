@@ -2,6 +2,7 @@
 using SqlSugar;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Blog.Core.Model.Models.Tenant;
 
 namespace Blog.Core.Common.Seed.SeedData;
 

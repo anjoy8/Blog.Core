@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Blog.Core.Model.ViewModels
+﻿namespace Blog.Core.Model.ViewModels.RootTKey
 {
     public class SysUserInfoDtoRoot<Tkey> where Tkey : IEquatable<Tkey>
     {

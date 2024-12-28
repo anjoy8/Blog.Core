@@ -1,12 +1,12 @@
-﻿using Blog.Core.Model.Models.RootTkey;
-using Blog.Core.Model.Tenants;
+﻿using Blog.Core.Model.Base.Tenants;
 
-namespace Blog.Core.Model.Models;
+namespace Blog.Core.Model.Models.Tenant;
 
 /// <summary>
 /// 业务数据 <br/>
 /// 多租户 (Id 隔离)
 /// </summary>
+[MigrateVersion("1.0.0")]
 public class BusinessTable : BaseEntity, ITenantEntity
 {
     /// <summary>

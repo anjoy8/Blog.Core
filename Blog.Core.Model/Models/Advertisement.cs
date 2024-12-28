@@ -1,8 +1,6 @@
-﻿using SqlSugar;
-using System;
-
-namespace Blog.Core.Model.Models
+﻿namespace Blog.Core.Model.Models
 {
+    [MigrateVersion("1.0.0")]
     public class Advertisement : RootEntityTkey<long>
     {
 

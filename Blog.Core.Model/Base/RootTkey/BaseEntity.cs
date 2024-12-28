@@ -1,8 +1,6 @@
-﻿using Blog.Core.Model.Models.RootTkey.Interface;
-using SqlSugar;
-using System;
+﻿using Blog.Core.Model.Base.RootTkey.Interface;
 
-namespace Blog.Core.Model.Models.RootTkey;
+namespace Blog.Core.Model.Base.RootTkey;
 
 [SugarIndex("index_{table}_Enabled", nameof(Enabled), OrderByType.Asc)]
 [SugarIndex("index_{table}_IsDeleted", nameof(IsDeleted), OrderByType.Asc)]

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Blog.Core.Model.Tenants;
+﻿namespace Blog.Core.Model.Base.Tenants;
 
 /// <summary>
 /// 标识 多租户 的业务表 <br/>

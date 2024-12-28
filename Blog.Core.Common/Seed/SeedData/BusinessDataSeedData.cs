@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blog.Core.Model.Models;
+using Blog.Core.Model.Models.Tenant;
 using SqlSugar;
 
 namespace Blog.Core.Common.Seed.SeedData;

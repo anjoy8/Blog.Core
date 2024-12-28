@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Blog.Core.Model
+﻿namespace Blog.Core.Model.Base.RootTkey
 {
     /// <summary>
     /// 用户跟角色关联表

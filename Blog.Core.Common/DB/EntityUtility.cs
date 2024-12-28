@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Blog.Core.Model.Base.RootTkey;
 
 namespace Blog.Core.Common.DB;
 

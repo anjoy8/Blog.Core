@@ -1,10 +1,9 @@
-﻿using SqlSugar;
-
-namespace Blog.Core.Model.Models;
+﻿namespace Blog.Core.Model.Models;
 
 /// <summary>
 /// 博客文章 评论
 /// </summary>
+[MigrateVersion("1.0.0")]
 public class BlogArticleComment : RootEntityTkey<long>
 {
     public long bID { get; set; }
