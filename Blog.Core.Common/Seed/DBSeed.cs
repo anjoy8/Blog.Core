@@ -93,7 +93,7 @@ namespace Blog.Core.Common.Seed
                 var modelTypes = referencedAssemblies
                    .SelectMany(a => a.DefinedTypes)
                    .Select(type => type.AsType())
-                   .Where(x => x.IsClass && x.Namespace is "Blog.Core.Model.Models")
+                   .Where(x => x.IsClass && x.Namespace != null && x.Namespace.StartsWith("Blog.Core.Model.Models"))
                    .Where(s => !s.IsDefined(typeof(MultiTenantAttribute), false))
                    .ToList();
                 await MigrateCore.MigrateAsync(db, modelTypes.ToArray());

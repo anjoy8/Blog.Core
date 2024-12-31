@@ -1444,7 +1444,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByDbController.Post(Blog.Core.Model.Models.SubLibraryBusinessTable)">
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByDbController.Post(Blog.Core.Model.Models.Tenant.SubLibraryBusinessTable)">
             <summary>
             新增数据
             </summary>
@@ -1461,7 +1461,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.Post(Blog.Core.Model.Models.BusinessTable)">
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByIdController.Post(Blog.Core.Model.Models.Tenant.BusinessTable)">
             <summary>
             新增业务数据
             </summary>
@@ -1478,7 +1478,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByTableController.Post(Blog.Core.Model.Models.MultiBusinessTable)">
+        <member name="M:Blog.Core.Api.Controllers.Tenant.TenantByTableController.Post(Blog.Core.Model.Models.Tenant.MultiBusinessTable)">
             <summary>
             新增数据
             </summary>
