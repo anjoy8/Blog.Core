@@ -27,7 +27,7 @@ namespace Blog.Core.Tasks
             //记录Job
             TasksLog tasksLog = new TasksLog();
             //JOBID
-            int jobid = context.JobDetail.Key.Name.ObjToInt();
+            long jobid = context.JobDetail.Key.Name.ObjToLong();
             //JOB组名
             string groupName = context.JobDetail.Key.Group;
             //日志
