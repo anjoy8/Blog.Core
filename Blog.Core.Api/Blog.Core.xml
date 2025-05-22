@@ -1318,6 +1318,22 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="T:Blog.Core.Api.Controllers.SqlSugarTestController">
+            <summary>
+            接口管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SqlSugarTestController.#ctor(SqlSugar.ISqlSugarClient)">
+            <summary>
+            接口管理
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.SqlSugarTestController.ClearDbTableCache">
+            <summary>
+            测试建表后，SqlSugar缓存
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Api.Controllers.Systems.CacheManageController">
             <summary>
             缓存管理
