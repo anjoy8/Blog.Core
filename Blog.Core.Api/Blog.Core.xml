@@ -1320,12 +1320,12 @@
         </member>
         <member name="T:Blog.Core.Api.Controllers.SqlSugarTestController">
             <summary>
-            接口管理
+            SqlSugar 相关测试
             </summary>
         </member>
         <member name="M:Blog.Core.Api.Controllers.SqlSugarTestController.#ctor(SqlSugar.ISqlSugarClient)">
             <summary>
-            接口管理
+            SqlSugar 相关测试
             </summary>
         </member>
         <member name="M:Blog.Core.Api.Controllers.SqlSugarTestController.ClearDbTableCache">
@@ -1537,6 +1537,55 @@
             此处只做演示，具体要以实际业务为准
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.Test.EnumTestController">
+            <summary>
+            枚举测试
+            </summary>
+        </member>
+        <member name="M:Blog.Core.Api.Controllers.Test.EnumTestController.GetStudent(Blog.Core.Api.Controllers.Test.StudentType,System.Nullable{Blog.Core.Api.Controllers.Test.StudentType},System.Collections.Generic.List{Blog.Core.Api.Controllers.Test.StudentType})">
+            <summary>
+            获取学生信息
+            </summary>
+            <param name="studentType">学生类型</param>
+            <param name="studentType2"></param>
+            <param name="studentTypes"></param>
+            <returns>学生信息</returns>
+        </member>
+        <member name="T:Blog.Core.Api.Controllers.Test.StudentType">
+            <summary>
+            学生类型
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Api.Controllers.Test.StudentType.PrimarySchool">
+            <summary>
+            小学生
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Api.Controllers.Test.StudentType.MiddleSchool">
+            <summary>
+            中学生
+            </summary>
+        </member>
+        <member name="F:Blog.Core.Api.Controllers.Test.StudentType.University">
+            <summary>
+            大学生
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Api.Controllers.Test.Student.Name">
+            <summary>
+            学生姓名
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Api.Controllers.Test.Student.Age">
+            <summary>
+            学生年龄
+            </summary>
+        </member>
+        <member name="P:Blog.Core.Api.Controllers.Test.Student.Type">
+            <summary>
+            学生类型
+            </summary>
         </member>
         <member name="T:Blog.Core.Filter.GlobalRouteAuthorizeConvention">
             <summary>
