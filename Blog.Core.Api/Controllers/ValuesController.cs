@@ -48,14 +48,17 @@ namespace Blog.Core.Controllers
         private readonly SeqOptions _seqOptions;
         private readonly ICaching _cache;
 
-        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper, IAdvertisementServices advertisementServices, Love love,
-            IRoleModulePermissionServices roleModulePermissionServices, IUser user, IPasswordLibServices passwordLibServices,
-            IHttpPollyHelper httpPollyHelper, IRabbitMQPersistentConnection persistentConnection, IOptions<SeqOptions> seqOptions, ICaching caching)
+        public ValuesController(IBlogArticleServices blogArticleServices, IMapper mapper,
+            IAdvertisementServices advertisementServices, Love love,
+            IRoleModulePermissionServices roleModulePermissionServices, IUser user,
+            IPasswordLibServices passwordLibServices,
+            IHttpPollyHelper httpPollyHelper, IRabbitMQPersistentConnection persistentConnection,
+            IOptions<SeqOptions> seqOptions, ICaching caching)
         {
             // 测试 Authorize 和 mapper
-            _mapper = mapper;
-            _advertisementServices = advertisementServices;
-            _love = love;
+            _mapper                       = mapper;
+            _advertisementServices        = advertisementServices;
+            _love                         = love;
             _roleModulePermissionServices = roleModulePermissionServices;
             // 测试 Httpcontext
             _user = user;
@@ -66,10 +69,10 @@ namespace Blog.Core.Controllers
             // 测试redis消息队列
             _blogArticleServices = blogArticleServices;
             // httpPolly
-            _httpPollyHelper = httpPollyHelper;
+            _httpPollyHelper      = httpPollyHelper;
             _persistentConnection = persistentConnection;
-            _cache = caching;
-            _seqOptions = seqOptions.Value;
+            _cache                = caching;
+            _seqOptions           = seqOptions.Value;
         }
 
         /// <summary>
@@ -84,7 +87,8 @@ namespace Blog.Core.Controllers
                 _persistentConnection.TryConnect();
             }
 
-            _persistentConnection.PublishMessage("Hello, RabbitMQ!", exchangeName: "blogcore", routingKey: "myRoutingKey");
+            _persistentConnection.PublishMessage("Hello, RabbitMQ!", exchangeName: "blogcore",
+                routingKey: "myRoutingKey");
             return Ok();
         }
 
@@ -104,7 +108,8 @@ namespace Blog.Core.Controllers
             return Ok();
         }
 
-        private async Task<bool> Dealer(string exchange, string routingKey, byte[] msgBody, IDictionary<string, object> headers)
+        private async Task<bool> Dealer(string exchange, string routingKey, byte[] msgBody,
+            IDictionary<string, object> headers)
         {
             await Task.CompletedTask;
             Console.WriteLine("我是消费者，这里消费了一条信息是：" + Encoding.UTF8.GetString(msgBody));
@@ -120,7 +125,7 @@ namespace Blog.Core.Controllers
                 response = (_user.GetClaimsIdentity().ToList()).Select(d =>
                     new ClaimDto
                     {
-                        Type = d.Type,
+                        Type  = d.Type,
                         Value = d.Value
                     }
                 ).ToList()
@@ -194,9 +199,9 @@ namespace Blog.Core.Controllers
 
             // 测试多个异步执行时间
             var roleModuleTask = _roleModulePermissionServices.Query();
-            var listTask = _advertisementServices.Query();
-            var ad = await roleModuleTask;
-            var list = await listTask;
+            var listTask       = _advertisementServices.Query();
+            var ad             = await roleModuleTask;
+            var list           = await listTask;
 
 
             // 测试service层返回异常
@@ -290,8 +295,8 @@ namespace Blog.Core.Controllers
             var getUserInfoByToken = _user.GetUserInfoFromToken(ClaimType);
             return new MessageModel<List<string>>()
             {
-                success = _user.IsAuthenticated(),
-                msg = _user.IsAuthenticated() ? _user.Name.ObjToString() : "未登录",
+                success  = _user.IsAuthenticated(),
+                msg      = _user.IsAuthenticated() ? _user.Name.ObjToString() : "未登录",
                 response = _user.GetClaimValueByType(ClaimType)
             };
         }
@@ -353,11 +358,11 @@ namespace Blog.Core.Controllers
         public async Task<object> TestMutiDBAPI()
         {
             // 从主库中，操作blogs
-            var blogs = await _blogArticleServices.Query(d => d.bID == 1);
+            var blogs   = await _blogArticleServices.Query(d => d.bID == 1);
             var addBlog = await _blogArticleServices.Add(new BlogArticle() { });
 
             // 从从库中，操作pwds
-            var pwds = await _passwordLibServices.Query(d => d.PLID > 0);
+            var pwds   = await _passwordLibServices.Query(d => d.PLID > 0);
             var addPwd = await _passwordLibServices.Add(new PasswordLib() { });
 
             return new
@@ -493,6 +498,18 @@ namespace Blog.Core.Controllers
             }
 
             return Success<string>("");
+        }
+
+        /// <summary>
+        /// 雪花Id To DateTime
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public DateTime SnowflakeIdToDateTime(long id)
+        {
+            return YitterSnowflakeHelper.GetDateTime(IdGeneratorUtility.GetOptions(), id);
         }
     }
 

@@ -891,6 +891,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Blog.Core.Controllers.ValuesController.SnowflakeIdToDateTime(System.Int64)">
+            <summary>
+            雪花Id To DateTime
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="T:Blog.Core.Controllers.WeChatCompanyController">
             <summary>
             WeChatCompanyController
