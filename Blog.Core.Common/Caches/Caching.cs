@@ -64,15 +64,16 @@ public class Caching(
         return res != null;
     }
 
-    public List<string> GetAllCacheKeys(string key = default)
+    public List<string> GetAllCacheKeys(string pattern = default)
     {
         if (_redisOptions.Enable)
         {
             var redis = App.GetService<IConnectionMultiplexer>(false);
             var endpoints = redis.GetEndPoints();
             var server = redis.GetServer(endpoints[0]);
-            var keys = server.Keys(pattern: key);
-            return keys.Select(u => u.ToString()).ToList();
+
+            // 使用 SCAN 命令来增量获取符合条件的键，避免 KEYS 的性能问题
+            return server.Keys(pattern: pattern, pageSize: 100).Select(key => key.ToString()).ToList();
         }
 
         var memoryCache = App.GetService<IMemoryCache>();
@@ -86,7 +87,7 @@ public class Caching(
             return [];
         }
 
-        return memoryCacheManager.GetAllKeys().WhereIf(!key.IsNullOrEmpty(), s => s.StartsWith(key!)).ToList();
+        return memoryCacheManager.GetAllKeys().WhereIf(!pattern.IsNullOrEmpty(), s => s.StartsWith(pattern!)).ToList();
     }
 
     public T Get<T>(string cacheKey)

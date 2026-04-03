@@ -10,7 +10,7 @@ public class MemoryCacheManager : IMemoryCache
 {
     private readonly IOptions<MemoryCacheOptions> _optionsAccessor;
 
-    private IMemoryCache _inner;
+    private MemoryCache _inner;
 
     public MemoryCacheManager(IOptions<MemoryCacheOptions> optionsAccessor)
     {

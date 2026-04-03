@@ -126,7 +126,8 @@ Blog.Core 开箱即用的企业级前后端分离【 .NET Core6.0 Api + Vue 2.x 
 - [x] 新增 微信公众号管理，并集成到Blog.Admin后台 ✨;
 - [x] 新增 - 数据部门权限;
 - [x] 新增 - Serilog 集成日志数据持久化到数据库;  
-- [x] 新增 - 多租户模式（单表，多表，多库三种模式）;  
+- [x] 新增 - 多租户模式（单表，多表，多库三种模式）; 
+- [x] 新增 - 使用 [SnowflakeId.AutoRegister](https://github.com/LemonNoCry/SnowflakeId.AutoRegister) 自动注册雪花Id WorkerId，支持分布式部署 ✨；
 
 
 微服务模块：

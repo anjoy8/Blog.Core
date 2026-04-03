@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 using Blog.Core.Common.Caches;
 using System.Text.RegularExpressions;
+using Blog.Core.Common.Option;
 using Blog.Core.Common.Utility;
 
 namespace Blog.Core.Extensions
@@ -36,7 +37,7 @@ namespace Blog.Core.Extensions
                 {
                     ConfigId = m.ConnId.ObjToString().ToLower(),
                     ConnectionString = m.Connection,
-                    DbType = (DbType) m.DbType,
+                    DbType = (DbType)m.DbType,
                     IsAutoCloseConnection = true,
                     // Check out more information: https://github.com/anjoy8/Blog.Core/issues/122
                     //IsShardSameThread = false,
@@ -55,6 +56,8 @@ namespace Blog.Core.Extensions
                     // 自定义特性
                     ConfigureExternalServices = new ConfigureExternalServices()
                     {
+                        //不建议使用,性能有很大问题,会导致redis堆积
+                        //核心问题在于SqlSugar，每次query都会查缓存, insert\update\delete,又会频繁GetAllKey，导致性能特别低
                         DataInfoCacheService = new SqlSugarCacheService(),
                         EntityService = (property, column) =>
                         {
@@ -73,7 +76,7 @@ namespace Blog.Core.Extensions
                 else
                 {
                     if (string.Equals(config.ConfigId.ToString(), MainDb.CurrentDbConnId,
-                            StringComparison.CurrentCultureIgnoreCase))
+                        StringComparison.CurrentCultureIgnoreCase))
                     {
                         BaseDBConfig.MainConfig = config;
                     }
@@ -103,7 +106,7 @@ namespace Blog.Core.Extensions
                 {
                     BaseDBConfig.ValidConfig.ForEach(config =>
                     {
-                        var dbProvider = db.GetConnectionScope((string) config.ConfigId);
+                        var dbProvider = db.GetConnectionScope((string)config.ConfigId);
 
                         // 打印SQL语句
                         dbProvider.Aop.OnLogExecuting = (s, parameters) =>

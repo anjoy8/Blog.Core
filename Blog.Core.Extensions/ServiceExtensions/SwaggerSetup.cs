@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Blog.Core.Common.Swagger.Filter;
 using static Blog.Core.Extensions.CustomApiVersion;
 
 namespace Blog.Core.Extensions
@@ -65,7 +66,10 @@ namespace Blog.Core.Extensions
                 // 在header中添加token，传递到后台
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
 
-
+                //自定义过滤器
+                c.SchemaFilter<EnumSchemaFilter>();
+                c.DocumentFilter<EnumTypesDocumentFilter>();
+                
                 // ids4和jwt切换
                 if (Permissions.IsUseIds4)
                 {

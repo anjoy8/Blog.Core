@@ -11,6 +11,8 @@ namespace Blog.Core.Common.Utility;
 
 public class IdGeneratorUtility
 {
+    private static IdGeneratorOptions _options;
+
     private static readonly Lazy<IAutoRegister> AutoRegister = new(() =>
     {
         var builder = new AutoRegisterBuilder()
@@ -44,15 +46,22 @@ public class IdGeneratorUtility
         var config = AutoRegister.Value.Register();
 
         //WorkerId DataCenterId 取值 1-31
-        var options = new IdGeneratorOptions
-        {
-            WorkerId = (ushort)config.WorkerId,
-        };
+        var options = GetOptions();
+        options.WorkerId = (ushort)config.WorkerId;
         IIdGenerator idGenInstance = new DefaultIdGenerator(options);
         return idGenInstance;
     });
 
     private static IIdGenerator IdGenInstance => _idGenInstance.Value;
+
+    public static IdGeneratorOptions GetOptions()
+    {
+        _options ??= new IdGeneratorOptions
+        {
+        };
+
+        return _options;
+    }
 
     public static long NextId()
     {
