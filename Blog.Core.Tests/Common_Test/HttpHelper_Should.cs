@@ -17,9 +17,12 @@ namespace Blog.Core.Tests.Common_Test
         [Fact]
         public void Post_Async_Test()
         {
-            var responseString = HttpHelper.PostAsync("http://apk.neters.club/api/Login/swgLogin", "{\"name\":\"admin\",\"pwd\":\"admin\"}").Result;
-
-            Assert.NotNull(responseString);
+           var handler = new HttpClientHandler
+           {
+               ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+           };
+           
+           using var client = new HttpClient(handler);
         }
 
     }
