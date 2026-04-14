@@ -96,10 +96,10 @@ namespace Blog.Core.Hubs
         public async Task GetLatestCount(string random)
         {
             //2、服务端主动向客户端发送数据，名字千万不能错
-            if (AppSettings.app(new string[] {"Middleware", "SignalRSendLog", "Enabled"}).ObjToBool())
+            if (AppSettings.app(new string[] { "Middleware", "SignalRSendLog", "Enabled" }).ObjToBool())
             {
                 //TODO 主动发送错误消息
-                await Clients.All.ReceiveUpdate(LogLock.GetLogData());
+                await Clients.All.ReceiveUpdate("这是一个LOG");
             }
 
 

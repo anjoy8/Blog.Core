@@ -19,19 +19,20 @@ namespace Blog.Core.Filter
         private readonly IHubContext<ChatHub> _hubContext;
         private readonly ILogger<GlobalExceptionsFilter> _loggerHelper;
 
-        public GlobalExceptionsFilter(IWebHostEnvironment env, ILogger<GlobalExceptionsFilter> loggerHelper, IHubContext<ChatHub> hubContext)
+        public GlobalExceptionsFilter(IWebHostEnvironment env, ILogger<GlobalExceptionsFilter> loggerHelper,
+            IHubContext<ChatHub> hubContext)
         {
-            _env = env;
+            _env          = env;
             _loggerHelper = loggerHelper;
-            _hubContext = hubContext;
+            _hubContext   = hubContext;
         }
 
         public void OnException(ExceptionContext context)
         {
             var json = new MessageModel<string>();
 
-            json.msg = context.Exception.Message;//错误信息
-            json.status = 500;//500异常 
+            json.msg    = context.Exception.Message; //错误信息
+            json.status = 500;                       //500异常 
             var errorAudit = "Unable to resolve service for";
             if (!string.IsNullOrEmpty(json.msg) && json.msg.Contains(errorAudit))
             {
@@ -40,8 +41,9 @@ namespace Blog.Core.Filter
 
             if (_env.EnvironmentName.ObjToString().Equals("Development"))
             {
-                json.msgDev = context.Exception.StackTrace;//堆栈信息
+                json.msgDev = context.Exception.StackTrace; //堆栈信息
             }
+
             var res = new ContentResult();
             res.Content = JsonHelper.GetJSON<MessageModel<string>>(json);
 
@@ -54,10 +56,8 @@ namespace Blog.Core.Filter
             _loggerHelper.LogError(json.msg + WriteLog(json.msg, context.Exception));
             if (AppSettings.app(new string[] { "Middleware", "SignalRSendLog", "Enabled" }).ObjToBool())
             {
-                _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
+                _hubContext.Clients.All.SendAsync("ReceiveUpdate", json.msg).Wait();
             }
-
-
         }
 
         /// <summary>
@@ -68,11 +68,14 @@ namespace Blog.Core.Filter
         /// <returns></returns>
         public string WriteLog(string throwMsg, Exception ex)
         {
-            return string.Format("\r\n【自定义错误】：{0} \r\n【异常类型】：{1} \r\n【异常信息】：{2} \r\n【堆栈调用】：{3}", new object[] { throwMsg,
-                ex.GetType().Name, ex.Message, ex.StackTrace });
+            return string.Format("\r\n【自定义错误】：{0} \r\n【异常类型】：{1} \r\n【异常信息】：{2} \r\n【堆栈调用】：{3}", new object[]
+            {
+                throwMsg,
+                ex.GetType().Name, ex.Message, ex.StackTrace
+            });
         }
-
     }
+
     public class InternalServerErrorObjectResult : ObjectResult
     {
         public InternalServerErrorObjectResult(object value) : base(value)
@@ -80,6 +83,7 @@ namespace Blog.Core.Filter
             StatusCode = StatusCodes.Status500InternalServerError;
         }
     }
+
     //返回错误信息
     public class JsonErrorResponse
     {
@@ -87,10 +91,10 @@ namespace Blog.Core.Filter
         /// 生产环境的消息
         /// </summary>
         public string Message { get; set; }
+
         /// <summary>
         /// 开发环境的消息
         /// </summary>
         public string DevelopmentMessage { get; set; }
     }
-
 }

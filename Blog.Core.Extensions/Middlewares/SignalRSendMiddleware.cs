@@ -17,6 +17,7 @@ namespace Blog.Core.Extensions.Middlewares
         /// 
         /// </summary>
         private readonly RequestDelegate _next;
+
         private readonly IHubContext<ChatHub> _hubContext;
 
         /// <summary>
@@ -26,10 +27,9 @@ namespace Blog.Core.Extensions.Middlewares
         /// <param name="hubContext"></param>
         public SignalRSendMiddleware(RequestDelegate next, IHubContext<ChatHub> hubContext)
         {
-            _next = next;
+            _next       = next;
             _hubContext = hubContext;
         }
-
 
 
         public async Task InvokeAsync(HttpContext context)
@@ -37,11 +37,10 @@ namespace Blog.Core.Extensions.Middlewares
             if (AppSettings.app("Middleware", "SignalR", "Enabled").ObjToBool())
             {
                 //TODO 主动发送错误消息
-                await _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()); 
+                await _hubContext.Clients.All.SendAsync("ReceiveUpdate", "这是一个Log");
             }
+
             await _next(context);
         }
-
     }
 }
-
